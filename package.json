@@ -1,0 +1,13 @@
+{
+  "name": "cs",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "lint": "turbo run lint",
+    "test:unit": "turbo run test:unit",
+    "build": "turbo run build"
+  },
+  "devDependencies": {
+    "turbo": "^2.1.1"
+  }
+}

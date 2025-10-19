@@ -1,0 +1,84 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>1.1</storyId>
+    <title>Scaffold Monorepo &amp; Core Services</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-19</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-1.1.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA><![CDATA[platform engineer]]></asA>
+    <iWant><![CDATA[the Next.js storefront, Medusa service, and Strapi service scaffolded inside a single monorepo]]></iWant>
+    <soThat><![CDATA[teams can develop features in parallel with consistent tooling.]]></soThat>
+    <tasks>
+      <task id="1" ac="AC1"><![CDATA[Initialize pnpm/turbo monorepo skeleton with `apps/web`, `apps/medusa`, `apps/strapi`, shared packages, infra, scripts, and tests folders matching the proposed source tree.]]></task>
+      <task id="1.1" parent="1" ac="AC1"><![CDATA[Configure TurboRepo workspace, pnpm workspaces, linting/prettier configs, and root scripts that orchestrate `lint`, `test:unit`, and `build`.]]></task>
+      <task id="2" ac="AC2"><![CDATA[Scaffold baseline Next.js, Medusa, and Strapi apps with shared environment templates and verify each service boots locally against example `.env` files.]]></task>
+      <task id="2.1" parent="2" ac="AC2"><![CDATA[Author `.env.local.example` files and a bootstrap script that populates environment variables for each service; smoke-test local startup.]]></task>
+      <task id="2.2" parent="2" ac="AC2"><![CDATA[Execute `pnpm lint` and `pnpm test:unit` to confirm scaffolds meet baseline CI expectations before Story 1.3 automation.]]></task>
+      <task id="3" ac="AC3"><![CDATA[Produce README onboarding guidance describing workspace layout, commands, and developer workflow expectations.]]></task>
+      <task id="3.1" parent="3" ac="AC3"><![CDATA[Document development prerequisites (Node.js 20.x, pnpm 9.x, TurboRepo) and cross-link to future onboarding/runbook docs.]]></task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="AC1"><![CDATA[Monorepo initialized with pnpm/turbo workspace tooling and shared linting/prettier configs.]]></criterion>
+    <criterion id="AC2"><![CDATA[Baseline Next.js, Medusa, and Strapi apps boot locally using `.env.local.example` values.]]></criterion>
+    <criterion id="AC3"><![CDATA[README documents workspace structure and commands.]]></criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc path="docs/epics.md" ref="38-47"><![CDATA[Epic 1.1 definition outlining scaffolding objectives and acceptance criteria.]]></doc>
+      <doc path="docs/tech-spec-epic-1.md" ref="16-57"><![CDATA[Technical specification detailing monorepo scope, directory layout, environment templates, and CI expectations.]]></doc>
+      <doc path="docs/solution-architecture.md" ref="9-49"><![CDATA[Composable architecture overview describing Next.js App Router frontend with Medusa and Strapi services.]]></doc>
+      <doc path="docs/solution-architecture.md" ref="292-328"><![CDATA[Proposed source tree showing required `apps/`, `packages/`, `infra/`, `scripts/`, and `tests/` directories.]]></doc>
+      <doc path="docs/PRD.md" ref="5-16"><![CDATA[Product goals emphasizing composable architecture, performance, and ownership of commerce/content experiences.]]></doc>
+      <doc path="docs/tech-spec-epic-1.md" ref="145-151"><![CDATA[Developer prerequisites listing Node.js 20.x, pnpm 9.x, TurboRepo, and shared tooling expectations.]]></doc>
+      <doc path="docs/architecture-decisions.md" ref="19-69"><![CDATA[ADR-001 and ADR-002 selecting Next.js App Router on Vercel with Medusa/Strapi on Railway, driving service layout.]]></doc>
+    </docs>
+    <code>
+      <code path="apps/web"><![CDATA[Next.js App Router application directory hosting marketing, shop, account, and downloads routes.]]></code>
+      <code path="apps/medusa"><![CDATA[Medusa commerce service root where order, catalog, and checkout APIs will live.]]></code>
+      <code path="apps/strapi"><![CDATA[Strapi CMS service folder for guides, downloads, and showcase content.]]></code>
+      <code path="packages/ui"><![CDATA[Shared design system and component library consumed by storefront and admin surfaces.]]></code>
+      <code path="infra/pulumi"><![CDATA[Infrastructure-as-code project for provisioning Vercel and Railway resources.]]></code>
+    </code>
+    <dependencies>
+      <dependency name="Node.js" version="20.x" source="docs/tech-spec-epic-1.md:145-151" />
+      <dependency name="pnpm" version="9.x" source="docs/tech-spec-epic-1.md:16-24" />
+      <dependency name="TurboRepo" version="latest" source="docs/tech-spec-epic-1.md:16-24" />
+      <dependency name="Vercel" type="hosting" source="docs/architecture-decisions.md:43-69" />
+      <dependency name="Railway" type="hosting" source="docs/architecture-decisions.md:43-69" />
+      <dependency name="Redis" type="queue/cache" source="docs/architecture-decisions.md:93-120" />
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint source="docs/architecture-decisions.md:19-69"><![CDATA[Frontend must use Next.js App Router with React Server Components hosted on Vercel.]]></constraint>
+    <constraint source="docs/tech-spec-epic-1.md:16-48"><![CDATA[Maintain a pnpm/turbo monorepo with shared tooling, scripts, and workspace configuration.]]></constraint>
+    <constraint source="docs/solution-architecture.md:292-328"><![CDATA[Directory structure must mirror proposed source tree to support shared packages and infrastructure.]]></constraint>
+    <constraint source="docs/tech-spec-epic-1.md:53-57"><![CDATA[Each service requires `.env.local.example` templates listing required environment variables.]]></constraint>
+    <constraint source="docs/PRD.md:5-16"><![CDATA[Architecture must remain composable, keeping storefront, commerce, and content services decoupled.]]></constraint>
+  </constraints>
+
+  <interfaces>
+    <interface type="env" name="apps/web/.env.local.example"><![CDATA[NEXTAUTH_SECRET, MEDUSA_API_URL, STRAPI_API_URL, PAYPAL_CLIENT_ID, SENTRY_DSN, SEGMENT_WRITE_KEY, REDIS_URL]]></interface>
+    <interface type="env" name="apps/medusa/.env.example"><![CDATA[DATABASE_URL, REDIS_URL, NODE_ENV, JWT_SECRET, PAYPAL_SECRET, STRAPI_WEBHOOK_SECRET]]></interface>
+    <interface type="env" name="apps/strapi/.env.example"><![CDATA[DATABASE_URL, ADMIN_JWT_SECRET, APP_KEYS, API_TOKEN_SALT, CLOUDINARY_TOKEN]]></interface>
+    <interface type="scripts" name="workspace-scripts"><![CDATA[`pnpm lint`, `pnpm test:unit`, `pnpm build` run from repo root via TurboRepo pipelines.]]></interface>
+  </interfaces>
+
+  <tests>
+    <standards><![CDATA[Follow platform foundation spec: run `pnpm lint` and `pnpm test:unit` for each workspace, adopt Vitest + Testing Library for units, and prepare Playwright smoke tests ahead of Story 1.3 integration.]]></standards>
+    <locations><![CDATA[apps/web/**/*.{test,spec}.{ts,tsx}; apps/medusa/src/**/*.spec.ts; apps/strapi/src/**/*.spec.ts; tests/e2e/**]]></locations>
+    <ideas>
+      <idea ac="AC1"><![CDATA[Execute `pnpm lint` and `pnpm test:unit` to ensure workspace scripts operate across all packages.]]></idea>
+      <idea ac="AC2"><![CDATA[Start `pnpm --filter web dev`, `pnpm --filter medusa dev`, and `pnpm --filter strapi develop` using example environment files to confirm baseline services boot.]]></idea>
+      <idea ac="AC3"><![CDATA[Review README instructions end-to-end (fresh clone through bootstrapping) to verify onboarding steps are accurate.]]></idea>
+    </ideas>
+  </tests>
+</story-context>

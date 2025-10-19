@@ -1,0 +1,156 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production builds
+dist/
+build/
+out/
+.next/
+.nuxt/
+.vuepress/dist/
+
+# Development
+.turbo/
+.dev-cache/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+.nyc_output/
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+
+# Nuxt.js build / generate output
+.nuxt
+dist
+
+# Storybook build outputs
+.out
+.storybook-out
+
+# Temporary folders
+tmp/
+temp/
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Local configuration files (based on AGENTS.md guidelines)
+bmad/bmm/config.yaml.local
+bmad/core/config.yaml.local
+
+# BMAD output folders (from brainstorming and other workflows)
+bmad/output/
+bmad/reports/
+
+# Session results and temporary files
+*session-results-*.md
+*workshop-output-*.md
+
+# Personal user data (scrubbed as mentioned in AGENTS.md)
+bmad/user-data/
+bmad/personal-settings/
+
+# Local development scripts
+scripts/local/
+scripts/dev-*
+
+# Test artifacts
+test-results/
+test-reports/
+junit.xml
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Compressed files
+*.zip
+*.tar.gz
+*.rar
+
+# Documentation build artifacts
+docs/_build/
+docs/.doctrees/
+docs/build/
+
+# AI/ML model files and cache
+*.model
+*.pkl
+*.joblib
+.cache/
+.pytest_cache/
