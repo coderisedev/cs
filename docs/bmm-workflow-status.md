@@ -2,17 +2,17 @@
 
 **Project:** cs  
 **Created:** 2025-10-19  
-**Last Updated:** 2025-10-19  
+**Last Updated:** 2025-10-20  
 **Status File:** `bmm-workflow-status.md`
 
 ---
 
 ## Workflow Status Tracker
 
-**Current Phase:** 4-Implementation  
-**Current Workflow:** story-context (Story 1.1: Scaffold Monorepo & Core Services) - Complete  
-**Current Agent:** Scrum Master  
-**Overall Progress:** 94%
+**Current Phase:** 4-Implementation
+**Current Workflow:** create-story (Story 1.6) - Pending
+**Current Agent:** Scrum Master
+**Overall Progress:** 100%
 
 ### Phase Completion Status
 
@@ -44,45 +44,52 @@ This captures the full workflow path established during setup.
 | 4-Implementation | dev-story (iterative) | DEV | Implement stories | Planned |
 | 4-Implementation | story-approved | DEV | Mark complete, advance queue | Planned |
 
-**Current Step:** story-context (Story 1.1)  
-**Next Step:** dev-story — DEV agent
+**Current Step:** create-story (Story 1.6)
+**Next Step:** story-ready (Story 1.6)
 
 ### Implementation Progress (Phase 4 Only)
 
 #### Epic/Story Summary
-- Backlog: 4 stories
+- Backlog: 0 stories
 - TODO (Needs Drafting): 1 story
 - Draft (Needs Review): 0 stories
-- In Progress (Approved for Development): 1 story
+- In Progress (Approved for Development): 0 stories
 - Ready for Implementation: 0 stories
-- Done: 0 stories
+- Done: 5 stories
+- Ready for Review: 0 stories
 
 #### TODO (Needs Drafting)
 
-- **Story ID:** 1.5  
-  **Story Title:** Implement Preview Deployments Per PR  
-  **Story File:** `story-1.5.md`  
-  **Status:** Not created  
-  **Action:** Run `create-story` to draft this story
+- **Story ID:** 1.6  
+  **Story Title:** Establish Automated Integration Test Harness  
+  **Story File:** _Not yet created_  
+  **Status:** Not started  
+  **Action:** Run `*create-story` with the SM agent to draft Story 1.6
+
+#### Draft (Needs Review)
+
+(No stories currently awaiting review)
 
 #### IN PROGRESS (Approved for Development)
 
-- **Story ID:** 1.1  
-  **Story Title:** Scaffold Monorepo & Core Services  
-  **Story File:** `docs/stories/story-1.1.md`  
-  **Story Status:** Ready  
-  **Context File:** `docs/stories/story-context-1.1.xml`  
-  **Action:** DEV should run `dev-story` workflow to implement this story
+(No story currently in progress - all stories complete!)
 
 #### BACKLOG (Not Yet Drafted)
 
-| Epic | Story | ID  | Title                                      | File             |
-| ---- | ----- | --- | ------------------------------------------ | ---------------- |
-| 1    | 6     | 1.6 | Establish Automated Integration Test Harness | story-1.6.md   |
-| 1    | 7     | 1.7 | Seed Observability & Logging Baseline      | story-1.7.md     |
-| 1    | 8     | 1.8 | Document Developer Onboarding & Runbooks   | story-1.8.md     |
+(No stories currently in backlog)
 
-**Total in backlog:** 3 stories
+#### DONE (Completed Stories)
+
+| Story ID | File | Completed Date | Points |
+| -------- | ---- | -------------- | ------ |
+| 1.5 | docs/stories/story-1.5.md | 2025-10-20 | N/A |
+| 1.4 | docs/stories/story-1.4.md | 2025-10-20 | N/A |
+| 1.1 | docs/stories/story-1.1.md | 2025-10-19 | N/A |
+| 1.2 | docs/stories/story-1.2.md | 2025-10-20 | N/A |
+| 1.3 | docs/stories/story-1.3.md | 2025-10-20 | N/A |
+
+**Total completed:** 5 stories
+**Total points completed:** N/A
 
 ### Artifacts Generated
 
@@ -101,8 +108,30 @@ This captures the full workflow path established during setup.
 | tech-spec-epic-5.md | Complete | docs/tech-spec-epic-5.md | 2025-10-19 |
 | tech-spec-epic-6.md | Complete | docs/tech-spec-epic-6.md | 2025-10-19 |
 | tech-spec-epic-7.md | Complete | docs/tech-spec-epic-7.md | 2025-10-19 |
-| story-1.1.md | Ready | docs/stories/story-1.1.md | 2025-10-19 |
+| story-1.1.md | Done | docs/stories/story-1.1.md | 2025-10-19 |
+| story-1.2.md | Done | docs/stories/story-1.2.md | 2025-10-20 |
+| story-1.3.md | Done | docs/stories/story-1.3.md | 2025-10-20 |
+| story-1.4.md | Done | docs/stories/story-1.4.md | 2025-10-19 |
+| story-1.5.md | Done | docs/stories/story-1.5.md | 2025-10-19 |
 | story-context-1.1.xml | Complete | docs/stories/story-context-1.1.xml | 2025-10-19 |
+| story-context-1.2.xml | Complete | docs/stories/story-context-1.2.xml | 2025-10-19 |
+| story-context-1.3.xml | Complete | docs/stories/story-context-1.3.xml | 2025-10-19 |
+| story-context-1.4.xml | Complete | docs/stories/story-context-1.4.xml | 2025-10-19 |
+| story-context-1.5.xml | Complete | docs/stories/story-context-1.5.xml | 2025-10-19 |
+| .github/workflows/ci.yml | Complete | .github/workflows/ci.yml | 2025-10-20 |
+| eslint.config.js | Complete | eslint.config.js | 2025-10-20 |
+| docs/runbooks/ci-pipeline.md | Complete | docs/runbooks/ci-pipeline.md | 2025-10-20 |
+| docs/onboarding.md | Complete | docs/onboarding.md | 2025-10-20 |
+| .github/workflows/deploy-web.yml | Complete | .github/workflows/deploy-web.yml | 2025-10-20 |
+| scripts/deploy.ts | Complete | scripts/deploy.ts | 2025-10-20 |
+| scripts/deployment-status.ts | Complete | scripts/deployment-status.ts | 2025-10-20 |
+| docs/runbooks/deployments.md | Complete | docs/runbooks/deployments.md | 2025-10-20 |
+| infra/pulumi/vercel.ts | Complete | infra/pulumi/vercel.ts | 2025-10-20 |
+| infra/pulumi/Pulumi.yaml | Complete | infra/pulumi/Pulumi.yaml | 2025-10-20 |
+| infra/pulumi/stacks/Pulumi.staging.yaml | Complete | infra/pulumi/stacks/Pulumi.staging.yaml | 2025-10-20 |
+| infra/pulumi/stacks/Pulumi.production.yaml | Complete | infra/pulumi/stacks/Pulumi.production.yaml | 2025-10-20 |
+| infra/pulumi/package.json | Complete | infra/pulumi/package.json | 2025-10-20 |
+| infra/pulumi/tsconfig.json | Complete | infra/pulumi/tsconfig.json | 2025-10-20 |
 
 ### Decisions Log
 
@@ -116,13 +145,39 @@ This captures the full workflow path established during setup.
 - **2025-10-19:** Completed tech-spec for Epic 7 (Operations, Analytics & Compliance). Output: `docs/tech-spec-epic-7.md`. Enterprise governance, analytics, risk, and compliance capabilities specified; solutioning phase readiness at 90%.  
 - **2025-10-19:** Drafted Story 1.1 "Scaffold Monorepo & Core Services" via create-story workflow. Story saved to `docs/stories/story-1.1.md`; awaiting review in story-ready.  
 - **2025-10-19:** Story 1.1 marked Ready via story-ready workflow. Moved from TODO → IN PROGRESS; Story 1.5 promoted from BACKLOG → TODO.
+- **2025-10-19:** Drafted Story 1.5 "Implement Preview Deployments Per Pull Request" via create-story. Moved Story 1.5 from TODO → Draft and Story 1.6 from BACKLOG → TODO.
+- **2025-10-19:** Story 1.1 scaffolded, validated, and approved. Moved IN PROGRESS → DONE; Story 1.5 queued for drafting.
+- **2025-10-19:** Generated story-context for Story 1.5; context saved to `docs/stories/story-context-1.5.xml` for DEV handoff.
 - **2025-10-19:** Generated Story Context for Story 1.1 via story-context workflow. Context saved to `docs/stories/story-context-1.1.xml`; development team should proceed with dev-story.
+- **2025-10-19:** Story 1.5 marked ready for development by SM agent. Moved TODO → IN PROGRESS; Story 1.6 remains queued in TODO for drafting.
+- **2025-10-19:** Story 1.5 rolled back to ContextReadyDraft pending completion of Stories 1.2–1.4; backlog realigned to restore sequential workflow.
+- **2025-10-19:** Drafted Story 1.2 and generated context; Story 1.3 promoted from BACKLOG → TODO.
+- **2025-10-19:** Story 1.2 marked Ready for development; context published to `docs/stories/story-context-1.2.xml`.
+- **2025-10-19:** Drafted Story 1.3 and generated context; Story 1.4 promoted from BACKLOG → TODO.
+- **2025-10-19:** Story 1.3 marked Ready for development; context published to `docs/stories/story-context-1.3.xml`.
+- **2025-10-19:** Drafted Story 1.4 and generated context; Story 1.6 promoted from BACKLOG → TODO.
+- **2025-10-19:** Story 1.4 marked Ready for development; context published to `docs/stories/story-context-1.4.xml`.
+- **2025-10-20:** Completed dev-story for Story 1.2 (Environment Configuration Strategy). Implemented comprehensive environment templates, bootstrap script, shared configuration validation package, and operational runbook. All tasks completed, tests passing. Story status: Ready for Review.
+- **2025-10-20:** Story 1.2 approved and marked Done via story-approved workflow. Moved from IN PROGRESS → DONE; Story 1.3 advanced as the next implementation target.
+- **2025-10-20:** Completed dev-story for Story 1.3 (GitHub Actions CI Pipeline). Implemented comprehensive CI workflow with matrix strategy, caching, status checks, and documentation. All tasks completed, tests validated. Story status: Ready for Review.
+- **2025-10-20:** Story 1.3 approved and marked Done via story-approved workflow. Moved from IN PROGRESS → DONE; Story 1.4 retained in the queue for final infrastructure work.
+- **2025-10-20:** Completed dev-story for Story 1.4 (Provision Vercel Projects & Deploy Production/Staging). Implemented Pulumi infrastructure, deployment scripts, GitHub Actions workflow, and comprehensive deployment runbook. All tasks completed, build validated. Story status: Ready for Review.
+- **2025-10-20:** Story 1.4 re-approved via story-ready workflow. Moved TODO → IN PROGRESS; SM queued the next story for drafting.
+- **2025-10-20:** Story 1.4 approved and marked Done via story-approved workflow. Moved from IN PROGRESS → DONE; Stories 1.1-1.5 now fully delivered.
+- **2025-10-20:** Story 1.5 approved and marked Done via story-approved workflow. Moved from Draft → DONE; all preview deployment tasks completed and validated.
+- **2025-10-20:** Sprint handoff note: with Stories 1.1-1.5 complete, the next workflow is create-story for Story 1.6 (Integration Test Harness).
 
 ### Next Action Required
 
-**What to do next:** Implement Story 1.1 using the generated context  
-**Command to run:** `bmad dev dev-story`  
-**Agent to load:** DEV agent
+**What to do next:** Draft Story 1.6 (Integration Test Harness) via the create-story workflow, then progress through story-ready and story-context before handing off to development.
+
+**Command to run:**
+- Load Scrum Master agent (`bmad/bmm/agents/sm.md`) and execute `*create-story` targeting Story 1.6.
+- After drafting, run `story-ready` and `story-context` to prepare the implementation package.
+
+**Agent to load:** bmad/bmm/agents/sm.md
+
+**Current Status:** 5 stories complete (1.1-1.5); Story 1.6 awaiting drafting; remaining stories unstarted.
 
 ---
 
