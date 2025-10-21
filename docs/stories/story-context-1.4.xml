@@ -1,0 +1,82 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>1.4</storyId>
+    <title>Provision Vercel Projects & Deploy Production/Staging</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-19</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-1.4.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA><![CDATA[operations owner]]></asA>
+    <iWant><![CDATA[staging and production storefront deployments wired to Vercel with automatic rollbacks]]></iWant>
+    <soThat><![CDATA[releases are fast, consistent, and observable.]]></soThat>
+    <tasks>
+      <task id="1" ac="AC1"><![CDATA[Provision Vercel staging and production projects tied to the monorepo.]]></task>
+      <task id="1.1" parent="1" ac="AC1"><![CDATA[Configure projects via Pulumi for environment parity (domains, env vars, build settings).]]></task>
+      <task id="1.2" parent="1" ac="AC1"><![CDATA[Link Vercel projects to GitHub branches with automated deployments.]]></task>
+      <task id="2" ac="AC2"><![CDATA[Implement `deploy-web.yml` GitHub Action promoting branches to staging and production.]]></task>
+      <task id="2.1" parent="2" ac="AC2"><![CDATA[Add Vercel CLI deploy steps leveraging Pulumi outputs for project IDs.]]></task>
+      <task id="2.2" parent="2" ac="AC2"><![CDATA[Gate deployments on successful CI runs and reuse Turbo caches.]]></task>
+      <task id="3" ac="AC3"><![CDATA[Surface deployment visibility and rollback mechanics.]]></task>
+      <task id="3.1" parent="3" ac="AC3"><![CDATA[Post deployment status summaries back to GitHub (status + PR comment).]]></task>
+      <task id="3.2" parent="3" ac="AC3"><![CDATA[Document rollback procedures and audit requirements in runbooks.]]></task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="AC1"><![CDATA[Vercel production and staging projects created and linked to GitHub repo.]]></criterion>
+    <criterion id="AC2"><![CDATA[GitHub Actions deploy job promotes `main` to production and staging branch to staging.]]></criterion>
+    <criterion id="AC3"><![CDATA[Deployment status surfaced back into GitHub with success/failure notifications.]]></criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc path="docs/epics.md" ref="83-94"><![CDATA[Story definition and acceptance criteria for Vercel provisioning.]]></doc>
+      <doc path="docs/solution-architecture.md" ref="300-354"><![CDATA[Hosting decisions and deployment workflow guidance for Vercel and Railway.]]></doc>
+      <doc path="docs/tech-spec-epic-1.md" ref="47-135"><![CDATA[Pulumi stack configuration, deployment workflows, and rollback guidance.]]></doc>
+      <doc path="docs/tech-spec-epic-1.md" ref="120-139"><![CDATA[Observability requirements for deployment events and metrics.]]></doc>
+      <doc path="docs/stories/story-1.1.md" ref="17-23"><![CDATA[Existing scripts and workspace tooling leveraged by deployment actions.]]></doc>
+    </docs>
+    <code>
+      <code path="infra/pulumi"><![CDATA[Pulumi stacks provisioning Vercel projects, Railway services, and secrets.]]></code>
+      <code path=".github/workflows"><![CDATA[Directory for `deploy-web.yml` and supporting workflow files.]]></code>
+      <code path="scripts"><![CDATA[Automation scripts wrapping Vercel CLI and deployment utilities.]]></code>
+      <code path="apps/web"><![CDATA[Vercel-deployed storefront requiring staging/production builds.]]></code>
+      <code path="docs/runbooks/deployments.md"><![CDATA[Runbook documenting deployment process and rollback steps.]]></code>
+    </code>
+    <dependencies>
+      <dependency name="Vercel CLI" version="latest" source="docs/tech-spec-epic-1.md:80-109" />
+      <dependency name="Pulumi" version="latest" source="docs/tech-spec-epic-1.md:47-69" />
+      <dependency name="GitHub Actions" type="platform" source="docs/solution-architecture.md:352-354" />
+      <dependency name="Railway" type="platform" source="docs/tech-spec-epic-1.md:47-69" />
+      <dependency name="TurboRepo" version="latest" source="docs/tech-spec-epic-1.md:71-109" />
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint source="docs/tech-spec-epic-1.md:47-69"><![CDATA[Deployment infrastructure must be defined via Pulumi to maintain environment parity.]]></constraint>
+    <constraint source="docs/tech-spec-epic-1.md:80-109"><![CDATA[Deployments rely on Vercel CLI using project IDs and tokens sourced from Pulumi outputs.]]></constraint>
+    <constraint source="docs/tech-spec-epic-1.md:107-135"><![CDATA[Rollback procedures and deployment history must be documented and readily accessible.]]></constraint>
+    <constraint source="docs/solution-architecture.md:352-354"><![CDATA[Secrets used for deployments are managed through GitHub OIDC and may not be hard-coded.]]></constraint>
+  </constraints>
+
+  <interfaces>
+    <interface type="workflow" name=".github/workflows/deploy-web.yml"><![CDATA[GitHub Action orchestrating Vercel deployments for staging and production.]]></interface>
+    <interface type="pulumi" name="infra/pulumi/vercel.ts"><![CDATA[Pulumi module defining Vercel projects, domains, and environment variables.]]></interface>
+    <interface type="script" name="scripts/deploy.ts"><![CDATA[Helper script invoking Vercel CLI with environment-specific flags.]]></interface>
+    <interface type="runbook" name="docs/runbooks/deployments.md"><![CDATA[Operational documentation for promotions, rollbacks, and escalation paths.]]></interface>
+  </interfaces>
+
+  <tests>
+    <standards><![CDATA[Deployments must occur only after CI success, record status events, and support rapid rollback via Vercel history.]]></standards>
+    <locations><![CDATA[.github/workflows/deploy-web.yml; scripts/**/*.test.ts; docs/runbooks/deployments.md]]></locations>
+    <ideas>
+      <idea ac="AC1"><![CDATA[Pulumi preview verifying Vercel projects and domains create without drift.]]></idea>
+      <idea ac="AC2"><![CDATA[End-to-end pipeline run promoting staging branch to Vercel staging project and main to production.]]></idea>
+      <idea ac="AC3"><![CDATA[Automated check ensuring deployment job posts commit status and PR comment with outcome and URLs.]]></idea>
+    </ideas>
+  </tests>
+</story-context>

@@ -1,0 +1,84 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>1.2</storyId>
+    <title>Define Environment Configuration Strategy</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-19</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-1.2.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA><![CDATA[DevOps engineer]]></asA>
+    <iWant><![CDATA[environment variable schemas and secret management established for local, staging, production, and preview deployments]]></iWant>
+    <soThat><![CDATA[sensitive configuration is consistent and secure across environments.]]></soThat>
+    <tasks>
+      <task id="1" ac="AC1"><![CDATA[Author environment templates covering local, preview, staging, and production profiles for storefront, Medusa, and Strapi.]]></task>
+      <task id="1.1" parent="1" ac="AC1"><![CDATA[Expand service `.env.example` files with annotated placeholders per environment.]]></task>
+      <task id="1.2" parent="1" ac="AC1"><![CDATA[Extend `scripts/bootstrap.ts` to emit env files for each deployment target without manual edits.]]></task>
+      <task id="1.3" parent="1" ac="AC1"><![CDATA[Document the variable matrix and ownership inside runbooks.]]></task>
+      <task id="2" ac="AC2"><![CDATA[Define the secrets lifecycle across GitHub Actions, Vercel, Railway, and future infrastructure.]]></task>
+      <task id="2.1" parent="2" ac="AC2"><![CDATA[Capture storage locations, rotation cadence, and escalation contacts in the deployment runbook.]]></task>
+      <task id="2.2" parent="2" ac="AC2"><![CDATA[Configure GitHub and Vercel secrets via Pulumi to support automated rotations.]]></task>
+      <task id="3" ac="AC3"><![CDATA[Implement runtime validation that surfaces missing or malformed environment variables with actionable errors.]]></task>
+      <task id="3.1" parent="3" ac="AC3"><![CDATA[Add shared config loaders under `packages/config` that assert required keys before bootstrapping services.]]></task>
+      <task id="3.2" parent="3" ac="AC3"><![CDATA[Create tests ensuring each service throws descriptive errors when required variables are absent.]]></task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="AC1"><![CDATA[`.env` templates created for local, staging, production, and preview contexts.]]></criterion>
+    <criterion id="AC2"><![CDATA[Secrets storage/rotation process documented (GitHub Actions + Vercel + future Infra).]]></criterion>
+    <criterion id="AC3"><![CDATA[Services fail fast with helpful errors when required variables are absent.]]></criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc path="docs/epics.md" ref="53-63"><![CDATA[Story definition and acceptance criteria for Environment Configuration Strategy.]]></doc>
+      <doc path="docs/tech-spec-epic-1.md" ref="53-97"><![CDATA[Environment templates, bootstrap script, and Pulumi stack expectations for configuration.]]></doc>
+      <doc path="docs/tech-spec-epic-1.md" ref="125-151"><![CDATA[Security posture detailing secrets storage in Pulumi config, GitHub environments, and Vercel.]]></doc>
+      <doc path="docs/solution-architecture.md" ref="1-49"><![CDATA[Architecture overview emphasizing environment isolation across local, preview, staging, and production.]]></doc>
+      <doc path="docs/solution-architecture.md" ref="352-354"><![CDATA[CI/CD workflow summary highlighting secrets managed via GitHub OIDC and Pulumi.]]></doc>
+    </docs>
+    <code>
+      <code path="apps/web"><![CDATA[Front-end service consuming environment variables for API hosts, auth, analytics, and secrets.]]></code>
+      <code path="apps/medusa"><![CDATA[Commerce service requiring database, Redis, and third-party keys drawn from env templates.]]></code>
+      <code path="apps/strapi"><![CDATA[Content service referencing admin secrets, salts, and integrations provided via env configuration.]]></code>
+      <code path="packages/config"><![CDATA[Shared configuration utilities for validating required variables across services.]]></code>
+      <code path="infra/pulumi"><![CDATA[Pulumi project mapping environment secrets into Vercel and Railway using GitHub OIDC.]]></code>
+      <code path="docs/runbooks"><![CDATA[Operational runbooks housing environment and rotation documentation for operations teams.]]></code>
+    </code>
+    <dependencies>
+      <dependency name="Node.js" version="20.x" source="docs/tech-spec-epic-1.md:145-151" />
+      <dependency name="pnpm" version="9.x" source="docs/tech-spec-epic-1.md:145-151" />
+      <dependency name="Pulumi" version="latest" source="docs/tech-spec-epic-1.md:47-48" />
+      <dependency name="Vercel CLI" version="latest" source="docs/tech-spec-epic-1.md:80-108" />
+      <dependency name="Railway" type="platform" source="docs/tech-spec-epic-1.md:47-48" />
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint source="docs/tech-spec-epic-1.md:125-131"><![CDATA[Secrets must never be committed; they live in Pulumi encrypted config, GitHub environments, and Vercel encrypted variables.]]></constraint>
+    <constraint source="docs/tech-spec-epic-1.md:53-69"><![CDATA[All services share standardized `.env` templates and consume variables through strongly typed config loaders.]]></constraint>
+    <constraint source="docs/solution-architecture.md:1-49"><![CDATA[Environment isolation must maintain parity between local, preview, staging, and production deployments.]]></constraint>
+    <constraint source="docs/tech-spec-epic-1.md:88-97"><![CDATA[Bootstrap scripts must generate environment files via CLI flags without manual edits.]]></constraint>
+  </constraints>
+
+  <interfaces>
+    <interface type="env-template" name="apps/web/.env.local.example"><![CDATA[Defines storefront variables such as `NEXTAUTH_SECRET`, `MEDUSA_API_URL`, and analytics keys per environment.]]></interface>
+    <interface type="env-template" name="apps/medusa/.env.example"><![CDATA[Specifies commerce service secrets (Postgres, Redis, JWT, payment providers).]]></interface>
+    <interface type="env-template" name="apps/strapi/.env.example"><![CDATA[Lists CMS admin secrets, salts, and asset tokens required for runtime.]]></interface>
+    <interface type="script" name="scripts/bootstrap.ts --env <target>"><![CDATA[Generates environment files for the requested stage using template definitions and Pulumi/1Password lookups.]]></interface>
+  </interfaces>
+
+  <tests>
+    <standards><![CDATA[Follow platform spec: validate environments via shared config loaders, ensure services abort boot when critical variables are missing, and log meaningful errors for observability dashboards.]]></standards>
+    <locations><![CDATA[packages/config/**/*.test.ts; apps/web/**/*.{test,spec}.{ts,tsx}; apps/medusa/src/**/*.spec.ts; apps/strapi/src/**/*.spec.ts]]></locations>
+    <ideas>
+      <idea ac="AC1"><![CDATA[Unit test bootstrap script to confirm `.env.preview` and `.env.staging` include all required keys and default fallbacks.]]></idea>
+      <idea ac="AC2"><![CDATA[Documented rotation process validated by dry-run Pulumi updates and GitHub environment secret syncs.]]></idea>
+      <idea ac="AC3"><![CDATA[Service-level tests intentionally unset required variables and expect descriptive error messages or exit codes.]]></idea>
+    </ideas>
+  </tests>
+</story-context>

@@ -64,6 +64,7 @@ The SM runs this workflow when:
   Please load either PM or SM agent and run *correct-course to add/modify epic stories."
   ```
 - **Status Check**: Won't create new story if current story isn't Done/Approved
+- **Status File Consistency Check**: Cross-validates TODO story metadata against bmm-workflow-status.md and epics.md, halting if titles diverge or prerequisites are not marked Done
 - **Document Grounding**: All requirements traced to source documents (no invention)
 
 ## Key Features

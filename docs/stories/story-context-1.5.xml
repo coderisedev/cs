@@ -1,0 +1,89 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>1.5</storyId>
+    <title>Implement Preview Deployments Per Pull Request</title>
+    <status>Draft</status>
+    <generatedAt>2025-10-19</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-1.5.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA><![CDATA[product reviewer]]></asA>
+    <iWant><![CDATA[automatic preview URLs for each PR]]></iWant>
+    <soThat><![CDATA[stakeholders can validate changes before merging.]]></soThat>
+    <tasks>
+      <task id="1" ac="AC1"><![CDATA[Extend `ci.yml` with a preview job that builds and deploys branch artifacts to Vercel using branch-specific aliases.]]></task>
+      <task id="1.1" parent="1" ac="AC1"><![CDATA[Add a Vercel CLI `vercel deploy --prebuilt` step that runs on PR events, captures the preview URL, and fails fast if deployment metadata is missing.]]></task>
+      <task id="1.2" parent="1" ac="AC1"><![CDATA[Reuse Turbo cache priming from existing CI stages to keep the preview job under the five-minute availability target.]]></task>
+      <task id="1.3" parent="1" ac="AC1"><![CDATA[Create a cleanup workflow that removes preview deployments when PRs close so branch environments do not linger.]]></task>
+      <task id="1.4" parent="1" ac="AC1"><![CDATA[Execute the Playwright smoke suite against the preview URL and annotate failures in the workflow summary before posting reviewer links.]]></task>
+      <task id="2" ac="AC2"><![CDATA[Automate GitHub PR comments that surface preview URLs and deployment metadata for reviewers.]]></task>
+      <task id="2.1" parent="2" ac="AC2"><![CDATA[Use `actions/github-script` (or equivalent) to post the preview link, branch, commit SHA, and readiness checklist after deployment succeeds.]]></task>
+      <task id="2.2" parent="2" ac="AC2"><![CDATA[Add an idempotent update step so reruns edit the existing comment instead of spamming reviewers.]]></task>
+      <task id="3" ac="AC3"><![CDATA[Align preview environment configuration with staging defaults while masking production-only secrets.]]></task>
+      <task id="3.1" parent="3" ac="AC3"><![CDATA[Extend `scripts/bootstrap.ts --env preview` to hydrate `.env.preview` files from staging templates excluding production secrets.]]></task>
+      <task id="3.2" parent="3" ac="AC3"><![CDATA[Update Vercel and Railway secret scopes so preview inherits staging keys while blocking production credentials via Pulumi stack policy.]]></task>
+      <task id="3.3" parent="3" ac="AC3"><![CDATA[Add CI checks that fail the preview job when required preview variables are missing or contain production-only values.]]></task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="AC1"><![CDATA[PR workflow triggers Vercel preview deployments with branch-specific URLs.]]></criterion>
+    <criterion id="AC2"><![CDATA[Preview links posted as PR comments.]]></criterion>
+    <criterion id="AC3"><![CDATA[Preview environments inherit staging configuration minus production secrets.]]></criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc path="docs/epics.md" ref="98-109"><![CDATA[Story 1.5 defines preview deployments per pull request with branch URLs, PR comments, and staging-aligned secrets.]]></doc>
+      <doc path="docs/tech-spec-epic-1.md" ref="102-105"><![CDATA[Preview deployment flow outlines the CI job using Vercel CLI, posting bot comments, and cleaning up environments on merge or close.]]></doc>
+      <doc path="docs/tech-spec-epic-1.md" ref="126-135"><![CDATA[Security and reliability guidelines require secrets to live in Pulumi/Vercel config and keep preview environments isolated from production data.]]></doc>
+      <doc path="docs/tech-spec-epic-1.md" ref="143-149"><![CDATA[Testing strategy mandates Playwright smoke coverage and CI gates for preview deployments.]]></doc>
+      <doc path="docs/solution-architecture.md" ref="9-49,352"><![CDATA[Solution architecture confirms composable hosting on Vercel/Railway with preview environments auto-destroyed post-merge.]]></doc>
+    </docs>
+    <code>
+      <code path="apps/storefront"><![CDATA[Next.js storefront built with Turbo; preview deployments must build this app before publishing URLs.]]></code>
+      <code path="apps/medusa"><![CDATA[Medusa service using Railway Postgres/Redis; preview environments reuse staging credentials without promotion of production secrets.]]></code>
+      <code path="apps/strapi"><![CDATA[Strapi CMS whose content APIs must remain reachable from preview URLs for validation.]]></code>
+      <code path="infra/pulumi"><![CDATA[Pulumi stack code managing Vercel and Railway resources plus secret scopes consumed by preview deployments.]]></code>
+      <code path="tests/e2e"><![CDATA[Playwright smoke suite directory to execute against generated preview URLs prior to reviewer notifications.]]></code>
+      <code path=".github/workflows"><![CDATA[Location for `ci.yml` preview job and cleanup workflow automations.]]></code>
+    </code>
+    <dependencies>
+      <dependency name="turbo" version="^2.1.1" source="package.json:devDependencies" />
+      <dependency name="next" version="15.5.6" source="apps/storefront/package.json:dependencies" />
+      <dependency name="@tanstack/react-query" version="^5.90.5" source="apps/storefront/package.json:dependencies" />
+      <dependency name="@medusajs/framework" version="2.10.3" source="apps/medusa/package.json:dependencies" />
+      <dependency name="pg" version="^8.13.0" source="apps/medusa/package.json:dependencies" />
+      <dependency name="@strapi/strapi" version="5.28.0" source="apps/strapi/package.json:dependencies" />
+      <dependency name="styled-components" version="^6.0.0" source="apps/strapi/package.json:dependencies" />
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint source="docs/tech-spec-epic-1.md:102-105"><![CDATA[Preview job must use Vercel CLI within `ci.yml` and include a cleanup workflow that removes environments on merge or close.]]></constraint>
+    <constraint source="docs/tech-spec-epic-1.md:120-123"><![CDATA[Preview deployments must stay under five minutes end-to-end by leveraging Turbo cache priming.]]></constraint>
+    <constraint source="docs/tech-spec-epic-1.md:126-135"><![CDATA[Secrets stay managed through Pulumi/Vercel; preview environments cannot reuse production-only credentials or data.]]></constraint>
+    <constraint source="docs/solution-architecture.md:352"><![CDATA[Preview environments need automatic teardown to conserve resources and prevent stale URLs.]]></constraint>
+    <constraint source="docs/tech-spec-epic-1.md:143-149"><![CDATA[Playwright smoke tests must run within the CI pipeline before reviewers receive preview links.]]></constraint>
+  </constraints>
+
+  <interfaces>
+    <interface type="github-actions" name="ci.yml::preview"><![CDATA[Job executes Turbo cache restore, runs `vercel deploy --prebuilt`, captures preview URL output, and sets outputs for downstream steps.]]></interface>
+    <interface type="github-actions" name="ci.yml::cleanup-preview"><![CDATA[Workflow triggered on pull_request closed to call `vercel rm` for branch-specific preview deployments.]]></interface>
+    <interface type="pulumi" name="RailwayStackConfig"><![CDATA[{ vercelProjectId, railwayServiceMedusa, railwayServiceStrapi, postgresInstanceId, redisInstanceId, environment } ensure parity across staging and preview.]]></interface>
+    <interface type="script" name="scripts/bootstrap.ts --env preview"><![CDATA[Generates `.env.preview` files from staging templates while omitting production-only secrets.]]></interface>
+  </interfaces>
+
+  <tests>
+    <standards><![CDATA[Follow platform spec: run Vitest and lint checks per workspace, execute Playwright smoke tests as part of the preview job, and surface failures before notifying reviewers.]]></standards>
+    <locations><![CDATA[apps/storefront/**/*.{test,spec}.{ts,tsx}; apps/medusa/src/**/*.spec.ts; apps/strapi/src/**/*.spec.ts; tests/e2e/**]]></locations>
+    <ideas>
+      <idea ac="AC1"><![CDATA[Assert the preview job publishes a non-empty Vercel URL and that cleanup workflow deletes it after PR closure.]]></idea>
+      <idea ac="AC2"><![CDATA[Verify GitHub comment payload updates an existing message with link, branch, commit, and Playwright status.]]></idea>
+      <idea ac="AC3"><![CDATA[Run bootstrap preview configuration and confirm generated `.env.preview` omits production-only secrets while failing fast when variables are missing.]]></idea>
+    </ideas>
+  </tests>
+</story-context>

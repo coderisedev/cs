@@ -1,0 +1,33 @@
+{
+  "name": "@cs/infrastructure",
+  "version": "0.1.0",
+  "description": "Pulumi infrastructure for Cockpit Simulator platform",
+  "main": "bin/vercel.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "up:staging": "pulumi up -s staging",
+    "up:production": "pulumi up -s production",
+    "preview:staging": "pulumi preview -s staging",
+    "preview:production": "pulumi preview -s production",
+    "destroy:staging": "pulumi destroy -s staging",
+    "destroy:production": "pulumi destroy -s production"
+  },
+  "dependencies": {
+    "@pulumi/command": "^0.10.0",
+    "@pulumi/pulumi": "^3.203.0",
+    "@pulumiverse/vercel": "^3.15.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5"
+  },
+  "keywords": [
+    "pulumi",
+    "infrastructure",
+    "vercel",
+    "deployment"
+  ],
+  "author": "Cockpit Simulator Team",
+  "license": "MIT"
+}

@@ -35,6 +35,7 @@ variables:
   story_num: 1
   auto_run_context: true # Optionally run story-context after creation
   non_interactive: true # Generate without elicitation; avoid interactive prompts
+  status_todo_mode: false # Tracks whether status file provided the next story
 
 # Output configuration
 default_output_file: "{story_dir}/story-{{epic_num}}.{{story_num}}.md"

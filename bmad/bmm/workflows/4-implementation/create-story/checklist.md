@@ -28,6 +28,7 @@ validation-rules:
 ## Content Quality
 
 - [ ] Acceptance Criteria sourced from epics/PRD (or explicitly confirmed by user)
+- [ ] Status file TODO entry matches epics.md title and prerequisites are satisfied (stories listed as prerequisites are already Done)
 - [ ] Tasks reference AC numbers where applicable
 - [ ] Dev Notes do not invent details; cite sources where possible
 - [ ] File saved to stories directory from config (dev_story_location)

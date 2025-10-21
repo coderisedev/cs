@@ -34,6 +34,7 @@
     <action>Find "#### TODO (Needs Drafting)" section</action>
 
     <check if="TODO section has a story">
+      <action>Set {{status_todo_mode}} = true</action>
       <action>Extract story information from TODO section:</action>
       - todo_story_id: The story ID to draft (e.g., "1.1", "auth-feature-1", "login-fix")
       - todo_story_title: The story title (for validation)
@@ -62,26 +63,86 @@
       <action>Validate that {{story_file}} matches {{todo_story_file}} from status file</action>
       <action>If mismatch, HALT with error: "Story file mismatch. Status file says: {{todo_story_file}}, derived: {{story_file}}"</action>
 
+      <action>Collect {{done_story_ids}} by parsing the "#### DONE" table in the status file (Story ID column only)</action>
+
+      <check if="{{epics_file}} exists">
+        <action>READ {{epics_file}}</action>
+        <action>Locate the story block whose heading matches "Story {{todo_story_id}}:"</action>
+        <check if="story block not found">
+          <action>HALT with error: "Story {{todo_story_id}} is not documented in {{epics_file}}. Update epics.md or align the status file before drafting."</action>
+        </check>
+        <action>Extract canonical values from the story block:
+          - canonical_story_title (heading text after the colon)
+          - canonical_prerequisites (line starting with "**Prerequisites:**")
+        </action>
+        <action>Normalize canonical_prerequisites by replacing en dashes (–) with hyphen (-)</action>
+        <action>Derive {{prerequisite_story_ids}} by capturing every "\d+\.\d+" token in canonical_prerequisites</action>
+        <action>Compute {{missing_prereq_ids}} = {{prerequisite_story_ids}} minus {{done_story_ids}}</action>
+        <check if="canonical_story_title differs from todo_story_title (case-insensitive)">
+          <action>HALT with error: "Status drift detected. TODO title '{{todo_story_title}}' does not match epics.md '{{canonical_story_title}}'. Run workflow-status or update the status file before drafting."</action>
+        </check>
+        <check if="{{missing_prereq_ids}} not empty">
+          <action>HALT with error: "Prerequisite misalignment. The following stories must be marked Done before drafting {{todo_story_id}}: {{missing_prereq_ids}}. Run workflow-status/story-ready to sync status."</action>
+        </check>
+      </check>
+      <check if="{{epics_file}} missing">
+        <action>Warn: "epics.md not available; backlog order verification skipped. Ensure status file is accurate."</action>
+      </check>
+
+      <action>Ensure {{todo_story_id}} is not present in Draft, IN PROGRESS, Ready, or Done sections of the status file</action>
+      <check if="story appears in multiple sections">
+        <action>HALT with error: "Status drift detected. Story {{todo_story_id}} listed outside TODO. Resolve via workflow-status or correct-course before continuing."</action>
+      </check>
+
+      <action>Set {{story_id}} = {{todo_story_id}}</action>
+      <action>Set {{story_title}} = {{todo_story_title}}</action>
+
       <action>Skip old story discovery logic in Step 3 - we know exactly what to draft</action>
     </check>
 
     <check if="TODO section is empty OR status file not found">
+      <action>Set {{status_todo_mode}} = false</action>
       <action>Fall back to old story discovery logic in Step 3</action>
       <action>Note: This is the legacy behavior for projects not using the new status file system</action>
     </check>
   </step>
 
+  <step n="2.6" goal="Detect partial artifacts and drift before drafting">
+    <check if="{{status_todo_mode}} == true">
+      <action>Check if {{story_dir}}/{{story_file}} already exists</action>
+      <check if="story file exists">
+        <action>HALT with error: "Story {{todo_story_id}} already has a draft at {{story_file}}. Update the status file (move to Draft) or archive the file before re-running create-story."</action>
+      </check>
+      <action>Check for prior context/validation artifacts:
+        - {{story_dir}}/story-context-{{todo_story_id}}.xml
+        - {{story_dir}}/validation-report-{{todo_story_id}}.md
+        - {{story_dir}}/story-{{todo_story_id}}-context.xml
+      </action>
+      <check if="any artifact exists">
+        <action>HALT with error: "Partial run detected for Story {{todo_story_id}}. Run workflow-status with SM agent or execute *correct-course to realign status before drafting again."</action>
+      </check>
+    </check>
+    <check if="{{status_todo_mode}} == false">
+      <action>Skip drift detection (legacy flow)</action>
+    </check>
+  </step>
+
   <step n="3" goal="Determine target story (do not prompt in #yolo)">
-    <action>List existing story markdown files in {{story_dir}} matching pattern: "story-<epic>.<story>.md"</action>
-    <check>If none found → Set {{epic_num}}=1 and {{story_num}}=1</check>
-    <check>If files found → Parse epic_num and story_num; pick the highest pair</check>
-    <action>Open the latest story (if exists) and read Status</action>
-    <check>If Status != Done/Approved and {{non_interactive}} == true → TARGET the latest story for update (do not create a new one)</check>
-    <check>If Status == Done/Approved → Candidate next story is {{epic_num}}.{{story_num+1}}</check>
-    <action>If creating a new story candidate: VERIFY planning in {{epics_file}}. Confirm that epic {{epic_num}} explicitly enumerates a next story matching {{story_num+1}} (or an equivalent next planned story entry). If epics.md is missing or does not enumerate another story for this epic, HALT with message:</action>
-    <action>"No planned next story found in epics.md for epic {{epic_num}}. Please load either PM (Product Manager) agent at {project-root}/bmad/bmm/agents/pm.md or SM (Scrum Master) agent at {project-root}/bmad/bmm/agents/sm.md and run `*correct-course` to add/modify epic stories, then rerun create-story."</action>
-    <check>If verification passes → Set {{story_num}} = {{story_num}} + 1</check>
-    <ask optional="true" if="{{non_interactive}} == false">If starting a new epic and {{non_interactive}} == false, ASK for {{epic_num}} and reset {{story_num}} to 1. In {{non_interactive}} == true, do NOT auto-advance epic; stay within current epic and continue incrementing story_num.</ask>
+    <check if="{{status_todo_mode}} == true">
+      <action>Skip story discovery: {{epic_num}}, {{story_num}}, and {{story_file}} already resolved from status file</action>
+    </check>
+    <check if="{{status_todo_mode}} == false">
+      <action>List existing story markdown files in {{story_dir}} matching pattern: "story-<epic>.<story>.md"</action>
+      <check>If none found → Set {{epic_num}}=1 and {{story_num}}=1</check>
+      <check>If files found → Parse epic_num and story_num; pick the highest pair</check>
+      <action>Open the latest story (if exists) and read Status</action>
+      <check>If Status != Done/Approved and {{non_interactive}} == true → TARGET the latest story for update (do not create a new one)</check>
+      <check>If Status == Done/Approved → Candidate next story is {{epic_num}}.{{story_num+1}}</check>
+      <action>If creating a new story candidate: VERIFY planning in {{epics_file}}. Confirm that epic {{epic_num}} explicitly enumerates a next story matching {{story_num+1}} (or an equivalent next planned story entry). If epics.md is missing or does not enumerate another story for this epic, HALT with message:</action>
+      <action>"No planned next story found in epics.md for epic {{epic_num}}. Please load either PM (Product Manager) agent at {project-root}/bmad/bmm/agents/pm.md or SM (Scrum Master) agent at {project-root}/bmad/bmm/agents/sm.md and run `*correct-course` to add/modify epic stories, then rerun create-story."</action>
+      <check>If verification passes → Set {{story_num}} = {{story_num}} + 1</check>
+      <ask optional="true" if="{{non_interactive}} == false">If starting a new epic and {{non_interactive}} == false, ASK for {{epic_num}} and reset {{story_num}} to 1. In {{non_interactive}} == true, do NOT auto-advance epic; stay within current epic and continue incrementing story_num.</ask>
+    </check>
   </step>
 
   <step n="4" goal="Extract requirements and derive story statement">

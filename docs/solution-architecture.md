@@ -291,7 +291,7 @@ Document with Storybook and ADRs. Enforce code owners for critical modules. Run 
 
 ```
 apps/
-  web/
+  storefront/
     app/
       (marketing)/
       (shop)/

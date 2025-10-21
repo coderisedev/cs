@@ -1,0 +1,4 @@
+name: cs-infrastructure
+runtime: nodejs
+main: ./bin/vercel.js
+description: Infrastructure for Cockpit Simulator platform

@@ -1,0 +1,15 @@
+config:
+  cs-infrastructure:projectName: "cs"
+  cs-infrastructure:domainName: "uhdvip.com"
+  cs-infrastructure:repoOwner: "coderisedev"
+  cs-infrastructure:repoName: "cs"
+  vercel:token:
+    secure: AAABAEfggys4+xlvGG1cdoKz4bUD0I0rNrU5j7r6CFjNYj0bMnlUz3tGkR4XF48NYNV4h2vgQiU=
+  railway:apiToken:
+    secure: AAABAPOD23i9UrUudkRwbWI55xmgBE2xNRaxJaHzyhzDff5HsYj/muyZrKbJtEkJgfe/z8h3MppjvtWoc2SIk+K9eRc=
+  railway:projectId: 39d92b59-4950-4db3-8a1a-e4b8713a1d43
+  railway:productionToken:
+    secure: AAABAFd1Fqw2S6Zyy2G6I632rtdYuk+Ubmovy3HmrdxUvKEHO8uUXR+D7fY8ys56egC9WcQNijclKpLexEB/2Suspsg=
+  railway:tokens:
+    production:
+      secure: AAABAL5Tn1Fif6geM2+CXD9uB2KN39Y0n+RWi61bUcuiAqcBUC+TEB+XnhFsqr8smkXAV/DnnYmx6n3IKOHaM9y0kd0=

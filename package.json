@@ -2,12 +2,24 @@
   "name": "cs",
   "private": true,
   "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@10.18.2",
   "scripts": {
     "lint": "turbo run lint",
     "test:unit": "turbo run test:unit",
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "deploy:staging": "tsx scripts/deploy.ts staging",
+    "deploy:production": "tsx scripts/deploy.ts production",
+    "deployment-status": "tsx scripts/deployment-status.ts",
+    "validate-preview": "tsx scripts/validate-preview-config.ts"
   },
   "devDependencies": {
+    "@eslint/js": "^9.38.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
+    "@typescript-eslint/parser": "^8.46.1",
+    "eslint": "^9.38.0",
+    "tsx": "^4.7.0",
     "turbo": "^2.1.1"
   }
 }

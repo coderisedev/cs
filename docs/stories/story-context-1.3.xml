@@ -1,0 +1,84 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>1.3</storyId>
+    <title>Configure GitHub Actions CI Pipeline</title>
+    <status>Ready</status>
+    <generatedAt>2025-10-19</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-1.3.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA><![CDATA[release engineer]]></asA>
+    <iWant><![CDATA[automated lint, type, and unit test gates running on pull requests]]></iWant>
+    <soThat><![CDATA[regressions are caught before merge.]]></soThat>
+    <tasks>
+      <task id="1" ac="AC1"><![CDATA[Scaffold `ci.yml` with PR and main branch triggers.]]></task>
+      <task id="1.1" parent="1" ac="AC1"><![CDATA[Add Turbo cache restore/save and concurrency controls.]]></task>
+      <task id="1.2" parent="1" ac="AC1"><![CDATA[Publish workflow summaries for lint/test jobs.]]></task>
+      <task id="2" ac="AC2"><![CDATA[Implement lint, typecheck, and unit test jobs across all workspaces.]]></task>
+      <task id="2.1" parent="2" ac="AC2"><![CDATA[Run `pnpm lint` via Turbo to cover storefront, Medusa, and Strapi.]]></task>
+      <task id="2.2" parent="2" ac="AC2"><![CDATA[Execute Vitest unit suites with matrix strategy for services.]]></task>
+      <task id="2.3" parent="2" ac="AC2"><![CDATA[Cache pnpm store and Turbo outputs to minimize pipeline duration.]]></task>
+      <task id="3" ac="AC3"><![CDATA[Enforce status checks and document pipeline ownership.]]></task>
+      <task id="3.1" parent="3" ac="AC3"><![CDATA[Configure branch protection requiring CI jobs before merge.]]></task>
+      <task id="3.2" parent="3" ac="AC3"><![CDATA[Author runbook guidance for reruns, cache resets, and failure triage.]]></task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="AC1"><![CDATA[Workflow triggers on PRs and main branch pushes.]]></criterion>
+    <criterion id="AC2"><![CDATA[Jobs execute linting and unit test suites for storefront, Medusa, and Strapi.]]></criterion>
+    <criterion id="AC3"><![CDATA[Status checks must pass before PR merge.]]></criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc path="docs/epics.md" ref="68-79"><![CDATA[Story definition outlining CI workflow goals and acceptance criteria.]]></doc>
+      <doc path="docs/tech-spec-epic-1.md" ref="71-109"><![CDATA[CI pipeline architecture covering Turbo caching, pnpm scripts, and workflow steps.]]></doc>
+      <doc path="docs/tech-spec-epic-1.md" ref="125-129"><![CDATA[Branch protection and security expectations for CI gating.]]></doc>
+      <doc path="docs/solution-architecture.md" ref="352-354"><![CDATA[CI/CD overview describing Actions workflows and secrets management.]]></doc>
+      <doc path="docs/tech-spec-epic-1.md" ref="114-117"><![CDATA[Onboarding documentation requirements for runbooks and troubleshooting.]]></doc>
+    </docs>
+    <code>
+      <code path=".github/workflows"><![CDATA[Location for `ci.yml` and related workflow files executed by GitHub Actions.]]></code>
+      <code path="apps/web"><![CDATA[Front-end workspace linted and tested by the CI pipeline.]]></code>
+      <code path="apps/medusa"><![CDATA[Medusa service components covered by unit tests in CI.]]></code>
+      <code path="apps/strapi"><![CDATA[Strapi service requiring linting and unit suites in the pipeline.]]></code>
+      <code path="packages/config"><![CDATA[Shared scripts and utilities invoked by CI tasks.]]></code>
+      <code path="docs/runbooks"><![CDATA[Runbook directory where CI troubleshooting guidance should be published.]]></code>
+    </code>
+    <dependencies>
+      <dependency name="Node.js" version="20.x" source="docs/tech-spec-epic-1.md:145-151" />
+      <dependency name="pnpm" version="9.x" source="docs/tech-spec-epic-1.md:71-109" />
+      <dependency name="TurboRepo" version="latest" source="docs/tech-spec-epic-1.md:71-109" />
+      <dependency name="Vitest" version="1.x" source="docs/tech-spec-epic-1.md:71-109" />
+      <dependency name="GitHub Actions" type="platform" source="docs/solution-architecture.md:352-354" />
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint source="docs/tech-spec-epic-1.md:71-109"><![CDATA[Pipeline must reuse Turbo caching and pnpm store to stay within targeted execution times.]]></constraint>
+    <constraint source="docs/tech-spec-epic-1.md:125-129"><![CDATA[Branch protection rules require all CI checks to pass prior to merging.]]></constraint>
+    <constraint source="docs/stories/story-1.1.md:17-23"><![CDATA[CI jobs must leverage existing monorepo scripts (`pnpm lint`, `pnpm test:unit`) instead of duplicating commands.]]></constraint>
+    <constraint source="docs/solution-architecture.md:352-354"><![CDATA[Secrets used by the pipeline are managed through GitHub OIDC and Pulumi; pipelines cannot rely on static credentials.]]></constraint>
+  </constraints>
+
+  <interfaces>
+    <interface type="workflow" name=".github/workflows/ci.yml"><![CDATA[Defines job matrix, caching, and triggers for lint, typecheck, and unit tests.]]></interface>
+    <interface type="script" name="pnpm lint"><![CDATA[Turborepo orchestrated lint command executed by CI.]]></interface>
+    <interface type="script" name="pnpm test:unit"><![CDATA[Vitest unit suite run across workspaces in the pipeline.]]></interface>
+    <interface type="runbook" name="docs/runbooks/ci-pipeline.md"><![CDATA[Documentation covering pipeline usage, reruns, and escalation paths.]]></interface>
+  </interfaces>
+
+  <tests>
+    <standards><![CDATA[Follow tech spec guidance: lint, typecheck, and unit test jobs must execute via pnpm + Turbo; workflow failures should block branch protection checks.]]></standards>
+    <locations><![CDATA[apps/web/**/*.{test,spec}.{ts,tsx}; apps/medusa/src/**/*.spec.ts; apps/strapi/src/**/*.spec.ts; packages/**/__tests__/**]]></locations>
+    <ideas>
+      <idea ac="AC1"><![CDATA[Trigger CI on PR and main push events in a test repository to confirm workflows run automatically.]]></idea>
+      <idea ac="AC2"><![CDATA[Pipeline smoke run verifying lint and unit steps pass for all workspaces and publish summary artifacts.]]></idea>
+      <idea ac="AC3"><![CDATA[Ensure GitHub branch protection rejects merges when CI checks fail or are skipped.]]></idea>
+    </ideas>
+  </tests>
+</story-context>

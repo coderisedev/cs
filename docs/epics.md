@@ -106,11 +106,26 @@ So that stakeholders can validate changes before merging.
 2. Preview links posted as PR comments.  
 3. Preview environments inherit staging configuration minus production secrets.
 
-**Prerequisites:** Stories 1.3, 1.4.
+**Prerequisites:** Stories 1.3 – 1.4.
 
 ---
 
-**Story 1.6: Establish Automated Integration Test Harness**
+**Story 1.6: Provision Railway Services for Medusa & Strapi**
+
+As a platform engineer,  
+I want Medusa and Strapi automatically deployed to Railway across staging and production,  
+So that our backend services stay in lockstep with storefront releases.
+
+**Acceptance Criteria:**
+1. Railway staging and production projects created for Medusa and Strapi with branch-to-environment mappings documented.  
+2. Deployment pipelines trigger on Git pushes (e.g., `staging` → staging, `main` → production) and surface status back to GitHub.  
+3. Environment variables, secrets, and database connection strings mirror the configuration strategy from Story 1.2.
+
+**Prerequisites:** Stories 1.1 – 1.5.
+
+---
+
+**Story 1.7: Establish Automated Integration Test Harness**
 
 As a quality engineer,  
 I want integration test scaffolding that runs in CI against the storefront and APIs,  
@@ -118,14 +133,14 @@ So that critical flows are validated continuously.
 
 **Acceptance Criteria:**
 1. Integration test framework selected (e.g., Playwright) with sample smoke tests.  
-2. GitHub Actions pipeline executes integration suite on staging candidate builds.  
-3. Failures block deployment and surface logs/artifacts for debugging.
+2. GitHub Actions pipeline executes integration suite on staging candidate builds against Vercel + Railway endpoints.  
+3. Failures block deployment and surface logs/artifacts for debugging, including Medusa/Strapi build logs from Railway.
 
-**Prerequisites:** Stories 1.3 – 1.5.
+**Prerequisites:** Stories 1.3 – 1.6.
 
 ---
 
-**Story 1.7: Seed Observability & Logging Baseline**
+**Story 1.8: Seed Observability & Logging Baseline**
 
 As a reliability engineer,  
 I want centralized logging and monitoring hooks in place,  
@@ -133,14 +148,14 @@ So that we can detect issues as soon as the platform goes live.
 
 **Acceptance Criteria:**
 1. Logging strategy defined for storefront, Medusa, and Strapi (structured logs + log levels).  
-2. Error tracking (e.g., Sentry) integrated with environment-specific DSNs.  
-3. Basic uptime and performance dashboards configured for staging/production.
+2. Error tracking (e.g., Sentry) integrated with environment-specific DSNs across Vercel and Railway runtimes.  
+3. Basic uptime and performance dashboards configured for staging/production, aggregating Vercel storefront and Railway backend metrics.
 
-**Prerequisites:** Stories 1.3 – 1.5.
+**Prerequisites:** Stories 1.3 – 1.7.
 
 ---
 
-**Story 1.8: Document Developer Onboarding & Runbooks**
+**Story 1.9: Document Developer Onboarding & Runbooks**
 
 As an engineering lead,  
 I want onboarding guides and runbooks documented,  
@@ -151,7 +166,7 @@ So that new contributors can spin up environments and troubleshoot quickly.
 2. Runbook outlines deployment process, rollback steps, and contact points.  
 3. Documentation published in repo docs/ directory and referenced from README.
 
-**Prerequisites:** Completion of Stories 1.1 – 1.7.
+**Prerequisites:** Completion of Stories 1.1 – 1.8.
 
 ---
 
