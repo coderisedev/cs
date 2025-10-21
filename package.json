@@ -5,6 +5,7 @@
   "type": "module",
   "packageManager": "pnpm@10.18.2",
   "scripts": {
+    "start": "bash ./scripts/railway-medusa-start.sh",
     "lint": "turbo run lint",
     "test:unit": "turbo run test:unit",
     "build": "turbo run build",
