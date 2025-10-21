@@ -5,6 +5,6 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 cd "$ROOT_DIR/apps/medusa"
 
-npx medusa migrations run
+pnpm exec medusa migrations run
 
-exec npx medusa start
+exec pnpm exec medusa start
