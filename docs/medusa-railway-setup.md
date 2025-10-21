@@ -4,7 +4,7 @@
 - **Build:** `./scripts/railway-medusa-build.sh`
   - Installs pnpm when missing, installs workspace dependencies, and runs `pnpm --filter medusa build`.
 - **Start:** `./scripts/railway-medusa-start.sh`
-  - Enters `apps/medusa` and executes `npx medusa start`.
+  - Runs `npx medusa migrations run` before launching `npx medusa start` so fresh databases receive the required schema.
 
 Update the Medusa service in Railway (staging and production) to reference these scripts so builds and runtime use the monorepo tooling.
 
