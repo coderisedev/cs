@@ -214,7 +214,7 @@ Inject schema.org JSON-LD for Product, Article, FAQ, HowTo, BreadcrumbList. Prov
 
 ### 10.1 Hosting Platform
 
-Frontend on Vercel with globally distributed edge network. Medusa and Strapi on Railway (auto-scaling containers) behind custom domains (`api.cs.com`, `content.cs.com`). Use Cloudflare DNS & R2 for asset storage (downloads).
+Frontend on Vercel with globally distributed edge network. Medusa and Strapi now run on a hardened GCE Ubuntu host via Docker Compose, pulling images from GHCR and exposed through Cloudflare Tunnel (`api.cs.com`, `content.cs.com`). Use Cloudflare DNS & R2 for asset storage (downloads).
 
 ### 10.2 CDN Strategy
 
@@ -226,7 +226,7 @@ Edge middleware handles geo-aware currency selection, authentication gating, and
 
 ### 10.4 Environment Configuration
 
-Environments: local (docker-compose), preview (per PR via Vercel + ephemeral Railway DB), staging, production. Environment variables managed through Pulumi secrets + Vercel/ Railway dashboards. Feature flags via LaunchDarkly (or internal simple flag service).
+Environments: local (docker-compose), preview (per PR via Vercel + ephemeral Railway DB), staging, production. Production and staging backends share the GCE deployment model driven by `.github/workflows/deploy-services.yml`, which updates `/srv/cs/.env` + Compose TAGs. Environment variables are supplied through the GCE `.env` templates (see `infra/gcp/`) and Pulumi secrets for Vercel / Railway preview workloads. Feature flags via LaunchDarkly (or internal simple flag service).
 
 ## 11. Component and Integration Overview
 

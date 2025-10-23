@@ -1,0 +1,138 @@
+name: Deploy Services
+
+on:
+  push:
+    branches: [main, staging]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+  deployments: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ${{ github.repository_owner }}/cs
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-services-${{ github.ref }}
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine deployment environment
+        id: env
+        run: |
+          REF="${GITHUB_REF#refs/heads/}"
+          if [[ "$REF" == "main" ]]; then
+            echo "environment=production" >> "$GITHUB_OUTPUT"
+            echo "channel_tag=prod" >> "$GITHUB_OUTPUT"
+          elif [[ "$REF" == "staging" ]]; then
+            echo "environment=staging" >> "$GITHUB_OUTPUT"
+            echo "channel_tag=staging" >> "$GITHUB_OUTPUT"
+          else
+            echo "Unsupported branch $REF" >&2
+            exit 1
+          fi
+          SHORT_SHA=$(echo "$GITHUB_SHA" | cut -c1-12)
+          echo "image_tag=$SHORT_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push Medusa image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: apps/medusa/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-medusa:${{ steps.env.outputs.image_tag }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-medusa:${{ steps.env.outputs.channel_tag }}
+          build-args: |
+            NODE_ENV=production
+
+      - name: Build and push Strapi image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: apps/strapi/Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-strapi:${{ steps.env.outputs.image_tag }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-strapi:${{ steps.env.outputs.channel_tag }}
+          build-args: |
+            NODE_ENV=production
+
+      - name: Validate deployment secrets
+        run: |
+          missing=0
+          for var in GCE_HOST GCE_USER GCE_SSH_KEY; do
+            if [[ -z "${!var:-}" ]]; then
+              echo "Missing required secret: $var" >&2
+              missing=1
+            fi
+          done
+          if [[ "$missing" -ne 0 ]]; then
+            exit 1
+          fi
+        env:
+          GCE_HOST: ${{ secrets.GCE_HOST }}
+          GCE_USER: ${{ secrets.GCE_USER }}
+          GCE_SSH_KEY: ${{ secrets.GCE_SSH_KEY }}
+
+      - name: Copy deployment tooling to host
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.GCE_HOST }}
+          username: ${{ secrets.GCE_USER }}
+          key: ${{ secrets.GCE_SSH_KEY }}
+          source: |
+            scripts/gce/deploy.sh
+            infra/gcp/bin/collect-health.sh
+          target: /tmp/cs-deploy
+          overwrite: true
+
+      - name: Deploy services on GCE
+        id: deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.GCE_HOST }}
+          username: ${{ secrets.GCE_USER }}
+          key: ${{ secrets.GCE_SSH_KEY }}
+          script: |
+            set -euo pipefail
+            mkdir -p /srv/cs/bin
+            install -m 750 /tmp/cs-deploy/deploy.sh /srv/cs/bin/deploy.sh
+            install -m 750 /tmp/cs-deploy/collect-health.sh /srv/cs/bin/collect-health.sh
+            rm -rf /tmp/cs-deploy
+            TAG=${{ steps.env.outputs.image_tag }}
+            /srv/cs/bin/deploy.sh --tag "$TAG" --cwd /srv/cs
+            tail -n 20 /srv/cs/logs/deploy-*.log | sed "s/^/[deploy-log] /"
+
+      - name: Summarize deployment
+        run: |
+          TAG=${{ steps.env.outputs.image_tag }}
+          cat <<SUMMARY >> "$GITHUB_STEP_SUMMARY"
+          ## Backend Deployment
+
+          - Environment: **${{ steps.env.outputs.environment }}**
+          - Medusa Image: `${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-medusa:${TAG}`
+          - Strapi Image: `${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-strapi:${TAG}`
+          - GHCR Channel Tag: `${{ steps.env.outputs.channel_tag }}`
+          - Health log tail captured in job output (`[deploy-log]` lines)
+
+          Remember to record the run in docs/runbooks/status-log.md with tunnel checks and curl outputs.
+          SUMMARY

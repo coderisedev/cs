@@ -6,6 +6,7 @@ This runbook captures the manual steps referenced in `docs/solution-architecture
 
 - Install Node.js 18+ (LTS 20 recommended), pnpm 8, and Docker Desktop with docker compose v2.
 - Create a root `.env.local` with shared variables (`CS_PROJECT_ROOT`, `CS_ENV=local`) and keep service-specific secrets in local `.env` files.
+- Mirror production naming by copying the GCP templates: `cp infra/gcp/.env.example .env.local.prod`, `cp infra/gcp/env/medusa.env.example apps/medusa/.env.local`, `cp infra/gcp/env/strapi.env.example apps/strapi/.env.local`, then replace secrets with local-safe values.
 - Ensure PostgreSQL 15.x and Redis 7.x images are available (pulled automatically by docker compose).
 
 ## 2. Shared Infrastructure
@@ -88,6 +89,17 @@ This runbook captures the manual steps referenced in `docs/solution-architecture
    ```
 
 6. (Optional) Author `scripts/seed.ts` to insert baseline products, regions, and price lists.
+7. To stay production-parity with the Dockerized runtime, build the container image locally:
+
+   ```bash
+   docker build -f apps/medusa/Dockerfile -t medusa-local:dev .
+   ```
+
+   Then run the container with your local `.env` file:
+
+   ```bash
+   docker run --env-file apps/medusa/.env.local --network host medusa-local:dev
+   ```
 
 ## 4. Strapi Service (`apps/strapi`)
 
@@ -143,10 +155,16 @@ This runbook captures the manual steps referenced in `docs/solution-architecture
    ```
 
 5. Through the Strapi admin (`http://localhost:1337/admin`), create the content types listed in solution architecture (`guide`, `blog_post`, `faq`, `download`, `release_note`, `showcase`, `campaign`) and configure a webhook pointing to `POST /api/webhooks/strapi/publish`.
+6. You can also build the production-style container for parity checks:
+
+   ```bash
+   docker build -f apps/strapi/Dockerfile -t strapi-local:dev .
+   docker run --env-file apps/strapi/.env.local --network host strapi-local:dev
+   ```
 
 ## 5. Integrated Checks
 
-- Medusa: `curl http://localhost:9000/store/products` should respond with 200; Redis should display job keys for email/inventory queues.
+- Medusa: `curl http://localhost:9000/store/products` should respond with 200; Redis should display job keys for email/inventory queues. Running `bash infra/gcp/bin/collect-health.sh` locally (with ports forwarded) mirrors the production evidence capture.
 - Strapi: Log into the admin UI, seed example entries, then `curl http://localhost:1337/api/guides`.
 - Next.js BFF (future): configure `.env.local` to reference both services for `/api/catalog/*` and `/api/content/*`.
 

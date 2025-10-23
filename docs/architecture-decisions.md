@@ -52,7 +52,7 @@ Best balance of performance, DX, and ecosystem alignment with PRD/UX needs; inte
 
 ### ADR-002: Host Frontend on Vercel; Medusa & Strapi on Railway
 **Date:** 2025-10-19  
-**Status:** Accepted  
+**Status:** Accepted (migration to GCE initiated via Story 1.6; update pending new ADR)  
 **Decider:** Architecture Working Group
 
 **Context**  
@@ -186,7 +186,8 @@ Delivers community touchpoints quickly while leaving path for future SSO. Suppor
 **Consequences**  
 - Positive: Launch-ready, low risk, measurable engagement.  
 - Negative: Users manage two auth flows.  
-- Neutral: ADR notes future upgrade to SSO when priority/resources align.
+- Neutral: ADR notes future upgrade to SSO when priority/resources align.  
+- Update: Backend services are migrating to GCE (Story 1.6); retain this ADR for historical context until a replacement is ratified.
 
 **Rejected Options**  
 - Full SSO deferred to post-MVP due to complexity.  

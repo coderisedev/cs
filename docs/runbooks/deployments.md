@@ -5,8 +5,8 @@ This document covers the deployment procedures, troubleshooting steps, and rollb
 ## Overview
 
 - **Platform**: Next.js storefront deployed on Vercel
-- **Infrastructure**: Managed via Pulumi
-- **CI/CD**: GitHub Actions (CI pipeline + Deployment workflow)
+- **Infrastructure**: Managed via Pulumi (frontend) + Docker Compose on GCE for Medusa/Strapi
+- **CI/CD**: GitHub Actions (`deploy-web.yml` for frontend, `deploy-services.yml` for backend)
 - **Environments**: Staging, Production
 
 ## Deployment Architecture
@@ -38,7 +38,7 @@ This document covers the deployment procedures, troubleshooting steps, and rollb
 
 ## Deployment Procedures
 
-### 1. Standard Deployments
+### 1. Standard Deployments (Frontend)
 
 #### To Staging
 ```bash
@@ -58,7 +58,7 @@ git merge staging
 git push origin main
 ```
 
-### 2. Manual Deployments
+### 2. Manual Deployments (Frontend)
 
 #### Using Deployment Script
 ```bash
@@ -82,6 +82,26 @@ vercel --prod --project cs-staging  # staging
 vercel --prod --project cs-production  # production
 ```
 
+### 3. Backend Services Deployment (GCP)
+
+- Triggered automatically on pushes to `staging` and `main` by `.github/workflows/deploy-services.yml`.
+- Builds Medusa and Strapi Docker images, pushes them to GHCR, then SSHes into the GCE host to update `/srv/cs/`.
+- Requires repository secrets: `GCE_HOST`, `GCE_USER`, `GCE_SSH_KEY`, and populated `/srv/cs/.env` values for `MEDUSA_IMAGE`, `STRAPI_IMAGE`.
+- Detailed host runbook: see `docs/runbooks/gce-backend-playbook.md`.
+
+#### Manual Backend Deployment
+
+```bash
+# From the GCE host
+/srv/cs/bin/deploy.sh --tag <ghcr-tag> --cwd /srv/cs
+
+# Collect health evidence
+/srv/cs/bin/collect-health.sh
+```
+
+- Deployment logs are saved under `/srv/cs/logs/` and should be copied into `docs/runbooks/status-log.md`.
+- Update Cloudflare Anycast checks and DNS mappings (see **Cloudflare Tunnel Operations** below) after each rollout.
+
 ## Monitoring and Observability
 
 ### 1. Deployment Status
@@ -99,7 +119,31 @@ vercel --prod --project cs-production  # production
 Deployments automatically post status updates to:
 - GitHub commit status checks
 - Pull request comments (for PR-triggered deployments)
-- Deployment summary in GitHub Actions
+- Deployment summary in GitHub Actions (frontend and backend pipelines)
+- Backend workflow appends `[deploy-log]` lines containing the tail of `/srv/cs/logs/deploy-*.log`
+
+## Troubleshooting
+
+## Cloudflare Tunnel Operations (Backend)
+
+1. Authenticate and create the tunnel once: `cloudflared tunnel create cs-tunnel`.
+2. Update `/etc/cloudflared/config.yml` so `api.<domain>` -> `http://127.0.0.1:9000` and `content.<domain>` -> `http://127.0.0.1:1337`.
+3. Register DNS routes: `cloudflared tunnel route dns cs-tunnel api.<domain>` and `... content.<domain>`.
+4. Enable the service: `sudo systemctl enable --now cloudflared`.
+5. After every deploy run:
+   ```bash
+   curl -I https://api.<domain>/store/health
+   curl -I https://content.<domain>/health
+   ```
+   Record the HTTP status, Anycast IP, and timestamp in `docs/runbooks/status-log.md`.
+
+## Status Logging and Evidence
+
+- Use `docs/runbooks/status-log.md` to preserve:
+  - GHCR image tags (`cs-medusa`, `cs-strapi`)
+  - Output of `/srv/cs/bin/collect-health.sh`
+  - Cloudflare verification commands and responses
+  - Links to the relevant GitHub Actions runs
 
 ## Troubleshooting
 

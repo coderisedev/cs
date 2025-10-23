@@ -2,84 +2,102 @@
   <metadata>
     <epicId>1</epicId>
     <storyId>1.6</storyId>
-    <title>Provision Railway Services for Medusa &amp; Strapi</title>
-    <status>Ready</status>
-    <generatedAt>2025-10-20</generatedAt>
+    <title>Operationalize GCP Platform for Medusa &amp; Strapi</title>
+    <status>Approved</status>
+    <generatedAt>2025-10-23</generatedAt>
     <generator>BMAD Story Context Workflow</generator>
     <sourceStoryPath>docs/stories/story-1.6.md</sourceStoryPath>
   </metadata>
 
   <story>
     <asA><![CDATA[platform engineer]]></asA>
-    <iWant><![CDATA[Medusa and Strapi automatically deployed to Railway across staging and production]]></iWant>
-    <soThat><![CDATA[backend services stay in lockstep with storefront releases.]]></soThat>
+    <iWant><![CDATA[Medusa and Strapi to run on the standardized Vercel + GCP stack]]></iWant>
+    <soThat><![CDATA[releases follow the hardened production pathway defined in the GCP rollout plan.]]></soThat>
     <tasks>
-      <task id="1" ac="AC1"><![CDATA[Extend Pulumi stacks to provision Medusa, Strapi, Postgres, and Redis services on Railway for staging and production with documented branch mappings.]]></task>
-      <task id="1.1" parent="1" ac="AC1"><![CDATA[Create or update `railwayServices` modules in `infra/pulumi` to declare service definitions, database attachments, and environment variables per environment.]]></task>
-      <task id="1.2" parent="1" ac="AC1"><![CDATA[Document branch-to-environment deployment mapping (`main` → production, `staging` → staging) inside Pulumi stack config comments and runbooks.]]></task>
-      <task id="1.3" parent="1" ac="AC1"><![CDATA[Execute `pulumi preview` followed by approved `pulumi up` for staging and production stacks; capture output artifacts for the status log.]]></task>
-      <task id="2" ac="AC2"><![CDATA[Update GitHub Actions `deploy-services.yml` workflow to trigger Railway deploys on branch pushes with surfaced status checks.]]></task>
-      <task id="2.1" parent="2" ac="AC2"><![CDATA[Add matrix job steps invoking `railway up` (or Pulumi automation) for Medusa and Strapi, conditioned on `staging` and `main` branch filters.]]></task>
-      <task id="2.2" parent="2" ac="AC2"><![CDATA[Publish deployment summaries and log links back to GitHub Checks API so failures block merges.]]></task>
-      <task id="2.3" parent="2" ac="AC2"><![CDATA[Implement rollback guard (e.g., `railway rollback`) invoked when deploy step fails after image build/uploads.]]></task>
-      <task id="3" ac="AC3"><![CDATA[Mirror environment configuration from Story 1.2 by syncing secrets and connection strings into Railway environments.]]></task>
-      <task id="3.1" parent="3" ac="AC3"><![CDATA[Populate Railway variables via Pulumi encrypted config using Story 1.2 `.env.example` templates as authoritative source.]]></task>
-      <task id="3.2" parent="3" ac="AC3"><![CDATA[Add validation script to verify required environment variables exist before deployment proceeds.]]></task>
-      <task id="3.3" parent="3" ac="AC3"><![CDATA[Run smoke/integration tests against staging endpoints to confirm services boot with synchronized secrets.]]></task>
+      <task id="1" ac="AC1"><![CDATA[Stand up production runtime on GCE so Dockerized Medusa (9000) and Strapi (1337) run against host-managed PostgreSQL and Redis bound to 127.0.0.1.]]></task>
+      <task id="1.1" parent="1" ac="AC1"><![CDATA[Prepare /srv/cs/ with .env, env/medusa.env, and env/strapi.env matching docs/gcp.md guidance.]]></task>
+      <task id="1.2" parent="1" ac="AC1"><![CDATA[Install and secure PostgreSQL and Redis on the host with loopback-only bindings and host.docker.internal connectivity for containers.]]></task>
+      <task id="1.3" parent="1" ac="AC1"><![CDATA[Capture Medusa /store/health and Strapi /health results from the host as deployment evidence.]]></task>
+      <task id="2" ac="AC2"><![CDATA[Configure Cloudflare Tunnel access so api.{domain} and content.{domain} reach the GCE host and pass Anycast availability checks.]]></task>
+      <task id="2.1" parent="2" ac="AC2"><![CDATA[Create and configure the cs-tunnel with routes for the API and CMS domains, enabling the systemd unit.]]></task>
+      <task id="2.2" parent="2" ac="AC2"><![CDATA[Document DNS and tunnel mappings in docs/runbooks/deployments.md and link to Cloudflare change records.]]></task>
+      <task id="2.3" parent="2" ac="AC2"><![CDATA[Verify Anycast endpoints deliver HTTP 200 responses and attach proof to the status log.]]></task>
+      <task id="3" ac="AC3"><![CDATA[Automate builds and deployments through GitHub Actions to build, push, and roll out Medusa and Strapi images via GCE SSH.]]></task>
+      <task id="3.1" parent="3" ac="AC3"><![CDATA[Update the deployment workflow to build GHCR images and apply Docker Compose updates on the host.]]></task>
+      <task id="3.2" parent="3" ac="AC3"><![CDATA[Add deployment steps for docker login, docker compose pull/up, and post-deploy health checks.]]></task>
+      <task id="3.3" parent="3" ac="AC3"><![CDATA[Ensure the workflow surfaces job summaries and commit status checks for visibility.]]></task>
+      <task id="4" ac="AC4"><![CDATA[Align development environment conventions with production while keeping secrets out of the repository.]]></task>
+      <task id="4.1" parent="4" ac="AC4"><![CDATA[Refresh docs/medusa-strapi-local-setup.md with Node-hosted guidance and Dockerized Postgres/Redis defaults.]]></task>
+      <task id="4.2" parent="4" ac="AC4"><![CDATA[Provide sample .env templates that reuse production naming and localhost endpoints.]]></task>
+      <task id="4.3" parent="4" ac="AC4"><![CDATA[Run the local smoke test script to confirm the dev stack boots with the updated configuration.]]></task>
+      <task id="5" ac="AC1,AC2,AC3,AC4"><![CDATA[Execute testing and validation to confirm workflows, infrastructure, and documentation meet acceptance criteria.]]></task>
+      <task id="5.1" parent="5" ac="AC3"><![CDATA[Run yamllint bmad/bmm/workflows and xmllint --noout bmad/bmm/tasks/*.xml after workflow or task edits.]]></task>
+      <task id="5.2" parent="5" ac="AC3"><![CDATA[Execute rg "{project-root}" bmad -g'*.*' to confirm interpolation token consistency.]]></task>
+      <task id="5.3" parent="5" ac="AC3"><![CDATA[Trigger GitHub Actions with a synthetic commit to observe build and deploy logs.]]></task>
+      <task id="5.4" parent="5" ac="AC1,AC2,AC3,AC4"><![CDATA[Update the status log with tunnel checks, compose outputs, and CI run links.]]></task>
     </tasks>
   </story>
 
   <acceptanceCriteria>
-    <criterion id="AC1"><![CDATA[Railway staging and production projects created for Medusa and Strapi with branch-to-environment mappings documented.]]></criterion>
-    <criterion id="AC2"><![CDATA[Deployment pipelines trigger on Git pushes (e.g., `staging` → staging, `main` → production) and surface status back to GitHub checks.]]></criterion>
-    <criterion id="AC3"><![CDATA[Environment variables, secrets, and database connection strings mirror the configuration strategy from Story 1.2 across all Railway environments.]]></criterion>
+    <criterion id="AC1"><![CDATA[A production GCE Ubuntu host runs Dockerized Medusa (9000) and Strapi (1337) pulling GHCR images, with PostgreSQL and Redis installed on the host and bound to 127.0.0.1.]]></criterion>
+    <criterion id="AC2"><![CDATA[Cloudflare Tunnel exposes api.{domain} and content.{domain} through Anycast to the GCE host with successful /store/health and /health probes.]]></criterion>
+    <criterion id="AC3"><![CDATA[GitHub Actions builds and pushes Medusa/Strapi images to GHCR and deploys them via SSH to GCE, updating TAG in /srv/cs/.env and running post-deploy health checks.]]></criterion>
+    <criterion id="AC4"><![CDATA[Development workflows document and validate local conventions (Node-hosted Medusa/Strapi, Dockerized Postgres/Redis) that mirror production configuration values.]]></criterion>
   </acceptanceCriteria>
 
   <artifacts>
     <docs>
-      <doc path="docs/epics.md" ref="113-124"><![CDATA[Story 1.6 requirements detailing Railway provisioning, deployment automation, and configuration parity expectations.]]></doc>
-      <doc path="docs/tech-spec-epic-1.md" ref="20-49"><![CDATA[Epics spec mandates Pulumi-driven Railway provisioning and CI workflows orchestrating service deployments.]]></doc>
-      <doc path="docs/tech-spec-epic-1.md" ref="81-159"><![CDATA[Detailed deployment workflows, Pulumi helpers, and IaC acceptance criteria covering environment parity and automated rollbacks.]]></doc>
-      <doc path="docs/solution-architecture.md" ref="213-229"><![CDATA[Deployment architecture assigning Medusa/Strapi to Railway with environment isolation via Pulumi-managed secrets.]]></doc>
-      <doc path="docs/architecture-decisions.md" ref="53-80"><![CDATA[ADR-002 formalizes Vercel + Railway hosting strategy, motivating current provisioning tasks.]]></doc>
+      <doc path="docs/gcp.md" title="GCP Production Stack" section="Architecture &amp; Runtime" ref="6-88"><![CDATA[Defines the standardized Vercel + GCE topology where Dockerized Medusa (9000) and Strapi (1337) run on an Ubuntu host with local PostgreSQL and Redis bindings. Outlines Cloudflare Tunnel Anycast routing for api.{domain} and content.{domain} plus the GitHub Actions → GHCR → SSH deployment flow. Lists host hardening requirements such as loopback-only services, `host.docker.internal` connectivity, and health probe evidence capture.]]></doc>
+      <doc path="docs/gcp.md" title="Deployment Parameters" section="Checklists &amp; Rollback" ref="95-136"><![CDATA[Provides production parameter matrix covering domain mappings, GHCR prefixes, secrets, and CORS requirements that must be mirrored in env files and automation. Documents go-live checklist, tunnel verification steps, and rollback commands that the story must keep current once GCE automation ships.]]></doc>
+      <doc path="docs/gcp-ubuntu-deployment-brief.md" title="Ubuntu Migration Brief" section="Scope &amp; CI/CD Updates" ref="3-135"><![CDATA[Explains the initiative to migrate Medusa and Strapi from Railway to a GCP Ubuntu server while keeping Vercel for the storefront. Details system prerequisites, systemd service patterns, environment variable management, and the need to rewrite deployment automation to use SSH-based rollouts and post-deploy health checks.]]></doc>
+      <doc path="docs/runbooks/deployments.md" title="Deployment Runbook" section="Current Process" ref="1-104"><![CDATA[Captures the existing Vercel-centric deployment workflow, triggers, and manual procedures that must be updated with GCE tunneling, GHCR image promotion, and new rollback guidance. Highlights monitoring endpoints and communication expectations to preserve when rewriting the pipeline.]]></doc>
+      <doc path="docs/medusa-strapi-local-setup.md" title="Local Environment Setup" section="Shared Infrastructure" ref="1-152"><![CDATA[Describes local developer conventions: Dockerized Postgres/Redis with Node-hosted Medusa/Strapi, `.env` templates, and smoke checks—matching AC4’s parity and documentation goals. Provides concrete commands and scripts that should stay aligned with new production naming.]]></doc>
+      <doc path="docs/solution-architecture.md" title="Solution Architecture" section="Deployment Architecture" ref="210-230"><![CDATA[States the baseline deployment architecture with Vercel frontend and Railway services, emphasizing CDN strategy and environment isolation. Offers contextual requirements the GCP rollout must respect, such as persistent use of Vercel and Cloudflare-managed assets.]]></doc>
+      <doc path="docs/architecture-decisions.md" title="ADR-002 Hosting Strategy" section="Decision Context" ref="53-86"><![CDATA[Records the current decision to host Medusa and Strapi on Railway. Any migration to GCE must either extend or supersede this ADR with rationale, ensuring architecture governance stays consistent.]]></doc>
     </docs>
     <code>
-      <code path="infra/pulumi"><![CDATA[Pulumi TypeScript project provisioning Railway services, secrets, and database attachments.]]></code>
-      <code path=".github/workflows/deploy-services.yml"><![CDATA[GitHub Actions workflow deploying backend services; must be updated with Railway deploy steps and status reporting.]]></code>
-      <code path="scripts"><![CDATA[Utility scripts (deployment status, verification) referenced during Railway deploy validation.]]></code>
-      <code path="apps/medusa"><![CDATA[Medusa service consuming Railway Postgres/Redis; must reflect synced environment variables.]]></code>
-      <code path="apps/strapi"><![CDATA[Strapi CMS configured for Railway hosting; ensure environment variables align with Story 1.2 schema.]]></code>
+      <code path=".github/workflows/deploy-web.yml" kind="workflow" symbol="deploy job" lines="1-190"><![CDATA[Current deployment pipeline that still targets Vercel via `pnpm deploy:*`. Needs replacement with GHCR image builds, GCE SSH rollout steps, and health probes mandated by AC1-AC3.]]></code>
+      <code path="scripts/deploy.ts" kind="script" symbol="main" lines="1-146"><![CDATA[Vercel CLI wrapper executed by the workflow. Migrating to GCE requires rewriting this entrypoint to build/push Docker images and drive remote compose updates instead of `vercel deploy`.]]></code>
+      <code path="scripts/deployment-status.ts" kind="script" symbol="DeploymentStatusReporter" lines="1-215"><![CDATA[Generates deployment summaries and commit statuses. Must be updated so health evidence (tunnel checks, compose outputs, CI logs) captured in AC3/AC4 feeds into status reporting.]]></code>
+      <code path="scripts/railway-medusa-start.sh" kind="shell" symbol="railway-medusa-start" lines="1-31"><![CDATA[Bootstraps Medusa by installing deps, running migrations, and launching the server. Provides baseline commands to reuse when codifying the GCE host deployment scripts under `/srv/cs`.]]></code>
+      <code path="infra/pulumi/apps/railway.ts" kind="iac" symbol="deployService" lines="1-79"><![CDATA[Pulumi helpers that currently deploy to Railway using CLI commands. They surface existing automation patterns that the GCE migration may retire or extend with GCP equivalents.]]></code>
+      <code path="apps/medusa/medusa-config.ts" kind="config" symbol="defineConfig" lines="1-35"><![CDATA[Medusa pulls connection strings, CORS domains, and secrets from environment variables. Ensures `.env` files and host configuration delivered in AC1 stay aligned with application expectations.]]></code>
+      <code path="apps/strapi/config/database.ts" kind="config" symbol="connection" lines="1-64"><![CDATA[Strapi database configuration supports `DATABASE_URL` plus SSL parameters. Confirms the GCE PostgreSQL settings and template values exported in documentation remain compatible.]]></code>
     </code>
     <dependencies>
-      <dependency name="@pulumi/pulumi" version="^3.0.0" source="infra/pulumi/package.json:dependencies" />
-      <dependency name="@pulumi/railway" version="latest" source="infra/pulumi/package.json:dependencies" />
-      <dependency name="railway" version="latest" source="package.json:devDependencies" />
-      <dependency name="typescript" version="^5.0.0" source="infra/pulumi/package.json:devDependencies" />
+      <dependency name="pnpm" version="10.18.2" source="package.json:6" />
+      <dependency name="turbo" version="^2.1.1" source="package.json:18-25" />
+      <dependency name="@pulumi/command" version="^0.10.0" source="infra/pulumi/package.json:12-24" />
+      <dependency name="@pulumi/pulumi" version="^3.203.0" source="infra/pulumi/package.json:12-24" />
+      <dependency name="@pulumiverse/vercel" version="^3.15.1" source="infra/pulumi/package.json:12-24" />
+      <dependency name="@medusajs/framework" version="2.10.3" source="apps/medusa/package.json:24-38" />
+      <dependency name="pg" version="^8.13.0" source="apps/medusa/package.json:24-38" />
+      <dependency name="@strapi/strapi" version="5.28.0" source="apps/strapi/package.json:17-26" />
+      <dependency name="styled-components" version="^6.0.0" source="apps/strapi/package.json:17-26" />
     </dependencies>
   </artifacts>
 
   <constraints>
-    <constraint source="docs/tech-spec-epic-1.md:20-49"><![CDATA[Infrastructure provisioning must run through Pulumi with GitHub OIDC authentication; manual dashboard edits are prohibited.]]></constraint>
-    <constraint source="docs/tech-spec-epic-1.md:81-110"><![CDATA[`deploy-services.yml` is the canonical automation surface; deployments must report via GitHub Checks and support manual approvals.]]></constraint>
-    <constraint source="docs/tech-spec-epic-1.md:126-135"><![CDATA[Secrets are stored in Pulumi encrypted config and synchronized to Railway; production credentials may not traverse CI logs.]]></constraint>
-    <constraint source="docs/solution-architecture.md:217-229"><![CDATA[Staging, preview, and production environments remain isolated with distinct Railway services and Pulumi-managed variables.]]></constraint>
-    <constraint source="docs/architecture-decisions.md:53-80"><![CDATA[Hosting must remain on Vercel + Railway, so solutions cannot introduce alternative providers without new ADRs.]]></constraint>
+    <constraint source="docs/gcp.md:72-83"><![CDATA[Deployment automation must build Medusa/Strapi images via `docker build-push-action`, push to GHCR, then SSH into the GCE host to update `/srv/cs` with `docker compose pull` and post-deploy health checks.]]></constraint>
+    <constraint source="docs/gcp.md:109-115"><![CDATA[Go-live validation requires Cloudflare Tunnel 200 responses, running containers, loopback-bound PostgreSQL/Redis, and recorded health probe evidence before marking AC1-AC2 done.]]></constraint>
+    <constraint source="docs/gcp-ubuntu-deployment-brief.md:125-133"><![CDATA[GitHub Actions workflow must switch from Railway automation to SSH-driven systemd orchestration, executing commands that restart Medusa/Strapi and capture host logs.]]></constraint>
+    <constraint source="docs/solution-architecture.md:210-230"><![CDATA[Vercel remains the public frontend; migrations cannot disrupt CDN strategy or Cloudflare-managed asset delivery when replatforming backend services.]]></constraint>
+    <constraint source="docs/architecture-decisions.md:53-86"><![CDATA[Any change away from Railway-hosted services needs explicit ADR follow-up to keep platform hosting strategy aligned with governance decisions.]]></constraint>
   </constraints>
-
   <interfaces>
-    <interface type="pulumi" name="RailwayStackConfig"><![CDATA[Defines service IDs, database attachments, and environment selection (`staging`, `production`) for Railway provisioning.]]></interface>
-    <interface type="github-actions" name="deploy-services.yml::railway-deploy"><![CDATA[Workflow job executing Pulumi/railway CLI to build images, push to Railway, and annotate status checks.]]></interface>
-    <interface type="cli" name="railway up"><![CDATA[CLI command used inside CI or locally to deploy services; must authenticate via API token or CLI context stored in secrets.]]></interface>
-    <interface type="script" name="scripts/deployment-status.ts"><![CDATA[Utility to poll Railway deployment status and emit logs/metrics for dashboards and GitHub summary.]]></interface>
+    <interface type="github-actions" name=".github/workflows/deploy-web.yml::deploy"><![CDATA[Workflow executes on `main`/`staging` pushes, currently calling `pnpm deploy:*`; update to orchestrate GHCR builds, GCE SSH commands, and status summarization for AC3.]]></interface>
+    <interface type="cli" name="scripts/deploy.ts::main"><![CDATA[Entry point invoked by GitHub Actions; replace Vercel CLI invocation with Docker build/push and remote compose operations targeting the GCE host.]]></interface>
+    <interface type="iac" name="infra/pulumi/apps/railway.ts::deployService"><![CDATA[Pulumi command provider running `railway up`/`railway variables set`; informs how existing automation handles secrets and deployments before introducing GCP equivalents.]]></interface>
+    <interface type="script" name="scripts/railway-medusa-start.sh"><![CDATA[Bash script that provisions Medusa dependencies, migrations, and launch process; reuse or adapt commands when codifying `/srv/cs` deployment hooks.]]></interface>
   </interfaces>
-
   <tests>
-    <standards><![CDATA[Follow Story 1.2 configuration validation, run Pulumi previews before applies, and execute integration smoke tests after each deployment.]]></standards>
-    <locations><![CDATA[infra/pulumi/**/*.test.ts; scripts/**/*.spec.ts; tests/integration/**/*.spec.ts]]></locations>
+    <standards><![CDATA[Run `yamllint bmad/bmm/workflows` and `xmllint --noout bmad/bmm/tasks/*.xml` after workflow edits, push synthetic commits to exercise the new deployment pipeline, capture `curl` outputs for `/store/health` and `/health`, and document results in the status log per story tasks.]]></standards>
+    <locations><![CDATA[tests/e2e/smoke.spec.ts; apps/medusa/src/**/*.{spec,test}.ts; apps/strapi/src/**/*.{spec,test}.ts; docs/runbooks/deployments.md (status log updates).]]></locations>
     <ideas>
-      <idea ac="AC1"><![CDATA[Run Pulumi preview verifying new Railway resources without drift; ensure diff shows expected service/database additions.]]></idea>
-      <idea ac="AC2"><![CDATA[Trigger staged branch push and confirm GitHub status checks report Railway deploy success/failure with logs.]]></idea>
-      <idea ac="AC3"><![CDATA[Execute staging smoke test hitting Medusa and Strapi endpoints with new environment variables to confirm configuration parity.]]></idea>
+      <idea ac="AC1"><![CDATA[Execute the updated GitHub Actions job against a staging branch, then verify `/srv/cs` containers respond to `curl http://127.0.0.1:9000/store/health` and `curl http://127.0.0.1:1337/health`, attaching logs to the status log.]]></idea>
+      <idea ac="AC2"><![CDATA[Use `cloudflared tunnel info cs-tunnel` and external `curl https://api.{domain}/store/health` to confirm Anycast routing returns HTTP 200, archiving evidence alongside DNS documentation.]]></idea>
+      <idea ac="AC3"><![CDATA[Run the revised workflow on a test commit to ensure GHCR pushes succeed, SSH commands update `TAG` in `/srv/cs/.env`, and the deployment summary surfaces job outputs and failure hooks.]]></idea>
+      <idea ac="AC4"><![CDATA[Follow `docs/medusa-strapi-local-setup.md` with refreshed `.env` templates, then run `pnpm test --filter smoke` (or equivalent Playwright smoke suite) to validate local parity with production configuration.]]></idea>
     </ideas>
   </tests>
 </story-context>

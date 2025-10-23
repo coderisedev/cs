@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+  medusa:
+    image: "${MEDUSA_IMAGE}:${TAG}"
+    restart: unless-stopped
+    env_file:
+      - env/medusa.env
+    environment:
+      NODE_ENV: production
+      PORT: 9000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "127.0.0.1:9000:9000"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://127.0.0.1:9000/store/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  strapi:
+    image: "${STRAPI_IMAGE}:${TAG}"
+    restart: unless-stopped
+    env_file:
+      - env/strapi.env
+    environment:
+      NODE_ENV: production
+      PORT: 1337
+    depends_on:
+      - medusa
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "127.0.0.1:1337:1337"
+    volumes:
+      - strapi_uploads:/srv/app/apps/strapi/public/uploads
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://127.0.0.1:1337/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  strapi_uploads:
+    driver: local

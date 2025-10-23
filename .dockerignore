@@ -1,0 +1,13 @@
+# Exclude unnecessary files from Docker build contexts
+.git
+.github
+node_modules
+.pnpm-store
+.turbo
+.tmp_sprint_status.json
+docs
+tests
+bmad
+bmad2
+*.log
+**/.DS_Store
