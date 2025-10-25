@@ -28,9 +28,16 @@ This checklist distills the operations needed to run Medusa and Strapi on the GC
 - Store real values in the team vault (GCP Secret Manager / 1Password) for rotation.
 
 ## 4. Configure Cloudflare Tunnel
-1. `cloudflared tunnel create cs-tunnel`
-2. `/etc/cloudflared/config.yml` example:
-   ```yaml
+1. 在 Cloudflare Zero Trust → Access → Tunnels 中创建或选择隧道。
+2. 复制“Install connector”提供的命令，执行：`sudo cloudflared service install --token <connector-token>`
+3. 在控制台的 **Public Hostnames** 中新增：
+   - `api.example.com` → `http://127.0.0.1:9000`
+   - `content.example.com` → `http://127.0.0.1:1337`
+4. 如果需要本地配置（非必需），可改用：
+   ```bash
+   cloudflared tunnel login          # 下载 cert.pem
+   cloudflared tunnel create cs-tunnel
+   sudo tee /etc/cloudflared/config.yml <<'YAML'
    tunnel: cs-tunnel
    credentials-file: /etc/cloudflared/cs-tunnel.json
    ingress:
@@ -39,10 +46,12 @@ This checklist distills the operations needed to run Medusa and Strapi on the GC
      - hostname: content.example.com
        service: http://127.0.0.1:1337
      - service: http_status:404
+   YAML
+   cloudflared tunnel route dns cs-tunnel api.example.com
+   cloudflared tunnel route dns cs-tunnel content.example.com
+   sudo systemctl enable --now cloudflared
    ```
-3. `cloudflared tunnel route dns cs-tunnel api.example.com`
-4. `cloudflared tunnel route dns cs-tunnel content.example.com`
-5. `sudo systemctl enable --now cloudflared` and confirm `sudo systemctl status cloudflared`
+   根据团队流程任选其一，并确认 `sudo systemctl status cloudflared` 为 active。
 
 ## 5. Configure GitHub Secrets
 - In repository settings → **Secrets and variables / Actions**, add:
