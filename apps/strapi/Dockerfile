@@ -8,7 +8,8 @@ ENV PNPM_HOME=/root/.local/share/pnpm \
 RUN apt-get update \
   && apt-get install -y --no-install-recommends build-essential python3 ca-certificates git \
   && rm -rf /var/lib/apt/lists/* \
-  && corepack enable
+  && corepack enable \
+  && corepack prepare pnpm@10.18.2 --activate
 
 WORKDIR /app
 
@@ -20,7 +21,7 @@ COPY scripts scripts
 
 COPY . .
 
-RUN pnpm install --filter strapi... --prod --frozen-lockfile \
+RUN pnpm install --filter strapi... --frozen-lockfile \
   && pnpm --filter strapi build
 
 FROM node:20-bookworm-slim AS runner
