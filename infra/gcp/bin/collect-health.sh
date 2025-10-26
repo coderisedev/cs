@@ -11,10 +11,10 @@ exec >"$LOG_FILE" 2>&1
 echo "== Cockpit Simulator backend health report =="
 echo "timestamp=$TIMESTAMP"
 
-echo "-- medusa /store/health --"
-curl --silent --show-error --fail http://127.0.0.1:9000/store/health
+echo "-- medusa /health --"
+curl --silent --show-error --fail http://127.0.0.1:9000/health
 
-echo "-- strapi /health --"
-curl --silent --show-error --fail http://127.0.0.1:1337/health
+echo "-- strapi /_health --"
+curl --silent --show-error --fail http://127.0.0.1:1337/_health
 
 echo "Report saved to $LOG_FILE"

@@ -95,6 +95,8 @@ check_port_free 1337 "strapi"
   echo "Using TAG=$TAG"
   echo "Running $compose_cmd pull"
   $compose_cmd pull
+  echo "Running pre-migration for Medusa (safe to skip if not applicable)"
+  $compose_cmd run --rm medusa bash -lc 'cd /srv/app/apps/medusa && pnpm medusa db:migrate' || echo "[warn] medusa migration step skipped or failed; continuing"
   echo "Running $compose_cmd up -d --remove-orphans"
   $compose_cmd up -d --remove-orphans
 
