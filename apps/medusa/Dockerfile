@@ -23,7 +23,8 @@ COPY scripts scripts
 COPY . .
 
 RUN pnpm install --filter medusa... --frozen-lockfile \
-  && pnpm --filter medusa build
+  && pnpm --filter medusa build \
+  && npx -y @medusajs/admin-bundler@2.10.3 build --outDir apps/medusa/public/admin || true
 
 FROM node:20-bookworm-slim AS runner
 
