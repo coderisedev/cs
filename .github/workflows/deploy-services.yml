@@ -126,6 +126,8 @@ jobs:
             install -m 750 /tmp/cs-deploy/scripts/gce/deploy.sh /srv/cs/bin/deploy.sh
             install -m 750 /tmp/cs-deploy/infra/gcp/bin/collect-health.sh /srv/cs/bin/collect-health.sh
             rm -rf /tmp/cs-deploy
+            # Authenticate Docker to GHCR on the host so compose pull can fetch private packages if needed
+            echo '${{ secrets.GITHUB_TOKEN }}' | docker login ghcr.io -u '${{ github.actor }}' --password-stdin >/dev/null 2>&1 || true
             TAG=${{ steps.env.outputs.image_tag }}
             /srv/cs/bin/deploy.sh --tag "$TAG" --cwd /srv/cs
             tail -n 20 /srv/cs/logs/deploy-*.log | sed "s/^/[deploy-log] /"
