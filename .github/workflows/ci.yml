@@ -346,6 +346,7 @@ jobs:
               comment.user.type === 'Bot'
             );
 
+            const shortSha = (context.sha || process.env.GITHUB_SHA || '').slice(0, 7);
             const commentBody = `
             ## 🚀 Preview Deployment
 
@@ -353,7 +354,7 @@ jobs:
             **Status**: ✅ Deployed Successfully
             **Preview URL**: [${{ steps.deploy.outputs.url }}](${{ steps.deploy.outputs.url }})
             **Branch**: \`${{ github.head_ref }}\`
-            **Commit**: \`${{ github.sha.substring(0, 7) }}\`
+            **Commit**: \`${shortSha}\`
 
             ---
             🤖 *This preview will be automatically cleaned up when the PR is closed*
@@ -504,6 +505,7 @@ jobs:
             const testStatus = '${{ steps.smoke-tests.outcome }}' === 'success' ? '✅ Passed' : '❌ Failed';
             const testResultsUrl = context.payload.repository.html_url + '/actions/runs/' + context.runId;
 
+            const shortSha = (context.sha || process.env.GITHUB_SHA || '').slice(0, 7);
             const updatedCommentBody = `
             ## 🚀 Preview Deployment
 
@@ -511,7 +513,7 @@ jobs:
             **Status**: ✅ Deployed Successfully
             **Preview URL**: [${{ needs.preview.outputs.url }}](${{ needs.preview.outputs.url }})
             **Branch**: \`${{ github.head_ref }}\`
-            **Commit**: \`${{ github.sha.substring(0, 7) }}\`
+            **Commit**: \`${shortSha}\`
 
             **Smoke Tests**: ${testStatus}
             **Test Results**: [View Details](${testResultsUrl})
