@@ -59,15 +59,35 @@ else
   echo "TAG=$TAG" >> .env
 fi
 
-TIMESTAMP=$(date --utc +%Y-%m-%dT%H:%M:%SZ)
-LOG_DIR="${LOG_DIR:-$TARGET_DIR/logs}"
-mkdir -p "$LOG_DIR"
-LOG_FILE="$LOG_DIR/deploy-$TIMESTAMP.log"
+ TIMESTAMP=$(date --utc +%Y-%m-%dT%H:%M:%SZ)
+ LOG_DIR="${LOG_DIR:-$TARGET_DIR/logs}"
+ mkdir -p "$LOG_DIR"
+ LOG_FILE="$LOG_DIR/deploy-$TIMESTAMP.log"
 
 compose_cmd="docker compose"
 if ! docker compose version >/dev/null 2>&1; then
   compose_cmd="docker-compose"
 fi
+
+# Always bring down previous stack to free ports managed by compose
+echo "Running $compose_cmd down to free any prior port bindings"
+$compose_cmd down || true
+
+# Preflight: check host ports are free (helps detect stray processes)
+check_port_free() {
+  local port="$1"
+  local name="$2"
+  if ss -ltn 2>/dev/null | awk -v p=":$port" '$4 ~ p {exit 0} END{exit 1}'; then
+    echo "ERROR: Port $port appears in use on host. This blocks $name from starting." >&2
+    echo "Details:" >&2
+    ss -ltnp | awk -v p=":$port" '$4 ~ p {print}' >&2 || true
+    echo "If a non-docker process is listening, stop it (e.g., sudo fuser -k ${port}/tcp) and re-run deploy." >&2
+    exit 90
+  fi
+}
+
+check_port_free 9000 "medusa"
+check_port_free 1337 "strapi"
 
 {
   echo "== Deployment triggered at $TIMESTAMP =="
