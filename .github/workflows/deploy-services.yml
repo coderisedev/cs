@@ -121,8 +121,10 @@ jobs:
           script: |
             set -euo pipefail
             mkdir -p /srv/cs/bin
-            install -m 750 /tmp/cs-deploy/deploy.sh /srv/cs/bin/deploy.sh
-            install -m 750 /tmp/cs-deploy/collect-health.sh /srv/cs/bin/collect-health.sh
+            mkdir -p /srv/cs/logs
+            # Copy from the relative paths preserved by scp-action
+            install -m 750 /tmp/cs-deploy/scripts/gce/deploy.sh /srv/cs/bin/deploy.sh
+            install -m 750 /tmp/cs-deploy/infra/gcp/bin/collect-health.sh /srv/cs/bin/collect-health.sh
             rm -rf /tmp/cs-deploy
             TAG=${{ steps.env.outputs.image_tag }}
             /srv/cs/bin/deploy.sh --tag "$TAG" --cwd /srv/cs
