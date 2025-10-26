@@ -35,6 +35,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Verify deploy sources exist
+        run: |
+          set -e
+          ls -la scripts/gce
+          ls -la infra/gcp/bin
+
       - name: Determine deployment environment
         id: env
         run: |
@@ -99,8 +105,9 @@ jobs:
           host: ${{ secrets.GCE_HOST }}
           username: ${{ secrets.GCE_USER }}
           key: ${{ secrets.GCE_SSH_KEY }}
-          # Provide sources as a single comma-separated string to avoid empty-archive issues
-          source: "scripts/gce/deploy.sh,infra/gcp/bin/collect-health.sh"
+          # Provide sources as a single comma-separated string (plugin supports comma-separated list)
+          # Also switch to explicit relative roots to avoid path resolution quirks
+          source: "./scripts/gce/deploy.sh,./infra/gcp/bin/collect-health.sh"
           target: /tmp/cs-deploy
           overwrite: true
 
