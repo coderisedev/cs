@@ -4,6 +4,9 @@
     "lint": {
       "outputs": []
     },
+    "typecheck": {
+      "outputs": []
+    },
     "test:unit": {
       "outputs": []
     },

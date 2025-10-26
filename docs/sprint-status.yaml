@@ -42,9 +42,9 @@ development_status:
   1-3-configure-github-actions-ci-pipeline: done
   1-4-provision-vercel-projects-deploy-production-staging: done
   1-5-implement-preview-deployments-per-pull-request: done
-  1-6-provision-railway-services-for-medusa-strapi: review
-  1-7-establish-automated-integration-test-harness: backlog
-  1-8-seed-observability-logging-baseline: ready-for-dev
+  1-6-operationalize-gcp-platform-for-medusa-strapi: done
+  1-7-establish-automated-integration-test-harness: in-progress
+  1-8-seed-observability-logging-baseline: backlog
   1-9-document-developer-onboarding-runbooks: backlog
   epic-1-retrospective: optional
   epic-2: backlog
