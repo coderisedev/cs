@@ -2,8 +2,10 @@ import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 
 export default async function AuthStatusPage() {
-  const session = await getServerSession()
-  const authed = !!session?.user
+  const session = (await getServerSession()) as {
+    user?: { email?: string; name?: string }
+  } | null
+  const authed = !!(session && session.user)
   return (
     <main className="container mx-auto px-4 py-12 text-center">
       <h1 className="text-2xl font-semibold mb-4">Auth Status</h1>
