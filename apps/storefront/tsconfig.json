@@ -11,7 +11,7 @@
     "moduleResolution": "bundler",
     "baseUrl": ".",
     "resolveJsonModule": true,
-    "types": ["node", "next", "next-auth"],
+    "types": ["node", "next"],
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
