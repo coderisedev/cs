@@ -19,7 +19,7 @@ concurrency:
 # Environment variables
 env:
   NODE_VERSION: "20"
-  PNPM_VERSION: "9"
+  PNPM_VERSION: "10.18.2"
 
 jobs:
   # Fast gate to block heavy jobs early on PRs
