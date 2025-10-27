@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import categories from '@/lib/categories.json'
+import categories from '../../../../lib/categories'
 import { listProducts } from '@/lib/medusa'
 
 export const dynamic = 'force-dynamic'

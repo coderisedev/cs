@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getProductByHandle } from '@/lib/medusa'
-import { getPaypalCheckoutLink } from '@/lib/payments'
+import { getPaypalCheckoutLink } from '../../../lib/payments'
 
 type Params = { handle: string }
 
