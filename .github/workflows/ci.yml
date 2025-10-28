@@ -364,10 +364,21 @@ jobs:
             PROJ_ARG="--project ${VERCEL_STAGING_PROJECT_ID}"
           fi
 
+          # Derive scope/project from .vercel file if not set via secrets
+          if [[ -z "$TEAM_ARG" || -z "$PROJ_ARG" ]]; then
+            if [[ -f apps/storefront/.vercel/project.json ]]; then
+              ORG_ID=$(jq -r '.orgId // empty' apps/storefront/.vercel/project.json 2>/dev/null || true)
+              PROJ_ID=$(jq -r '.projectId // empty' apps/storefront/.vercel/project.json 2>/dev/null || true)
+              if [[ -z "$TEAM_ARG" && -n "$ORG_ID" ]]; then TEAM_ARG="--scope $ORG_ID"; fi
+              if [[ -z "$PROJ_ARG" && -n "$PROJ_ID" ]]; then PROJ_ARG="--project $PROJ_ID"; fi
+              echo "Using linkage: TEAM_ARG='$TEAM_ARG' PROJ_ARG='$PROJ_ARG'"
+            fi
+          fi
+
           # Deploy using Vercel CLI with prebuilt artifacts from apps/storefront
           set -o pipefail
           # Try prebuilt deploy first
-          vercel_output=$(cd apps/storefront && npx vercel deploy --prebuilt --json ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}" || echo '{}')
+          vercel_output=$(cd apps/storefront && npx vercel deploy --prebuilt --yes --confirm --json ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}" || echo '{}')
 
           # Parse deployment response
           preview_url=$(echo "$vercel_output" | jq -r '.url // empty')
@@ -376,7 +387,7 @@ jobs:
           # Validate deployment succeeded
           if [[ -z "$preview_url" ]]; then
             echo "ℹ️ Prebuilt deploy returned no URL; attempting fallback to non-prebuilt deploy"
-            vercel_output=$(cd apps/storefront && npx vercel deploy --json ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}" || echo '{}')
+            vercel_output=$(cd apps/storefront && npx vercel deploy --yes --confirm --json ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}" || echo '{}')
             preview_url=$(echo "$vercel_output" | jq -r '.url // empty')
             deployment_id=$(echo "$vercel_output" | jq -r '.id // empty')
             if [[ -z "$preview_url" ]]; then
