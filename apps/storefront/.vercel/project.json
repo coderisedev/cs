@@ -4,7 +4,7 @@
   "settings": {
     "framework": "nextjs",
     "nodeVersion": "20.x",
-    "installCommand": "cd .. && (pnpm install --frozen-lockfile || npm install)",
+    "installCommand": "cd .. && (corepack pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || npm install)",
     "buildCommand": "pnpm run build",
     "outputDirectory": ".vercel/output"
   }
