@@ -466,7 +466,10 @@ jobs:
                 vercel_error=$(echo "$latest_json" | jq -r '.error.message // .error.code // empty' 2>/dev/null || true)
               fi
               if [[ -z "$vercel_error" ]]; then
-                vercel_error="Unknown error (see logs)"
+                vercel_error=$(echo "$vercel_output" | tail -n 20 | tr -d '\r')
+                if [[ -z "$vercel_error" ]]; then
+                  vercel_error="Unknown error (see logs)"
+                fi
               fi
               echo "::error file=preview-deploy.sh::Vercel deploy failed: $vercel_error"
               exit 1
