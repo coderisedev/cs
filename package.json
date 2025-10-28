@@ -10,6 +10,8 @@
     "test:unit": "turbo run test:unit",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
+    "build:quick": "git fetch --depth=1 origin main:refs/remotes/origin/main || true && TURBO_CONCURRENCY=2 turbo run build --filter=...[origin/main]",
+    "quick-check": "git fetch --depth=1 origin main:refs/remotes/origin/main || true && turbo run lint typecheck --filter=...[origin/main]",
     "deploy:staging": "tsx scripts/deploy.ts staging",
     "deploy:production": "tsx scripts/deploy.ts production",
     "deployment-status": "tsx scripts/deployment-status.ts",

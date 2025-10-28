@@ -1,9 +1,9 @@
-const categories = {
+export type Category = { name: string; handles: string[] }
+const categories: Record<string, Category> = {
   apparel: {
     name: 'Apparel',
     handles: ['tshirt', 'sweatshirt', 'shorts'],
   },
-} as const
+}
 
 export default categories
-

@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "NEXT_TELEMETRY_DISABLED=1 next build --turbopack",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint --cache --cache-location .eslintcache",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -17,7 +17,9 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "zod": "^4.1.12",
-    "zustand": "^5.0.8"
+    "zustand": "^5.0.8",
+    "@sentry/nextjs": "^8.0.0",
+    "next-auth": "^4.24.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

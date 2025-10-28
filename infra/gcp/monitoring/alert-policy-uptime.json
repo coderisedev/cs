@@ -1,0 +1,35 @@
+{
+  "displayName": "Uptime check failed (API/CMS)",
+  "combiner": "OR",
+  "conditions": [
+    {
+      "displayName": "API health uptime failure",
+      "conditionThreshold": {
+        "filter": "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" resource.type=\"uptime_url\" metadata.system_labels.host_name=\"api.aidenlux.com\"",
+        "comparison": "COMPARISON_LT",
+        "thresholdValue": 1,
+        "duration": "300s",
+        "trigger": { "count": 1 },
+        "aggregations": [
+          { "alignmentPeriod": "60s", "perSeriesAligner": "ALIGN_NEXT_OLDER" }
+        ]
+      }
+    },
+    {
+      "displayName": "CMS health uptime failure",
+      "conditionThreshold": {
+        "filter": "metric.type=\"monitoring.googleapis.com/uptime_check/check_passed\" resource.type=\"uptime_url\" metadata.system_labels.host_name=\"content.aidenlux.com\"",
+        "comparison": "COMPARISON_LT",
+        "thresholdValue": 1,
+        "duration": "300s",
+        "trigger": { "count": 1 },
+        "aggregations": [
+          { "alignmentPeriod": "60s", "perSeriesAligner": "ALIGN_NEXT_OLDER" }
+        ]
+      }
+    }
+  ],
+  "notificationChannels": [],
+  "enabled": true
+}
+

@@ -1,5 +1,6 @@
 import path from "path"
 import { defineConfig, loadEnv } from "@medusajs/framework/utils"
+import "./src/utils/sentry"
 
 const projectRoot = path.resolve(__dirname, "..")
 

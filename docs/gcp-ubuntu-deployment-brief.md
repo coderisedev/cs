@@ -27,6 +27,18 @@
 - 数据库/缓存客户端：`psql`, `redis-cli` 便于调试。
 - 可选：PM2 或以 `systemd` service 方式常驻运行 Medusa、Strapi。
 
+### 首次主机初始化（必做，一次性）
+- 使用仓库内的脚本为 docker0 网段放行数据库/缓存、配置 PostgreSQL/Redis，并可选创建 `cs` 用户与数据库：
+  ```bash
+  # 在主机上（建议 root 或 sudo）
+  sudo bash /opt/cs/scripts/gce/first-init.sh --db-password '<YourStrongPass>'
+  # 若由 GitHub Actions 触发部署，也可在“Deploy Services”工作流通过开关执行：
+  # Actions → Deploy Services → Run workflow → first_init=true [db_password 可选]
+  ```
+  - 主要动作：设置 PG `listen_addresses` 与 `pg_hba.conf`，为 docker0 开放 5432/6379（UFW/iptables），
+    配置 Redis `bind` 与 `protected-mode`，并可创建 `cs` 账户和 `medusa_production`/`strapi_production` 数据库。
+  - 脚本位置：`scripts/gce/first-init.sh`（已在 CI 中按需下发到主机）。
+
 ## 4. 代码获取与目录结构
 1. 在服务器上创建部署用户（如 `csops`），克隆仓库到 `/opt/cs`：
    ```bash
@@ -144,6 +156,98 @@ Strapi 可复用类似模板，`ExecStart=/usr/bin/env bash -lc "cd apps/strapi 
 - [ ] systemd 服务启停正常，日志写入 `journalctl -u medusa/strapi`。
 - [ ] 制定数据库与密钥的备份/轮换计划。
 
+## 11. GCE 防火墙与 pg_hba 配置（Docker 容器访问主机数据库）
+
+当 Medusa/Strapi 在容器内运行，而 PostgreSQL/Redis 在主机上运行时，需要允许 docker0 网桥网段
+访问主机 5432/6379，否则应用会在启动阶段出现数据库连接超时。
+
+1. 识别 docker0 网段
+   - 典型默认：`172.17.0.0/16`（网关通常为 `172.17.0.1`）
+   - 命令确认：
+     ```bash
+     ip -4 addr show docker0 | awk '/inet /{print $2}'  # 例：172.17.0.1/16
+     ```
+
+2. PostgreSQL 配置
+   - 编辑 `postgresql.conf`（版本路径示例 `/etc/postgresql/14/main/postgresql.conf`）：
+     - 将 `listen_addresses` 设为仅本机与 docker0 网关：
+       ```
+       listen_addresses = '127.0.0.1,172.17.0.1'
+       ```
+       如需临时排障可使用 `'*'`，但不建议在长期生产环境中保留。
+   - 编辑 `pg_hba.conf`（同版本目录）：
+     - 追加一行，允许 docker0 网段基于密码访问：
+       ```
+       host all all 172.17.0.0/16 scram-sha-256
+       ```
+       若实例仍使用 md5，可改为 `md5`。
+   - 重启并验证：
+     ```bash
+     sudo systemctl restart postgresql
+     pg_isready -h 127.0.0.1 -p 5432   # 应 ready
+     pg_isready -h 172.17.0.1 -p 5432 # 应 ready
+     ```
+
+3. Redis 配置（二选一）
+   - 推荐做法：仅绑定本机与 docker0 网关，同时保持保护模式开启：
+     - `/etc/redis/redis.conf`：
+       ```
+       bind 127.0.0.1 172.17.0.1
+       protected-mode yes
+       ```
+   - 兼容做法（依赖防火墙严格限制来源）：
+       ```
+       bind 0.0.0.0
+       protected-mode no
+       ```
+   - 重启并验证：
+     ```bash
+     sudo systemctl restart redis-server
+     ss -ltnp | grep ':6379'
+     ```
+
+4. 主机防火墙放行 docker0 网段到数据库/缓存
+   - 使用 UFW：
+     ```bash
+     sudo ufw allow from 172.17.0.0/16 to any port 5432 proto tcp
+     sudo ufw allow from 172.17.0.0/16 to any port 6379 proto tcp
+     sudo ufw reload
+     sudo ufw status
+     ```
+   - 或使用 iptables（即时生效，注意持久化）：
+     ```bash
+     sudo iptables -C INPUT -i docker0 -p tcp -m multiport --dports 5432,6379 -j ACCEPT \
+       || sudo iptables -I INPUT -i docker0 -p tcp -m multiport --dports 5432,6379 -j ACCEPT
+     ```
+     nftables 环境可用：
+     ```bash
+     sudo nft add rule inet filter input iif "docker0" tcp dport {5432,6379} accept
+     ```
+
+5. 容器连通性与凭据校验
+   - 解析宿主：
+     ```bash
+     docker exec cs-medusa-1 getent hosts host.docker.internal
+     ```
+   - TCP 直连探测：
+     ```bash
+     docker exec cs-medusa-1 bash -lc 'exec 3<>/dev/tcp/host.docker.internal/5432 && echo ok || echo fail'
+     docker exec cs-medusa-1 bash -lc 'exec 3<>/dev/tcp/host.docker.internal/6379 && echo ok || echo fail'
+     ```
+   - 数据库密码校验（从主机侧）：
+     ```bash
+     export PGPASSWORD='<cs-password>'
+     psql -h 127.0.0.1 -U cs -d medusa_production -c 'select 1;'
+     psql -h 127.0.0.1 -U cs -d strapi_production -c 'select 1;'
+     ```
+
+6. 健康检查端点（与 Compose/脚本一致）
+   - Medusa：`http://127.0.0.1:9000/health`（无需发布密钥）；`/store/health` 需携带 `x-publishable-api-key`。
+   - Strapi：`http://127.0.0.1:1337/health` 或 `/_health`（已在应用内实现 200）。
+
+安全提示：仅放行 docker0 网段到 5432/6379，避免 `0.0.0.0/0`；数据库用户 `cs` 的口令需纳入密钥轮换，
+并与 `/srv/cs/env/*.env` 中的 `DATABASE_URL` 保持一致。
+
 ---
 
 **参考资料**
@@ -154,3 +258,4 @@ Strapi 可复用类似模板，`ExecStart=/usr/bin/env bash -lc "cd apps/strapi 
 - `infra/gcp/README.md`（GCE 主机文件结构与操作步骤）
 - `scripts/gce/deploy.sh`（自动化更新脚本）
 - `infra/pulumi/vercel.ts`（Vercel 托管逻辑）
+ - `docs/ci-cd-gce-qa-retrospective-2025-10-26.md`（本次 Chat 的完整问答与复盘）
