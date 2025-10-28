@@ -466,7 +466,7 @@ jobs:
                 vercel_error=$(echo "$latest_json" | jq -r '.error.message // .error.code // empty' 2>/dev/null || true)
               fi
               if [[ -z "$vercel_error" ]]; then
-                vercel_error=$(echo "$vercel_output" | tail -n 20 | tr -d '\r')
+                vercel_error=$(echo "$vercel_output" | tail -n 40 | tr -d '\r' | tr '\n' '|' | sed 's/|/ | /g' | sed 's/[[:space:]]\+/ /g' | cut -c 1-500)
                 if [[ -z "$vercel_error" ]]; then
                   vercel_error="Unknown error (see logs)"
                 fi
