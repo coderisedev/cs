@@ -364,11 +364,11 @@ jobs:
           fi
 
           # Ensure local Vercel project settings are available for CLI commands
-          (cd apps/storefront && npx vercel pull --yes --environment=preview ${TEAM_ARG} --token "${VERCEL_TOKEN}")
+          npx vercel pull --cwd apps/storefront --yes --environment=preview ${TEAM_ARG} --token "${VERCEL_TOKEN}"
 
           # Build prebuilt output for deterministic preview deploys (produces .vercel/output)
           # If this fails, we will fallback to non-prebuilt deploy below.
-          (cd apps/storefront && npx vercel build ${TEAM_ARG} --token "${VERCEL_TOKEN}" --yes) || echo "vercel build failed; will try non-prebuilt deploy if needed"
+          (npx vercel build --cwd apps/storefront ${TEAM_ARG} --token "${VERCEL_TOKEN}" --yes) || echo "vercel build failed; will try non-prebuilt deploy if needed"
 
           extract_preview_url() {
             echo "$1" | grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' | tail -n 1
@@ -399,7 +399,7 @@ jobs:
           }
 
           tmpfile_prebuilt=$(mktemp)
-          if (cd apps/storefront && npx vercel deploy --prebuilt --yes --confirm ${TEAM_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_prebuilt" 2>&1; then
+          if (npx vercel deploy --cwd apps/storefront --prebuilt --yes --confirm ${TEAM_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_prebuilt" 2>&1; then
             vercel_exit_code=0
           else
             vercel_exit_code=$?
@@ -432,7 +432,7 @@ jobs:
           if [[ -z "$preview_url" || -z "$deployment_id" || $vercel_exit_code -ne 0 ]]; then
             echo "ℹ️ Prebuilt deploy did not complete successfully; attempting fallback to non-prebuilt deploy"
             tmpfile_fallback=$(mktemp)
-            if (cd apps/storefront && npx vercel deploy --yes --confirm ${TEAM_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_fallback" 2>&1; then
+            if (npx vercel deploy --cwd apps/storefront --yes --confirm ${TEAM_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_fallback" 2>&1; then
               vercel_exit_code=0
             else
               vercel_exit_code=$?
