@@ -1,0 +1,7 @@
+{
+  "framework": "nextjs",
+  "rootDirectory": "apps/storefront",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm run build",
+  "outputDirectory": ".vercel/output"
+}
