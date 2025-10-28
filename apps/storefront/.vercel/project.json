@@ -4,7 +4,6 @@
   "settings": {
     "framework": "nextjs",
     "nodeVersion": "20.x",
-    "installCommand": "npm install -g pnpm@10.18.2 && pnpm install --frozen-lockfile",
     "buildCommand": "pnpm run build",
     "outputDirectory": ".vercel/output"
   }
