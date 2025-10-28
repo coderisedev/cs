@@ -15,8 +15,12 @@ fi
 corepack enable pnpm
 echo "🔢 pnpm version: $(pnpm -v)"
 
-# Node.js 22 tightened URLSearchParams bindings; pnpm's proxy agent trips on it.
-export NODE_OPTIONS="${NODE_OPTIONS:+$NODE_OPTIONS }--disable-proto=throw"
+if [ -n "${NODE_OPTIONS:-}" ]; then
+  echo "ℹ️ Clearing NODE_OPTIONS to avoid Next.js runtime conflicts"
+  unset NODE_OPTIONS
+fi
+
+# Ensure CI-friendly install behavior.
 export CI="${CI:-true}"
 
 echo "📦 Installing workspace dependencies..."
