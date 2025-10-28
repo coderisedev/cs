@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
-  "installCommand": "(corepack pnpm install --frozen-lockfile || pnpm install --frozen-lockfile || npm install)",
+  "installCommand": "corepack enable pnpm && pnpm install --no-frozen-lockfile",
   "buildCommand": "pnpm run build",
   "outputDirectory": ".vercel/output"
 }
