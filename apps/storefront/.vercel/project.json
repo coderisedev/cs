@@ -3,7 +3,7 @@
   "projectId": "prj_Sze4YDpBYJZik3XfGclC38dq80ac",
   "settings": {
     "framework": "nextjs",
-    "installCommand": "pnpm install --frozen-lockfile",
+    "installCommand": "corepack enable pnpm && pnpm install --frozen-lockfile",
     "buildCommand": "pnpm run build",
     "outputDirectory": ".vercel/output"
   }
