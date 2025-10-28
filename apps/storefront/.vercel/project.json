@@ -1,6 +1,7 @@
 {
   "orgId": "team_adx4fSocOKoip4Zz0TCCHPBR",
   "projectId": "prj_Sze4YDpBYJZik3XfGclC38dq80ac",
+  "rootDirectory": "apps/storefront",
   "settings": {
     "framework": "nextjs",
     "nodeVersion": "20.x",
