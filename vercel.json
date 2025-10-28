@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
-  "installCommand": "bash ../../scripts/vercel/install-storefront.sh",
+  "installCommand": "bash ./vercel-install.sh",
   "buildCommand": "pnpm run build",
   "outputDirectory": ".vercel/output"
 }
