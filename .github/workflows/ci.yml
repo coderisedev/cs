@@ -381,49 +381,108 @@ jobs:
           # If this fails, we will fallback to non-prebuilt deploy below.
           (cd apps/storefront && npx vercel build ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}" --yes) || echo "vercel build failed; will try non-prebuilt deploy if needed"
 
-          parse_vercel_field() {
-            local payload="$1"
-            local query="$2"
-            echo "$payload" | jq -r "select(type==\"object\") | ${query}" 2>/dev/null | tail -n 1
+          extract_preview_url() {
+            echo "$1" | grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' | tail -n 1
           }
 
-          # Deploy using Vercel CLI with prebuilt artifacts from apps/storefront
+          extract_deployment_id() {
+            echo "$1" | grep -Eo 'dpl_[A-Za-z0-9]{10,}' | tail -n 1
+          }
+
+          extract_error_message() {
+            echo "$1" | grep -E '^(Error|Error!|Error:)' | tail -n 1 | sed -E 's/^(Error!?[: ]*)//'
+          }
+
+          fetch_latest_preview() {
+            local project_id="$1"
+            local token="$2"
+            curl -sSf --retry 3 --retry-delay 2 \
+              -H "Authorization: Bearer ${token}" \
+              "https://api.vercel.com/v13/deployments?projectId=${project_id}&target=preview&limit=1"
+          }
+
+          resolve_project_id() {
+            if [[ -n "${VERCEL_STAGING_PROJECT_ID:-}" ]]; then
+              echo "${VERCEL_STAGING_PROJECT_ID}"
+            else
+              jq -r '.projectId // empty' apps/storefront/.vercel/project.json 2>/dev/null || true
+            fi
+          }
+
           tmpfile_prebuilt=$(mktemp)
-          if (cd apps/storefront && npx vercel deploy --prebuilt --yes --confirm --json ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_prebuilt" 2>&1; then
-            vercel_output=$(cat "$tmpfile_prebuilt")
+          if (cd apps/storefront && npx vercel deploy --prebuilt --yes --confirm ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_prebuilt" 2>&1; then
             vercel_exit_code=0
           else
             vercel_exit_code=$?
-            vercel_output=$(cat "$tmpfile_prebuilt")
           fi
+          vercel_output=$(cat "$tmpfile_prebuilt")
           rm -f "$tmpfile_prebuilt"
 
-          # Parse deployment response
-          preview_url=$(parse_vercel_field "$vercel_output" '.url // empty')
-          deployment_id=$(parse_vercel_field "$vercel_output" '.id // empty')
+          preview_url=$(extract_preview_url "$vercel_output")
+          deployment_id=$(extract_deployment_id "$vercel_output")
 
-          # Validate deployment succeeded
-          if [[ -z "$preview_url" ]]; then
-            echo "ℹ️ Prebuilt deploy returned no URL; attempting fallback to non-prebuilt deploy"
-            tmpfile_fallback=$(mktemp)
-            if (cd apps/storefront && npx vercel deploy --yes --confirm --json ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_fallback" 2>&1; then
-              vercel_output=$(cat "$tmpfile_fallback")
-            else
-              vercel_output=$(cat "$tmpfile_fallback")
+          if [[ -z "$preview_url" || -z "$deployment_id" ]]; then
+            project_id=$(resolve_project_id)
+            if [[ -n "$project_id" ]]; then
+              latest_json=$(fetch_latest_preview "$project_id" "${VERCEL_TOKEN}") || true
+              if [[ -n "$latest_json" ]]; then
+                if [[ -z "$deployment_id" ]]; then
+                  deployment_id=$(echo "$latest_json" | jq -r '.deployments[0].id // empty' 2>/dev/null || true)
+                fi
+                if [[ -z "$preview_url" ]]; then
+                  latest_url=$(echo "$latest_json" | jq -r '.deployments[0].url // empty' 2>/dev/null || true)
+                  if [[ -n "$latest_url" ]]; then
+                    preview_url="https://${latest_url}"
+                  fi
+                fi
+              fi
             fi
+          fi
+
+          # Fallback to non-prebuilt deploy when necessary
+          if [[ -z "$preview_url" || -z "$deployment_id" || $vercel_exit_code -ne 0 ]]; then
+            echo "ℹ️ Prebuilt deploy did not complete successfully; attempting fallback to non-prebuilt deploy"
+            tmpfile_fallback=$(mktemp)
+            if (cd apps/storefront && npx vercel deploy --yes --confirm ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_fallback" 2>&1; then
+              vercel_exit_code=0
+            else
+              vercel_exit_code=$?
+            fi
+            vercel_output=$(cat "$tmpfile_fallback")
             rm -f "$tmpfile_fallback"
-            preview_url=$(parse_vercel_field "$vercel_output" '.url // empty')
-            deployment_id=$(parse_vercel_field "$vercel_output" '.id // empty')
-            if [[ -z "$preview_url" ]]; then
-              echo "❌ Preview deployment failed - no URL returned"
+
+            preview_url=$(extract_preview_url "$vercel_output")
+            deployment_id=$(extract_deployment_id "$vercel_output")
+
+            if [[ -z "$preview_url" || -z "$deployment_id" ]]; then
+              project_id=${project_id:-$(resolve_project_id)}
+              if [[ -n "$project_id" ]]; then
+                latest_json=$(fetch_latest_preview "$project_id" "${VERCEL_TOKEN}") || true
+                if [[ -n "$latest_json" ]]; then
+                  if [[ -z "$deployment_id" ]]; then
+                    deployment_id=$(echo "$latest_json" | jq -r '.deployments[0].id // empty' 2>/dev/null || true)
+                  fi
+                  if [[ -z "$preview_url" ]]; then
+                    latest_url=$(echo "$latest_json" | jq -r '.deployments[0].url // empty' 2>/dev/null || true)
+                    if [[ -n "$latest_url" ]]; then
+                      preview_url="https://${latest_url}"
+                    fi
+                  fi
+                fi
+              fi
+            fi
+
+            if [[ -z "$preview_url" || -z "$deployment_id" || $vercel_exit_code -ne 0 ]]; then
+              echo "❌ Preview deployment failed - missing URL or deployment id"
               echo "Debug output:"; echo "$vercel_output"
-              vercel_error=$(parse_vercel_field "$vercel_output" '.error.message // .error.code // empty')
+              vercel_error=$(extract_error_message "$vercel_output")
+              if [[ -z "$vercel_error" && -n "${latest_json:-}" ]]; then
+                vercel_error=$(echo "$latest_json" | jq -r '.error.message // .error.code // empty' 2>/dev/null || true)
+              fi
               if [[ -z "$vercel_error" ]]; then
-                vercel_error=$(echo "$vercel_output" | tail -n 1 | tr -d '\r')
+                vercel_error="Unknown error (see logs)"
               fi
-              if [[ -n "$vercel_error" ]]; then
-                echo "::error file=preview-deploy.sh::Vercel deploy failed: $vercel_error"
-              fi
+              echo "::error file=preview-deploy.sh::Vercel deploy failed: $vercel_error"
               exit 1
             fi
           fi
