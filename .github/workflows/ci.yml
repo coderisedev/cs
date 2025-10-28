@@ -19,13 +19,72 @@ concurrency:
 # Environment variables
 env:
   NODE_VERSION: "20"
-  PNPM_VERSION: "9"
+  PNPM_VERSION: "10.18.2"
 
 jobs:
+  # Fast gate to block heavy jobs early on PRs
+  quick-check:
+    name: Quick Check (Changed Packages)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    env:
+      TURBO_TELEMETRY_DISABLED: '1'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure origin/main is available
+        shell: bash
+        run: |
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+          git rev-parse --abbrev-ref HEAD
+          git rev-parse origin/main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Setup Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/turbo.json') }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run lint+typecheck only for changed packages
+        run: |
+          echo "Running quick checks for changed packages vs origin/main"
+          npx turbo run lint typecheck --filter=...[origin/main]
   # Lint and typecheck job
   lint:
     name: Lint & Typecheck
     runs-on: ubuntu-latest
+    needs: [quick-check]
 
     steps:
       - name: Checkout code
@@ -75,6 +134,7 @@ jobs:
   test:
     name: Unit Tests
     runs-on: ubuntu-latest
+    needs: [quick-check]
 
     strategy:
       matrix:
@@ -149,7 +209,7 @@ jobs:
   build:
     name: Build Verification
     runs-on: ubuntu-latest
-    needs: [lint]
+    needs: [quick-check, lint]
 
     steps:
       - name: Checkout code
@@ -279,22 +339,160 @@ jobs:
         id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_STAGING_PROJECT_ID }}
+          VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          VERCEL_STAGING_PROJECT_ID: ${{ secrets.VERCEL_STAGING_PROJECT_ID }}
+          VERCEL_STAGING_PROJECT_NAME: ${{ secrets.VERCEL_STAGING_PROJECT_NAME }}
         run: |
           echo "🚀 Deploying preview to Vercel..."
 
-          # Deploy using Vercel CLI with prebuilt artifacts
-          vercel_output=$(npx vercel deploy --prebuilt --json --team ${{ secrets.VERCEL_TEAM_ID }} 2>/dev/null || echo '{}')
+          # Gracefully skip if token is missing
+          if [[ -z "${VERCEL_TOKEN:-}" ]]; then
+            echo "ℹ️ Skipping Vercel preview: VERCEL_TOKEN not set"
+            echo "url=" >> $GITHUB_OUTPUT
+            echo "deployment_id=" >> $GITHUB_OUTPUT
+            exit 0
+          fi
 
-          # Parse deployment response
-          preview_url=$(echo "$vercel_output" | jq -r '.url // empty')
-          deployment_id=$(echo "$vercel_output" | jq -r '.id // empty')
+          TEAM_ARG=""
+          if [[ -n "${VERCEL_TEAM_ID:-}" ]]; then
+            TEAM_ARG="--scope ${VERCEL_TEAM_ID}"
+          elif [[ -f apps/storefront/.vercel/project.json ]]; then
+            ORG_ID=$(jq -r '.orgId // empty' apps/storefront/.vercel/project.json 2>/dev/null || true)
+            if [[ -n "$ORG_ID" ]]; then
+              echo "⚠️  Derived orgId '$ORG_ID' does not include a team slug; skipping --scope auto-fill"
+            fi
+          fi
 
-          # Validate deployment succeeded
-          if [[ -z "$preview_url" ]]; then
-            echo "❌ Preview deployment failed - no URL returned"
-            exit 1
+          # Ensure local Vercel project settings are available for CLI commands
+          npx vercel pull --cwd apps/storefront --yes --environment=preview ${TEAM_ARG} --token "${VERCEL_TOKEN}"
+
+          node <<'PATCH'
+          const fs = require('fs');
+          const path = 'apps/storefront/.vercel/project.json';
+          const data = JSON.parse(fs.readFileSync(path, 'utf8'));
+          data.settings = data.settings || {};
+          data.settings.framework = data.settings.framework || 'nextjs';
+          data.settings.nodeVersion = data.settings.nodeVersion || '20.x';
+          data.settings.installCommand = 'bash ./vercel-install.sh';
+          data.settings.buildCommand = 'pnpm run build';
+          data.settings.outputDirectory = data.settings.outputDirectory || '.vercel/output';
+          fs.writeFileSync(path, JSON.stringify(data, null, 2));
+          PATCH
+
+          # Build prebuilt output for deterministic preview deploys (produces .vercel/output)
+          # If this fails, we will fallback to non-prebuilt deploy below.
+          (npx vercel build --cwd apps/storefront ${TEAM_ARG} --token "${VERCEL_TOKEN}" --yes) || echo "vercel build failed; will try non-prebuilt deploy if needed"
+
+          extract_preview_url() {
+            echo "$1" | grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' | tail -n 1
+          }
+
+          extract_deployment_id() {
+            echo "$1" | grep -Eo 'dpl_[A-Za-z0-9]{10,}' | tail -n 1
+          }
+
+          extract_error_message() {
+            echo "$1" | grep -E '^(Error|Error!|Error:)' | tail -n 1 | sed -E 's/^(Error!?[: ]*)//'
+          }
+
+          fetch_latest_preview() {
+            local project_id="$1"
+            local token="$2"
+            curl -sSf --retry 3 --retry-delay 2 \
+              -H "Authorization: Bearer ${token}" \
+              "https://api.vercel.com/v13/deployments?projectId=${project_id}&target=preview&limit=1"
+          }
+
+          resolve_project_id() {
+            if [[ -n "${VERCEL_STAGING_PROJECT_ID:-}" ]]; then
+              echo "${VERCEL_STAGING_PROJECT_ID}"
+            else
+              jq -r '.projectId // empty' apps/storefront/.vercel/project.json 2>/dev/null || true
+            fi
+          }
+
+          tmpfile_prebuilt=$(mktemp)
+          if (npx vercel deploy --cwd apps/storefront --prebuilt --yes --confirm ${TEAM_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_prebuilt" 2>&1; then
+            vercel_exit_code=0
+          else
+            vercel_exit_code=$?
+          fi
+          vercel_output=$(cat "$tmpfile_prebuilt")
+          rm -f "$tmpfile_prebuilt"
+
+          preview_url=$(extract_preview_url "$vercel_output")
+          deployment_id=$(extract_deployment_id "$vercel_output")
+
+          if [[ -z "$preview_url" || -z "$deployment_id" ]]; then
+            project_id=$(resolve_project_id)
+            if [[ -n "$project_id" ]]; then
+              latest_json=$(fetch_latest_preview "$project_id" "${VERCEL_TOKEN}") || true
+              if [[ -n "$latest_json" ]]; then
+                if [[ -z "$deployment_id" ]]; then
+                  deployment_id=$(echo "$latest_json" | jq -r '.deployments[0].id // empty' 2>/dev/null || true)
+                fi
+                if [[ -z "$preview_url" ]]; then
+                  latest_url=$(echo "$latest_json" | jq -r '.deployments[0].url // empty' 2>/dev/null || true)
+                  if [[ -n "$latest_url" ]]; then
+                    preview_url="https://${latest_url}"
+                  fi
+                fi
+              fi
+            fi
+          fi
+
+          # Fallback to non-prebuilt deploy when necessary
+          if [[ -z "$preview_url" || -z "$deployment_id" || $vercel_exit_code -ne 0 ]]; then
+            echo "ℹ️ Prebuilt deploy did not complete successfully; attempting fallback to non-prebuilt deploy"
+            tmpfile_fallback=$(mktemp)
+            if (npx vercel deploy --cwd apps/storefront --yes --confirm ${TEAM_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_fallback" 2>&1; then
+              vercel_exit_code=0
+            else
+              vercel_exit_code=$?
+            fi
+            vercel_output=$(cat "$tmpfile_fallback")
+            rm -f "$tmpfile_fallback"
+
+            preview_url=$(extract_preview_url "$vercel_output")
+            deployment_id=$(extract_deployment_id "$vercel_output")
+
+            if [[ -z "$preview_url" || -z "$deployment_id" ]]; then
+              project_id=${project_id:-$(resolve_project_id)}
+              if [[ -n "$project_id" ]]; then
+                latest_json=$(fetch_latest_preview "$project_id" "${VERCEL_TOKEN}") || true
+                if [[ -n "$latest_json" ]]; then
+                  if [[ -z "$deployment_id" ]]; then
+                    deployment_id=$(echo "$latest_json" | jq -r '.deployments[0].id // empty' 2>/dev/null || true)
+                  fi
+                  if [[ -z "$preview_url" ]]; then
+                    latest_url=$(echo "$latest_json" | jq -r '.deployments[0].url // empty' 2>/dev/null || true)
+                    if [[ -n "$latest_url" ]]; then
+                      preview_url="https://${latest_url}"
+                    fi
+                  fi
+                fi
+              fi
+            fi
+
+            if [[ -z "$preview_url" || -z "$deployment_id" || $vercel_exit_code -ne 0 ]]; then
+              echo "❌ Preview deployment failed - missing URL or deployment id"
+              echo "Debug output:"; echo "$vercel_output"
+              vercel_error=$(extract_error_message "$vercel_output")
+              if [[ -z "$vercel_error" ]]; then
+                vercel_error=$(echo "$vercel_output" | grep -E 'Error|ERROR|error|failed|FAILED|Failure' | tail -n 1 | tr -d '\r')
+              fi
+              if [[ -z "$vercel_error" && -n "${latest_json:-}" ]]; then
+                vercel_error=$(echo "$latest_json" | jq -r '.error.message // .error.code // empty' 2>/dev/null || true)
+              fi
+              if [[ -z "$vercel_error" ]]; then
+                vercel_error=$(echo "$vercel_output" | tail -n 40 | tr -d '\r' | tr '\n' '|' | sed 's/|/ | /g' | sed 's/[[:space:]]\+/ /g' | cut -c 1-500)
+                if [[ -z "$vercel_error" ]]; then
+                  vercel_error="Unknown error (see logs)"
+                fi
+              fi
+              echo "::error file=preview-deploy.sh::Vercel deploy failed: $vercel_error"
+              exit 1
+            fi
           fi
 
           echo "✅ Preview deployed successfully!"
@@ -384,7 +582,7 @@ jobs:
   preview-smoke-tests:
     name: Preview Smoke Tests
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && needs.preview.outputs.url != ''
     needs: preview
 
     steps:

@@ -39,3 +39,13 @@ solution architecture in `docs/solution-architecture.md`.
 - `pnpm --filter storefront dev` – Launch the Next.js storefront.
 
 Refer to service-specific READMEs inside `apps/*` for additional scripts (migrations, seeds, etc.).
+
+## Operations & CI/CD
+
+- End-to-end flow (push → deploy → health): `docs/ci-cd-gce-flow-2025-10-26.md`
+- GCE operations cheat sheet: `docs/cheat-sheet.md`
+
+## Developer Onboarding
+
+- Quick start: `docs/onboarding.md`
+- Runbooks: `docs/runbooks/deployments.md`, `docs/runbooks/troubleshooting.md`, `docs/runbooks/observability-baseline.md`

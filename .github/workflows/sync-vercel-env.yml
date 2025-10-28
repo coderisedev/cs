@@ -1,0 +1,111 @@
+name: Sync Vercel Env
+
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: 'Which projects to sync'
+        required: true
+        default: 'both'
+        type: choice
+        options: ['both','production','staging']
+      medusa_url:
+        description: 'Medusa API base URL'
+        required: true
+        default: 'https://api.aidenlux.com'
+      medusa_pk:
+        description: 'Publishable API key (leave blank to use MEDUSA_PUBLISHABLE_KEY secret)'
+        required: false
+        default: ''
+      strapi_url:
+        description: 'Strapi base URL (optional)'
+        required: false
+        default: 'https://content.aidenlux.com'
+      nextauth_prod:
+        description: 'NEXTAUTH_URL for production project'
+        required: true
+        default: 'https://prd.aidenlux.com'
+      nextauth_staging:
+        description: 'NEXTAUTH_URL for staging project'
+        required: true
+        default: 'https://staging.aidenlux.com'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure jq is installed
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Resolve inputs and secrets
+        id: vars
+        shell: bash
+        env:
+          IN_SCOPE: ${{ github.event.inputs.scope }}
+          IN_MEDUSA_URL: ${{ github.event.inputs.medusa_url }}
+          IN_MEDUSA_PK: ${{ github.event.inputs.medusa_pk }}
+          IN_STRAPI_URL: ${{ github.event.inputs.strapi_url }}
+          IN_NEXTAUTH_PROD: ${{ github.event.inputs.nextauth_prod }}
+          IN_NEXTAUTH_STAGING: ${{ github.event.inputs.nextauth_staging }}
+          SEC_MEDUSA_PK: ${{ secrets.MEDUSA_PUBLISHABLE_KEY }}
+        run: |
+          set -euo pipefail
+          MEDUSA_PK="$IN_MEDUSA_PK"
+          if [[ -z "$MEDUSA_PK" ]]; then
+            MEDUSA_PK="$SEC_MEDUSA_PK"
+          fi
+          if [[ -z "$MEDUSA_PK" ]]; then
+            echo "Publishable key not provided, set input 'medusa_pk' or secret MEDUSA_PUBLISHABLE_KEY" >&2
+            exit 1
+          fi
+          echo "scope=$IN_SCOPE" >> $GITHUB_OUTPUT
+          echo "medusa_url=$IN_MEDUSA_URL" >> $GITHUB_OUTPUT
+          echo "medusa_pk=$MEDUSA_PK" >> $GITHUB_OUTPUT
+          echo "strapi_url=$IN_STRAPI_URL" >> $GITHUB_OUTPUT
+          echo "nextauth_prod=$IN_NEXTAUTH_PROD" >> $GITHUB_OUTPUT
+          echo "nextauth_staging=$IN_NEXTAUTH_STAGING" >> $GITHUB_OUTPUT
+
+      - name: Sync env to Production project
+        if: ${{ steps.vars.outputs.scope == 'both' || steps.vars.outputs.scope == 'production' }}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          PROJECT_ID: ${{ secrets.VERCEL_PRODUCTION_PROJECT_ID }}
+          MEDUSA_URL: ${{ steps.vars.outputs.medusa_url }}
+          MEDUSA_PK: ${{ steps.vars.outputs.medusa_pk }}
+          STRAPI_URL: ${{ steps.vars.outputs.strapi_url }}
+          NEXTAUTH_URL: ${{ steps.vars.outputs.nextauth_prod }}
+        run: |
+          set -euo pipefail
+          chmod +x scripts/vercel/upsert-env.sh
+          # Public vars for both production and preview on this project
+          scripts/vercel/upsert-env.sh "$PROJECT_ID" NEXT_PUBLIC_MEDUSA_URL "$MEDUSA_URL" production,preview "$TEAM_ID"
+          scripts/vercel/upsert-env.sh "$PROJECT_ID" NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY "$MEDUSA_PK" production,preview "$TEAM_ID"
+          if [[ -n "$STRAPI_URL" ]]; then
+            scripts/vercel/upsert-env.sh "$PROJECT_ID" NEXT_PUBLIC_STRAPI_URL "$STRAPI_URL" production,preview "$TEAM_ID"
+          fi
+          # Only set NEXTAUTH_URL for production target on this project
+          scripts/vercel/upsert-env.sh "$PROJECT_ID" NEXTAUTH_URL "$NEXTAUTH_URL" production "$TEAM_ID"
+
+      - name: Sync env to Staging project
+        if: ${{ steps.vars.outputs.scope == 'both' || steps.vars.outputs.scope == 'staging' }}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          PROJECT_ID: ${{ secrets.VERCEL_STAGING_PROJECT_ID }}
+          MEDUSA_URL: ${{ steps.vars.outputs.medusa_url }}
+          MEDUSA_PK: ${{ steps.vars.outputs.medusa_pk }}
+          STRAPI_URL: ${{ steps.vars.outputs.strapi_url }}
+          NEXTAUTH_URL: ${{ steps.vars.outputs.nextauth_staging }}
+        run: |
+          set -euo pipefail
+          chmod +x scripts/vercel/upsert-env.sh
+          scripts/vercel/upsert-env.sh "$PROJECT_ID" NEXT_PUBLIC_MEDUSA_URL "$MEDUSA_URL" production,preview "$TEAM_ID"
+          scripts/vercel/upsert-env.sh "$PROJECT_ID" NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY "$MEDUSA_PK" production,preview "$TEAM_ID"
+          if [[ -n "$STRAPI_URL" ]]; then
+            scripts/vercel/upsert-env.sh "$PROJECT_ID" NEXT_PUBLIC_STRAPI_URL "$STRAPI_URL" production,preview "$TEAM_ID"
+          fi
+          scripts/vercel/upsert-env.sh "$PROJECT_ID" NEXTAUTH_URL "$NEXTAUTH_URL" production "$TEAM_ID"
+

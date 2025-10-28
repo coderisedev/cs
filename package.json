@@ -4,16 +4,23 @@
   "version": "0.1.0",
   "type": "module",
   "packageManager": "pnpm@10.18.2",
+  "engines": {
+    "node": ">=20.10.0"
+  },
   "scripts": {
     "start": "bash ./scripts/railway-medusa-start.sh",
     "lint": "turbo run lint",
     "test:unit": "turbo run test:unit",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
+    "build:quick": "git fetch --depth=1 origin main:refs/remotes/origin/main || true && TURBO_CONCURRENCY=2 turbo run build --filter=...[origin/main]",
+    "quick-check": "git fetch --depth=1 origin main:refs/remotes/origin/main || true && turbo run lint typecheck --filter=...[origin/main]",
     "deploy:staging": "tsx scripts/deploy.ts staging",
     "deploy:production": "tsx scripts/deploy.ts production",
     "deployment-status": "tsx scripts/deployment-status.ts",
-    "validate-preview": "tsx scripts/validate-preview-config.ts"
+    "validate-preview": "tsx scripts/validate-preview-config.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install --with-deps chromium"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
@@ -21,6 +28,7 @@
     "@typescript-eslint/parser": "^8.46.1",
     "eslint": "^9.38.0",
     "tsx": "^4.7.0",
-    "turbo": "^2.1.1"
+    "turbo": "^2.1.1",
+    "@playwright/test": "^1.48.2"
   }
 }

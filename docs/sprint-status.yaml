@@ -42,16 +42,16 @@ development_status:
   1-3-configure-github-actions-ci-pipeline: done
   1-4-provision-vercel-projects-deploy-production-staging: done
   1-5-implement-preview-deployments-per-pull-request: done
-  1-6-provision-railway-services-for-medusa-strapi: review
-  1-7-establish-automated-integration-test-harness: backlog
-  1-8-seed-observability-logging-baseline: ready-for-dev
-  1-9-document-developer-onboarding-runbooks: backlog
-  epic-1-retrospective: optional
+  1-6-operationalize-gcp-platform-for-medusa-strapi: done
+  1-7-establish-automated-integration-test-harness: done
+  1-8-seed-observability-logging-baseline: done
+  1-9-document-developer-onboarding-runbooks: done
+  epic-1-retrospective: completed
   epic-2: backlog
-  2-1-configure-medusa-store-seed-base-catalog: backlog
-  2-2-implement-product-attribute-media-management: backlog
-  2-3-build-catalog-api-layer-for-storefront: backlog
-  2-4-implement-product-listing-experience: backlog
+  2-1-configure-medusa-store-seed-base-catalog: in-progress
+  2-2-build-shop-and-product-templates: in-progress
+  2-3-integrate-paypal-checkout: in-progress
+  2-4-google-oauth-sign-in: in-progress
   2-5-deliver-rich-product-detail-pages: backlog
   2-6-implement-inventory-availability-indicators: backlog
   2-7-enable-pricing-currency-presentation: backlog

@@ -4,6 +4,17 @@ on:
   push:
     branches: [main, staging]
   workflow_dispatch:
+    inputs:
+      first_init:
+        description: "Run GCE first-init script (dangerous: edits PG/Redis/firewall)"
+        required: false
+        default: "false"
+        type: boolean
+      db_password:
+        description: "Optional initial PostgreSQL password for role 'cs'"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -13,9 +24,14 @@ permissions:
 env:
   REGISTRY: ghcr.io
   IMAGE_PREFIX: ${{ github.repository_owner }}/cs
+  RUN_FIRST_INIT: ${{ vars.GCE_FIRST_INIT || '' }}
 
 jobs:
   build-and-deploy:
+    outputs:
+      environment: ${{ steps.env.outputs.environment }}
+      image_tag: ${{ steps.env.outputs.image_tag }}
+      channel_tag: ${{ steps.env.outputs.channel_tag }}
     runs-on: ubuntu-latest
     concurrency:
       group: deploy-services-${{ github.ref }}
@@ -107,13 +123,37 @@ jobs:
           key: ${{ secrets.GCE_SSH_KEY }}
           # Provide sources as a single comma-separated string (plugin supports comma-separated list)
           # Also switch to explicit relative roots to avoid path resolution quirks
-          source: "./scripts/gce/deploy.sh,./infra/gcp/bin/collect-health.sh"
+          source: "./scripts/gce/deploy.sh,./scripts/gce/first-init.sh,./infra/gcp/bin/collect-health.sh"
           target: /tmp/cs-deploy
           overwrite: true
+
+      - name: First-time host init (optional)
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.first_init == true) || env.RUN_FIRST_INIT == 'true' }}
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          DB_PW: ${{ github.event_name == 'workflow_dispatch' && inputs.db_password != '' && inputs.first_init && inputs.db_password || secrets.GCE_DB_PASSWORD || '' }}
+        with:
+          host: ${{ secrets.GCE_HOST }}
+          username: ${{ secrets.GCE_USER }}
+          key: ${{ secrets.GCE_SSH_KEY }}
+          script: |
+            set -euo pipefail
+            # Run first-init with optional DB password when provided
+            if [ -n "${DB_PW:-}" ]; then
+              sudo bash /tmp/cs-deploy/scripts/gce/first-init.sh --db-password "$DB_PW"
+            else
+              sudo bash /tmp/cs-deploy/scripts/gce/first-init.sh
+            fi
+            # Keep scripts for later steps
+            mkdir -p /srv/cs/bin
+            install -m 750 /tmp/cs-deploy/scripts/gce/first-init.sh /srv/cs/bin/first-init.sh
 
       - name: Deploy services on GCE
         id: deploy
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
+          GHCR_PAT: ${{ secrets.GHCR_PAT }}
         with:
           host: ${{ secrets.GCE_HOST }}
           username: ${{ secrets.GCE_USER }}
@@ -126,8 +166,12 @@ jobs:
             install -m 750 /tmp/cs-deploy/scripts/gce/deploy.sh /srv/cs/bin/deploy.sh
             install -m 750 /tmp/cs-deploy/infra/gcp/bin/collect-health.sh /srv/cs/bin/collect-health.sh
             rm -rf /tmp/cs-deploy
-            # Authenticate Docker to GHCR on the host so compose pull can fetch private packages if needed
-            echo '${{ secrets.GITHUB_TOKEN }}' | docker login ghcr.io -u '${{ github.actor }}' --password-stdin >/dev/null 2>&1 || true
+            # Authenticate Docker to GHCR on the host for compose pull (PAT preferred, fallback to GITHUB_TOKEN)
+            if [ -n "${GHCR_PAT:-}" ]; then
+              echo "${GHCR_PAT}" | docker login ghcr.io -u "${GHCR_USERNAME:-${{ github.actor }}}" --password-stdin >/dev/null 2>&1
+            else
+              echo '${{ secrets.GITHUB_TOKEN }}' | docker login ghcr.io -u '${{ github.actor }}' --password-stdin >/dev/null 2>&1
+            fi
             TAG=${{ steps.env.outputs.image_tag }}
             /srv/cs/bin/deploy.sh --tag "$TAG" --cwd /srv/cs
             tail -n 20 /srv/cs/logs/deploy-*.log | sed "s/^/[deploy-log] /"
@@ -146,3 +190,43 @@ jobs:
 
           Remember to record the run in docs/runbooks/status-log.md with tunnel checks and curl outputs.
           SUMMARY
+
+  smoke-checks:
+    name: Post-deploy Smoke Checks
+    runs-on: ubuntu-latest
+    needs: build-and-deploy
+    if: needs.build-and-deploy.outputs.environment == 'production'
+
+    steps:
+      - name: Curl health endpoints with retries
+        shell: bash
+        run: |
+          set -euo pipefail
+          api_url="https://api.aidenlux.com/health"
+          cms_url="https://content.aidenlux.com/_health"
+          for url in "$api_url" "$cms_url"; do
+            echo "Checking $url"
+            ok=0
+            for i in {1..30}; do
+              code=$(curl -s -o /dev/null -w "%{http_code}" "$url" || echo "000")
+              if [ "$url" = "$cms_url" ]; then
+                if [ "$code" = "200" ] || [ "$code" = "204" ]; then ok=1; break; fi
+              else
+                if [ "$code" = "200" ]; then ok=1; break; fi
+              fi
+              echo "Attempt $i/30: $url -> HTTP $code; retrying in 5s..."
+              sleep 5
+            done
+            if [ $ok -ne 1 ]; then
+              echo "❌ Health check failed for $url" >&2
+              exit 1
+            else
+              echo "✅ $url healthy"
+            fi
+          done
+
+      - name: Add job summary
+        run: |
+          echo "## Post-deploy Smoke Checks" >> $GITHUB_STEP_SUMMARY
+          echo "- Checked https://api.aidenlux.com/health (200 required)" >> $GITHUB_STEP_SUMMARY
+          echo "- Checked https://content.aidenlux.com/_health (200/204 accepted)" >> $GITHUB_STEP_SUMMARY

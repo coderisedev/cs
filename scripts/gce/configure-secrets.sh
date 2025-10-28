@@ -226,7 +226,8 @@ configure_domains() {
   CORS_DOMAINS="$MAIN_URL,$STAGING_URL"
   run_cmd "sudo sed -i \"s|STORE_CORS=.*|STORE_CORS=$CORS_DOMAINS|\" /srv/cs/env/medusa.env"
   run_cmd "sudo sed -i \"s|ADMIN_CORS=.*|ADMIN_CORS=$ADMIN_URL|\" /srv/cs/env/medusa.env"
-  run_cmd "sudo sed -i \"s|AUTH_CORS=.*|AUTH_CORS=$MAIN_URL|\" /srv/cs/env/medusa.env"
+  # Allow both prod and staging storefront domains for auth callbacks
+  run_cmd "sudo sed -i \"s|AUTH_CORS=.*|AUTH_CORS=$MAIN_URL,$STAGING_URL|\" /srv/cs/env/medusa.env"
 
   log "Updating Strapi URL configuration"
   run_cmd "sudo sed -i \"s|URL=.*|URL=$CONTENT_URL|\" /srv/cs/env/strapi.env"

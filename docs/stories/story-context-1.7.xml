@@ -1,0 +1,80 @@
+<story-context id="bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>1.7</storyId>
+    <title>Establish Automated Integration Test Harness</title>
+    <status>ContextReadyDraft</status>
+    <generatedAt>2025-10-26</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/stories/story-1.7.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA><![CDATA[quality engineer]]></asA>
+    <iWant><![CDATA[integration and E2E test scaffolding that runs in CI against the storefront and backend APIs]]></iWant>
+    <soThat><![CDATA[critical user flows are validated continuously and regressions block deployment.]]></soThat>
+    <tasks>
+      <task id="1" ac="AC1"><![CDATA[Add Playwright with repository-standard config and `tests/e2e` directory.]]></task>
+      <task id="1.1" parent="1" ac="AC1"><![CDATA[Create smoke tests: homepage loads, Strapi /admin login renders, Medusa admin app at /app/admin serves index.]]></task>
+      <task id="1.2" parent="1" ac="AC1"><![CDATA[Provide local run scripts and README guidance.]]></task>
+      <task id="2" ac="AC2,AC3"><![CDATA[Integrate Playwright into GitHub Actions CI for PR and main with browser caching and artifacts.]]></task>
+      <task id="2.1" parent="2" ac="AC2"><![CDATA[Run Playwright against Vercel storefront and GCE APIs with retries.]]></task>
+      <task id="2.2" parent="2" ac="AC3"><![CDATA[Upload HTML report, traces, and screenshots; mark job failed on test failures.]]></task>
+      <task id="3" ac="AC4"><![CDATA[Add post-deploy smoke to verify Medusa /health (200) and Strapi /_health (204); summarize in job output.]]></task>
+      <task id="4" ac="AC3"><![CDATA[Document CI smoke/rollback steps and troubleshooting in docs.]]></task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="AC1"><![CDATA[Integration/E2E framework selected (Playwright) with repository-standard config and sample smoke tests that run locally and in CI.]]></criterion>
+    <criterion id="AC2"><![CDATA[GitHub Actions executes the Playwright suite on candidate builds against Vercel storefront and GCE-hosted APIs (https://api.aidenlux.com and https://content.aidenlux.com), with retries and artifact uploads.]]></criterion>
+    <criterion id="AC3"><![CDATA[Failures block deployment; CI surfaces HTML report and attaches relevant logs (Playwright traces/screenshots, selected Medusa/Strapi logs) for debugging.]]></criterion>
+    <criterion id="AC4"><![CDATA[Post-deploy smoke verifies /health endpoints: Medusa /health (200) and Strapi /_health (204). Results are summarized in the job summary.]]></criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc path="docs/epics.md" title="Epic 1" section="Story 1.7"><![CDATA[Defines the intent and ACs for establishing an integration test harness.]]></doc>
+      <doc path="docs/tech-spec-epic-1.md" title="Tech Spec - Epic 1" section="Test Strategy Summary"><![CDATA[Specifies CI gates, Playwright smoke, and reporting expectations.]]></doc>
+      <doc path="docs/ci-cd-gce-flow-2025-10-26.md" title="CI/CD Flow (GCE)" section="Smoke & Health Checks"><![CDATA[Outlines build, deploy, health verification, and artifact surfacing on GCE.]]></doc>
+      <doc path="docs/cheat-sheet.md" title="Ops Cheat Sheet" section="CI/E2E"><![CDATA[Operator references for running and debugging Playwright suites.]]></doc>
+    </docs>
+    <code>
+      <item path=".github/workflows/ci.yml" kind="workflow" symbol="ci" lines="" reason="Run Playwright on PR/main with cache and artifacts" />
+      <item path=".github/workflows/deploy-services.yml" kind="workflow" symbol="deploy-services" lines="" reason="Place to attach post-deploy smoke and rollback" />
+      <item path="infra/gcp/bin/collect-health.sh" kind="script" symbol="collect-health" lines="" reason="Health check script invoked after deploy" />
+    </code>
+    <dependencies>
+      <node>
+        <pkg name="@playwright/test" version="^1.x" />
+      </node>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <![CDATA[
+    - Keep smoke tests minimal and idempotent; avoid data mutations.
+    - Target production domains for main branch, staging/test domains for PRs.
+    - Preserve unauthenticated access for health endpoints; do not gate with SSO.
+    - Use caching for browsers to minimize CI time.
+    ]]>
+  </constraints>
+
+  <interfaces>
+    <api name="Medusa Health" kind="REST" signature="GET /health -> 200" path="apps/medusa" />
+    <api name="Strapi Health" kind="REST" signature="GET /_health -> 204" path="apps/strapi" />
+  </interfaces>
+
+  <tests>
+    <standards><![CDATA[Playwright for E2E smoke; Vitest for unit/integration. Store E2E specs under tests/e2e; publish HTML report and traces in CI.]]></standards>
+    <locations><![CDATA[tests/e2e/**/*.spec.ts, packages/**/__tests__/**/*.ts]]></locations>
+    <ideas><![CDATA[
+    - [AC1] Home page loads with 200 and renders primary nav.
+    - [AC1] Strapi /admin login page returns 200 and contains "Username" field.
+    - [AC1] Medusa admin app at /app/admin returns index.html.
+    - [AC4] GET https://api.aidenlux.com/health returns 200.
+    - [AC4] GET https://content.aidenlux.com/_health returns 204.
+    ]]></ideas>
+  </tests>
+</story-context>
+

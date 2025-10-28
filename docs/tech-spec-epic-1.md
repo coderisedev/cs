@@ -191,3 +191,9 @@ The monorepo mirrors the architecture document: `apps/web` (Next.js App Router),
 - **CI Gates:** All tests + lint/typecheck must pass; failing jobs block merge.  
 - **Monitoring Tests:** Synthetic Sentry event triggered post-deploy to confirm alerting; Pulumi “dry run” executed weekly to detect drift.  
 - **Documentation QA:** Checklist review ensuring onboarding/runbooks remain current.
+
+## Post-Review Follow-ups
+
+- [Story 1.7] Fix ESM usage in CI preview Playwright config: import `devices` via ESM (`import { defineConfig, devices } from '@playwright/test'`) and spread `{ ...devices['Desktop Chrome'] }`.
+- [Story 1.7] Align root `@playwright/test` to `^1.56.x` to match lockfile and avoid downgrade on fresh installs.
+ - [Story 1.9] Add owner contacts and SLA expectations to runbooks; include escalation path for operations handoffs.

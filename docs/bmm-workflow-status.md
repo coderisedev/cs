@@ -2,7 +2,7 @@
 
 **Project:** cs  
 **Created:** 2025-10-19  
-**Last Updated:** 2025-10-20  
+**Last Updated:** 2025-10-26  
 **Status File:** `bmm-workflow-status.md`
 
 ---
@@ -10,7 +10,7 @@
 ## Workflow Status Tracker
 
 **Current Phase:** 4-Implementation
-**Current Workflow:** dev-story (Story 1.6) - Pending
+**Current Workflow:** story-approved (Story 1.6) - Complete
 **Current Agent:** Scrum Master
 **Overall Progress:** 100%
 
@@ -44,8 +44,8 @@ This captures the full workflow path established during setup.
 | 4-Implementation | dev-story (iterative) | DEV | Implement stories | Planned |
 | 4-Implementation | story-approved | DEV | Mark complete, advance queue | Planned |
 
-**Current Step:** dev-story (Story 1.6)
-**Next Step:** story-approved (Story 1.6)
+**Current Step:** story-approved (Story 1.6)
+**Next Step:** create-story (Next story)
 
 ### Implementation Progress (Phase 4 Only)
 
@@ -53,9 +53,9 @@ This captures the full workflow path established during setup.
 - Backlog: 0 stories
 - TODO (Needs Drafting): 0 stories
 - Draft (Needs Review): 0 stories
-- In Progress (Approved for Development): 1 story
+- In Progress (Approved for Development): 0 stories
 - Ready for Implementation: 0 stories
-- Done: 5 stories
+- Done: 6 stories
 - Ready for Review: 0 stories
 
 #### TODO (Needs Drafting)
@@ -68,12 +68,7 @@ This captures the full workflow path established during setup.
 
 #### IN PROGRESS (Approved for Development)
 
-- **Story ID:** 1.6  
-  **Story Title:** Provision Railway Services for Medusa & Strapi  
-  **Story File:** docs/stories/story-1.6.md  
-  **Story Status:** Ready  
-  **Context File:** docs/stories/story-context-1.6.xml  
-  **Action:** DEV should run `*dev-story` using the generated context, then finish with `*story-approved`
+(No stories currently in progress)
 
 #### BACKLOG (Not Yet Drafted)
 
@@ -88,8 +83,9 @@ This captures the full workflow path established during setup.
 | 1.1 | docs/stories/story-1.1.md | 2025-10-19 | N/A |
 | 1.2 | docs/stories/story-1.2.md | 2025-10-20 | N/A |
 | 1.3 | docs/stories/story-1.3.md | 2025-10-20 | N/A |
+| 1.6 | docs/stories/story-1.6.md | 2025-10-25 | N/A |
 
-**Total completed:** 5 stories
+**Total completed:** 6 stories
 **Total points completed:** N/A
 
 ### Artifacts Generated
@@ -171,20 +167,22 @@ This captures the full workflow path established during setup.
 - **2025-10-20:** Sprint handoff note: with Stories 1.1-1.5 complete, the next workflow is create-story for Story 1.6 (Provision Railway Services for Medusa & Strapi).
 - **2025-10-20:** Drafted Story 1.6 "Provision Railway Services for Medusa & Strapi" via create-story workflow. Story saved to `docs/stories/story-1.6.md`; awaiting story-ready review.
 - **2025-10-20:** Story 1.6 marked Ready for development via story-ready workflow. Moved from Draft → IN PROGRESS; context generation queued.
-- **2025-10-21:** Attempted Pulumi-driven Railway deploy (staging). CLI uploads returned `404 Not Found` from `backboard.railway.com`; deployment blocked pending Railway support or manual project configuration.
+-- **2025-10-21:** Attempted Pulumi-driven Railway deploy (staging). CLI uploads returned `404 Not Found` from `backboard.railway.com`; deployment blocked pending Railway support or manual project configuration.
 - **2025-10-20:** Generated story context for Story 1.6 (`docs/stories/story-context-1.6.xml`) via story-context workflow to support dev-story handoff.
+- **2025-10-25:** Completed dev-story for Story 1.6 "Operationalize GCP Platform for Medusa & Strapi". All ACs satisfied; GHCR builds, GCE deploy, CF Tunnel, and health checks verified; documentation updated. Story status set to Done.
+- **2025-10-26:** Story 1.6 approved and marked Done via story-approved workflow. Moved from IN PROGRESS → DONE; queue open for next story.
 
 ### Next Action Required
 
-**What to do next:** Resolve Railway deployment blocker (CLI upload 404) before resuming Story 1.6 implementation.
+**What to do next:** Draft and context the next story, then proceed with `*dev-story` when ready.
 
 **Command to run:**
-- Verify Railway deploy token permissions or coordinate manual deploy via Railway UI.
-- Once deployments succeed, reload DEV agent and run `*dev-story` for Story 1.6, then `*story-approved`.
+- Run `*create-story` for the next prioritized backlog item.
+- After approval and context generation, execute `*dev-story`, then `*story-approved`.
 
-**Agent to load:** bmad/bmm/agents/dev.md (after Railway issue is cleared)
+**Agent to load:** bmad/bmm/agents/dev.md (for next story cycle)
 
-**Current Status:** 5 stories complete (1.1-1.5); Story 1.6 awaiting Railway deployment fix; remaining stories unstarted.
+**Current Status:** 6 stories complete (1.1–1.6); no stories currently in progress; remaining stories unstarted.
 
 ---
 

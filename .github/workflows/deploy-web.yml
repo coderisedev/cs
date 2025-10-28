@@ -43,9 +43,9 @@ jobs:
           cache: 'pnpm'
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 10.18.2
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -95,6 +95,17 @@ jobs:
           PULUMI_STACK_NAME: ${{ steps.env.outputs.environment == 'production' && 'production' || 'staging' }}
         run: |
           echo "🚀 Deploying to ${{ steps.env.outputs.environment }}..."
+
+          # Ensure correct Vercel linkage for production deployments when CLI is used
+          if [[ "${{ steps.env.outputs.environment }}" == "production" ]]; then
+            mkdir -p apps/storefront/.vercel
+            if [[ -f apps/storefront/.vercel/project.production.json ]]; then
+              cp apps/storefront/.vercel/project.production.json apps/storefront/.vercel/project.json
+              echo "✅ Applied production Vercel linkage (apps/storefront/.vercel/project.json)"
+            else
+              echo "ℹ️ apps/storefront/.vercel/project.production.json not found; relying on explicit project args or Pulumi outputs"
+            fi
+          fi
 
           # Use the deployment script
           if [[ "${{ steps.env.outputs.environment }}" == "production" ]]; then
