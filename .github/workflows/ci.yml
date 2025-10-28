@@ -462,6 +462,9 @@ jobs:
               echo "❌ Preview deployment failed - missing URL or deployment id"
               echo "Debug output:"; echo "$vercel_output"
               vercel_error=$(extract_error_message "$vercel_output")
+              if [[ -z "$vercel_error" ]]; then
+                vercel_error=$(echo "$vercel_output" | grep -E 'Error|ERROR|error|failed|FAILED|Failure' | tail -n 1 | tr -d '\r')
+              fi
               if [[ -z "$vercel_error" && -n "${latest_json:-}" ]]; then
                 vercel_error=$(echo "$latest_json" | jq -r '.error.message // .error.code // empty' 2>/dev/null || true)
               fi
