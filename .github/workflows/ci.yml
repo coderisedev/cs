@@ -339,13 +339,34 @@ jobs:
         id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_STAGING_PROJECT_ID }}
+          VERCEL_TEAM_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          VERCEL_STAGING_PROJECT_ID: ${{ secrets.VERCEL_STAGING_PROJECT_ID }}
+          VERCEL_STAGING_PROJECT_NAME: ${{ secrets.VERCEL_STAGING_PROJECT_NAME }}
         run: |
           echo "🚀 Deploying preview to Vercel..."
 
-          # Deploy using Vercel CLI with prebuilt artifacts
-          vercel_output=$(npx vercel deploy --prebuilt --json --team ${{ secrets.VERCEL_TEAM_ID }} 2>/dev/null || echo '{}')
+          # Gracefully skip if token is missing
+          if [[ -z "${VERCEL_TOKEN:-}" ]]; then
+            echo "ℹ️ Skipping Vercel preview: VERCEL_TOKEN not set"
+            echo "url=" >> $GITHUB_OUTPUT
+            echo "deployment_id=" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          TEAM_ARG=""
+          if [[ -n "${VERCEL_TEAM_ID:-}" ]]; then
+            TEAM_ARG="--scope ${VERCEL_TEAM_ID}"
+          fi
+          PROJ_ARG=""
+          if [[ -n "${VERCEL_STAGING_PROJECT_NAME:-}" ]]; then
+            PROJ_ARG="--project ${VERCEL_STAGING_PROJECT_NAME}"
+          elif [[ -n "${VERCEL_STAGING_PROJECT_ID:-}" ]]; then
+            PROJ_ARG="--project ${VERCEL_STAGING_PROJECT_ID}"
+          fi
+
+          # Deploy using Vercel CLI with prebuilt artifacts from apps/storefront
+          set -o pipefail
+          vercel_output=$(cd apps/storefront && npx vercel deploy --prebuilt --json ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}" 2>/dev/null || echo '{}')
 
           # Parse deployment response
           preview_url=$(echo "$vercel_output" | jq -r '.url // empty')
@@ -444,7 +465,7 @@ jobs:
   preview-smoke-tests:
     name: Preview Smoke Tests
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && needs.preview.outputs.url != ''
     needs: preview
 
     steps:
