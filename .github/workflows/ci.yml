@@ -399,6 +399,10 @@ jobs:
             if [[ -z "$preview_url" ]]; then
               echo "❌ Preview deployment failed - no URL returned"
               echo "Debug output:"; echo "$vercel_output"
+              vercel_error=$(echo "$vercel_output" | jq -r '.error.message // .error.code // empty' 2>/dev/null || true)
+              if [[ -n "$vercel_error" ]]; then
+                echo "::error file=preview-deploy.sh::Vercel deploy failed: $vercel_error"
+              fi
               exit 1
             fi
           fi
