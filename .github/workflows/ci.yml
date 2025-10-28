@@ -399,7 +399,11 @@ jobs:
             if [[ -z "$preview_url" ]]; then
               echo "❌ Preview deployment failed - no URL returned"
               echo "Debug output:"; echo "$vercel_output"
-              vercel_error=$(echo "$vercel_output" | jq -r '.error.message // .error.code // empty' 2>/dev/null || true)
+              last_line=$(echo "$vercel_output" | tail -n 1)
+              vercel_error=$(echo "$last_line" | jq -r '.error.message // .error.code // empty' 2>/dev/null || true)
+              if [[ -z "$vercel_error" ]]; then
+                vercel_error=$(echo "$last_line" | tr -d '\r')
+              fi
               if [[ -n "$vercel_error" ]]; then
                 echo "::error file=preview-deploy.sh::Vercel deploy failed: $vercel_error"
               fi
