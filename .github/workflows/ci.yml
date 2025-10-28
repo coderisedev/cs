@@ -366,6 +366,19 @@ jobs:
           # Ensure local Vercel project settings are available for CLI commands
           npx vercel pull --cwd apps/storefront --yes --environment=preview ${TEAM_ARG} --token "${VERCEL_TOKEN}"
 
+          node <<'PATCH'
+          const fs = require('fs');
+          const path = 'apps/storefront/.vercel/project.json';
+          const data = JSON.parse(fs.readFileSync(path, 'utf8'));
+          data.settings = data.settings || {};
+          data.settings.framework = data.settings.framework || 'nextjs';
+          data.settings.nodeVersion = data.settings.nodeVersion || '20.x';
+          data.settings.installCommand = 'pnpm install --no-frozen-lockfile';
+          data.settings.buildCommand = 'pnpm run build';
+          data.settings.outputDirectory = data.settings.outputDirectory || '.vercel/output';
+          fs.writeFileSync(path, JSON.stringify(data, null, 2));
+          PATCH
+
           # Build prebuilt output for deterministic preview deploys (produces .vercel/output)
           # If this fails, we will fallback to non-prebuilt deploy below.
           (npx vercel build --cwd apps/storefront ${TEAM_ARG} --token "${VERCEL_TOKEN}" --yes) || echo "vercel build failed; will try non-prebuilt deploy if needed"
