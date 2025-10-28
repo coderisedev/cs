@@ -4,6 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "packageManager": "pnpm@10.18.2",
+  "engines": {
+    "node": ">=20.10.0"
+  },
   "scripts": {
     "start": "bash ./scripts/railway-medusa-start.sh",
     "lint": "turbo run lint",
