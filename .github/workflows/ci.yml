@@ -356,30 +356,16 @@ jobs:
           TEAM_ARG=""
           if [[ -n "${VERCEL_TEAM_ID:-}" ]]; then
             TEAM_ARG="--scope ${VERCEL_TEAM_ID}"
-          fi
-          PROJ_ARG=""
-          if [[ -n "${VERCEL_STAGING_PROJECT_NAME:-}" ]]; then
-            PROJ_ARG="--project ${VERCEL_STAGING_PROJECT_NAME}"
-          elif [[ -n "${VERCEL_STAGING_PROJECT_ID:-}" ]]; then
-            PROJ_ARG="--project ${VERCEL_STAGING_PROJECT_ID}"
-          fi
-
-          # Derive scope/project from .vercel file if not set via secrets
-          if [[ -z "$TEAM_ARG" || -z "$PROJ_ARG" ]]; then
-            if [[ -f apps/storefront/.vercel/project.json ]]; then
-              ORG_ID=$(jq -r '.orgId // empty' apps/storefront/.vercel/project.json 2>/dev/null || true)
-              PROJ_ID=$(jq -r '.projectId // empty' apps/storefront/.vercel/project.json 2>/dev/null || true)
-              if [[ -z "$TEAM_ARG" && -n "$ORG_ID" ]]; then
-                echo "⚠️  Derived orgId '$ORG_ID' does not include a team slug; skipping --scope auto-fill"
-              fi
-              if [[ -z "$PROJ_ARG" && -n "$PROJ_ID" ]]; then PROJ_ARG="--project $PROJ_ID"; fi
-              echo "Using linkage: TEAM_ARG='$TEAM_ARG' PROJ_ARG='$PROJ_ARG'"
+          elif [[ -f apps/storefront/.vercel/project.json ]]; then
+            ORG_ID=$(jq -r '.orgId // empty' apps/storefront/.vercel/project.json 2>/dev/null || true)
+            if [[ -n "$ORG_ID" ]]; then
+              echo "⚠️  Derived orgId '$ORG_ID' does not include a team slug; skipping --scope auto-fill"
             fi
           fi
 
           # Build prebuilt output for deterministic preview deploys (produces .vercel/output)
           # If this fails, we will fallback to non-prebuilt deploy below.
-          (cd apps/storefront && npx vercel build ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}" --yes) || echo "vercel build failed; will try non-prebuilt deploy if needed"
+          (cd apps/storefront && npx vercel build ${TEAM_ARG} --token "${VERCEL_TOKEN}" --yes) || echo "vercel build failed; will try non-prebuilt deploy if needed"
 
           extract_preview_url() {
             echo "$1" | grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' | tail -n 1
@@ -410,7 +396,7 @@ jobs:
           }
 
           tmpfile_prebuilt=$(mktemp)
-          if (cd apps/storefront && npx vercel deploy --prebuilt --yes --confirm ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_prebuilt" 2>&1; then
+          if (cd apps/storefront && npx vercel deploy --prebuilt --yes --confirm ${TEAM_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_prebuilt" 2>&1; then
             vercel_exit_code=0
           else
             vercel_exit_code=$?
@@ -443,7 +429,7 @@ jobs:
           if [[ -z "$preview_url" || -z "$deployment_id" || $vercel_exit_code -ne 0 ]]; then
             echo "ℹ️ Prebuilt deploy did not complete successfully; attempting fallback to non-prebuilt deploy"
             tmpfile_fallback=$(mktemp)
-            if (cd apps/storefront && npx vercel deploy --yes --confirm ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_fallback" 2>&1; then
+            if (cd apps/storefront && npx vercel deploy --yes --confirm ${TEAM_ARG} --token "${VERCEL_TOKEN}") >"$tmpfile_fallback" 2>&1; then
               vercel_exit_code=0
             else
               vercel_exit_code=$?
