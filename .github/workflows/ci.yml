@@ -373,7 +373,7 @@ jobs:
           data.settings = data.settings || {};
           data.settings.framework = data.settings.framework || 'nextjs';
           data.settings.nodeVersion = data.settings.nodeVersion || '20.x';
-          data.settings.installCommand = 'corepack enable pnpm && pnpm install --no-frozen-lockfile';
+          data.settings.installCommand = 'bash ../../scripts/vercel/install-storefront.sh';
           data.settings.buildCommand = 'pnpm run build';
           data.settings.outputDirectory = data.settings.outputDirectory || '.vercel/output';
           fs.writeFileSync(path, JSON.stringify(data, null, 2));

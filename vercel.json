@@ -1,6 +1,6 @@
 {
   "framework": "nextjs",
-  "installCommand": "corepack enable pnpm && pnpm install --no-frozen-lockfile",
+  "installCommand": "bash ../../scripts/vercel/install-storefront.sh",
   "buildCommand": "pnpm run build",
   "outputDirectory": ".vercel/output"
 }
