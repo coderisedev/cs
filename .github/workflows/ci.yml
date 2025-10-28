@@ -366,7 +366,8 @@ jobs:
 
           # Deploy using Vercel CLI with prebuilt artifacts from apps/storefront
           set -o pipefail
-          vercel_output=$(cd apps/storefront && npx vercel deploy --prebuilt --json ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}" 2>/dev/null || echo '{}')
+          # Try prebuilt deploy first
+          vercel_output=$(cd apps/storefront && npx vercel deploy --prebuilt --json ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}" || echo '{}')
 
           # Parse deployment response
           preview_url=$(echo "$vercel_output" | jq -r '.url // empty')
@@ -374,8 +375,15 @@ jobs:
 
           # Validate deployment succeeded
           if [[ -z "$preview_url" ]]; then
-            echo "❌ Preview deployment failed - no URL returned"
-            exit 1
+            echo "ℹ️ Prebuilt deploy returned no URL; attempting fallback to non-prebuilt deploy"
+            vercel_output=$(cd apps/storefront && npx vercel deploy --json ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}" || echo '{}')
+            preview_url=$(echo "$vercel_output" | jq -r '.url // empty')
+            deployment_id=$(echo "$vercel_output" | jq -r '.id // empty')
+            if [[ -z "$preview_url" ]]; then
+              echo "❌ Preview deployment failed - no URL returned"
+              echo "Debug output:"; echo "$vercel_output"
+              exit 1
+            fi
           fi
 
           echo "✅ Preview deployed successfully!"
