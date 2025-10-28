@@ -369,11 +369,17 @@ jobs:
             if [[ -f apps/storefront/.vercel/project.json ]]; then
               ORG_ID=$(jq -r '.orgId // empty' apps/storefront/.vercel/project.json 2>/dev/null || true)
               PROJ_ID=$(jq -r '.projectId // empty' apps/storefront/.vercel/project.json 2>/dev/null || true)
-              if [[ -z "$TEAM_ARG" && -n "$ORG_ID" ]]; then TEAM_ARG="--scope $ORG_ID"; fi
+              if [[ -z "$TEAM_ARG" && -n "$ORG_ID" ]]; then
+                echo "⚠️  Derived orgId '$ORG_ID' does not include a team slug; skipping --scope auto-fill"
+              fi
               if [[ -z "$PROJ_ARG" && -n "$PROJ_ID" ]]; then PROJ_ARG="--project $PROJ_ID"; fi
               echo "Using linkage: TEAM_ARG='$TEAM_ARG' PROJ_ARG='$PROJ_ARG'"
             fi
           fi
+
+          # Build prebuilt output for deterministic preview deploys (produces .vercel/output)
+          # If this fails, we will fallback to non-prebuilt deploy below.
+          (cd apps/storefront && npx vercel build ${TEAM_ARG} ${PROJ_ARG} --token "${VERCEL_TOKEN}" --yes) || echo "vercel build failed; will try non-prebuilt deploy if needed"
 
           # Deploy using Vercel CLI with prebuilt artifacts from apps/storefront
           set -o pipefail
