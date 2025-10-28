@@ -2,6 +2,7 @@
   "name": "storefront",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.18.2",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "NEXT_TELEMETRY_DISABLED=1 next build --turbopack",
