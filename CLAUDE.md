@@ -40,7 +40,7 @@ The `bmad/` directory contains methodology assets:
 # Install dependencies across workspace
 pnpm install
 
-# Set up environment files
+# Set up environment files (if not already present)
 cp apps/storefront/.env.local.example apps/storefront/.env.local
 cp apps/medusa/.env.template apps/medusa/.env
 cp apps/strapi/.env.example apps/strapi/.env
@@ -63,6 +63,9 @@ pnpm build
 # Run linting via Turbo across all packages
 pnpm lint
 
+# Run type checking across all packages
+pnpm typecheck
+
 # Run unit tests across all packages
 pnpm test:unit
 ```
@@ -70,17 +73,28 @@ pnpm test:unit
 ### Service-Specific Commands
 
 ```bash
-# Medusa-specific
-cd apps/medusa
-pnpm seed                       # Seed database with sample data
-pnpm test:unit                  # Run Medusa unit tests
-pnpm test:integration:http      # Run HTTP integration tests
+# Medusa-specific (from apps/medusa directory)
+pnpm dev                         # Start Medusa development server
+pnpm build                       # Build Medusa for production
+pnpm start                       # Start production Medusa server
+pnpm seed                        # Seed database with sample data
+pnpm test:unit                   # Run Medusa unit tests
+pnpm test:integration:http       # Run HTTP integration tests
+pnpm test:integration:modules    # Run modules integration tests
 
-# Strapi-specific
-cd apps/strapi
-pnpm build                      # Build admin panel
-pnpm deploy                     # Deploy to production
-pnpm console                    # Open Strapi console
+# Strapi-specific (from apps/strapi directory)
+pnpm develop                     # Start Strapi development server
+pnpm build                       # Build Strapi admin panel
+pnpm start                       # Start production Strapi server
+pnpm deploy                      # Deploy to production
+pnpm console                     # Open Strapi console
+pnpm upgrade                     # Upgrade Strapi to latest version
+
+# Storefront-specific (from apps/storefront directory)
+pnpm dev                         # Start Next.js dev server with Turbopack
+pnpm build                       # Build for production with Turbopack
+pnpm start                       # Start production server
+pnpm lint                        # Run ESLint
 ```
 
 ### BMAD Workflow Validation
@@ -105,7 +119,7 @@ rg "{project-root}" bmad -g'*.*'
 - **Backend**: Medusa 2.x (commerce), Strapi v5 (CMS)
 - **Database**: PostgreSQL 15 with Redis for caching/queues
 - **Styling**: Tailwind CSS with Shadcn UI components and Radix primitives
-- **Testing**: Vitest (unit), Playwright (E2E), Jest (Medusa)
+- **Testing**: Vitest (unit), Playwright (E2E), Jest (Medusa integration and unit tests)
 - **Infrastructure**: Railway (services), Vercel (frontend), Pulumi (IaC)
 
 ## Coding Style & Conventions
@@ -167,12 +181,13 @@ rg "{project-root}" bmad -g'*.*'
 ### Unit Testing
 
 - Vitest + Testing Library for UI components and utilities
-- Jest for Medusa backend units
+- Jest for Medusa backend (unit and integration tests)
 - Coverage targets: 80% statements/branches, 90% for critical modules
 
 ### Integration Testing
 
 - Vitest with supertest against Medusa/Strapi endpoints
+- Jest integration tests for Medusa HTTP endpoints and modules
 - Validate BFF endpoints and webhook processing
 - Test composite data flows between services
 
@@ -209,3 +224,17 @@ Key principles:
 - PRs require lint/test/build checks with preview environments
 - Weekly architecture reviews ensure cohesion
 - Accessibility (WCAG 2.1 AA) and performance as first-class concerns
+
+## Root-Level Commands
+
+The root package.json includes additional deployment and validation commands:
+
+```bash
+# Deployment commands (from project root)
+pnpm deploy:staging             # Deploy to staging environment
+pnpm deploy:production          # Deploy to production environment
+pnpm deployment-status          # Check deployment status
+
+# Validation commands
+pnpm validate-preview           # Validate preview configuration
+```

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/luokai/code/cs/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
