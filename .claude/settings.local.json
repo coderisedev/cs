@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__web-search-prime__webSearchPrime",
+      "WebFetch(domain:store.dji.com)",
+      "WebFetch(domain:www.dji.com)",
+      "WebFetch(domain:developer.dji.com)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
