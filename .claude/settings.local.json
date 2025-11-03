@@ -5,7 +5,8 @@
       "WebFetch(domain:store.dji.com)",
       "WebFetch(domain:www.dji.com)",
       "WebFetch(domain:developer.dji.com)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
