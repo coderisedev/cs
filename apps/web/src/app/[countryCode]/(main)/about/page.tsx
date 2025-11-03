@@ -17,7 +17,7 @@ export default function AboutPage() {
               About Us
             </h1>
             <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed">
-              We're on a mission to revolutionize e-commerce with cutting-edge technology
+              We&apos;re on a mission to revolutionize e-commerce with cutting-edge technology
               and exceptional user experiences.
             </p>
           </div>
@@ -36,7 +36,7 @@ export default function AboutPage() {
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h2>
                 <p className="text-gray-600 leading-relaxed">
                   To empower businesses with modern, scalable e-commerce solutions that combine
-                  the power of Medusa's headless commerce engine with Next.js performance and
+                  the power of Medusa&apos;s headless commerce engine with Next.js performance and
                   flexibility. We believe in creating shopping experiences that delight customers
                   and drive business growth.
                 </p>
@@ -67,7 +67,7 @@ export default function AboutPage() {
                   performance modern customers expect.
                 </p>
                 <p>
-                  By combining Medusa's powerful headless commerce engine with Next.js's
+                  By combining Medusa&apos;s powerful headless commerce engine with Next.js&apos;s
                   cutting-edge frontend capabilities, we created a platform that delivers
                   lightning-fast performance, infinite customization, and seamless scalability.
                 </p>
@@ -89,7 +89,7 @@ export default function AboutPage() {
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-3">Customer First</h3>
                   <p className="text-gray-600">
-                    Every decision we make starts with understanding and serving our customers' needs.
+                    Every decision we make starts with understanding and serving our customers&apos; needs.
                   </p>
                 </div>
 
@@ -109,7 +109,7 @@ export default function AboutPage() {
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-3">Excellence</h3>
                   <p className="text-gray-600">
-                    We're committed to delivering quality in everything we do.
+                    We&apos;re committed to delivering quality in everything we do.
                   </p>
                 </div>
               </div>

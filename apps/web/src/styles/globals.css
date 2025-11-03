@@ -1,58 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
+@import "./design-tokens.css";
+@import "./legacy-medusa.css";
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
 @layer base {
   :root {
-    --radius: 0.5rem;
-    
-    /* DJI Design System - Light Theme */
-    --background-primary: 0 0% 100%; /* #ffffff */
-    --background-secondary: 0 0% 98%; /* #fafafa */
-    --background-elevated: 0 0% 95%; /* #f2f2f2 */
-    --background-overlay: 0 0% 93%; /* #eeeeed */
-    
-    --foreground-primary: 0 0% 19%; /* #303233 */
-    --foreground-secondary: 0 0% 45%; /* #737373 */
-    --foreground-muted: 0 0% 55%; /* #8c8c8c */
-    
-    --border-primary: 0 0% 93%; /* #eeeeed */
-    --border-secondary: 0 0% 94%; /* #f0f0f0 */
-    
-    /* DJI 7-Level Shadow System */
-    --shadow-xs: rgba(0, 0, 0, 0.05) 0px 2px 4px 0px;
-    --shadow-sm: rgba(0, 0, 0, 0.1) 0px 2px 6px 0px;
-    --shadow-md: rgba(0, 0, 0, 0.1) 0px 8px 16px 0px;
-    --shadow-lg: rgba(0, 0, 0, 0.1) 0px 16px 16px 0px;
-    --shadow-xl: rgba(0, 0, 0, 0.1) 0px 16px 32px 0px;
-    --shadow-directional: rgba(0, 0, 0, 0.1) 4px 4px 8px 0px;
-    --shadow-elevated: rgba(0, 0, 0, 0.2) 0px 2px 8px 0px;
-  }
-
-  [data-theme="dark"], .dark {
-    /* DJI Design System - Dark Theme */
-    --background-primary: 0 0% 10%; /* #1a1a1a */
-    --background-secondary: 0 0% 14%; /* #232323 */
-    --background-elevated: 0 0% 18%; /* #2d2d2d */
-    --background-overlay: 0 0% 8%; /* #141414 */
-    
-    --foreground-primary: 0 0% 100%; /* #ffffff */
-    --foreground-secondary: 0 0% 88%; /* #e0e0e0 */
-    --foreground-muted: 0 0% 60%; /* #999999 */
-    
-    --border-primary: 0 0% 18%; /* #2d2d2d */
-    --border-secondary: 0 0% 22%; /* #383838 */
-    
-    /* DJI 7-Level Shadow System - Dark Theme */
-    --shadow-xs: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
-    --shadow-sm: rgba(0, 0, 0, 0.15) 0px 2px 6px 0px;
-    --shadow-md: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px;
-    --shadow-lg: rgba(0, 0, 0, 0.25) 0px 16px 16px 0px;
-    --shadow-xl: rgba(0, 0, 0, 0.3) 0px 16px 32px 0px;
-    --shadow-directional: rgba(0, 0, 0, 0.2) 4px 4px 8px 0px;
-    --shadow-elevated: rgba(0, 0, 0, 0.35) 0px 2px 8px 0px;
+    --radius: var(--dji-radius-md);
   }
 
   /* DJI Typography System */
@@ -62,8 +18,8 @@
   }
 
   body {
-    background-color: hsl(var(--background-primary));
-    color: hsl(var(--foreground-primary));
+    background-color: hsl(var(--dji-color-surface-primary));
+    color: hsl(var(--dji-color-foreground-base));
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     font-weight: 400;
     font-size: 16px;
@@ -80,7 +36,7 @@
 
   /* DJI Focus styles for accessibility */
   *:focus-visible {
-    outline: 2px solid rgb(0, 112, 213);
+    outline: 2px solid hsl(var(--dji-color-focus-ring));
     outline-offset: 2px;
   }
 }

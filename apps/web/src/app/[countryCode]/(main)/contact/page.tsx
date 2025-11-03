@@ -4,7 +4,7 @@ import { Mail, MapPin, Phone, Clock } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Contact Us - Get In Touch",
-  description: "Have questions? We're here to help. Contact our team via email, phone, or our contact form.",
+  description: "Have questions? We&apos;re here to help. Contact our team via email, phone, or our contact form.",
 }
 
 export default function ContactPage() {
@@ -18,7 +18,7 @@ export default function ContactPage() {
               Contact Us
             </h1>
             <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed">
-              Have questions? We're here to help. Get in touch with our team.
+              Have questions? We&apos;re here to help. Get in touch with our team.
             </p>
           </div>
         </div>

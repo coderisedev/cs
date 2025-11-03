@@ -3,6 +3,7 @@
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { ShoppingCart, Star } from "lucide-react"
+import Image from "next/image"
 import { getProductPrice } from "@lib/util/get-product-price"
 
 interface ProductCardProps {
@@ -35,10 +36,12 @@ export default function ProductCard({ product, region }: ProductCardProps) {
         className="block relative overflow-hidden aspect-square bg-gray-100"
       >
         {thumbnail && (
-          <img
+          <Image
             src={thumbnail}
             alt={product.title || "Product"}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            sizes="(min-width: 1024px) 25vw, 50vw"
           />
         )}
         {isNew && (

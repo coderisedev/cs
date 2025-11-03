@@ -1,6 +1,7 @@
 import { Heading } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { ArrowRight, Clock, Calendar } from "lucide-react"
+import Image from "next/image"
 import blogData from "../../../../data/blog-posts.json"
 
 export default function LatestBlogPosts() {
@@ -55,10 +56,12 @@ export default function LatestBlogPosts() {
                     {/* Featured Image */}
                     <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100">
                       {post.featuredImage ? (
-                        <img
+                        <Image
                           src={post.featuredImage}
                           alt={post.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 80vw"
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-blue-200 to-purple-200"></div>
@@ -97,10 +100,12 @@ export default function LatestBlogPosts() {
                       {/* Author */}
                       <div className="flex items-center gap-3 mt-4 pt-4 border-t border-gray-200">
                         {post.author.avatar && (
-                          <img
+                          <Image
                             src={post.author.avatar}
                             alt={post.author.name}
-                            className="w-10 h-10 rounded-full object-cover"
+                            width={40}
+                            height={40}
+                            className="rounded-full object-cover"
                           />
                         )}
                         <div>

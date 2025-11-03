@@ -137,7 +137,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
                   {!loading && query && results.length === 0 && (
                     <div className="text-center py-8 text-foreground-secondary">
-                      No products found for "{query}"
+                      No products found for &quot;{query}&quot;
                     </div>
                   )}
 

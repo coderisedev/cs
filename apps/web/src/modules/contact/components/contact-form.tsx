@@ -107,7 +107,7 @@ export default function ContactForm() {
       {/* Success Message */}
       {submitStatus === "success" && (
         <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
-          Thank you! Your message has been sent successfully. We'll get back to you soon.
+          Thank you! Your message has been sent successfully. We&apos;ll get back to you soon.
         </div>
       )}
 
@@ -121,7 +121,7 @@ export default function ContactForm() {
       </button>
 
       <p className="text-sm text-gray-600">
-        * Required fields. We'll never share your information with anyone else.
+        * Required fields. We&apos;ll never share your information with anyone else.
       </p>
     </form>
   )

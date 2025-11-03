@@ -1,0 +1,13 @@
+{
+  "name": "tests-e2e",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "install-playwright": "playwright install"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.2"
+  }
+}

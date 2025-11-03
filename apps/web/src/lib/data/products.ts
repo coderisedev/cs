@@ -6,6 +6,11 @@ import { HttpTypes } from "@medusajs/types"
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import { getAuthHeaders, getCacheOptions } from "./cookies"
 import { getRegion, retrieveRegion } from "./regions"
+import {
+  getMockProducts,
+  getMockRegionByCountry,
+  getMockRegionById,
+} from "./mock-data"
 
 export const listProducts = async ({
   pageParam = 1,
@@ -39,9 +44,26 @@ export const listProducts = async ({
   }
 
   if (!region) {
+    region = countryCode
+      ? getMockRegionByCountry(countryCode)
+      : regionId
+      ? getMockRegionById(regionId)
+      : null
+  }
+
+  if (!region) {
+    const fallback = getMockProducts({
+      limit,
+      offset,
+      collection_id: queryParams?.collection_id as string | undefined,
+    })
+
+    const nextPage = fallback.count > offset + limit ? pageParam + 1 : null
+
     return {
-      response: { products: [], count: 0 },
-      nextPage: null,
+      response: fallback,
+      nextPage,
+      queryParams,
     }
   }
 
@@ -53,36 +75,49 @@ export const listProducts = async ({
     ...(await getCacheOptions("products")),
   }
 
-  return sdk.client
-    .fetch<{ products: HttpTypes.StoreProduct[]; count: number }>(
-      `/store/products`,
-      {
-        method: "GET",
-        query: {
-          limit,
-          offset,
-          region_id: region?.id,
-          // Request inventory quantity for variants (needed for stock checks)
-          fields: "+variants.inventory_quantity",
-          ...queryParams,
-        },
-        headers,
-        next,
-        cache: "force-cache",
-      }
-    )
-    .then(({ products, count }) => {
-      const nextPage = count > offset + limit ? pageParam + 1 : null
-
-      return {
-        response: {
-          products,
-          count,
-        },
-        nextPage: nextPage,
-        queryParams,
-      }
+  try {
+    const { products, count } = await sdk.client.fetch<{
+      products: HttpTypes.StoreProduct[]
+      count: number
+    }>(`/store/products`, {
+      method: "GET",
+      query: {
+        limit,
+        offset,
+        region_id: region?.id,
+        // Request inventory quantity for variants (needed for stock checks)
+        fields: "+variants.inventory_quantity",
+        ...queryParams,
+      },
+      headers,
+      next,
+      cache: "force-cache",
     })
+
+    const nextPage = count > offset + limit ? pageParam + 1 : null
+
+    return {
+      response: {
+        products,
+        count,
+      },
+      nextPage,
+      queryParams,
+    }
+  } catch (error) {
+    const fallback = getMockProducts({
+      limit,
+      offset,
+      collection_id: queryParams?.collection_id as string | undefined,
+    })
+    const nextPage = fallback.count > offset + limit ? pageParam + 1 : null
+
+    return {
+      response: fallback,
+      nextPage,
+      queryParams,
+    }
+  }
 }
 
 /**

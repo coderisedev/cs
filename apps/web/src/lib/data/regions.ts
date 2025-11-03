@@ -4,20 +4,28 @@ import { sdk } from "@lib/config"
 import medusaError from "@lib/util/medusa-error"
 import { HttpTypes } from "@medusajs/types"
 import { getCacheOptions } from "./cookies"
+import {
+  getMockRegionByCountry,
+  getMockRegionById,
+  getMockRegions,
+} from "./mock-data"
 
 export const listRegions = async () => {
   const next = {
     ...(await getCacheOptions("regions")),
   }
 
-  return sdk.client
-    .fetch<{ regions: HttpTypes.StoreRegion[] }>(`/store/regions`, {
-      method: "GET",
-      next,
-      cache: "force-cache",
-    })
-    .then(({ regions }) => regions)
-    .catch(medusaError)
+  try {
+    return await sdk.client
+      .fetch<{ regions: HttpTypes.StoreRegion[] }>(`/store/regions`, {
+        method: "GET",
+        next,
+        cache: "force-cache",
+      })
+      .then(({ regions }) => regions)
+  } catch (error) {
+    return getMockRegions()
+  }
 }
 
 export const retrieveRegion = async (id: string) => {
@@ -25,14 +33,21 @@ export const retrieveRegion = async (id: string) => {
     ...(await getCacheOptions(["regions", id].join("-"))),
   }
 
-  return sdk.client
-    .fetch<{ region: HttpTypes.StoreRegion }>(`/store/regions/${id}`, {
-      method: "GET",
-      next,
-      cache: "force-cache",
-    })
-    .then(({ region }) => region)
-    .catch(medusaError)
+  try {
+    return await sdk.client
+      .fetch<{ region: HttpTypes.StoreRegion }>(`/store/regions/${id}`, {
+        method: "GET",
+        next,
+        cache: "force-cache",
+      })
+      .then(({ region }) => region)
+  } catch (error) {
+    const mock = getMockRegionById(id)
+    if (!mock) {
+      throw medusaError(error)
+    }
+    return mock
+  }
 }
 
 const regionMap = new Map<string, HttpTypes.StoreRegion>()
@@ -59,8 +74,16 @@ export const getRegion = async (countryCode: string) => {
       ? regionMap.get(countryCode)
       : regionMap.get("us")
 
-    return region
+    return (
+      region ||
+      (countryCode
+        ? getMockRegionByCountry(countryCode)
+        : getMockRegions()[0]) ||
+      null
+    )
   } catch (e: any) {
-    return null
+    return countryCode
+      ? getMockRegionByCountry(countryCode)
+      : getMockRegions()[0] || null
   }
 }

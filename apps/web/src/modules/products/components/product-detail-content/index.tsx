@@ -5,6 +5,7 @@ import { HttpTypes } from "@medusajs/types"
 import { Star, ShoppingCart, Truck, Shield, RefreshCw, Check } from "lucide-react"
 import { getProductPrice } from "@lib/util/get-product-price"
 import ProductDetailTabs from "@modules/products/components/product-detail-tabs"
+import Image from "next/image"
 
 interface ProductDetailContentProps {
   product: HttpTypes.StoreProduct
@@ -50,12 +51,14 @@ export default function ProductDetailContent({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12 lg:mb-16">
         {/* Image Gallery */}
         <div className="space-y-4">
-          <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+          <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden">
             {displayImages[selectedImage] && (
-              <img
+              <Image
                 src={displayImages[selectedImage].url}
                 alt={product.title || "Product image"}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 40vw, 100vw"
               />
             )}
           </div>
@@ -65,16 +68,18 @@ export default function ProductDetailContent({
                 <div
                   key={image.id || index}
                   onClick={() => setSelectedImage(index)}
-                  className={`aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all ${
+                  className={`relative aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer transition-all ${
                     selectedImage === index
                       ? "ring-2 ring-primary"
                       : "hover:ring-2 hover:ring-primary/50"
                   }`}
                 >
-                  <img
+                  <Image
                     src={image.url}
                     alt={`${product.title} - ${index + 1}`}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="96px"
                   />
                 </div>
               ))}

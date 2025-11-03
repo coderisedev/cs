@@ -1,6 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { ArrowRight } from "lucide-react"
+import Image from "next/image"
 
 export default function FeaturedCollections({
   collections,
@@ -34,10 +35,12 @@ export default function FeaturedCollections({
               <div className="group overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300 rounded-lg border border-gray-200">
                 <div className="relative overflow-hidden aspect-[4/3] bg-gray-100">
                   {collection.metadata?.image_url ? (
-                    <img
+                    <Image
                       src={collection.metadata.image_url as string}
                       alt={collection.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-blue-100 to-purple-100" />

@@ -1,0 +1,243 @@
+{
+  "regions": [
+    {
+      "id": "mock-region-us",
+      "name": "Mock United States",
+      "currency_code": "usd",
+      "tax_code": null,
+      "countries": [
+        {
+          "iso_2": "us",
+          "name": "United States"
+        }
+      ],
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "updated_at": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "collections": [
+    {
+      "id": "mock-collection-flight-decks",
+      "handle": "flight-decks",
+      "title": "Professional Flight Decks",
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "updated_at": "2024-01-01T00:00:00.000Z",
+      "metadata": {
+        "image_url": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80",
+        "hero_image": "https://images.unsplash.com/photo-1447433819943-74a20887a81e?auto=format&fit=crop&w=1600&q=80",
+        "description": "Turn your cockpit simulator into a production-grade flight deck with industrial avionics and tactile controls.",
+        "features": [
+          "Authentic Boeing and Airbus control layouts",
+          "Plug-and-play compatibility with major simulators",
+          "Modular design for scalable configurations"
+        ],
+        "specifications": [
+          {
+            "label": "Configuration",
+            "value": "Dual-seat, single or multi-engine"
+          },
+          {
+            "label": "Input Protocols",
+            "value": "USB-C, Ethernet, CAN bus"
+          }
+        ]
+      },
+      "products": [
+        "mock-product-captains-deck",
+        "mock-product-glass-cockpit"
+      ]
+    },
+    {
+      "id": "mock-collection-instruments",
+      "handle": "advanced-instruments",
+      "title": "Advanced Flight Instruments",
+      "created_at": "2024-01-05T00:00:00.000Z",
+      "updated_at": "2024-01-05T00:00:00.000Z",
+      "metadata": {
+        "image_url": "https://images.unsplash.com/photo-1465446751832-9f11e94c06f1?auto=format&fit=crop&w=1200&q=80",
+        "hero_image": "https://images.unsplash.com/photo-1470115636492-6d2b56f9146d?auto=format&fit=crop&w=1600&q=80",
+        "description": "High-fidelity instrumentation modules engineered for pilots in training and enthusiast builders alike.",
+        "features": [
+          "Sunlight-readable IPS displays",
+          "Hall-effect rotary encoders",
+          "Customizable annunciator panel"
+        ],
+        "specifications": [
+          {
+            "label": "Display",
+            "value": "1920x1080, 800 nits"
+          },
+          {
+            "label": "Input",
+            "value": "12 configurable soft-keys"
+          }
+        ]
+      },
+      "products": [
+        "mock-product-nav-suite",
+        "mock-product-engine-gauges"
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "mock-product-captains-deck",
+      "title": "Captain's Flight Deck",
+      "handle": "captains-flight-deck",
+      "description": "Full-scale captain side deck featuring authentic yoke, throttle quadrant, and backlit switch panels.",
+      "thumbnail": "https://images.unsplash.com/photo-1504194104404-433180773017?auto=format&fit=crop&w=800&q=80",
+      "created_at": "2024-02-01T00:00:00.000Z",
+      "updated_at": "2024-02-01T00:00:00.000Z",
+      "collection_id": "mock-collection-flight-decks",
+      "variants": [
+        {
+          "id": "mock-variant-captains-standard",
+          "title": "Standard",
+          "manage_inventory": true,
+          "allow_backorder": false,
+          "inventory_quantity": 8,
+          "calculated_price": {
+            "calculated_amount": 649000,
+            "original_amount": 699000,
+            "currency_code": "usd",
+            "calculated_price": {
+              "price_list_type": "default"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "mock-product-glass-cockpit",
+      "title": "Glass Cockpit Suite",
+      "handle": "glass-cockpit-suite",
+      "description": "Dual 15-inch glass displays with integrated avionics stack and tactile autopilot controls.",
+      "thumbnail": "https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?auto=format&fit=crop&w=800&q=80",
+      "created_at": "2024-03-12T00:00:00.000Z",
+      "updated_at": "2024-03-12T00:00:00.000Z",
+      "collection_id": "mock-collection-flight-decks",
+      "variants": [
+        {
+          "id": "mock-variant-glass-standard",
+          "title": "Standard",
+          "manage_inventory": true,
+          "allow_backorder": false,
+          "inventory_quantity": 15,
+          "calculated_price": {
+            "calculated_amount": 329000,
+            "original_amount": 349000,
+            "currency_code": "usd",
+            "calculated_price": {
+              "price_list_type": "default"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "mock-product-nav-suite",
+      "title": "Navigation Control Suite",
+      "handle": "navigation-control-suite",
+      "description": "Modular navigation stack with dual FMC, radio stack, and terrain awareness panel.",
+      "thumbnail": "https://images.unsplash.com/photo-1511629091441-ee46146481b0?auto=format&fit=crop&w=800&q=80",
+      "created_at": "2024-04-20T00:00:00.000Z",
+      "updated_at": "2024-04-20T00:00:00.000Z",
+      "collection_id": "mock-collection-instruments",
+      "variants": [
+        {
+          "id": "mock-variant-nav-suite",
+          "title": "Deluxe",
+          "manage_inventory": true,
+          "allow_backorder": false,
+          "inventory_quantity": 20,
+          "calculated_price": {
+            "calculated_amount": 189000,
+            "original_amount": 199000,
+            "currency_code": "usd",
+            "calculated_price": {
+              "price_list_type": "default"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "mock-product-engine-gauges",
+      "title": "Engine Gauge Cluster",
+      "handle": "engine-gauge-cluster",
+      "description": "High-resolution analog engine instrumentation with replaceable bezels and tactile dimming knobs.",
+      "thumbnail": "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=800&q=80",
+      "created_at": "2024-05-10T00:00:00.000Z",
+      "updated_at": "2024-05-10T00:00:00.000Z",
+      "collection_id": "mock-collection-instruments",
+      "variants": [
+        {
+          "id": "mock-variant-engine-cluster",
+          "title": "Standard",
+          "manage_inventory": true,
+          "allow_backorder": true,
+          "inventory_quantity": 5,
+          "calculated_price": {
+            "calculated_amount": 99000,
+            "original_amount": 109000,
+            "currency_code": "usd",
+            "calculated_price": {
+              "price_list_type": "default"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "id": "mock-category-flight-systems",
+      "name": "Flight Systems",
+      "handle": "flight-systems",
+      "created_at": "2024-01-01T00:00:00.000Z",
+      "updated_at": "2024-01-01T00:00:00.000Z",
+      "is_internal": false,
+      "is_active": true,
+      "products": ["mock-product-captains-deck", "mock-product-glass-cockpit"],
+      "category_children": [
+        {
+          "id": "mock-category-flight-decks",
+          "name": "Flight Decks",
+          "handle": "flight-systems/flight-decks",
+          "created_at": "2024-01-01T00:00:00.000Z",
+          "updated_at": "2024-01-01T00:00:00.000Z",
+          "is_internal": false,
+          "is_active": true,
+          "products": ["mock-product-captains-deck"],
+          "category_children": [],
+          "parent_category": null
+        },
+        {
+          "id": "mock-category-avionics",
+          "name": "Avionics",
+          "handle": "flight-systems/avionics",
+          "created_at": "2024-01-01T00:00:00.000Z",
+          "updated_at": "2024-01-01T00:00:00.000Z",
+          "is_internal": false,
+          "is_active": true,
+          "products": ["mock-product-glass-cockpit", "mock-product-nav-suite"],
+          "category_children": [],
+          "parent_category": null
+        }
+      ],
+      "parent_category": null
+    },
+    {
+      "id": "mock-category-instruments",
+      "name": "Instrument Panels",
+      "handle": "instrument-panels",
+      "created_at": "2024-01-05T00:00:00.000Z",
+      "updated_at": "2024-01-05T00:00:00.000Z",
+      "is_internal": false,
+      "is_active": true,
+      "products": ["mock-product-nav-suite", "mock-product-engine-gauges"],
+      "category_children": [],
+      "parent_category": null
+    }
+  ]
+}
