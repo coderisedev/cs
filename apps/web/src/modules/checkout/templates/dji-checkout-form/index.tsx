@@ -1,0 +1,62 @@
+import { listCartShippingMethods } from "@lib/data/fulfillment"
+import { listCartPaymentMethods } from "@lib/data/payment"
+import { HttpTypes } from "@medusajs/types"
+import Addresses from "@modules/checkout/components/addresses"
+import Payment from "@modules/checkout/components/payment"
+import Review from "@modules/checkout/components/review"
+import Shipping from "@modules/checkout/components/shipping"
+
+export default async function DjiCheckoutForm({
+  cart,
+  customer,
+}: {
+  cart: HttpTypes.StoreCart | null
+  customer: HttpTypes.StoreCustomer | null
+}) {
+  if (!cart) {
+    return null
+  }
+
+  const shippingMethods = await listCartShippingMethods(cart.id)
+  const paymentMethods = await listCartPaymentMethods(cart.region?.id ?? "")
+
+  if (!shippingMethods || !paymentMethods) {
+    return null
+  }
+
+  return (
+    <div className="w-full space-y-6">
+      {/* Addresses Section */}
+      <div className="bg-background-secondary border-0 shadow-card rounded-md p-6">
+        <h2 className="text-xl font-bold text-foreground-primary mb-6">
+          Shipping Information
+        </h2>
+        <Addresses cart={cart} customer={customer} />
+      </div>
+
+      {/* Shipping Method Section */}
+      <div className="bg-background-secondary border-0 shadow-card rounded-md p-6">
+        <h2 className="text-xl font-bold text-foreground-primary mb-6">
+          Shipping Method
+        </h2>
+        <Shipping cart={cart} availableShippingMethods={shippingMethods} />
+      </div>
+
+      {/* Payment Section */}
+      <div className="bg-background-secondary border-0 shadow-card rounded-md p-6">
+        <h2 className="text-xl font-bold text-foreground-primary mb-6">
+          Payment Method
+        </h2>
+        <Payment cart={cart} availablePaymentMethods={paymentMethods} />
+      </div>
+
+      {/* Review Section */}
+      <div className="bg-background-secondary border-0 shadow-card rounded-md p-6">
+        <h2 className="text-xl font-bold text-foreground-primary mb-6">
+          Review & Place Order
+        </h2>
+        <Review cart={cart} />
+      </div>
+    </div>
+  )
+}

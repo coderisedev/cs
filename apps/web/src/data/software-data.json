@@ -1,0 +1,155 @@
+{
+  "title": "Medusa Storefront Bridge",
+  "version": "v2025.1.0",
+  "releaseDate": "2025-01-15",
+  "description": "Professional e-commerce integration software for seamless connection between your storefront and backend services",
+  "features": [
+    {
+      "icon": "zap",
+      "title": "Plug & Play Setup",
+      "description": "Simply install and configure in minutes. No complex setup or technical expertise required."
+    },
+    {
+      "icon": "globe",
+      "title": "Auto-Discovery",
+      "description": "Automatically detects and connects to your Medusa backend services without manual configuration."
+    },
+    {
+      "icon": "settings",
+      "title": "Real-time Sync",
+      "description": "Keep your storefront and backend in perfect sync with real-time data synchronization."
+    },
+    {
+      "icon": "wifi",
+      "title": "API Integration",
+      "description": "Seamless REST API integration with built-in authentication and error handling."
+    },
+    {
+      "icon": "monitor",
+      "title": "Multi-Store Support",
+      "description": "Manage multiple storefronts from a single installation with region-based routing."
+    },
+    {
+      "icon": "shield",
+      "title": "Secure by Default",
+      "description": "Built-in security features including JWT authentication and CORS protection."
+    }
+  ],
+  "platforms": [
+    {
+      "name": "Medusa 2.x",
+      "status": "supported",
+      "version": "2.0+",
+      "description": "Full compatibility with the latest Medusa commerce engine"
+    },
+    {
+      "name": "Next.js 15",
+      "status": "supported",
+      "version": "15.x",
+      "description": "Built specifically for Next.js 15 App Router architecture"
+    },
+    {
+      "name": "PostgreSQL",
+      "status": "supported",
+      "version": "14+",
+      "description": "Optimized for PostgreSQL database backend"
+    },
+    {
+      "name": "Redis",
+      "status": "supported",
+      "version": "7.x",
+      "description": "Native Redis support for caching and sessions"
+    },
+    {
+      "name": "Strapi v5",
+      "status": "supported",
+      "version": "5.x",
+      "description": "Integrated content management system support"
+    },
+    {
+      "name": "Docker",
+      "status": "supported",
+      "version": "24+",
+      "description": "Container-ready with Docker Compose configuration"
+    }
+  ],
+  "compatibility": [
+    {
+      "category": "Payment Providers",
+      "items": [
+        { "name": "Stripe", "version": "Latest", "status": "supported" },
+        { "name": "PayPal", "version": "Latest", "status": "supported" },
+        { "name": "Square", "version": "Latest", "status": "supported" },
+        { "name": "Klarna", "version": "Latest", "status": "supported" }
+      ]
+    },
+    {
+      "category": "Shipping Providers",
+      "items": [
+        { "name": "ShipStation", "version": "v3+", "status": "supported" },
+        { "name": "EasyPost", "version": "Latest", "status": "supported" },
+        { "name": "FedEx", "version": "API v1", "status": "supported" },
+        { "name": "UPS", "version": "Latest", "status": "supported" }
+      ]
+    },
+    {
+      "category": "Analytics & Marketing",
+      "items": [
+        { "name": "Google Analytics 4", "version": "Latest", "status": "supported" },
+        { "name": "Meta Pixel", "version": "Latest", "status": "supported" },
+        { "name": "Mailchimp", "version": "v3+", "status": "supported" },
+        { "name": "SendGrid", "version": "Latest", "status": "supported" }
+      ]
+    }
+  ],
+  "versions": [
+    {
+      "version": "v2025.1.0",
+      "date": "January 15, 2025",
+      "changes": [
+        "Added Next.js 15 App Router support",
+        "Improved real-time sync performance",
+        "Enhanced multi-region support",
+        "Fixed cache invalidation issues"
+      ]
+    },
+    {
+      "version": "v2024.12.2",
+      "date": "December 20, 2024",
+      "changes": [
+        "Added Medusa 2.0 compatibility",
+        "Optimized database query performance",
+        "Improved error handling and logging",
+        "Enhanced security with JWT refresh tokens"
+      ]
+    },
+    {
+      "version": "v2024.12.0",
+      "date": "December 1, 2024",
+      "changes": [
+        "Initial public release",
+        "Support for Medusa 1.x and 2.x",
+        "Docker Compose configuration",
+        "Comprehensive documentation"
+      ]
+    }
+  ],
+  "systemRequirements": {
+    "minimum": {
+      "os": "Linux, macOS, or Windows (WSL2)",
+      "node": "Node.js 20.x or newer",
+      "memory": "4 GB RAM",
+      "storage": "2 GB available space",
+      "database": "PostgreSQL 14+",
+      "cache": "Redis 7+"
+    },
+    "recommended": {
+      "os": "Ubuntu 22.04 LTS or macOS 13+",
+      "node": "Node.js 22.x LTS",
+      "memory": "8 GB RAM",
+      "storage": "10 GB available space (SSD recommended)",
+      "database": "PostgreSQL 16+",
+      "cache": "Redis 7.2+"
+    }
+  }
+}
