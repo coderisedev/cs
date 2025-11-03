@@ -1,0 +1,232 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Mobile-first responsive typography */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@layer components {
+  /* Mobile-optimized container */
+  .mobile-container {
+    @apply w-full px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Touch-friendly buttons for mobile */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  /* Mobile navigation improvements */
+  .mobile-nav-item {
+    @apply py-3 px-4 text-base font-medium;
+  }
+  
+  /* Mobile product card improvements */
+  .mobile-product-card {
+    @apply p-3;
+  }
+  
+  .mobile-product-title {
+    @apply text-sm leading-tight;
+  }
+  
+  .mobile-product-price {
+    @apply text-base font-bold;
+  }
+  
+  /* Hero section enhancements */
+  .hero-background {
+    @apply relative overflow-hidden;
+  }
+  
+  .hero-content {
+    @apply relative z-10 flex items-center justify-center min-h-screen;
+  }
+  
+  .hero-title {
+    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .hero-subtitle {
+    @apply text-lg sm:text-xl md:text-2xl leading-relaxed;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .hero-button {
+    @apply transition-all duration-300 transform hover:scale-105 active:scale-95;
+  }
+  
+  .hero-overlay {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+  }
+  
+  /* List view specific styles */
+  .list-view-card {
+    @apply flex flex-col sm:flex-row gap-4;
+  }
+  
+  .list-view-image {
+    @apply w-full sm:w-48 h-48 sm:h-32 flex-shrink-0;
+  }
+  
+  .list-view-content {
+    @apply flex-1 p-4 sm:p-6 flex flex-col justify-between;
+  }
+  
+  .list-view-title {
+    @apply text-lg font-semibold mb-2 line-clamp-2;
+  }
+  
+  .list-view-description {
+    @apply text-gray-600 text-sm line-clamp-2 mb-4;
+  }
+  
+  .list-view-price {
+    @apply text-xl font-bold text-primary;
+  }
+  
+  .list-view-actions {
+    @apply flex items-center justify-between mt-auto;
+  }
+}
+
+@layer utilities {
+  /* Custom animations for mobile */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+  
+  .animate-slide-in {
+    animation: slideIn 0.3s ease-out forwards;
+  }
+  
+  .animate-zoom-in {
+    animation: zoomIn 0.3s ease-out forwards;
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-slide-in-up {
+    animation: slideInUp 0.6s ease-out forwards;
+  }
+  
+  .animate-fade-in-scale {
+    animation: fadeInScale 0.8s ease-out forwards;
+  }
+  
+  /* Hero specific utilities */
+  .hero-text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .hero-backdrop-blur {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  .hero-gradient-text {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better touch targets on mobile */
+button, a {
+  touch-action: manipulation;
+}
+
+/* Prevent zoom on input focus on iOS */
+input, select, textarea {
+  font-size: 16px;
+}
+
+@media screen and (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}

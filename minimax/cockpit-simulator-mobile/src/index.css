@@ -1,0 +1,323 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+    
+    /* DJI Design System - Light Theme */
+    --background-primary: 0 0% 100%; /* #ffffff */
+    --background-secondary: 0 0% 98%; /* #fafafa */
+    --background-elevated: 0 0% 95%; /* #f2f2f2 */
+    --background-overlay: 0 0% 93%; /* #eeeeed */
+    
+    --foreground-primary: 0 0% 19%; /* #303233 */
+    --foreground-secondary: 0 0% 45%; /* #737373 - Improved contrast for light theme */
+    --foreground-muted: 0 0% 55%; /* #8c8c8c - Improved contrast for light theme */
+    
+    --border-primary: 0 0% 93%; /* #eeeeed */
+    --border-secondary: 0 0% 94%; /* #f0f0f0 */
+    
+    /* DJI 7-Level Shadow System */
+    --shadow-xs: rgba(0, 0, 0, 0.05) 0px 2px 4px 0px;
+    --shadow-sm: rgba(0, 0, 0, 0.1) 0px 2px 6px 0px;
+    --shadow-md: rgba(0, 0, 0, 0.1) 0px 8px 16px 0px;
+    --shadow-lg: rgba(0, 0, 0, 0.1) 0px 16px 16px 0px;
+    --shadow-xl: rgba(0, 0, 0, 0.1) 0px 16px 32px 0px;
+    --shadow-directional: rgba(0, 0, 0, 0.1) 4px 4px 8px 0px;
+    --shadow-elevated: rgba(0, 0, 0, 0.2) 0px 2px 8px 0px;
+    
+    /* Legacy support */
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 112, 213, 0.1);
+    --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.15), 0 0 2px rgba(0, 112, 213, 0.2);
+    --shadow-modal: 0 24px 48px rgba(0, 0, 0, 0.2), 0 0 4px rgba(0, 112, 213, 0.15);
+    --shadow-glow-blue: 0 0 20px rgba(0, 112, 213, 0.4);
+    
+    /* Sidebar variables for compatibility */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  [data-theme="dark"], .dark {
+    /* DJI Design System - Dark Theme */
+    --background-primary: 0 0% 10%; /* #1a1a1a */
+    --background-secondary: 0 0% 14%; /* #232323 */
+    --background-elevated: 0 0% 18%; /* #2d2d2d */
+    --background-overlay: 0 0% 8%; /* #141414 */
+    
+    --foreground-primary: 0 0% 100%; /* #ffffff */
+    --foreground-secondary: 0 0% 88%; /* #e0e0e0 */
+    --foreground-muted: 0 0% 60%; /* #999999 */
+    
+    --border-primary: 0 0% 18%; /* #2d2d2d */
+    --border-secondary: 0 0% 22%; /* #383838 */
+    
+    /* DJI 7-Level Shadow System - Dark Theme */
+    --shadow-xs: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
+    --shadow-sm: rgba(0, 0, 0, 0.15) 0px 2px 6px 0px;
+    --shadow-md: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px;
+    --shadow-lg: rgba(0, 0, 0, 0.25) 0px 16px 16px 0px;
+    --shadow-xl: rgba(0, 0, 0, 0.3) 0px 16px 32px 0px;
+    --shadow-directional: rgba(0, 0, 0, 0.2) 4px 4px 8px 0px;
+    --shadow-elevated: rgba(0, 0, 0, 0.35) 0px 2px 8px 0px;
+    
+    /* Legacy support */
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.6), 0 0 1px rgba(0, 112, 213, 0.1);
+    --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 2px rgba(0, 112, 213, 0.2);
+    --shadow-modal: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 112, 213, 0.15);
+    --shadow-glow-blue: 0 0 20px rgba(0, 112, 213, 0.4);
+    
+    /* Sidebar variables for compatibility */
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* DJI Typography System */
+  html {
+    font-family: 'Open Sans', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Arial, sans-serif;
+  }
+
+  body {
+    background-color: hsl(var(--background-primary));
+    color: hsl(var(--foreground-primary));
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    font-weight: 400; /* DJI Regular weight */
+    font-size: 16px; /* DJI base font size */
+    line-height: normal;
+    transition: background-color 300ms ease, color 300ms ease;
+  }
+  
+  /* Theme transition for all elements */
+  * {
+    transition: background-color 300ms ease, border-color 300ms ease, color 300ms ease;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* DJI Focus styles for accessibility */
+  *:focus-visible {
+    outline: 2px solid hsl(206 100% 41%); /* DJI Blue #0070d5 */
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* DJI Animation System */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-in-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-in-out;
+  }
+
+  /* DJI Touch target for mobile */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* DJI Card hover effects */
+  .card-hover {
+    transition: all 0.3s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* DJI Button hover effects */
+  .btn-primary {
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  /* DJI Image hover effects */
+  .image-hover {
+    transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  .image-hover:hover {
+    transform: scale(1.05);
+  }
+
+  /* DJI Text gradient */
+  .text-gradient {
+    background: linear-gradient(135deg, #0070d5 0%, #0056a3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* DJI Typography Hierarchy */
+  .heading-1 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: normal;
+    color: rgb(0, 0, 0);
+  }
+
+  .heading-2 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: normal;
+    color: rgb(0, 0, 0);
+  }
+
+  .heading-3 {
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 36px;
+    letter-spacing: -0.96px;
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  .heading-4 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: normal;
+    color: rgb(0, 0, 0);
+  }
+
+  .heading-5 {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: normal;
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  .body-text {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
+    color: rgb(0, 0, 0);
+  }
+
+  .link-text {
+    color: rgb(0, 112, 213);
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .link-text:hover {
+    transition: color 0.3s ease;
+  }
+}
+
+@layer utilities {
+  /* DJI Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in,
+    .animate-slide-up,
+    .animate-scale-in,
+    .card-hover,
+    .btn-primary,
+    .image-hover {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* DJI Spacing utilities (8px Grid System) */
+  .space-8px { gap: 8px; }
+  .space-16px { gap: 16px; }
+  .space-24px { gap: 24px; }
+  .space-32px { gap: 32px; }
+  .space-48px { gap: 48px; }
+
+  /* DJI Padding utilities */
+  .p-btn-small { padding: 8px 16px; }
+  .p-btn-medium { padding: 15px 32px; }
+  .p-btn-large { padding: 16px 32px; }
+  .p-btn-capsule { padding: 8px 16px 8px 34px; }
+  .p-btn-outlined { padding: 5px 16px; }
+}
+
+/* DJI Keyframe animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* DJI Shutter animation */
+@keyframes shutter-in-top {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+img {
+  object-position: top;
+}
+
+.fixed {
+  position: fixed;
+}

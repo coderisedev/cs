@@ -1,0 +1,131 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$metadata": {
+    "name": "Flight Simulator E-commerce - DJI Design System",
+    "version": "1.0.0",
+    "description": "Design tokens for professional flight simulation hardware e-commerce platform",
+    "lastUpdated": "2025-11-02"
+  },
+  "color": {
+    "primary": {
+      "50": { "value": "#e8f0ff", "type": "color" },
+      "100": { "value": "#cce0ff", "type": "color" },
+      "200": { "value": "#99c1ff", "type": "color" },
+      "300": { "value": "#5a9aff", "type": "color" },
+      "400": { "value": "#3b7ede", "type": "color" },
+      "500": { "value": "#3b63a9", "type": "color", "description": "DJI Brand Blue - Primary CTAs" },
+      "600": { "value": "#2d4d84", "type": "color" },
+      "700": { "value": "#1f3860", "type": "color" },
+      "800": { "value": "#14253d", "type": "color" },
+      "900": { "value": "#0a1420", "type": "color" }
+    },
+    "neutral": {
+      "50": { "value": "#ffffff", "type": "color", "description": "Pure white - primary text" },
+      "100": { "value": "#f5f5f5", "type": "color" },
+      "200": { "value": "#e0e0e0", "type": "color" },
+      "300": { "value": "#a8a8a8", "type": "color" },
+      "400": { "value": "#6b6b6b", "type": "color" },
+      "500": { "value": "#4a4a4a", "type": "color" },
+      "600": { "value": "#2d2d2d", "type": "color" },
+      "700": { "value": "#232323", "type": "color" },
+      "800": { "value": "#1a1a1a", "type": "color", "description": "DJI Charcoal Black - main background" },
+      "900": { "value": "#0f0f0f", "type": "color" }
+    },
+    "background": {
+      "primary": { "value": "#1a1a1a", "type": "color" },
+      "secondary": { "value": "#232323", "type": "color" },
+      "elevated": { "value": "#2d2d2d", "type": "color" },
+      "overlay": { "value": "rgba(0, 0, 0, 0.85)", "type": "color" }
+    },
+    "semantic": {
+      "success": { "value": "#10b981", "type": "color" },
+      "warning": { "value": "#f59e0b", "type": "color" },
+      "error": { "value": "#ef4444", "type": "color" },
+      "info": { "value": "#3b82f6", "type": "color" }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "primary": { "value": "'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif", "type": "fontFamily" },
+      "mono": { "value": "'JetBrains Mono', 'Courier New', monospace", "type": "fontFamily" }
+    },
+    "fontSize": {
+      "xs": { "value": "12px", "type": "dimension" },
+      "sm": { "value": "14px", "type": "dimension" },
+      "base": { "value": "16px", "type": "dimension" },
+      "lg": { "value": "18px", "type": "dimension" },
+      "xl": { "value": "20px", "type": "dimension" },
+      "2xl": { "value": "24px", "type": "dimension" },
+      "3xl": { "value": "30px", "type": "dimension" },
+      "4xl": { "value": "36px", "type": "dimension" },
+      "5xl": { "value": "48px", "type": "dimension" },
+      "6xl": { "value": "64px", "type": "dimension" }
+    },
+    "fontWeight": {
+      "regular": { "value": "400", "type": "number" },
+      "medium": { "value": "500", "type": "number" },
+      "semibold": { "value": "600", "type": "number" },
+      "bold": { "value": "700", "type": "number" }
+    },
+    "lineHeight": {
+      "xs": { "value": "16px", "type": "dimension" },
+      "sm": { "value": "20px", "type": "dimension" },
+      "base": { "value": "24px", "type": "dimension" },
+      "lg": { "value": "28px", "type": "dimension" },
+      "xl": { "value": "28px", "type": "dimension" },
+      "2xl": { "value": "32px", "type": "dimension" },
+      "3xl": { "value": "36px", "type": "dimension" },
+      "4xl": { "value": "40px", "type": "dimension" },
+      "5xl": { "value": "52px", "type": "dimension" },
+      "6xl": { "value": "68px", "type": "dimension" }
+    },
+    "letterSpacing": {
+      "tight": { "value": "-0.02em", "type": "dimension" },
+      "normal": { "value": "0", "type": "dimension" },
+      "wide": { "value": "0.02em", "type": "dimension" },
+      "wider": { "value": "0.05em", "type": "dimension" }
+    }
+  },
+  "spacing": {
+    "1": { "value": "4px", "type": "dimension" },
+    "2": { "value": "8px", "type": "dimension" },
+    "3": { "value": "12px", "type": "dimension" },
+    "4": { "value": "16px", "type": "dimension" },
+    "5": { "value": "20px", "type": "dimension" },
+    "6": { "value": "24px", "type": "dimension" },
+    "8": { "value": "32px", "type": "dimension" },
+    "10": { "value": "40px", "type": "dimension" },
+    "12": { "value": "48px", "type": "dimension" },
+    "16": { "value": "64px", "type": "dimension" },
+    "20": { "value": "80px", "type": "dimension" },
+    "24": { "value": "96px", "type": "dimension" },
+    "32": { "value": "128px", "type": "dimension" }
+  },
+  "borderRadius": {
+    "sm": { "value": "4px", "type": "dimension" },
+    "base": { "value": "8px", "type": "dimension" },
+    "md": { "value": "12px", "type": "dimension" },
+    "lg": { "value": "16px", "type": "dimension" },
+    "xl": { "value": "24px", "type": "dimension" },
+    "full": { "value": "9999px", "type": "dimension" }
+  },
+  "boxShadow": {
+    "sm": { "value": "0 1px 3px rgba(0, 0, 0, 0.5)", "type": "shadow" },
+    "card": { "value": "0 4px 12px rgba(0, 0, 0, 0.6), 0 0 1px rgba(59, 99, 169, 0.1)", "type": "shadow" },
+    "cardHover": { "value": "0 8px 24px rgba(0, 0, 0, 0.7), 0 0 2px rgba(59, 99, 169, 0.2)", "type": "shadow" },
+    "modal": { "value": "0 24px 48px rgba(0, 0, 0, 0.8), 0 0 4px rgba(59, 99, 169, 0.15)", "type": "shadow" },
+    "glowBlue": { "value": "0 0 20px rgba(59, 99, 169, 0.4)", "type": "shadow" }
+  },
+  "animation": {
+    "duration": {
+      "fast": { "value": "150ms", "type": "duration" },
+      "base": { "value": "250ms", "type": "duration" },
+      "slow": { "value": "350ms", "type": "duration" },
+      "slower": { "value": "500ms", "type": "duration" }
+    },
+    "easing": {
+      "easeOut": { "value": "cubic-bezier(0.16, 1, 0.3, 1)", "type": "cubicBezier" },
+      "easeInOut": { "value": "cubic-bezier(0.4, 0, 0.2, 1)", "type": "cubicBezier" }
+    }
+  }
+}
