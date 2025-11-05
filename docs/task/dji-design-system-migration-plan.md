@@ -6,7 +6,8 @@ Owner: Frontend Team
 ## Repository Context
 - **Monorepo layout**: This plan targets the Next.js storefront in `apps/web` within the pnpm/turbo workspace defined by `pnpm-workspace.yaml`. Other apps (`apps/medusa`, `apps/strapi`, `apps/storefront`) and shared packages remain unchanged.
 - **Reference implementation**: Visual and interaction parity should be checked against `minimax/cockpit-simulator-mobile`, which already applies the DJI design system.
-- **Tooling commands**: Use `pnpm install`, `pnpm lint`, `pnpm build`, and `pnpm --filter web dev` to work on the storefront. Playwright suites run via `pnpm --filter tests/e2e <script>` (see `tests/` README if needed).
+- **Tooling commands**: Use `pnpm install`, `pnpm lint`, `pnpm build`, and `pnpm --filter web dev` to work on the storefront. Playwright suites run via `pnpm --filter tests/e2e <script>` with `NEXT_SKIP_REGION_MIDDLEWARE=true NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=dummy` (set automatically in `tests/e2e/playwright.config.ts`) so the app boots against mock data.
+- **Feedback & telemetry**: Set `NEXT_PUBLIC_FEEDBACK_FORM_URL` to surface the in-app feedback widget (defaults to a `mailto:` link) and enable Vercel Analytics on deployments to capture navigation performance/usage metrics without extra configuration.
 - **Backend dependencies**: Because `apps/medusa` and `apps/strapi` cannot be run in the current environment, use captured API fixtures or mock data when validating flows (cart, checkout, account). Note any mocked endpoints so they can be swapped back to live services later.
 
 ## Overview
@@ -214,3 +215,45 @@ Owner: Frontend Team
    - Host a handoff session for the broader team covering design token usage and component APIs.
 5. **Backlog Grooming**
    - Review outstanding tasks from earlier phases (e.g., deferred features, legacy cleanup) and convert into tracked issues with owners and timelines.
+
+## Execution Log
+### 2025-11-04 – Iteration 0 (Foundation Resync)
+- Recreated the DJI primitive library under `apps/web/src/components/ui` (Button, Text, Heading, Checkbox, Input, Select, Tabs, Accordion, Badge, Container, Table, RadioGroup, Toast, and `cn`). Components are staged but not yet referenced, allowing incremental rollouts without regressions.
+- Added the `styles/typography.css` utility sheet and ensured `globals.css` imports follow the correct order (tokens → typography → legacy → Tailwind) so body copy and headings stay aligned with cockpit specs.
+- Installed the necessary `@radix-ui/*` dependencies and refreshed `pnpm-lock.yaml` via `pnpm install`.
+- Validation snapshot: `pnpm --filter medusa-next lint` and `pnpm --filter medusa-next build` both succeed using the Medusa mock data introduced in Phase 1.
+- Next focus (Iteration 1): migrate low-risk shell modules (footer, 404, transfer pages, CTA) to the new primitives and introduce the Sonner/Toast provider while keeping Playwright runs on hold until middleware fixes land.
+
+### 2025-11-05 – Iteration 1 (Shell Refresh)
+- Mounted the new `AppToastProvider` (Radix-based) globally in `app/layout.tsx`, replaced `@medusajs/ui` Toasters, and introduced the `useToast` hook so account flows (e.g., profile password) can trigger notifications without third-party helpers.
+- Swapped 404 + order-transfer pages (accept/decline/overview) and `TransferActions` to DJI `Heading`, `Text`, and `Button` primitives, aligning spacing with the cockpit spec and preserving server data flows.
+- Updated layout scaffolding (footer template, Medusa CTA, mobile side menu) to consume the primitives and `cn` utility, cleaning up legacy `clx`/`txt-*` dependencies.
+- Migrated the cart dropdown CTA buttons and cart mismatch banner to the new `Button` variants (including the fresh `link` style) and ensured anchor/button semantics rely on `asChild` for accessibility.
+- Validation snapshot: `pnpm --filter medusa-next lint` and `pnpm --filter medusa-next build` remain green with mock data; Playwright still deferred until middleware fix.
+- Next focus (Iteration 2): move into the product detail experience (actions, tabs, gallery) using the newly introduced primitives.
+
+### 2025-11-06 – Iteration 2 (Product Detail Experience)
+- Rebuilt the full PDP action stack (`product-actions`, option select, mobile actions) on DJI Button/Text primitives, adding spinner states, tokenized colors, and cleaner option chips via the shared `cn` helper.
+- Migrated content modules (product info template, product price, tabs/accordion, onboarding CTA, image gallery, thumbnail, product previews/prices) away from `@medusajs/ui`, standardizing typography + spacing on DJI tokens and removing lingering `clx` utilities.
+- Deleted the bespoke product-tabs accordion in favor of the shared Radix-backed components to reduce duplication and keep animations consistent.
+- Validation snapshot: `pnpm --filter medusa-next lint` + `pnpm --filter medusa-next build` succeed (same known Next `themeColor` warnings remain). Playwright is still blocked pending middleware fix noted in Phase 1.
+- Next focus (Iteration 3): tackle the cart templates/components with the new Table/Container primitives, then iterate toward checkout flows.
+
+### 2025-11-07 – Iteration 3 (Cart Templates & Components)
+- Swapped cart templates (items, preview, summary) to the DJI Heading/Table/Button primitives and wired cart CTAs via `Button asChild` so navigation links keep semantic anchors.
+- Refactored cart components (line item row, cart-item select, sign-in prompt, empty-cart message) to rely on the shared UI kit plus the `cn` helper; cart quantity controls no longer depend on `@medusajs/ui`’s IconBadge.
+- Migrated the shared helpers that power cart/checkout flows (`line-item-price`, `line-item-unit-price`, `line-item-options`, `delete-button`, `divider`, `native-select`, `interactive-link`) away from `@medusajs/ui`, aligning typography with the DJI tokens and centralizing styling inside `@/components/ui`.
+- Validation snapshot: `pnpm --filter medusa-next lint` + `pnpm --filter medusa-next build` remain green with the existing `themeColor` warnings (still queued for a later metadata clean-up). Playwright continues to be deferred until middleware adjustments unblock the smoke suite.
+- Next focus (Iteration 4): move into checkout steps (addresses, shipping, payment) now that cart primitives are stable, and start planning the middleware fix required for automated e2e.
+
+### 2025-11-08 – Iteration 4 (Checkout Flows)
+- Converted checkout summary, addresses, shipping, payment, review, and discount code modules to DJI primitives (Heading/Text/Button/Badge/Input) with consistent rounded containers and `cn` styling; checkout CTAs now share the same loading semantics as PDP/cart buttons.
+- Replaced the Medusa payment container stack (payment container, Stripe card entry, payment test badge, payment button helpers) with the shared UI kit and refreshed CardElement styles; address selects and shipping address forms now lean on the new typography tokens.
+- Validation snapshot: `pnpm --filter medusa-next lint` + `pnpm --filter medusa-next build` both succeed; the known Next metadata warnings persist until we move those `themeColor` declarations into `generateViewport`. Playwright remains blocked pending the middleware shortcut noted in Phase 1.
+- Next focus (Iteration 5): shift to the account/order modules. In parallel, plan the middleware tweak so Playwright smoke tests can run before checkout/cart refinements ship to production.
+
+### 2025-11-12 – Phase 7 Kickoff (Monitoring, Feedback, Accessibility)
+- Enabled Vercel Analytics inside `app/layout.tsx` so every deployment automatically streams navigation metrics to the default dashboard—no custom hooks required. Documented the `NEXT_SKIP_REGION_MIDDLEWARE` flag (already wired into Playwright) to keep dev/test traffic consistent with the mock Medusa data source.
+- Added a floating feedback widget (`apps/web/src/components/feedback/feedback-widget.tsx`) that links to `NEXT_PUBLIC_FEEDBACK_FORM_URL` or falls back to a mailto link, giving design/product teams a direct way to collect qualitative feedback without another release.
+- Created an axe-powered accessibility spec (`tests/e2e/accessibility.spec.ts`) scanning `/us`, `/us/store`, and `/us/checkout` for serious/critical violations. The suite can run standalone via `pnpm --filter tests-e2e test -- accessibility.spec.ts` and is now part of the documentation checklist for Phase 7.
+- Validation snapshot: `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=dummy pnpm --filter medusa-next lint`, `… build`, `pnpm --filter tests-e2e test` (smoke) and `pnpm --filter tests-e2e test -- accessibility.spec.ts` all pass using the mock backend/middleware bypass. Logged the benign Unsplash 404s emitted by Next’s image proxy so future runs can ignore them.

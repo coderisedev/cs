@@ -8,6 +8,7 @@
     "install-playwright": "playwright install"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
     "@playwright/test": "^1.48.2"
   }
 }
