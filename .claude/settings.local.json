@@ -6,7 +6,12 @@
       "WebFetch(domain:www.dji.com)",
       "WebFetch(domain:developer.dji.com)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(for:*)",
+      "Bash(do:*)",
+      "Bash(done)",
+      "Bash(git merge:*)",
+      "Bash(git branch:*)"
     ],
     "deny": [],
     "ask": []

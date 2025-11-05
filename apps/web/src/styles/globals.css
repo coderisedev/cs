@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @import "./design-tokens.css";
-@import "./legacy-medusa.css";
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -89,6 +88,225 @@
 }
 
 @layer components {
+  /* Typography bridge for Medusa utility classes */
+  .txt-compact-small {
+    font-size: var(--dji-type-compact-small);
+    line-height: var(--dji-leading-tight);
+    font-weight: 500;
+  }
+
+  .txt-compact-small-plus {
+    font-size: var(--dji-type-compact-small-plus);
+    line-height: var(--dji-leading-tight);
+    font-weight: 600;
+  }
+
+  .txt-compact-medium {
+    font-size: var(--dji-type-compact-medium);
+    line-height: var(--dji-leading-base);
+    font-weight: 400;
+  }
+
+  .txt-compact-medium-plus {
+    font-size: var(--dji-type-compact-medium-plus);
+    line-height: var(--dji-leading-base);
+    font-weight: 600;
+  }
+
+  .txt-compact-plus {
+    font-size: var(--dji-type-compact-medium);
+    line-height: var(--dji-leading-base);
+    font-weight: 600;
+  }
+
+  .txt-compact-xlarge-plus {
+    font-size: var(--dji-type-compact-xlarge-plus);
+    line-height: var(--dji-leading-relaxed);
+    font-weight: 600;
+  }
+
+  .txt-small-plus {
+    font-size: var(--dji-type-compact-small-plus);
+    line-height: var(--dji-leading-tight);
+    font-weight: 500;
+  }
+
+  .txt-medium {
+    font-size: var(--dji-type-medium);
+    line-height: var(--dji-leading-base);
+    font-weight: 400;
+  }
+
+  .txt-medium-plus {
+    font-size: var(--dji-type-medium-plus);
+    line-height: var(--dji-leading-base);
+    font-weight: 600;
+  }
+
+  .txt-xlarge {
+    font-size: var(--dji-type-xlarge);
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  .txt-xlarge-plus {
+    font-size: var(--dji-type-xlarge);
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  /* Legacy Medusa text color aliases */
+  .text-ui-fg-base {
+    color: hsl(var(--dji-color-foreground-base));
+  }
+
+  .text-ui-fg-subtle {
+    color: hsl(var(--dji-color-foreground-subtle));
+  }
+
+  .text-ui-fg-muted {
+    color: hsl(var(--dji-color-foreground-muted));
+  }
+
+  .text-ui-fg-disabled {
+    color: hsl(var(--dji-color-foreground-disabled));
+  }
+
+  .text-ui-fg-interactive {
+    color: hsl(var(--dji-color-foreground-interactive));
+  }
+
+  .text-ui-fg-interactive-hover {
+    color: hsl(var(--dji-color-foreground-interactive-hover));
+  }
+
+  .text-ui-fg-on-color {
+    color: hsl(var(--dji-color-foreground-on-color));
+  }
+
+  .text-ui-fg-medium-plus {
+    color: hsl(var(--dji-color-foreground-base));
+    font-weight: 600;
+  }
+
+  /* Background aliases */
+  .bg-ui-bg-base {
+    background-color: hsl(var(--dji-color-surface-primary));
+  }
+
+  .bg-ui-bg-subtle {
+    background-color: hsl(var(--dji-color-surface-secondary));
+  }
+
+  .bg-ui-bg-field {
+    background-color: hsl(var(--dji-color-surface-field));
+  }
+
+  .bg-ui-bg-field-hover {
+    background-color: hsl(var(--dji-color-surface-field-hover));
+  }
+
+  .bg-ui-bg-interactive {
+    background-color: hsl(var(--dji-color-surface-interactive));
+  }
+
+  .bg-ui-bg-interactive-hover {
+    background-color: hsl(var(--dji-color-surface-interactive-hover));
+  }
+
+  .bg-ui-button-neutral-hover {
+    background-color: hsl(var(--dji-color-surface-neutral-hover));
+  }
+
+  .bg-ui-bg-disabled {
+    background-color: hsl(var(--dji-color-surface-disabled));
+  }
+
+  .bg-ui-bg-component-pressed {
+    background-color: hsl(var(--dji-color-surface-component-pressed));
+  }
+
+  .bg-ui-fg-disabled {
+    background-color: hsl(var(--dji-color-foreground-disabled));
+  }
+
+  /* Border aliases */
+  .border-ui-border-base {
+    border-color: hsl(var(--dji-color-border-base));
+  }
+
+  .border-ui-border-interactive {
+    border-color: hsl(var(--dji-color-border-interactive));
+  }
+
+  .border-ui-border-strong {
+    border-color: hsl(var(--dji-color-border-secondary));
+  }
+
+  /* Radius helpers */
+  .rounded-rounded {
+    border-radius: var(--dji-radius-md);
+  }
+
+  .rounded-soft {
+    border-radius: var(--dji-radius-sm);
+  }
+
+  .rounded-large {
+    border-radius: var(--dji-radius-lg);
+  }
+
+  .rounded-circle {
+    border-radius: var(--dji-radius-full);
+  }
+
+  /* Shadow aliases */
+  .shadow-card,
+  .shadow-borders-base {
+    box-shadow: var(--dji-shadow-sm);
+  }
+
+  .shadow-card-hover,
+  .shadow-elevation-card-hover,
+  .shadow-borders-interactive-with-active {
+    box-shadow: var(--dji-shadow-md);
+  }
+
+  .shadow-elevation-card-rest,
+  .shadow-borders-interactive {
+    box-shadow: var(--dji-shadow-sm);
+  }
+
+  .shadow-borders-interactive-with-focus {
+    box-shadow: 0 0 0 1px hsl(var(--dji-color-border-interactive));
+  }
+
+  .shadow-borders-strong-with-shadow {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-details-contrast-on-bg-interactive {
+    box-shadow: inset 0 0 0 1px hsl(var(--dji-color-foreground-on-color));
+  }
+
+  /* Button + link affordances */
+  .text-ui-fg-interactive:hover,
+  .hover\:text-ui-fg-interactive-hover:hover {
+    color: hsl(var(--dji-color-foreground-interactive-hover));
+  }
+
+  .hover\:bg-ui-bg-interactive-hover:hover {
+    background-color: hsl(var(--dji-color-surface-interactive-hover));
+  }
+
+  .focus\:ring-ui {
+    box-shadow: 0 0 0 3px hsla(210, 100%, 42%, 0.25);
+  }
+
+  .hover\:shadow-brders-none:hover {
+    box-shadow: none;
+  }
+
   .content-container {
     @apply max-w-[1440px] w-full mx-auto px-6;
   }
