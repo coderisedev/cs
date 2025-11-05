@@ -1,8 +1,8 @@
+import { Button, Heading, Text, cn } from "@/components/ui"
 import { BlogPostSummary } from "@/lib/blog/types"
+import { Calendar, Clock } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { Calendar, Clock } from "lucide-react"
-import { Button } from "@medusajs/ui"
 
 interface BlogCardProps {
   post: BlogPostSummary
@@ -30,16 +30,18 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
 
   return (
     <div
-      className={`overflow-hidden rounded-lg border border-ui-border-base bg-ui-bg-base hover:shadow-elevation-card-hover transition-all duration-300 hover:transform hover:-translate-y-1 ${
-        featured ? "md:col-span-2" : ""
-      }`}
+      className={cn(
+        "group overflow-hidden rounded-3xl border border-border-base bg-surface-primary transition-all duration-300 hover:-translate-y-1 hover:shadow-xl",
+        featured && "md:col-span-2"
+      )}
     >
       <div className="relative">
         {featuredImage && (
           <div
-            className={`relative w-full overflow-hidden ${
+            className={cn(
+              "relative w-full overflow-hidden",
               featured ? "h-64 md:h-96" : "h-48"
-            }`}
+            )}
           >
             <Image
               src={featuredImage}
@@ -50,30 +52,29 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
           </div>
         )}
         {category && (
-          <div className="absolute top-4 left-4">
-            <span className="px-3 py-1 bg-ui-bg-base/90 text-ui-fg-base text-sm rounded-full backdrop-blur-sm">
+          <div className="absolute left-4 top-4">
+            <span className="rounded-full bg-surface-primary/90 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-foreground-base backdrop-blur">
               {category.replace("-", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
             </span>
           </div>
         )}
       </div>
-      <div className={`p-4 ${featured ? "md:p-6" : ""}`}>
-        <h3
-          className={`font-semibold leading-tight hover:text-ui-fg-interactive transition-colors duration-300 mb-2 ${
-            featured ? "text-2xl" : "text-lg"
-          }`}
+      <div className={cn("p-5", featured && "md:p-6")}>
+        <Heading
+          as="h3"
+          size={featured ? "lg" : "sm"}
+          className="mb-2 leading-tight text-foreground-base transition-colors duration-200 group-hover:text-foreground-interactive"
         >
           <Link href={`/blog/${slug}`}>{title}</Link>
-        </h3>
-        <p
-          className={`text-ui-fg-subtle mb-4 ${
-            featured ? "line-clamp-3" : "line-clamp-2"
-          }`}
+        </Heading>
+        <Text
+          tone="subtle"
+          className={cn("mb-4", featured ? "line-clamp-3" : "line-clamp-2")}
         >
           {excerpt}
-        </p>
-        <div className="flex items-center justify-between text-sm text-ui-fg-subtle mb-4">
-          <div className="flex items-center space-x-4">
+        </Text>
+        <div className="mb-4 flex items-center justify-between text-sm text-foreground-muted">
+          <div className="flex items-center gap-4">
             <div className="flex items-center">
               <Calendar className="h-4 w-4 mr-1" />
               {formattedDate}
@@ -86,9 +87,9 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-2">
             {author.avatar && (
-              <div className="relative w-6 h-6 rounded-full overflow-hidden">
+              <div className="relative h-8 w-8 overflow-hidden rounded-full">
                 <Image
                   src={author.avatar}
                   alt={author.name}
@@ -97,28 +98,26 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
                 />
               </div>
             )}
-            <span className="text-sm text-ui-fg-base">{author.name}</span>
+            <Text variant="body-sm" className="font-semibold">
+              {author.name}
+            </Text>
           </div>
-          <Link href={`/blog/${slug}`}>
-            <Button
-              variant="transparent"
-              className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover p-0 h-auto"
-            >
-              Read More
-            </Button>
-          </Link>
+          <Button variant="link" size="sm" className="px-0" asChild>
+            <Link href={`/blog/${slug}`}>Read More</Link>
+          </Button>
         </div>
 
         {/* Tags */}
         {tags && tags.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-3">
+          <div className="mt-4 flex flex-wrap gap-2">
             {tags.slice(0, 3).map((tag) => (
-              <span
+              <Text
                 key={tag}
-                className="px-2 py-1 bg-ui-bg-subtle text-ui-fg-subtle text-xs rounded-full"
+                variant="caption"
+                className="rounded-full bg-surface-secondary px-3 py-1 text-foreground-muted"
               >
                 #{tag}
-              </span>
+              </Text>
             ))}
           </div>
         )}

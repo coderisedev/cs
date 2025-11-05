@@ -1,4 +1,4 @@
-import { Container, Heading, Text } from "@medusajs/ui"
+import { Heading, Text } from "@/components/ui"
 
 import { isStripeLike, paymentInfoMap } from "@lib/constants"
 import Divider from "@modules/common/components/divider"
@@ -14,31 +14,28 @@ const PaymentDetails = ({ order }: PaymentDetailsProps) => {
 
   return (
     <div>
-      <Heading level="h2" className="flex flex-row text-3xl-regular my-6">
+      <Heading as="h2" size="md" className="my-6">
         Payment
       </Heading>
       <div>
         {payment && (
           <div className="flex items-start gap-x-1 w-full">
             <div className="flex flex-col w-1/3">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
+              <Text weight="semibold" className="mb-1">
                 Payment method
               </Text>
-              <Text
-                className="txt-medium text-ui-fg-subtle"
-                data-testid="payment-method"
-              >
+              <Text tone="subtle" data-testid="payment-method">
                 {paymentInfoMap[payment.provider_id].title}
               </Text>
             </div>
             <div className="flex flex-col w-2/3">
-              <Text className="txt-medium-plus text-ui-fg-base mb-1">
+              <Text weight="semibold" className="mb-1">
                 Payment details
               </Text>
-              <div className="flex gap-2 txt-medium text-ui-fg-subtle items-center">
-                <Container className="flex items-center h-7 w-fit p-2 bg-ui-button-neutral-hover">
+              <div className="flex gap-2 text-sm text-foreground-muted items-center">
+                <div className="flex items-center rounded-full bg-surface-secondary px-2 py-1">
                   {paymentInfoMap[payment.provider_id].icon}
-                </Container>
+                </div>
                 <Text data-testid="payment-amount">
                   {isStripeLike(payment.provider_id) && payment.data?.card_last4
                     ? `**** **** **** ${payment.data.card_last4}`

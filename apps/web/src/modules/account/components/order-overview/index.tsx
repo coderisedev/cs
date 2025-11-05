@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@medusajs/ui"
+import { Button, Heading, Text } from "@/components/ui"
 
 import OrderCard from "../order-card"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -13,7 +13,7 @@ const OrderOverview = ({ orders }: { orders: HttpTypes.StoreOrder[] }) => {
         {orders.map((o) => (
           <div
             key={o.id}
-            className="border-b border-gray-200 pb-6 last:pb-0 last:border-none"
+            className="border-b border-border-base pb-6 last:border-none last:pb-0"
           >
             <OrderCard order={o} />
           </div>
@@ -24,16 +24,18 @@ const OrderOverview = ({ orders }: { orders: HttpTypes.StoreOrder[] }) => {
 
   return (
     <div
-      className="w-full flex flex-col items-center gap-y-4"
+      className="flex w-full flex-col items-center gap-y-4 rounded-3xl border border-border-base bg-surface-primary p-6 text-center"
       data-testid="no-orders-container"
     >
-      <h2 className="text-large-semi">Nothing to see here</h2>
-      <p className="text-base-regular">
+      <Heading as="h2" size="sm">
+        Nothing to see here
+      </Heading>
+      <Text tone="subtle">
         You don&apos;t have any orders yet, let us change that {":)"}
-      </p>
+      </Text>
       <div className="mt-4">
         <LocalizedClientLink href="/" passHref>
-          <Button data-testid="continue-shopping-button">
+          <Button size="lg" data-testid="continue-shopping-button">
             Continue shopping
           </Button>
         </LocalizedClientLink>

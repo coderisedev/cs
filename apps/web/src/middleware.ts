@@ -5,6 +5,9 @@ import { getMockRegions } from "@lib/data/mock-data"
 const BACKEND_URL = process.env.MEDUSA_BACKEND_URL
 const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
 const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "us"
+const SKIP_REGION_MIDDLEWARE =
+  process.env.NEXT_SKIP_REGION_MIDDLEWARE === "true" ||
+  process.env.NEXT_PUBLIC_SKIP_REGION_MIDDLEWARE === "true"
 
 const regionMapCache = {
   regionMap: new Map<string, HttpTypes.StoreRegion>(),
@@ -114,6 +117,10 @@ async function getCountryCode(
  * Middleware to handle region selection and onboarding status.
  */
 export async function middleware(request: NextRequest) {
+  if (SKIP_REGION_MIDDLEWARE) {
+    return NextResponse.next()
+  }
+
   let redirectUrl = request.nextUrl.href
 
   let response = NextResponse.redirect(redirectUrl, 307)

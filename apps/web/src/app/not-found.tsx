@@ -1,7 +1,7 @@
 import { ArrowUpRightMini } from "@medusajs/icons"
-import { Text } from "@medusajs/ui"
 import { Metadata } from "next"
 import Link from "next/link"
+import { Heading, Text } from "@/components/ui"
 
 export const metadata: Metadata = {
   title: "404",
@@ -10,19 +10,21 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col gap-4 items-center justify-center min-h-[calc(100vh-64px)]">
-      <h1 className="text-2xl-semi text-ui-fg-base">Page not found</h1>
-      <p className="text-small-regular text-ui-fg-base">
-        The page you tried to access does not exist.
-      </p>
-      <Link
-        className="flex gap-x-1 items-center group"
-        href="/"
-      >
-        <Text className="text-ui-fg-interactive">Go to frontpage</Text>
+    <div className="flex flex-col items-center justify-center gap-4 px-6 text-center min-h-[calc(100vh-64px)]">
+      <Heading as="h1" size="lg">
+        Page not found
+      </Heading>
+      <Text tone="subtle" className="max-w-md">
+        The page you tried to access does not exist. Double-check the address or return to the
+        homepage.
+      </Text>
+      <Link className="inline-flex items-center gap-2 text-sm font-medium group" href="/">
+        <Text tone="interactive" weight="semibold">
+          Go to frontpage
+        </Text>
         <ArrowUpRightMini
-          className="group-hover:rotate-45 ease-in-out duration-150"
-          color="var(--fg-interactive)"
+          className="h-4 w-4 text-foreground-interactive transition-transform group-hover:rotate-45"
+          aria-hidden
         />
       </Link>
     </div>

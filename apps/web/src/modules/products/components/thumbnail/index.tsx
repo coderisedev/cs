@@ -1,4 +1,4 @@
-import { Container, clx } from "@medusajs/ui"
+import { Container, cn } from "@/components/ui"
 import Image from "next/image"
 import React from "react"
 
@@ -26,8 +26,8 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
 
   return (
     <Container
-      className={clx(
-        "relative w-full overflow-hidden p-4 bg-ui-bg-subtle shadow-elevation-card-rest rounded-large group-hover:shadow-elevation-card-hover transition-shadow ease-in-out duration-150",
+      className={cn(
+        "relative w-full overflow-hidden rounded-3xl bg-surface-secondary p-4 shadow-xs transition-shadow duration-150 group-hover:shadow-md",
         className,
         {
           "aspect-[11/14]": isFeatured,

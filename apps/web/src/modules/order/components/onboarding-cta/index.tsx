@@ -1,21 +1,21 @@
 "use client"
 
 import { resetOnboardingState } from "@lib/data/onboarding"
-import { Button, Container, Text } from "@medusajs/ui"
+import { Button, Container, Text } from "@/components/ui"
 
 const OnboardingCta = ({ orderId }: { orderId: string }) => {
   return (
-    <Container className="max-w-4xl h-full bg-ui-bg-subtle w-full">
-      <div className="flex flex-col gap-y-4 center p-4 md:items-center">
-        <Text className="text-ui-fg-base text-xl">
+    <Container className="max-w-4xl h-full w-full rounded-3xl border border-border-base bg-surface-secondary">
+      <div className="flex flex-col gap-y-4 p-6 text-center md:items-center">
+        <Text className="text-xl font-semibold text-foreground-base">
           Your test order was successfully created! 🎉
         </Text>
-        <Text className="text-ui-fg-subtle text-small-regular">
+        <Text tone="subtle" variant="body-sm">
           You can now complete setting up your store in the admin.
         </Text>
         <Button
           className="w-fit"
-          size="xlarge"
+          size="lg"
           onClick={() => resetOnboardingState(orderId)}
         >
           Complete setup in admin

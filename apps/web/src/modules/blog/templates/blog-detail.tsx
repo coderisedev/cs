@@ -1,13 +1,14 @@
 "use client"
 
+import { Button, Heading, Text, cn } from "@/components/ui"
 import { BlogPost } from "@/lib/blog/types"
+import { ArrowLeft, Calendar, Clock, Eye, Heart, Share2 } from "lucide-react"
+import Link from "next/link"
 import Image from "next/image"
+import { useState } from "react"
+
 import PostContent from "../components/post-content"
 import RelatedPosts from "../components/related-posts"
-import Link from "next/link"
-import { useState } from "react"
-import { ArrowLeft, Calendar, Clock, Eye, Heart, Share2 } from "lucide-react"
-import { Button } from "@medusajs/ui"
 
 interface BlogDetailTemplateProps {
   post: BlogPost
@@ -68,59 +69,59 @@ export default function BlogDetailTemplate({
   }
 
   return (
-    <div className="container mx-auto px-4 lg:px-12 py-8">
+    <div className="container mx-auto px-4 py-8 lg:px-12">
       {/* Back Button */}
       <div className="mb-6">
         <Button
-          variant="transparent"
+          variant="ghost"
           onClick={() => window.history.back()}
-          className="text-ui-fg-base hover:text-ui-fg-interactive group"
+          className="group px-0 text-foreground-base hover:text-foreground-interactive"
         >
-          <ArrowLeft className="h-4 w-4 mr-2" />
+          <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Blog
         </Button>
       </div>
 
       {/* Article */}
-      <article className="max-w-4xl mx-auto">
+      <article className="mx-auto max-w-4xl">
         <header className="mb-8">
           {/* Category and Meta */}
-          <div className="flex flex-wrap items-center gap-4 mb-6">
+          <div className="mb-6 flex flex-wrap items-center gap-4">
             <Link
               href={`/blog?category=${category}`}
-              className="px-3 py-1 bg-ui-bg-interactive text-ui-fg-on-color text-sm rounded-full hover:bg-ui-bg-interactive-hover transition-colors"
+              className="rounded-full bg-[hsl(var(--dji-color-surface-interactive))] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[hsl(var(--dji-color-foreground-on-color))] transition-colors hover:bg-[hsl(var(--dji-color-surface-interactive-hover))]"
             >
               {category.replace("-", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
             </Link>
-            <div className="flex items-center text-ui-fg-subtle text-sm">
+            <div className="flex items-center text-sm text-foreground-muted">
               <Calendar className="h-4 w-4 mr-1" />
               {formattedDate}
             </div>
-            <div className="flex items-center text-ui-fg-subtle text-sm">
+            <div className="flex items-center text-sm text-foreground-muted">
               <Clock className="h-4 w-4 mr-1" />
               {readTime} min read
             </div>
-            <div className="flex items-center text-ui-fg-subtle text-sm">
+            <div className="flex items-center text-sm text-foreground-muted">
               <Eye className="h-4 w-4 mr-1" />
               1250 views
             </div>
           </div>
 
           {/* Title */}
-          <h1 className="text-3xl lg:text-4xl font-bold mb-6 text-ui-fg-base leading-tight transition-colors duration-300">
+          <Heading as="h1" size="xl" className="mb-6 leading-tight">
             {title}
-          </h1>
+          </Heading>
 
           {/* Excerpt */}
-          <p className="text-xl text-ui-fg-subtle mb-8 leading-relaxed transition-colors duration-300">
+          <Text variant="body-lg" tone="subtle" className="mb-8 leading-relaxed">
             {excerpt}
-          </p>
+          </Text>
 
           {/* Author and Actions */}
-          <div className="flex items-center justify-between flex-wrap gap-4 mb-8">
-            <div className="flex items-center space-x-4">
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
               {author.avatar && (
-                <div className="relative w-12 h-12 rounded-full overflow-hidden">
+                <div className="relative h-12 w-12 overflow-hidden rounded-full">
                   <Image
                     src={author.avatar}
                     alt={author.name}
@@ -130,26 +131,30 @@ export default function BlogDetailTemplate({
                 </div>
               )}
               <div>
-                <p className="font-medium text-ui-fg-base">{author.name}</p>
-                <p className="text-sm text-ui-fg-subtle">Flight Simulation Expert</p>
+                <Text weight="semibold">{author.name}</Text>
+                <Text variant="body-sm" tone="subtle">
+                  Flight Simulation Expert
+                </Text>
               </div>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2">
               <Button
                 variant="secondary"
                 onClick={handleLike}
-                className={`transition-colors duration-300 ${
-                  isLiked ? "text-red-500 border-red-500" : ""
-                }`}
+                size="sm"
+                className={cn("transition-colors duration-300", {
+                  "border-[hsl(var(--dji-color-status-error))] text-[hsl(var(--dji-color-status-error))]":
+                    isLiked,
+                })}
               >
                 <Heart
-                  className={`h-4 w-4 mr-2 ${isLiked ? "fill-current" : ""}`}
+                  className={cn("mr-2 h-4 w-4", isLiked && "fill-current")}
                 />
                 {likes}
               </Button>
-              <Button variant="secondary" onClick={handleShare}>
-                <Share2 className="h-4 w-4 mr-2" />
+              <Button variant="secondary" size="sm" onClick={handleShare}>
+                <Share2 className="mr-2 h-4 w-4" />
                 Share
               </Button>
             </div>
@@ -159,7 +164,7 @@ export default function BlogDetailTemplate({
         {/* Featured Image */}
         {featuredImage && (
           <div className="mb-8">
-            <div className="relative w-full h-64 lg:h-96 rounded-lg overflow-hidden shadow-elevation-card-rest">
+            <div className="relative h-64 w-full overflow-hidden rounded-3xl shadow-xl lg:h-96">
               <Image
                 src={featuredImage}
                 alt={title}
@@ -172,22 +177,22 @@ export default function BlogDetailTemplate({
         )}
 
         {/* Article Content */}
-        <div className="prose prose-lg max-w-none mb-12">
-          <div className="text-ui-fg-base leading-relaxed transition-colors duration-300">
-            <PostContent content={content} />
-          </div>
+        <div className="prose prose-lg mb-12 max-w-none text-foreground-base">
+          <PostContent content={content} />
         </div>
 
         {/* Tags */}
         {tags.length > 0 && (
           <div className="mb-8">
-            <h3 className="text-lg font-semibold mb-4 text-ui-fg-base">Tags</h3>
-            <div className="flex flex-wrap gap-2">
+            <Heading as="h3" size="xs" className="mb-4">
+              Tags
+            </Heading>
+            <div className="flex flex-wrap gap-2 text-sm">
               {tags.map((tag) => (
                 <Link
                   key={tag}
                   href={`/blog?tag=${tag}`}
-                  className="px-3 py-1 bg-ui-bg-subtle text-ui-fg-subtle text-sm rounded-full hover:bg-ui-bg-interactive hover:text-ui-fg-on-color transition-colors duration-300"
+                  className="rounded-full bg-surface-secondary px-3 py-1 text-foreground-muted transition-colors duration-200 hover:bg-[hsl(var(--dji-color-surface-interactive))] hover:text-[hsl(var(--dji-color-foreground-on-color))]"
                 >
                   #{tag}
                 </Link>
@@ -197,10 +202,10 @@ export default function BlogDetailTemplate({
         )}
 
         {/* Author Bio */}
-        <div className="mb-8 p-6 bg-ui-bg-subtle rounded-lg border border-ui-border-base">
-          <div className="flex items-start space-x-4">
+        <div className="mb-8 rounded-3xl border border-border-base bg-surface-secondary p-6">
+          <div className="flex items-start gap-4">
             {author.avatar && (
-              <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+              <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-full">
                 <Image
                   src={author.avatar}
                   alt={author.name}
@@ -210,20 +215,20 @@ export default function BlogDetailTemplate({
               </div>
             )}
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-ui-fg-base mb-2">
+              <Heading as="h3" size="xs" className="mb-2">
                 {author.name}
-              </h3>
-              <p className="text-ui-fg-subtle mb-3">
+              </Heading>
+              <Text tone="subtle" className="mb-3">
                 {author.name} is a certified flight instructor with over 15 years of
                 experience in both real and simulated flight environments. Specializes
                 in advanced flight simulation techniques and cockpit technology
                 integration.
-              </p>
-              <div className="flex space-x-2">
-                <Button variant="secondary" size="small">
+              </Text>
+              <div className="flex gap-2">
+                <Button variant="secondary" size="sm">
                   Follow
                 </Button>
-                <Button variant="secondary" size="small">
+                <Button variant="secondary" size="sm">
                   Message
                 </Button>
               </div>
@@ -234,7 +239,7 @@ export default function BlogDetailTemplate({
 
       {/* Related Posts */}
       {relatedPosts.length > 0 && (
-        <section className="max-w-4xl mx-auto">
+        <section className="mx-auto max-w-4xl">
           <RelatedPosts posts={relatedPosts} />
         </section>
       )}

@@ -1,5 +1,6 @@
 "use client"
 
+import { Button, cn } from "@/components/ui"
 import { convertToLocale } from "@lib/util/money"
 import { CheckCircleSolid, XMark } from "@medusajs/icons"
 import {
@@ -8,7 +9,6 @@ import {
   StoreCartShippingOption,
   StorePrice,
 } from "@medusajs/types"
-import { Button, clx } from "@medusajs/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { useState } from "react"
 import { StoreFreeShippingPrice } from "types/global"
@@ -157,8 +157,8 @@ function FreeShippingInline({
           </div>
 
           <div
-            className={clx("visible", {
-              "opacity-0 invisible": price.target_reached,
+            className={cn("visible", {
+              "invisible opacity-0": price.target_reached,
             })}
           >
             Only{" "}
@@ -173,8 +173,8 @@ function FreeShippingInline({
         </div>
         <div className="flex justify-between gap-1">
           <div
-            className={clx(
-              "bg-gradient-to-r from-zinc-400 to-zinc-500 h-1 rounded-full max-w-full duration-500 ease-in-out",
+            className={cn(
+              "h-1 max-w-full rounded-full bg-gradient-to-r from-zinc-400 to-zinc-500 duration-500 ease-in-out",
               {
                 "from-green-400 to-green-500": price.target_reached,
               }
@@ -199,21 +199,23 @@ function FreeShippingPopup({
 
   return (
     <div
-      className={clx(
-        "fixed bottom-5 right-5 flex flex-col items-end gap-2 transition-all duration-500 ease-in-out z-10",
+      className={cn(
+        "fixed bottom-5 right-5 z-10 flex flex-col items-end gap-2 transition-all duration-500 ease-in-out",
         {
-          "opacity-0 invisible delay-1000": price.target_reached,
-          "opacity-0 invisible": isClosed,
-          "opacity-100 visible": !price.target_reached && !isClosed,
+          "invisible opacity-0 delay-1000": price.target_reached,
+          "invisible opacity-0": isClosed,
+          "visible opacity-100": !price.target_reached && !isClosed,
         }
       )}
     >
       <div>
         <Button
-          className="rounded-full bg-neutral-900 shadow-none outline-none border-none text-[15px] p-2"
+          variant="ghost"
+          size="icon"
+          className="rounded-full border border-border-base bg-surface-primary/80 p-2 shadow-none hover:bg-surface-primary"
           onClick={() => setIsClosed(true)}
         >
-          <XMark />
+          <XMark className="h-4 w-4" />
         </Button>
       </div>
 
@@ -233,8 +235,8 @@ function FreeShippingPopup({
               </div>
 
               <div
-                className={clx("visible", {
-                  "opacity-0 invisible": price.target_reached,
+                className={cn("visible", {
+                  "invisible opacity-0": price.target_reached,
                 })}
               >
                 Only{" "}
@@ -249,8 +251,8 @@ function FreeShippingPopup({
             </div>
             <div className="flex justify-between gap-1">
               <div
-                className={clx(
-                  "bg-gradient-to-r from-zinc-400 to-zinc-500 h-1.5 rounded-full max-w-full duration-500 ease-in-out",
+                className={cn(
+                  "h-1.5 max-w-full rounded-full bg-gradient-to-r from-zinc-400 to-zinc-500 duration-500 ease-in-out",
                   {
                     "from-green-400 to-green-500": price.target_reached,
                   }

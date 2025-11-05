@@ -1,8 +1,8 @@
-import { clx } from "@medusajs/ui"
+import { cn } from "@/components/ui"
 
 const Divider = ({ className }: { className?: string }) => (
   <div
-    className={clx("h-px w-full border-b border-gray-200 mt-1", className)}
+    className={cn("mt-1 h-px w-full border-b border-border-base", className)}
   />
 )
 

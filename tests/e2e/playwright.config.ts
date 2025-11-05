@@ -24,6 +24,7 @@ export default defineConfig({
     env: {
       NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: "dummy",
       MEDUSA_BACKEND_URL: "http://127.0.0.1:9999",
+      NEXT_SKIP_REGION_MIDDLEWARE: "true",
     },
   },
   projects: [

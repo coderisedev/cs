@@ -2,7 +2,8 @@
 
 import { Popover, PopoverPanel, Transition } from "@headlessui/react"
 import { ArrowRightMini, XMark } from "@medusajs/icons"
-import { Text, clx, useToggleState } from "@medusajs/ui"
+import { Text, cn } from "@/components/ui"
+import useToggleState from "@lib/hooks/use-toggle-state"
 import { Fragment } from "react"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -101,13 +102,13 @@ const SideMenu = ({ regions }: { regions: HttpTypes.StoreRegion[] | null }) => {
                           />
                         )}
                         <ArrowRightMini
-                          className={clx(
+                          className={cn(
                             "transition-transform duration-150",
                             toggleState.state ? "-rotate-90" : ""
                           )}
                         />
                       </div>
-                      <Text className="text-sm text-foreground-secondary">
+                      <Text variant="body-sm" tone="subtle">
                         © {new Date().getFullYear()} CockpitSim. All rights reserved.
                       </Text>
                     </div>

@@ -1,5 +1,4 @@
-@layer components {
-  /* Typography bridge for Medusa utility classes */
+/* Typography bridge for Medusa utility classes */
   .txt-compact-small {
     font-size: var(--dji-type-compact-small);
     line-height: var(--dji-leading-tight);
@@ -217,4 +216,3 @@
   .hover\:shadow-brders-none:hover {
     box-shadow: none;
   }
-}

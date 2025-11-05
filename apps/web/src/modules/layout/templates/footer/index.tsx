@@ -1,6 +1,6 @@
 import { listCategories } from "@lib/data/categories"
 import { listCollections } from "@lib/data/collections"
-import { Text, clx } from "@medusajs/ui"
+import { Text } from "@/components/ui"
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import MedusaCTA from "@modules/layout/components/medusa-cta"
@@ -10,7 +10,7 @@ export default async function Footer() {
   const productCategories = await listCategories()
 
   return (
-    <footer className="border-t border-border w-full bg-background-secondary">
+    <footer className="border-t border-border-base w-full bg-surface-secondary">
       <div className="content-container flex flex-col w-full">
         {/* Main Footer Content */}
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between py-12">
@@ -18,25 +18,25 @@ export default async function Footer() {
           <div className="flex flex-col gap-4 max-w-sm">
             <LocalizedClientLink
               href="/"
-              className="text-2xl font-bold text-foreground-primary hover:text-primary transition-colors"
+              className="text-2xl font-semibold text-foreground-base transition-colors hover:text-foreground-interactive"
             >
               CockpitSim
             </LocalizedClientLink>
-            <p className="text-sm text-foreground-secondary">
+            <Text variant="body" tone="subtle">
               Professional flight simulation hardware for enthusiasts and professionals.
-            </p>
+            </Text>
           </div>
 
           {/* Links Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8 flex-1">
             {/* Shop Section */}
             <div className="flex flex-col gap-3">
-              <h3 className="font-semibold text-foreground-primary mb-1">Shop</h3>
+              <p className="font-semibold text-foreground-base mb-1">Shop</p>
               <ul className="flex flex-col gap-2">
                 <li>
                   <LocalizedClientLink
                     href="/store"
-                    className="text-sm text-foreground-secondary hover:text-primary transition-colors"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground-interactive"
                   >
                     All Products
                   </LocalizedClientLink>
@@ -44,7 +44,7 @@ export default async function Footer() {
                 <li>
                   <LocalizedClientLink
                     href="/collections"
-                    className="text-sm text-foreground-secondary hover:text-primary transition-colors"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground-interactive"
                   >
                     Collections
                   </LocalizedClientLink>
@@ -53,7 +53,7 @@ export default async function Footer() {
                   <li key={c.id}>
                     <LocalizedClientLink
                       href={`/collections/${c.handle}`}
-                      className="text-sm text-foreground-secondary hover:text-primary transition-colors"
+                      className="text-sm text-foreground-muted transition-colors hover:text-foreground-interactive"
                     >
                       {c.title}
                     </LocalizedClientLink>
@@ -64,12 +64,12 @@ export default async function Footer() {
 
             {/* Support Section */}
             <div className="flex flex-col gap-3">
-              <h3 className="font-semibold text-foreground-primary mb-1">Support</h3>
+              <p className="font-semibold text-foreground-base mb-1">Support</p>
               <ul className="flex flex-col gap-2">
                 <li>
                   <LocalizedClientLink
                     href="/account"
-                    className="text-sm text-foreground-secondary hover:text-primary transition-colors"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground-interactive"
                   >
                     My Account
                   </LocalizedClientLink>
@@ -77,7 +77,7 @@ export default async function Footer() {
                 <li>
                   <LocalizedClientLink
                     href="/account/orders"
-                    className="text-sm text-foreground-secondary hover:text-primary transition-colors"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground-interactive"
                   >
                     Order Status
                   </LocalizedClientLink>
@@ -85,7 +85,7 @@ export default async function Footer() {
                 <li>
                   <LocalizedClientLink
                     href="/contact"
-                    className="text-sm text-foreground-secondary hover:text-primary transition-colors"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground-interactive"
                   >
                     Contact Us
                   </LocalizedClientLink>
@@ -93,7 +93,7 @@ export default async function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-foreground-secondary hover:text-primary transition-colors"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground-interactive"
                   >
                     Shipping Info
                   </a>
@@ -103,12 +103,12 @@ export default async function Footer() {
 
             {/* Company Section */}
             <div className="flex flex-col gap-3">
-              <h3 className="font-semibold text-foreground-primary mb-1">Company</h3>
+              <p className="font-semibold text-foreground-base mb-1">Company</p>
               <ul className="flex flex-col gap-2">
                 <li>
                   <LocalizedClientLink
                     href="/blog"
-                    className="text-sm text-foreground-secondary hover:text-primary transition-colors"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground-interactive"
                   >
                     Blog
                   </LocalizedClientLink>
@@ -116,7 +116,7 @@ export default async function Footer() {
                 <li>
                   <LocalizedClientLink
                     href="/about"
-                    className="text-sm text-foreground-secondary hover:text-primary transition-colors"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground-interactive"
                   >
                     About Us
                   </LocalizedClientLink>
@@ -124,7 +124,7 @@ export default async function Footer() {
                 <li>
                   <LocalizedClientLink
                     href="/privacy"
-                    className="text-sm text-foreground-secondary hover:text-primary transition-colors"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground-interactive"
                   >
                     Privacy Policy
                   </LocalizedClientLink>
@@ -132,7 +132,7 @@ export default async function Footer() {
                 <li>
                   <LocalizedClientLink
                     href="/terms"
-                    className="text-sm text-foreground-secondary hover:text-primary transition-colors"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground-interactive"
                   >
                     Terms of Service
                   </LocalizedClientLink>
@@ -143,8 +143,8 @@ export default async function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between py-6 border-t border-border gap-4">
-          <Text className="text-sm text-foreground-secondary">
+        <div className="flex flex-col md:flex-row items-center justify-between py-6 border-t border-border-base gap-4">
+          <Text variant="body" tone="subtle">
             © {new Date().getFullYear()} CockpitSim. All rights reserved.
           </Text>
           
@@ -152,7 +152,7 @@ export default async function Footer() {
           <div className="flex items-center gap-4">
             <a
               href="#"
-              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-background-primary transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-full text-foreground-base hover:bg-surface-primary transition-colors"
               aria-label="GitHub"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -161,7 +161,7 @@ export default async function Footer() {
             </a>
             <a
               href="#"
-              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-background-primary transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-full text-foreground-base hover:bg-surface-primary transition-colors"
               aria-label="Twitter"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -170,7 +170,7 @@ export default async function Footer() {
             </a>
             <a
               href="#"
-              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-background-primary transition-colors"
+              className="w-10 h-10 flex items-center justify-center rounded-full text-foreground-base hover:bg-surface-primary transition-colors"
               aria-label="YouTube"
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

@@ -8,7 +8,7 @@ import {
 } from "@headlessui/react"
 import { convertToLocale } from "@lib/util/money"
 import { HttpTypes } from "@medusajs/types"
-import { Button } from "@medusajs/ui"
+import { Button } from "@/components/ui"
 import DeleteButton from "@modules/common/components/delete-button"
 import LineItemOptions from "@modules/common/components/line-item-options"
 import LineItemPrice from "@modules/common/components/line-item-price"
@@ -191,15 +191,16 @@ const CartDropdown = ({
                       })}
                     </span>
                   </div>
-                  <LocalizedClientLink href="/cart" passHref>
-                    <Button
-                      className="w-full"
-                      size="large"
-                      data-testid="go-to-cart-button"
-                    >
+                  <Button
+                    className="w-full"
+                    size="lg"
+                    asChild
+                    data-testid="go-to-cart-button"
+                  >
+                    <LocalizedClientLink href="/cart" passHref>
                       Go to cart
-                    </Button>
-                  </LocalizedClientLink>
+                    </LocalizedClientLink>
+                  </Button>
                 </div>
               </>
             ) : (
@@ -210,12 +211,12 @@ const CartDropdown = ({
                   </div>
                   <span>Your shopping bag is empty.</span>
                   <div>
-                    <LocalizedClientLink href="/store">
-                      <>
+                    <Button asChild onClick={close}>
+                      <LocalizedClientLink href="/store">
                         <span className="sr-only">Go to all products page</span>
-                        <Button onClick={close}>Explore products</Button>
-                      </>
-                    </LocalizedClientLink>
+                        Explore products
+                      </LocalizedClientLink>
+                    </Button>
                   </div>
                 </div>
               </div>

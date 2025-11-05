@@ -1,4 +1,4 @@
-import { Heading, Text } from "@medusajs/ui"
+import { Heading, Text } from "@/components/ui"
 import TransferActions from "@modules/order/components/transfer-actions"
 import TransferImage from "@modules/order/components/transfer-image"
 
@@ -10,27 +10,25 @@ export default async function TransferPage({
   const { id, token } = params
 
   return (
-    <div className="flex flex-col gap-y-4 items-start w-2/5 mx-auto mt-10 mb-20">
+    <div className="flex flex-col gap-6 px-6 py-16 mx-auto w-full max-w-2xl">
       <TransferImage />
-      <div className="flex flex-col gap-y-6">
-        <Heading level="h1" className="text-xl text-zinc-900">
+      <div className="flex flex-col gap-6 rounded-3xl border border-border-base bg-surface-primary p-8 shadow-sm">
+        <Heading as="h1" size="md">
           Transfer request for order {id}
         </Heading>
-        <Text className="text-zinc-600">
-          You&#39;ve received a request to transfer ownership of your order ({id}).
-          If you agree to this request, you can approve the transfer by clicking
-          the button below.
+        <Text tone="subtle">
+          You&apos;ve received a request to transfer ownership of order {id}. If you agree, approve the
+          transfer below to hand ownership to the requester.
         </Text>
-        <div className="w-full h-px bg-zinc-200" />
-        <Text className="text-zinc-600">
-          If you accept, the new owner will take over all responsibilities and
-          permissions associated with this order.
+        <div className="h-px w-full bg-border-base" />
+        <Text tone="subtle">
+          Accepting passes every permission to the new owner. Declining leaves the order in your
+          account with no changes.
         </Text>
-        <Text className="text-zinc-600">
-          If you do not recognize this request or wish to retain ownership, no
-          further action is required.
+        <Text tone="subtle">
+          If you don&apos;t recognize this request, simply ignore it—no further action is required.
         </Text>
-        <div className="w-full h-px bg-zinc-200" />
+        <div className="h-px w-full bg-border-base" />
         <TransferActions id={id} token={token} />
       </div>
     </div>

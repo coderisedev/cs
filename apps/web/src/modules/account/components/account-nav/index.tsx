@@ -1,6 +1,6 @@
 "use client"
 
-import { clx } from "@medusajs/ui"
+import { Button, Heading, Text, cn } from "@/components/ui"
 import { ArrowRightOnRectangle } from "@medusajs/icons"
 import { useParams, usePathname } from "next/navigation"
 
@@ -30,7 +30,7 @@ const AccountNav = ({
         {route !== `/${countryCode}/account` ? (
           <LocalizedClientLink
             href="/account"
-            className="flex items-center gap-x-2 text-small-regular py-2"
+            className="flex items-center gap-x-2 py-2 text-sm font-medium text-foreground-interactive"
             data-testid="account-main-link"
           >
             <>
@@ -40,15 +40,15 @@ const AccountNav = ({
           </LocalizedClientLink>
         ) : (
           <>
-            <div className="text-xl-semi mb-4 px-8">
+            <Heading as="p" size="md" className="mb-4 px-8">
               Hello {customer?.first_name}
-            </div>
-            <div className="text-base-regular">
+            </Heading>
+            <div className="text-sm text-foreground-base">
               <ul>
                 <li>
                   <LocalizedClientLink
                     href="/account/profile"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
+                    className="flex items-center justify-between border-b border-border-base py-4 px-8"
                     data-testid="profile-link"
                   >
                     <>
@@ -63,7 +63,7 @@ const AccountNav = ({
                 <li>
                   <LocalizedClientLink
                     href="/account/addresses"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
+                    className="flex items-center justify-between border-b border-border-base py-4 px-8"
                     data-testid="addresses-link"
                   >
                     <>
@@ -78,7 +78,7 @@ const AccountNav = ({
                 <li>
                   <LocalizedClientLink
                     href="/account/orders"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8"
+                    className="flex items-center justify-between border-b border-border-base py-4 px-8"
                     data-testid="orders-link"
                   >
                     <div className="flex items-center gap-x-2">
@@ -91,7 +91,7 @@ const AccountNav = ({
                 <li>
                   <button
                     type="button"
-                    className="flex items-center justify-between py-4 border-b border-gray-200 px-8 w-full"
+                    className="flex w-full items-center justify-between border-b border-border-base py-4 px-8 text-left"
                     onClick={handleLogout}
                     data-testid="logout-button"
                   >
@@ -108,13 +108,17 @@ const AccountNav = ({
         )}
       </div>
       <div className="hidden small:block" data-testid="account-nav">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="pb-4 mb-4 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Account</h3>
-            <p className="text-sm text-gray-600 mt-1">Hello {customer?.first_name}</p>
+        <div className="rounded-3xl border border-border-base bg-surface-primary p-6 shadow-sm">
+          <div className="mb-4 border-b border-border-base pb-4">
+            <Heading as="h3" size="sm">
+              Account
+            </Heading>
+            <Text variant="body-sm" tone="subtle" className="mt-1">
+              Hello {customer?.first_name}
+            </Text>
           </div>
           <div className="text-base">
-            <ul className="flex mb-0 justify-start items-start flex-col gap-y-2">
+            <ul className="flex flex-col items-start justify-start gap-y-2">
               <li className="w-full">
                 <AccountNavLink
                   href="/account"
@@ -151,15 +155,16 @@ const AccountNav = ({
                   Orders
                 </AccountNavLink>
               </li>
-              <li className="w-full pt-4 border-t border-gray-200">
-                <button
+              <li className="w-full border-t border-border-base pt-4">
+                <Button
                   type="button"
+                  variant="ghost"
+                  className="px-0 text-red-600 hover:text-red-700"
                   onClick={handleLogout}
-                  className="text-red-600 hover:text-red-800 font-medium"
                   data-testid="logout-button"
                 >
                   Log out
-                </button>
+                </Button>
               </li>
             </ul>
           </div>
@@ -188,12 +193,11 @@ const AccountNavLink = ({
   return (
     <LocalizedClientLink
       href={href}
-      className={clx(
-        "block w-full px-3 py-2 rounded-lg transition-colors",
-        {
-          "bg-blue-50 text-blue-700 font-semibold": active,
-          "text-gray-700 hover:bg-gray-50": !active,
-        }
+      className={cn(
+        "block w-full rounded-2xl px-4 py-3 text-sm font-medium transition-colors",
+        active
+          ? "bg-surface-secondary text-foreground-base"
+          : "text-foreground-muted hover:bg-surface-secondary/80"
       )}
       data-testid={dataTestId}
     >

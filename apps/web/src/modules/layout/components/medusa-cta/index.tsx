@@ -1,11 +1,11 @@
-import { Text } from "@medusajs/ui"
+import { Text } from "@/components/ui"
 
 import Medusa from "../../../common/icons/medusa"
 import NextJs from "../../../common/icons/nextjs"
 
 const MedusaCTA = () => {
   return (
-    <Text className="flex gap-x-2 txt-compact-small-plus items-center">
+    <Text variant="body-sm" className="flex gap-2 items-center text-foreground-muted">
       Powered by
       <a href="https://www.medusajs.com" target="_blank" rel="noreferrer">
         <Medusa fill="#9ca3af" className="fill-[#9ca3af]" />

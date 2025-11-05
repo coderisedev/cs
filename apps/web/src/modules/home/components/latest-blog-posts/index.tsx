@@ -1,4 +1,4 @@
-import { Heading } from "@medusajs/ui"
+import { Heading, Text } from "@/components/ui"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { ArrowRight, Clock, Calendar } from "lucide-react"
 import Image from "next/image"
@@ -15,21 +15,21 @@ export default function LatestBlogPosts() {
   }
 
   return (
-    <section className="py-16 bg-white">
+    <section className="bg-surface-primary py-16">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="mb-8 flex items-center justify-between">
           <div>
-            <Heading level="h2" className="text-3xl font-bold text-gray-900 mb-2">
+            <Heading as="h2" size="lg" className="mb-2">
               Latest Articles
             </Heading>
-            <p className="text-gray-600">
+            <Text tone="subtle">
               Stay updated with our latest insights and guides
-            </p>
+            </Text>
           </div>
           <LocalizedClientLink 
             href="/blog"
-            className="hidden sm:flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+            className="hidden items-center gap-2 text-sm font-semibold text-foreground-interactive transition-colors hover:text-foreground-interactive/80 sm:flex"
           >
             View All Articles
             <ArrowRight className="w-4 h-4" />
@@ -37,8 +37,8 @@ export default function LatestBlogPosts() {
         </div>
 
         {/* Blog Posts Grid - Horizontal Scroll on Mobile */}
-        <div className="overflow-x-auto -mx-4 px-4 pb-4">
-          <div className="flex gap-6 min-w-max sm:grid sm:grid-cols-3 sm:min-w-0">
+        <div className="-mx-4 overflow-x-auto px-4 pb-4">
+          <div className="flex min-w-max gap-6 sm:grid sm:min-w-0 sm:grid-cols-3">
             {latestPosts.map((post) => {
               const publishDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -50,11 +50,11 @@ export default function LatestBlogPosts() {
                 <LocalizedClientLink
                   key={post.id}
                   href={`/blog/${post.slug}`}
-                  className="group flex-shrink-0 w-80 sm:w-auto"
+                  className="group w-80 flex-shrink-0 sm:w-auto"
                 >
-                  <article className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
+                  <article className="flex h-full flex-col overflow-hidden rounded-3xl border border-border-base bg-surface-secondary transition-shadow duration-300 group-hover:shadow-xl">
                     {/* Featured Image */}
-                    <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100">
+                    <div className="relative h-48 overflow-hidden bg-gradient-to-br from-surface-secondary to-surface-primary">
                       {post.featuredImage ? (
                         <Image
                           src={post.featuredImage}
@@ -68,25 +68,29 @@ export default function LatestBlogPosts() {
                       )}
                       
                       {/* Category Badge */}
-                      <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold bg-white/90 backdrop-blur-sm text-gray-700">
+                      <div className="absolute left-4 top-4 rounded-full bg-surface-primary/90 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-foreground-base backdrop-blur">
                         {post.category}
                       </div>
                     </div>
 
                     {/* Post Content */}
-                    <div className="p-6 flex-1 flex flex-col">
+                    <div className="flex flex-1 flex-col p-6">
                       {/* Title */}
-                      <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                      <Heading
+                        as="h3"
+                        size="xs"
+                        className="mb-3 line-clamp-2 transition-colors duration-200 group-hover:text-foreground-interactive"
+                      >
                         {post.title}
-                      </h3>
+                      </Heading>
 
                       {/* Excerpt */}
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-1">
+                      <Text tone="subtle" className="mb-4 line-clamp-3 flex-1 text-sm">
                         {post.excerpt}
-                      </p>
+                      </Text>
 
                       {/* Meta Info */}
-                      <div className="flex items-center gap-4 text-sm text-gray-500 mt-auto">
+                      <div className="mt-auto flex items-center gap-4 text-sm text-foreground-muted">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
                           <span>{publishDate}</span>
@@ -98,7 +102,7 @@ export default function LatestBlogPosts() {
                       </div>
 
                       {/* Author */}
-                      <div className="flex items-center gap-3 mt-4 pt-4 border-t border-gray-200">
+                      <div className="mt-4 flex items-center gap-3 border-t border-border-base pt-4">
                         {post.author.avatar && (
                           <Image
                             src={post.author.avatar}
@@ -108,11 +112,9 @@ export default function LatestBlogPosts() {
                             className="rounded-full object-cover"
                           />
                         )}
-                        <div>
-                          <div className="font-semibold text-gray-900 text-sm">
-                            {post.author.name}
-                          </div>
-                        </div>
+                        <Text variant="body-sm" weight="semibold">
+                          {post.author.name}
+                        </Text>
                       </div>
                     </div>
                   </article>
@@ -123,10 +125,10 @@ export default function LatestBlogPosts() {
         </div>
 
         {/* Mobile View All Link */}
-        <div className="sm:hidden mt-6 text-center">
+        <div className="mt-6 text-center sm:hidden">
           <LocalizedClientLink 
             href="/blog"
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-foreground-interactive transition-colors hover:text-foreground-interactive/80"
           >
             View All Articles
             <ArrowRight className="w-4 h-4" />

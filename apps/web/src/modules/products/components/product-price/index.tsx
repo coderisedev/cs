@@ -1,7 +1,6 @@
-import { clx } from "@medusajs/ui"
-
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
+import { cn } from "@/components/ui"
 
 export default function ProductPrice({
   product,
@@ -22,11 +21,12 @@ export default function ProductPrice({
   }
 
   return (
-    <div className="flex flex-col text-ui-fg-base">
+    <div className="flex flex-col text-foreground-base gap-1">
       <span
-        className={clx("text-xl-semi", {
-          "text-ui-fg-interactive": selectedPrice.price_type === "sale",
-        })}
+        className={cn(
+          "text-2xl font-semibold",
+          selectedPrice.price_type === "sale" && "text-foreground-interactive"
+        )}
       >
         {!variant && "From "}
         <span
@@ -38,8 +38,8 @@ export default function ProductPrice({
       </span>
       {selectedPrice.price_type === "sale" && (
         <>
-          <p>
-            <span className="text-ui-fg-subtle">Original: </span>
+          <div className="text-sm text-foreground-muted">
+            <span className="mr-1">Original:</span>
             <span
               className="line-through"
               data-testid="original-product-price"
@@ -47,8 +47,8 @@ export default function ProductPrice({
             >
               {selectedPrice.original_price}
             </span>
-          </p>
-          <span className="text-ui-fg-interactive">
+          </div>
+          <span className="text-foreground-interactive text-sm font-medium">
             -{selectedPrice.percentage_diff}%
           </span>
         </>

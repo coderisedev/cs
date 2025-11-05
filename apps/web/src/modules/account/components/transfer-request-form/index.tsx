@@ -1,11 +1,11 @@
 "use client"
 
-import { useActionState } from "react"
-import { createTransferRequest } from "@lib/data/orders"
-import { Text, Heading, Input, Button, IconButton, Toaster } from "@medusajs/ui"
-import { SubmitButton } from "@modules/checkout/components/submit-button"
+import { Button, Heading, Input, Text } from "@/components/ui"
 import { CheckCircleMiniSolid, XCircleSolid } from "@medusajs/icons"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useActionState } from "react"
+
+import { createTransferRequest } from "@lib/data/orders"
+import { SubmitButton } from "@modules/checkout/components/submit-button"
 
 export default function TransferRequestForm() {
   const [showSuccess, setShowSuccess] = useState(false)
@@ -23,26 +23,32 @@ export default function TransferRequestForm() {
   }, [state.success, state.order])
 
   return (
-    <div className="flex flex-col gap-y-4 w-full">
-      <div className="grid sm:grid-cols-2 items-center gap-x-8 gap-y-4 w-full">
-        <div className="flex flex-col gap-y-1">
-          <Heading level="h3" className="text-lg text-neutral-950">
+    <div className="flex w-full flex-col gap-y-4">
+      <div className="grid w-full items-center gap-x-8 gap-y-4 small:grid-cols-2">
+        <div className="flex flex-col gap-y-2">
+          <Heading as="h3" size="sm">
             Order transfers
           </Heading>
-          <Text className="text-base-regular text-neutral-500">
+          <Text tone="subtle">
             Can&apos;t find the order you are looking for?
             <br /> Connect an order to your account.
           </Text>
         </div>
         <form
           action={formAction}
-          className="flex flex-col gap-y-1 sm:items-end"
+          className="flex w-full flex-col gap-y-2 small:items-end"
         >
-          <div className="flex flex-col gap-y-2 w-full">
-            <Input className="w-full" name="order_id" placeholder="Order ID" />
+          <div className="flex w-full flex-col gap-y-2">
+            <Input
+              className="w-full"
+              name="order_id"
+              placeholder="Order ID"
+              data-testid="transfer-order-input"
+            />
             <SubmitButton
               variant="secondary"
               className="w-fit whitespace-nowrap self-end"
+              data-testid="transfer-request-button"
             >
               Request transfer
             </SubmitButton>
@@ -50,30 +56,33 @@ export default function TransferRequestForm() {
         </form>
       </div>
       {!state.success && state.error && (
-        <Text className="text-base-regular text-rose-500 text-right">
+        <Text tone="danger" className="text-right text-sm">
           {state.error}
         </Text>
       )}
       {showSuccess && (
-        <div className="flex justify-between p-4 bg-neutral-50 shadow-borders-base w-full self-stretch items-center">
-          <div className="flex gap-x-2 items-center">
-            <CheckCircleMiniSolid className="w-4 h-4 text-emerald-500" />
+        <div className="flex w-full items-center justify-between self-stretch rounded-2xl border border-border-base bg-surface-secondary p-4 shadow-xs">
+          <div className="flex items-center gap-x-3">
+            <CheckCircleMiniSolid className="h-5 w-5 text-[hsl(var(--dji-color-status-success))]" />
             <div className="flex flex-col gap-y-1">
-              <Text className="text-medim-pl text-neutral-950">
+              <Text className="font-semibold text-foreground-base">
                 Transfer for order {state.order?.id} requested
               </Text>
-              <Text className="text-base-regular text-neutral-600">
+              <Text tone="subtle">
                 Transfer request email sent to {state.order?.email}
               </Text>
             </div>
           </div>
-          <IconButton
-            variant="transparent"
-            className="h-fit"
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-foreground-subtle"
             onClick={() => setShowSuccess(false)}
+            aria-label="Dismiss transfer success"
           >
-            <XCircleSolid className="w-4 h-4 text-neutral-500" />
-          </IconButton>
+            <XCircleSolid className="h-5 w-5" />
+          </Button>
         </div>
       )}
     </div>
