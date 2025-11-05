@@ -65,6 +65,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const computedDisabled = (disabled ?? false) || isBusy
     const buttonType = type ?? "button"
 
+    const content = asChild ? (
+      children
+    ) : (
+      <>
+        {isBusy && (
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+        )}
+        {children}
+      </>
+    )
+
     return (
       <Component
         ref={ref}
@@ -83,10 +94,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ? { disabled: computedDisabled, type: buttonType }
           : { "aria-disabled": computedDisabled ? true : undefined })}
       >
-        {isBusy ? (
-          <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-        ) : null}
-        {children}
+        {content}
       </Component>
     )
   }
