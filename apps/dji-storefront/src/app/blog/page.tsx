@@ -6,9 +6,9 @@ export const metadata = {
   description: "Insights, tutorials, and reviews for flight-sim builders",
 }
 
-const posts = getBlogPosts()
-const categories = getBlogCategories()
-
 export default function BlogPage() {
+  const posts = getBlogPosts()
+  const categories = getBlogCategories()
+  
   return <BlogPageClient posts={posts} categories={categories} />
 }

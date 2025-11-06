@@ -66,3 +66,16 @@ export const getCollectionByHandle = async (handle: string) => {
     return getMockCollectionByHandle(handle)
   }
 }
+
+export const getCollections = async ({
+  limit,
+  includeProducts,
+}: {
+  limit?: number
+  includeProducts?: boolean
+} = {}) => {
+  const result = getMockCollections({
+    limit: limit?.toString() ?? "100",
+  })
+  return result.collections
+}
