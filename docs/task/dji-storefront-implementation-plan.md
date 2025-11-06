@@ -136,6 +136,12 @@ Target: build a global Medusa storefront whose layout and components mirror **ev
   - Capture annotated screenshots for every page; compare against cockpit and design doc tokens.
   - Log deviation tickets and get sign-off/waivers from design/product leadership.
 
+### Phase 4 — Current Outputs
+
+- **Environment wiring (mock staging):** `apps/dji-storefront/README.md` now documents how to run the mock-backed dev server, Storybook, and validation steps. The shared helpers under `src/lib/data/*` make swapping to a real Medusa backend a single touchpoint once credentials are available.
+- **CI-friendly scripts:** Root-level `package.json` exposes `lint:dji-storefront`, `build:dji-storefront`, `storybook:dji-storefront`, and `test:mock-medusa` so CI (or humans) can run the storefront checks independently of the monorepo turbo pipeline.
+- **Design/QA guidance:** README includes a manual validation checklist (landing, products, collections) plus instructions to capture Storybook + browser screenshots for sign-off. Phase 4 deviations should be logged directly in this plan as screenshots/notes are produced.
+
 ## Phase 5 – Rollout Strategy
 - Deployment:
   - Deploy globally under the primary domain/path; migrate cookies/cart storage if host changes.
@@ -157,6 +163,12 @@ Target: build a global Medusa storefront whose layout and components mirror **ev
 - Governance:
   - Establish a change-control checklist requiring new UI work to land in the cockpit simulator + design doc before adoption.
   - Schedule periodic audits to ensure ongoing compliance with the DJI system.
+
+### Phase 6 — Current Outputs
+
+- **Post-launch playbook:** `apps/dji-storefront/docs/post-launch.md` now documents the monitoring dashboards (conversion, performance, errors, support signals), alerting channels, and the first three post-launch sprints, along with eligibility criteria for removing legacy Medusa assets.
+- **Cleanup/governance:** The README + playbook define a change-control checklist (design references, lint/test runs, plan updates) and quarterly audit cadence. Legacy removal gating and lint enforcement are spelled out to prevent regressions into the Medusa CSS.
+- **Next actions:** Once the new storefront is live, populate the dashboards/alert hooks referenced in the playbook, archive `legacy-medusa.css` once account/checkout migrations land, and log audit findings per quarter in `apps/dji-storefront/docs/audits/`.
 
 ## Immediate Next Steps
 1. Approve global MVP scope (all cockpit simulator pages) and timeline.
