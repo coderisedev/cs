@@ -94,10 +94,15 @@ export function BlogPageClient({ posts, categories }: BlogPageClientProps) {
         {paginatedPosts.map((post) => (
           <article
             key={post.id}
-            className="rounded-3xl border border-border-primary overflow-hidden bg-background-secondary"
+            className="group rounded-3xl border border-border-primary overflow-hidden bg-background-secondary transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
           >
-            <div className="relative h-56 w-full">
-              <Image src={post.featuredImage} alt={post.title} fill className="object-cover" />
+            <div className="relative h-56 w-full overflow-hidden">
+              <Image
+                src={post.featuredImage}
+                alt={post.title}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+              />
             </div>
             <div className="p-6 space-y-3">
               <p className="text-xs uppercase tracking-widest text-primary-500">{post.category.replace("-", " ")}</p>
