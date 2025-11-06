@@ -50,7 +50,7 @@
   }
 
   .text-gradient {
-    background: linear-gradient(135deg, #0070d5 0%, #0056a3 100%);
+    background: var(--gradient-brand);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -66,12 +66,12 @@
 
   .hero-title {
     @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: var(--text-shadow-hero-strong);
   }
 
   .hero-subtitle {
     @apply text-lg sm:text-xl md:text-2xl leading-relaxed;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: var(--text-shadow-hero-subtle);
   }
 
   .hero-button {
@@ -79,7 +79,7 @@
   }
 
   .hero-overlay {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.3) 100%);
+    background: var(--gradient-hero);
   }
 
   .list-view-card {
@@ -170,7 +170,7 @@
   }
 
   .hero-gradient-text {
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    background: var(--gradient-brand);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
