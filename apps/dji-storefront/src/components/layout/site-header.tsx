@@ -2,10 +2,11 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ShoppingCart, Search, Menu, User, X, Sun, Moon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
 
 const NAV_ITEMS = [
   { name: "Home", href: "/" },
@@ -22,6 +23,18 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (typeof window === "undefined") return
+      setScrolled(window.scrollY > 40)
+    }
+
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   const toggleTheme = () => {
     setIsDarkMode((prev) => !prev)
@@ -31,10 +44,23 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
   const isActive = (href: string) => pathname === href
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border-primary bg-background-primary/90 backdrop-blur-md shadow-sm">
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full transition-colors duration-300",
+        scrolled
+          ? "border-b border-border-primary bg-background-primary/90 backdrop-blur-md shadow-sm"
+          : "border-transparent bg-transparent"
+      )}
+    >
       <div className="container mx-auto px-4 lg:px-12">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="text-lg font-semibold text-gradient">
+          <Link
+            href="/"
+            className={cn(
+              "text-lg font-semibold transition-colors duration-300",
+              scrolled ? "text-gradient" : "text-white"
+            )}
+          >
             DJI Storefront
           </Link>
 
@@ -43,11 +69,15 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`text-sm font-medium transition-colors duration-300 hover:text-primary-400 ${
+                className={cn(
+                  "text-sm font-medium transition-colors duration-300 border-b-2 border-transparent pb-1",
+                  scrolled ? "text-foreground-primary hover:text-primary-500" : "text-white/85 hover:text-white",
                   isActive(item.href)
-                    ? "text-primary-500 border-b-2 border-primary-500 pb-1"
-                    : "text-foreground-primary"
-                }`}
+                    ? scrolled
+                      ? "text-primary-500 border-primary-500"
+                      : "text-white border-white/80"
+                    : undefined
+                )}
               >
                 {item.name}
               </Link>
@@ -59,7 +89,10 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
               variant="ghost"
               size="icon"
               aria-label="Toggle theme"
-              className="touch-target"
+              className={cn(
+                "touch-target transition-colors duration-300",
+                scrolled ? "" : "text-white hover:bg-white/10"
+              )}
               onClick={toggleTheme}
             >
               {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -68,18 +101,35 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
               variant="ghost"
               size="icon"
               aria-label="Search"
-              className="hidden md:flex touch-target"
+              className={cn(
+                "hidden md:flex touch-target transition-colors duration-300",
+                scrolled ? "" : "text-white hover:bg-white/10"
+              )}
               onClick={() => setSearchOpen((prev) => !prev)}
             >
               <Search className="h-5 w-5" />
             </Button>
             <Link href="/account" aria-label="Account">
-              <Button variant="ghost" size="icon" className="touch-target">
+              <Button
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  "touch-target transition-colors duration-300",
+                  scrolled ? "" : "text-white hover:bg-white/10"
+                )}
+              >
                 <User className="h-5 w-5" />
               </Button>
             </Link>
             <Link href="/cart" aria-label="Cart" className="relative">
-              <Button variant="ghost" size="icon" className="touch-target">
+              <Button
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  "touch-target transition-colors duration-300",
+                  scrolled ? "" : "text-white hover:bg-white/10"
+                )}
+              >
                 <ShoppingCart className="h-5 w-5" />
                 <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary-500 text-neutral-50 text-xs flex items-center justify-center font-bold">
                   {cartItemCount}
@@ -89,7 +139,10 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden touch-target"
+              className={cn(
+                "lg:hidden touch-target transition-colors duration-300",
+                scrolled ? "" : "text-white hover:bg-white/10"
+              )}
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label="Toggle navigation"
             >

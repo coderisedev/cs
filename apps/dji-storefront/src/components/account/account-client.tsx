@@ -69,20 +69,20 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
       </header>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5 gap-2 rounded-2xl bg-background-secondary p-1">
-          <TabsTrigger value="profile" className="rounded-xl py-3 text-sm font-medium">
+        <TabsList className="grid w-full grid-cols-5 gap-2 rounded-2xl bg-background-secondary p-1 h-full min-h-[3.5rem]">
+          <TabsTrigger value="profile" className="rounded-xl py-3 text-sm font-medium w-full h-full justify-center">
             Profile
           </TabsTrigger>
-          <TabsTrigger value="orders" className="rounded-xl py-3 text-sm font-medium">
+          <TabsTrigger value="orders" className="rounded-xl py-3 text-sm font-medium w-full h-full justify-center">
             Orders
           </TabsTrigger>
-          <TabsTrigger value="addresses" className="rounded-xl py-3 text-sm font-medium">
+          <TabsTrigger value="addresses" className="rounded-xl py-3 text-sm font-medium w-full h-full justify-center">
             Addresses
           </TabsTrigger>
-          <TabsTrigger value="wishlist" className="rounded-xl py-3 text-sm font-medium">
+          <TabsTrigger value="wishlist" className="rounded-xl py-3 text-sm font-medium w-full h-full justify-center">
             Wishlist
           </TabsTrigger>
-          <TabsTrigger value="settings" className="rounded-xl py-3 text-sm font-medium">
+          <TabsTrigger value="settings" className="rounded-xl py-3 text-sm font-medium w-full h-full justify-center">
             Settings
           </TabsTrigger>
         </TabsList>
