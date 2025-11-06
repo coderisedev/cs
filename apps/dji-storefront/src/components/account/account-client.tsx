@@ -303,9 +303,11 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
                       </div>
                       <h3 className="text-lg font-semibold text-foreground-primary">{item.product.title}</h3>
                       <p className="mt-2 line-clamp-2 text-sm text-foreground-secondary">{item.product.description}</p>
-                      <div className="mt-4 flex items-center justify-between">
+                      <div className="mt-4 space-y-3">
                         <span className="text-lg font-semibold text-foreground-primary">{currencyFormatter(item.product.price)}</span>
-                        <Button size="sm">Add to Cart</Button>
+                        <Button size="sm" className="w-full justify-center">
+                          Add to Cart
+                        </Button>
                       </div>
                       <p className="mt-2 text-xs text-foreground-muted">Added on {formatDate(item.addedDate)}</p>
                     </div>

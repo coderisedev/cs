@@ -49,16 +49,21 @@ export function ProductCard({ product, viewMode = "grid" }: { product: MockProdu
                 </div>
               </div>
               <p className="text-sm text-foreground-secondary mb-4 flex-1 line-clamp-2">{product.description}</p>
-              <div className="flex items-center justify-between">
-                <div>
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-baseline gap-2">
                   <span className="text-2xl font-bold text-primary-400">{currencyFormatter(product.price)}</span>
                   {product.compareAtPrice && (
-                    <span className="text-lg text-foreground-muted line-through ml-2">
+                    <span className="text-lg text-foreground-muted line-through">
                       {currencyFormatter(product.compareAtPrice)}
                     </span>
                   )}
                 </div>
-                <Button size="sm" className="touch-target" disabled={!product.inStock} onClick={handleAddToCart}>
+                <Button
+                  size="sm"
+                  className="w-full justify-center touch-target"
+                  disabled={!product.inStock}
+                  onClick={handleAddToCart}
+                >
                   {product.inStock ? (
                     <>
                       <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
@@ -94,16 +99,16 @@ export function ProductCard({ product, viewMode = "grid" }: { product: MockProdu
           <span className="text-sm text-foreground-muted">({product.reviewCount})</span>
         </div>
         <p className="text-sm text-foreground-secondary line-clamp-2 mb-4">{product.description}</p>
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-baseline gap-2">
             <span className="text-2xl font-bold text-primary-400">{currencyFormatter(product.price)}</span>
             {product.compareAtPrice && (
-              <span className="text-lg text-foreground-muted line-through ml-2">
+              <span className="text-lg text-foreground-muted line-through">
                 {currencyFormatter(product.compareAtPrice)}
               </span>
             )}
           </div>
-          <Button size="sm" className="touch-target" disabled={!product.inStock} onClick={handleAddToCart}>
+          <Button size="sm" className="w-full justify-center touch-target" disabled={!product.inStock} onClick={handleAddToCart}>
             {product.inStock ? (
               <>
                 <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
