@@ -118,6 +118,13 @@ Target: build a global Medusa storefront whose layout and components mirror **ev
   - Maintain a migration matrix linking each legacy `apps/web` module to its replacement.
   - Hold weekly demos to track visual parity progress against cockpit references.
 
+### Phase 3 — Current Outputs (Mock data readiness)
+
+- Extended `packages/@cs/medusa-client` to expose richer mocks: full product objects, collection summaries (with sample products), recent orders, order retrieval, and address lists. All APIs are typed and covered by Vitest (`pnpm --filter @cs/medusa-client test:unit`).
+- Updated `apps/dji-storefront/src/app/page.tsx` to consume the new collection/order mocks so designers can validate catalog/commerce flows ahead of feature migration.
+- The mock surface now mirrors the upcoming Medusa endpoints needed for catalogue, cart, checkout, and account pages, unblocking server components that depend on product, order, or address data.
+- Shared server helpers (`src/lib/data/*`) now provide typed loaders for landing, products, and collections, and new server-rendered pages (`/products`, `/collections/[handle]`) use those helpers plus the DJI UI kit. Initial Storybook coverage for `ProductCard` supports design reviews before wiring the rest of the catalog.
+
 ## Phase 4 – Integration & Hardening
 - Environment wiring:
   - Point staging/prod builds to Medusa environments; validate cart/order/account flows end to end under single-region config.

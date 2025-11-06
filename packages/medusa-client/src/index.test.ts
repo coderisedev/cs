@@ -35,15 +35,34 @@ describe("mockMedusaClient", () => {
     expect(products[0]?.handle).toBe("a320-cdu")
   })
 
-  it("exposes collection and order helpers", async () => {
-    const [collections, featured, orders] = await Promise.all([
-      mockMedusaClient.listCollections(),
-      mockMedusaClient.retrieveCollection("featured"),
-      mockMedusaClient.listRecentOrders(),
+  it("filters and retrieves products", async () => {
+    const airbusProducts = await mockMedusaClient.listProducts({ collectionHandle: "airbus" })
+    expect(airbusProducts.every((product) => product.category.includes("a320"))).toBe(true)
+
+    const searchResults = await mockMedusaClient.listProducts({ search: "EFIS" })
+    expect(searchResults[0]?.handle).toBe("737-efis")
+
+    const product = await mockMedusaClient.retrieveProduct("a320-cdu")
+    expect(product?.variants.length).toBeGreaterThan(0)
+  })
+
+  it("exposes collection, order, and address helpers", async () => {
+    const [collections, featured, orders, addresses] = await Promise.all([
+      mockMedusaClient.listCollections({ includeProducts: true }),
+      mockMedusaClient.retrieveCollection("featured", { includeProducts: true }),
+      mockMedusaClient.listRecentOrders(1),
+      mockMedusaClient.listCustomerAddresses(),
     ])
 
-    expect(collections.length).toBeGreaterThan(1)
-    expect(featured?.highlight).toBe("Hero")
+    expect(collections[0]).toHaveProperty("products")
+    expect(featured && "products" in featured ? featured.products.length : 0).toBeGreaterThan(0)
     expect(orders[0]?.display_id).toBe("#1001")
+    expect(addresses[0]?.is_default).toBe(true)
+  })
+
+  it("retrieves orders by id", async () => {
+    const order = await mockMedusaClient.retrieveOrder("order_01")
+    expect(order?.items.length).toBeGreaterThan(1)
+    expect(order?.shipping_address.city).toBe("San Jose")
   })
 })

@@ -1,19 +1,15 @@
-import { mockMedusaClient } from "@cs/medusa-client"
+import type { MockCollectionWithProducts } from "@cs/medusa-client"
 import { cockpitPages } from "@/data/cockpit-pages"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-
-const currency = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-})
+import { LandingHero } from "@/components/sections/landing-hero"
+import { CollectionsPreview } from "@/components/sections/collections-preview"
+import { RecentOrderCard } from "@/components/sections/recent-order-card"
+import { getLandingSnapshot } from "@/lib/data/landing"
+import { currencyFormatter } from "@/lib/number"
 
 export default async function Home() {
-  const [region, cart, products] = await Promise.all([
-    mockMedusaClient.getDefaultRegion(),
-    mockMedusaClient.retrieveCart(),
-    mockMedusaClient.listProductSummaries(3),
-  ])
+  const { region, cart, heroProducts, heroCollections, heroOrders } = await getLandingSnapshot()
 
   const summaryCards = [
     {
@@ -28,23 +24,22 @@ export default async function Home() {
     {
       label: "Cart snapshot",
       title: `${cart.items.length} items`,
-      description: `Subtotal: ${currency.format(cart.subtotal)}`,
-      items: [
-        `Region bound to ${region.id}`,
-        "Data served via mock Medusa client",
-      ],
+      description: `Subtotal: ${currencyFormatter(cart.subtotal)}`,
+      items: [`Region bound to ${region.id}`, "Data served via mock Medusa client"],
     },
     {
       label: "Product samples",
-      title: `${products.length} mocks`,
+      title: `${heroProducts.length} mocks`,
       description: "Previewing cockpit simulator catalogue data",
-      items: products.map((product) => `${product.title} · ${currency.format(product.price)}`),
+      items: heroProducts.map((product) => `${product.title} · ${currencyFormatter(product.price)}`),
     },
   ]
 
   return (
     <div className="bg-background-primary text-foreground-primary min-h-screen">
       <div className="container py-16 space-y-12">
+        <LandingHero />
+
         <section className="space-y-4">
           <p className="text-sm uppercase tracking-widest text-foreground-muted">Environment</p>
           <div className="grid gap-6 md:grid-cols-3">
@@ -66,7 +61,9 @@ export default async function Home() {
             ))}
           </div>
           <div className="flex flex-wrap gap-4">
-            <Button variant="default">Mock checkout flow</Button>
+            <Button size="lg" className="btn-primary text-white">
+              Mock checkout flow
+            </Button>
             <Button variant="outline" asChild>
               <a href="http://localhost:6006" target="_blank" rel="noreferrer">
                 Open Storybook
@@ -109,6 +106,22 @@ export default async function Home() {
                 </ul>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className="space-y-6">
+          <div className="space-y-2">
+            <p className="text-sm uppercase tracking-widest text-foreground-muted">Catalog preview</p>
+            <h2 className="text-3xl font-semibold">Collections & recent orders</h2>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            <CollectionsPreview
+              collections={heroCollections.filter(
+                (collection): collection is MockCollectionWithProducts => "products" in collection
+              )}
+            />
+            <RecentOrderCard order={heroOrders[0]} />
           </div>
         </section>
       </div>
