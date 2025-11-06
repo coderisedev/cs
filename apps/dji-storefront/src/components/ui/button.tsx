@@ -16,8 +16,8 @@ const buttonVariants = cva(
         outline: "border border-neutral-500 bg-transparent text-foreground-primary hover:bg-background-elevated hover:border-primary-500 active:bg-background-elevated rounded-pill-md px-4 py-2 text-base hover:transform hover:-translate-y-0.5",
         // Destructive
         destructive: "bg-semantic-error text-neutral-50 hover:bg-semantic-error/90 active:bg-semantic-error/80 rounded-sm px-6 py-3 text-base shadow-sm hover:shadow-md hover:transform hover:-translate-y-0.5",
-        // Ghost
-        ghost: "text-neutral-50 hover:bg-background-elevated active:bg-background-elevated rounded-base px-4 py-2 text-base hover:transform hover:-translate-y-0.5",
+        // Ghost (adapts to theme foreground)
+        ghost: "text-foreground-primary hover:bg-background-elevated active:bg-background-elevated rounded-base px-4 py-2 text-base hover:transform hover:-translate-y-0.5",
         // Link
         link: "text-primary-400 underline-offset-4 hover:underline p-0 h-auto hover:text-primary-300 text-sm",
       },
