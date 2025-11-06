@@ -1,0 +1,77 @@
+:root {
+  --radius: 0.5rem;
+
+  /* DJI Design System - Light Theme */
+  --background-primary: 0 0% 100%;
+  --background-secondary: 0 0% 98%;
+  --background-elevated: 0 0% 95%;
+  --background-overlay: 0 0% 93%;
+
+  --foreground-primary: 0 0% 19%;
+  --foreground-secondary: 0 0% 45%;
+  --foreground-muted: 0 0% 55%;
+
+  --border-primary: 0 0% 93%;
+  --border-secondary: 0 0% 94%;
+
+  /* DJI 7-Level Shadow System */
+  --shadow-xs: rgba(0, 0, 0, 0.05) 0px 2px 4px 0px;
+  --shadow-sm: rgba(0, 0, 0, 0.1) 0px 2px 6px 0px;
+  --shadow-md: rgba(0, 0, 0, 0.1) 0px 8px 16px 0px;
+  --shadow-lg: rgba(0, 0, 0, 0.1) 0px 16px 16px 0px;
+  --shadow-xl: rgba(0, 0, 0, 0.1) 0px 16px 32px 0px;
+  --shadow-directional: rgba(0, 0, 0, 0.1) 4px 4px 8px 0px;
+  --shadow-elevated: rgba(0, 0, 0, 0.2) 0px 2px 8px 0px;
+
+  /* Legacy support */
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 112, 213, 0.1);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.15), 0 0 2px rgba(0, 112, 213, 0.2);
+  --shadow-modal: 0 24px 48px rgba(0, 0, 0, 0.2), 0 0 4px rgba(0, 112, 213, 0.15);
+  --shadow-glow-blue: 0 0 20px rgba(0, 112, 213, 0.4);
+
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+  --sidebar-primary: 240 5.9% 10%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 240 4.8% 95.9%;
+  --sidebar-accent-foreground: 240 5.9% 10%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+}
+
+[data-theme="dark"],
+.dark {
+  --background-primary: 0 0% 10%;
+  --background-secondary: 0 0% 14%;
+  --background-elevated: 0 0% 18%;
+  --background-overlay: 0 0% 8%;
+
+  --foreground-primary: 0 0% 100%;
+  --foreground-secondary: 0 0% 88%;
+  --foreground-muted: 0 0% 60%;
+
+  --border-primary: 0 0% 18%;
+  --border-secondary: 0 0% 22%;
+
+  --shadow-xs: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
+  --shadow-sm: rgba(0, 0, 0, 0.15) 0px 2px 6px 0px;
+  --shadow-md: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px;
+  --shadow-lg: rgba(0, 0, 0, 0.25) 0px 16px 16px 0px;
+  --shadow-xl: rgba(0, 0, 0, 0.3) 0px 16px 32px 0px;
+  --shadow-directional: rgba(0, 0, 0, 0.2) 4px 4px 8px 0px;
+  --shadow-elevated: rgba(0, 0, 0, 0.35) 0px 2px 8px 0px;
+
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.6), 0 0 1px rgba(0, 112, 213, 0.1);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 2px rgba(0, 112, 213, 0.2);
+  --shadow-modal: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 112, 213, 0.15);
+  --shadow-glow-blue: 0 0 20px rgba(0, 112, 213, 0.4);
+
+  --sidebar-background: 240 5.9% 10%;
+  --sidebar-foreground: 240 4.8% 95.9%;
+  --sidebar-primary: 224.3 76.3% 48%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 240 3.7% 15.9%;
+  --sidebar-accent-foreground: 240 4.8% 95.9%;
+  --sidebar-border: 240 3.7% 15.9%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+}
