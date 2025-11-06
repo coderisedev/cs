@@ -1,0 +1,213 @@
+"use client"
+
+import { useMemo, useState } from "react"
+import { Search, Filter, Grid, List, ChevronDown } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import type { MockProduct } from "@cs/medusa-client"
+import type { ProductCategory } from "@/lib/data/products"
+import { ProductCard } from "@/components/products/product-card"
+
+const sortOptions = [
+  { value: "featured", label: "Featured" },
+  { value: "price-low", label: "Price: Low to High" },
+  { value: "price-high", label: "Price: High to Low" },
+  { value: "name", label: "Name" },
+  { value: "rating", label: "Rating" },
+  { value: "newest", label: "Newest" },
+] as const
+
+type SortOption = (typeof sortOptions)[number]["value"]
+
+type ViewMode = "grid" | "list"
+
+interface ProductsPageClientProps {
+  products: MockProduct[]
+  categories: ProductCategory[]
+}
+
+export function ProductsPageClient({ products, categories }: ProductsPageClientProps) {
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("all")
+  const [sortBy, setSortBy] = useState<SortOption>("featured")
+  const [viewMode, setViewMode] = useState<ViewMode>("grid")
+  const [showFilters, setShowFilters] = useState(false)
+
+  const filteredProducts = useMemo(() => {
+    let filtered = products
+
+    if (searchQuery) {
+      filtered = filtered.filter((product) =>
+        product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.tags?.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+      )
+    }
+
+    if (selectedCategory !== "all") {
+      filtered = filtered.filter((product) => product.category === selectedCategory)
+    }
+
+    switch (sortBy) {
+      case "price-low":
+        filtered = [...filtered].sort((a, b) => a.price - b.price)
+        break
+      case "price-high":
+        filtered = [...filtered].sort((a, b) => b.price - a.price)
+        break
+      case "name":
+        filtered = [...filtered].sort((a, b) => a.title.localeCompare(b.title))
+        break
+      case "rating":
+        filtered = [...filtered].sort((a, b) => b.rating - a.rating)
+        break
+      case "newest":
+        filtered = [...filtered].sort((a, b) => {
+          if (a.isNew && !b.isNew) return -1
+          if (!a.isNew && b.isNew) return 1
+          return 0
+        })
+        break
+      default:
+        filtered = [...filtered].sort((a, b) => {
+          if (a.collection === "featured" && b.collection !== "featured") return -1
+          if (a.collection !== "featured" && b.collection === "featured") return 1
+          return b.rating - a.rating
+        })
+    }
+
+    return filtered
+  }, [products, searchQuery, selectedCategory, sortBy])
+
+  const clearFilters = () => {
+    setSearchQuery("")
+    setSelectedCategory("all")
+    setSortBy("featured")
+  }
+
+  return (
+    <div className="container py-6 space-y-8">
+      <header className="space-y-2">
+        <h1 className="text-3xl font-bold text-foreground-primary">All Products</h1>
+        <p className="text-foreground-secondary">Discover our professional flight simulator hardware collection.</p>
+      </header>
+
+      <section className="bg-background-secondary rounded-2xl shadow-card p-6 space-y-4">
+        <div className="lg:hidden">
+          <Button variant="outline" className="w-full" onClick={() => setShowFilters((prev) => !prev)}>
+            <Filter className="mr-2 h-4 w-4" /> Filters & Sort
+            <ChevronDown className={`ml-2 h-4 w-4 transition-transform ${showFilters ? "rotate-180" : ""}`} />
+          </Button>
+        </div>
+
+        <div className={`grid grid-cols-1 gap-4 lg:grid-cols-12 ${showFilters ? "block" : "hidden lg:grid"}`}>
+          <div className="lg:col-span-4 relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground-muted" />
+            <Input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+
+          <div className="lg:col-span-3">
+            <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Category" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.id}>
+                    {category.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="lg:col-span-3">
+            <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                {sortOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="lg:col-span-2 flex gap-2">
+            <div className="flex border border-border-primary rounded-base">
+              <Button
+                variant={viewMode === "grid" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setViewMode("grid")}
+                className="rounded-r-none"
+              >
+                <Grid className="h-4 w-4" />
+              </Button>
+              <Button
+                variant={viewMode === "list" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setViewMode("list")}
+                className="rounded-l-none"
+              >
+                <List className="h-4 w-4" />
+              </Button>
+            </div>
+            <Button variant="outline" size="sm" onClick={clearFilters}>
+              Clear
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <div className="flex justify-between items-center">
+        <p className="text-sm text-foreground-muted">
+          Showing {filteredProducts.length} products
+          {selectedCategory !== "all" && (
+            <span className="ml-1">· {categories.find((c) => c.id === selectedCategory)?.title}</span>
+          )}
+        </p>
+      </div>
+
+      {filteredProducts.length > 0 ? (
+        <div
+          className={
+            viewMode === "grid"
+              ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+              : "space-y-4"
+          }
+        >
+          {filteredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} viewMode={viewMode} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-12">
+          <div className="text-foreground-muted mb-4">
+            <Search className="h-12 w-12 mx-auto" />
+          </div>
+          <h3 className="text-lg font-semibold text-foreground-primary mb-2">No Products Found</h3>
+          <p className="text-foreground-muted mb-4">Try adjusting your search criteria or clear the filters</p>
+          <Button onClick={clearFilters} variant="outline">
+            Clear All Filters
+          </Button>
+        </div>
+      )}
+
+      {filteredProducts.length >= 12 && (
+        <div className="text-center">
+          <Button variant="outline">Load More Products</Button>
+        </div>
+      )}
+    </div>
+  )
+}
