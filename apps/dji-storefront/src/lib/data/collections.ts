@@ -74,8 +74,13 @@ export const getCollections = async ({
   limit?: number
   includeProducts?: boolean
 } = {}) => {
-  const result = getMockCollections({
-    limit: limit?.toString() ?? "100",
+  const { collections } = await listCollections({
+    limit: limit?.toString(),
   })
-  return result.collections
+
+  if (includeProducts) {
+    return collections
+  }
+
+  return collections.map((collection) => ({ ...collection, products: undefined }))
 }
