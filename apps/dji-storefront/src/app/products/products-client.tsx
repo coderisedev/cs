@@ -5,8 +5,7 @@ import { Search, Filter, Grid, List, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import type { MockProduct } from "@cs/medusa-client"
-import type { ProductCategory } from "@/lib/data/products"
+import type { StorefrontProduct, ProductCategory } from "@/lib/data/products"
 import { ProductCard } from "@/components/products/product-card"
 
 const sortOptions = [
@@ -23,11 +22,12 @@ type SortOption = (typeof sortOptions)[number]["value"]
 type ViewMode = "grid" | "list"
 
 interface ProductsPageClientProps {
-  products: MockProduct[]
+  products: StorefrontProduct[]
   categories: ProductCategory[]
+  countryCode: string
 }
 
-export function ProductsPageClient({ products, categories }: ProductsPageClientProps) {
+export function ProductsPageClient({ products, categories, countryCode }: ProductsPageClientProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [sortBy, setSortBy] = useState<SortOption>("featured")
@@ -187,7 +187,7 @@ export function ProductsPageClient({ products, categories }: ProductsPageClientP
           }
         >
           {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} viewMode={viewMode} />
+            <ProductCard key={product.id} product={product} viewMode={viewMode} countryCode={countryCode} />
           ))}
         </div>
       ) : (

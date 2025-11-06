@@ -2,15 +2,18 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { useTransition } from "react"
 import { ShoppingCart, Star } from "lucide-react"
-import type { MockProduct } from "@cs/medusa-client"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { currencyFormatter } from "@/lib/number"
+import type { StorefrontProduct } from "@/lib/data/products"
+import { addToCartAction } from "@/app/actions/cart"
 
 type ViewMode = "grid" | "list"
 
-export function ProductCard({ product, viewMode = "grid" }: { product: MockProduct; viewMode?: ViewMode }) {
+export function ProductCard({ product, viewMode = "grid", countryCode }: { product: StorefrontProduct; viewMode?: ViewMode; countryCode: string }) {
+  const [isPending, startTransition] = useTransition()
   const image = product.images[0]
   const discount = product.compareAtPrice
     ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
@@ -20,7 +23,15 @@ export function ProductCard({ product, viewMode = "grid" }: { product: MockProdu
   const handleAddToCart = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     event.stopPropagation()
-    console.info("Add to cart", product.handle)
+    const variantId = product.variants[0]?.id
+    if (!variantId) return
+    startTransition(async () => {
+      try {
+        await addToCartAction({ variantId, quantity: 1, countryCode })
+      } catch (error) {
+        console.error("Add to cart failed", error)
+      }
+    })
   }
 
   const getButtonLabel = () => {
@@ -74,11 +85,11 @@ export function ProductCard({ product, viewMode = "grid" }: { product: MockProdu
                 <Button
                   size="sm"
                   className="w-full justify-center touch-target"
-                  disabled={!product.inStock}
+                  disabled={!product.inStock || isPending}
                   onClick={handleAddToCart}
                 >
                   {product.inStock && <ShoppingCart className="mr-2 h-4 w-4" />}
-                  {getButtonLabel()}
+                  {isPending ? "Adding…" : getButtonLabel()}
                 </Button>
               </div>
             </div>
@@ -116,9 +127,9 @@ export function ProductCard({ product, viewMode = "grid" }: { product: MockProdu
               </span>
             )}
           </div>
-          <Button size="sm" className="w-full justify-center touch-target" disabled={!product.inStock} onClick={handleAddToCart}>
+          <Button size="sm" className="w-full justify-center touch-target" disabled={!product.inStock || isPending} onClick={handleAddToCart}>
             {product.inStock && <ShoppingCart className="mr-2 h-4 w-4" />}
-            {getButtonLabel()}
+            {isPending ? "Adding…" : getButtonLabel()}
           </Button>
         </div>
       </div>

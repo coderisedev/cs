@@ -1,6 +1,18 @@
 # DJI Storefront (Next.js)
 
-Design-first storefront that mirrors every Cockpit Simulator mobile screen using the DJI design system. Until a real Medusa backend is reachable, the app uses the deterministic mock client in `packages/medusa-client` for regions, products, collections, orders, and addresses.
+Design-first storefront that mirrors every Cockpit Simulator mobile screen using the DJI design system. Until a real Medusa backend is reachable, the app uses the deterministic mock client in `packages/medusa-client` for regions, products, collections, orders, and addresses. As we migrate to the real backend, the app now ships with the Medusa SDK + cookie helpers so you can point it at a live server when ready.
+
+## Environment variables
+
+Create `apps/dji-storefront/.env.local` (or rely on repo-level env injection) with:
+
+| Name | Example | Description |
+| ---- | ------- | ----------- |
+| `MEDUSA_BACKEND_URL` | `http://localhost:9000` | Base URL for the Medusa server. Defaults to `http://localhost:9000` if unset. |
+| `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` | `pk_test_xxx` | Publishable API key generated in Medusa Admin (exposed to the browser). |
+| `NEXT_PUBLIC_DEFAULT_REGION` | `us` | Fallback country code if middleware cannot geolocate the visitor. |
+
+> When these env vars are **not** defined the storefront continues to run purely on mock data; once defined, subsequent phases of the migration will start calling the live `/store/*` endpoints.
 
 ## Local commands
 

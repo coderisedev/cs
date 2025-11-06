@@ -3,7 +3,7 @@ import { JetBrains_Mono, Open_Sans } from "next/font/google"
 import "./globals.css"
 import { SiteHeader } from "@/components/layout/site-header"
 import { SiteFooter } from "@/components/layout/site-footer"
-import { mockMedusaClient } from "@cs/medusa-client"
+import { retrieveCart } from "@/lib/data/cart"
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -28,13 +28,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const cart = await mockMedusaClient.retrieveCart()
+  const cart = await retrieveCart()
   return (
     <html lang="en" className="bg-background-primary">
       <body
         className={`${openSans.variable} ${jetBrainsMono.variable} antialiased bg-background-primary text-foreground-primary`}
       >
-        <SiteHeader cartItemCount={cart.items.length} />
+        <SiteHeader cartItemCount={cart?.items.length ?? 0} />
         <main>{children}</main>
         <SiteFooter />
       </body>

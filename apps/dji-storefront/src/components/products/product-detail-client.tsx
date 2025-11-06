@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useTransition } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -17,16 +17,19 @@ import {
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import type { MockProduct } from "@cs/medusa-client"
+import type { StorefrontProduct } from "@/lib/data/products"
 import type { Review } from "@/lib/data/reviews"
 import { currencyFormatter } from "@/lib/number"
+import { addToCartAction } from "@/app/actions/cart"
 
 interface ProductDetailClientProps {
-  product: MockProduct
+  product: StorefrontProduct
   reviews: Review[]
+  countryCode: string
 }
 
-export function ProductDetailClient({ product, reviews }: ProductDetailClientProps) {
+export function ProductDetailClient({ product, reviews, countryCode }: ProductDetailClientProps) {
+  const [isPending, startTransition] = useTransition()
   const [selectedImage, setSelectedImage] = useState(0)
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]?.id ?? "")
   const [quantity, setQuantity] = useState(1)
@@ -39,8 +42,14 @@ export function ProductDetailClient({ product, reviews }: ProductDetailClientPro
   const discount = originalPrice ? Math.round(((originalPrice - totalPrice) / originalPrice) * 100) : 0
 
   const handleAddToCart = () => {
-    // Placeholder – integrate with cart actions later
-    console.info("Add to cart", { product: product.handle, variant: variant?.id, quantity })
+    if (!variant?.id) return
+    startTransition(async () => {
+      try {
+        await addToCartAction({ variantId: variant.id, quantity, countryCode })
+      } catch (error) {
+        console.error("Add to cart failed", error)
+      }
+    })
   }
 
   return (
@@ -155,8 +164,9 @@ export function ProductDetailClient({ product, reviews }: ProductDetailClientPro
           </div>
 
           <div className="space-y-4">
-            <Button className="w-full h-12 text-lg" size="lg" disabled={variant?.inStock === false} onClick={handleAddToCart}>
-              <ShoppingCart className="mr-2 h-5 w-5" /> {variant?.inStock === false ? "Out of Stock" : "Add to Cart"}
+            <Button className="w-full h-12 text-lg" size="lg" disabled={variant?.inStock === false || isPending} onClick={handleAddToCart}>
+              <ShoppingCart className="mr-2 h-5 w-5" />
+              {variant?.inStock === false ? "Out of Stock" : isPending ? "Adding…" : "Add to Cart"}
             </Button>
             <Button variant="outline" className="w-full">
               <Heart className="mr-2 h-4 w-4" /> Add to Wishlist

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { getProductDetail } from "@/lib/data/products"
+import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 import { getReviewsByProduct } from "@/lib/data/reviews"
 import { ProductDetailClient } from "@/components/products/product-detail-client"
 
@@ -11,7 +12,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { handle: string } }): Promise<Metadata> {
-  const product = await getProductDetail(params.handle)
+  const product = await getProductDetail(params.handle, DEFAULT_COUNTRY_CODE)
   if (!product) {
     return { title: "Product · DJI Storefront" }
   }
@@ -22,12 +23,13 @@ export async function generateMetadata({ params }: { params: { handle: string } 
 }
 
 export default async function ProductDetailPage({ params }: { params: { handle: string } }) {
-  const product = await getProductDetail(params.handle)
+  const countryCode = DEFAULT_COUNTRY_CODE
+  const product = await getProductDetail(params.handle, countryCode)
   if (!product) {
     notFound()
   }
 
   const reviews = getReviewsByProduct(product.id)
 
-  return <ProductDetailClient product={product} reviews={reviews} />
+  return <ProductDetailClient product={product} reviews={reviews} countryCode={countryCode} />
 }

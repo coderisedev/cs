@@ -1,25 +1,68 @@
-import {
-  mockMedusaClient,
-  type MockCollection,
-  type MockCollectionWithProducts,
-  type MockProductSummary,
-} from "@cs/medusa-client"
+"use server"
 
-export async function getCollections(options?: { includeProducts?: boolean; limit?: number }) {
-  const collections = await mockMedusaClient.listCollections({
-    includeProducts: options?.includeProducts,
-    limit: options?.limit,
-  })
-  return collections
+import { sdk } from "@/lib/medusa"
+import { getCacheOptions } from "@/lib/server/cookies"
+import { getMockCollectionByHandle, getMockCollectionById, getMockCollections } from "@/lib/data/mock-collections"
+import { HttpTypes } from "@medusajs/types"
+
+export const listCollections = async (queryParams: Record<string, string> = {}) => {
+  const next = {
+    ...(await getCacheOptions("collections")),
+  }
+
+  const query = {
+    limit: queryParams.limit ?? "100",
+    offset: queryParams.offset ?? "0",
+    ...queryParams,
+  }
+
+  try {
+    return await sdk.client
+      .fetch<{ collections: HttpTypes.StoreCollection[]; count: number }>("/store/collections", {
+        method: "GET",
+        query,
+        next,
+        cache: "force-cache",
+      })
+      .then(({ collections, count }) => ({ collections, count }))
+  } catch {
+    return getMockCollections(query)
+  }
 }
 
-export async function getCollectionDetail(handle: string, options?: { includeProducts?: boolean }) {
-  return mockMedusaClient.retrieveCollection(handle, options)
+export const retrieveCollection = async (id: string) => {
+  const next = {
+    ...(await getCacheOptions(`collections-${id}`)),
+  }
+
+  try {
+    return await sdk.client
+      .fetch<{ collection: HttpTypes.StoreCollection }>(`/store/collections/${id}`, {
+        method: "GET",
+        next,
+        cache: "force-cache",
+      })
+      .then(({ collection }) => collection)
+  } catch {
+    return getMockCollectionById(id)
+  }
 }
 
-export async function getCollectionProducts(handle: string): Promise<MockProductSummary[]> {
-  return mockMedusaClient.listCollectionProducts(handle)
-}
+export const getCollectionByHandle = async (handle: string) => {
+  const next = {
+    ...(await getCacheOptions("collections")),
+  }
 
-export type CollectionWithProducts = MockCollectionWithProducts
-export type Collection = MockCollection
+  try {
+    return await sdk.client
+      .fetch<{ collections: HttpTypes.StoreCollection[] }>(`/store/collections`, {
+        method: "GET",
+        query: { handle },
+        next,
+        cache: "force-cache",
+      })
+      .then(({ collections }) => collections[0])
+  } catch {
+    return getMockCollectionByHandle(handle)
+  }
+}

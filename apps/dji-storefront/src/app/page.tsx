@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/products/product-card"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Reveal } from "@/components/reveal"
+import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 const heroImage = "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2070&q=80"
 
@@ -32,8 +33,9 @@ const testimonials = [
 ]
 
 export default async function HomePage() {
+  const countryCode = DEFAULT_COUNTRY_CODE
   const [allProducts, collections] = await Promise.all([
-    getProducts(),
+    getProducts({ countryCode }),
     getCollections({ limit: 3, includeProducts: true }),
   ])
 
@@ -140,7 +142,7 @@ export default async function HomePage() {
           </div>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} countryCode={countryCode} />
             ))}
           </div>
           <div className="text-center">

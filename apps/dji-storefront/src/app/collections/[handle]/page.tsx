@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getCollectionDetail, getCollections } from "@/lib/data/collections"
-import { getProducts } from "@/lib/data/products"
+import { listProducts } from "@/lib/data/products"
+import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 import { ProductGrid } from "@/components/products/product-grid"
 
 export async function generateStaticParams() {
@@ -29,7 +30,9 @@ export default async function CollectionPage({ params }: { params: { handle: str
     notFound()
   }
 
-  const products = await getProducts({ collectionHandle: params.handle })
+  const countryCode = DEFAULT_COUNTRY_CODE
+  const { response } = await listProducts({ countryCode, collection_id: collection.id })
+  const products = response.products
 
   return (
     <div className="container py-16 space-y-10">
@@ -39,7 +42,7 @@ export default async function CollectionPage({ params }: { params: { handle: str
         <p className="max-w-2xl mx-auto text-foreground-secondary">{collection.description}</p>
       </section>
 
-      <ProductGrid products={products} />
+      <ProductGrid products={products} countryCode={countryCode} />
     </div>
   )
 }

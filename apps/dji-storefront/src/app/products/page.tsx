@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { getProducts, getProductCategories } from "@/lib/data/products"
+import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 import { ProductsPageClient } from "./products-client"
 
 export const metadata: Metadata = {
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ProductsPage() {
-  const [products, categories] = await Promise.all([getProducts(), getProductCategories()])
-  return <ProductsPageClient products={products} categories={categories} />
+  const countryCode = DEFAULT_COUNTRY_CODE
+  const [products, categories] = await Promise.all([getProducts(countryCode), getProductCategories()])
+  return <ProductsPageClient products={products} categories={categories} countryCode={countryCode} />
 }
