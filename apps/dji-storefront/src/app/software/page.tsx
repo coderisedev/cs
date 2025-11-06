@@ -50,7 +50,7 @@ export default function SoftwarePage() {
       <section className="relative py-20 lg:py-32 overflow-hidden">
         <div className="absolute inset-0">
           <div className="h-full w-full bg-cover bg-center" style={{ backgroundImage: `url(${heroImage})` }} />
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-500/40 via-background-primary to-background-elevated" />
+          <div className="absolute inset-0" style={{ background: "var(--gradient-hero-accent)" }} />
         </div>
         <div className="relative container space-y-10 text-center text-white">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-sm font-medium">
@@ -101,7 +101,7 @@ export default function SoftwarePage() {
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-12 md:py-16 lg:py-20">
         <div className="container space-y-16">
           {activeTab === "features" && (
             <div className="space-y-8">

@@ -6,6 +6,7 @@ import { getCollections } from "@/lib/data/collections"
 import { ProductCard } from "@/components/products/product-card"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Reveal } from "@/components/reveal"
 
 const heroImage = "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2070&q=80"
 
@@ -40,19 +41,18 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen">
-      <section className="relative flex min-h-[600px] items-center justify-center overflow-hidden">
+      <section className="relative flex min-h-[620px] items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image src={heroImage} alt="Flight Simulator Cockpit" fill className="object-cover" priority />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+          <div className="absolute inset-0" style={{ background: "var(--gradient-hero)" }} />
         </div>
-        <div className="container relative z-10 space-y-8 text-white py-20">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary-500/30 bg-white/10 px-4 py-2 backdrop-blur-sm">
+        <div className="container relative z-10 space-y-8 text-white py-20 md:py-24">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 backdrop-blur-sm text-sm font-medium tracking-[0.3em] uppercase">
             <Star className="h-4 w-4 text-semantic-warning fill-semantic-warning" />
             <span className="text-sm font-medium">Professional Flight Simulator Hardware</span>
           </div>
           <div className="space-y-6 max-w-3xl">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[64px] font-bold leading-tight tracking-[-0.02em]">
               Build Your <span className="block text-gradient">Dream Cockpit</span>
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl text-white/85">
@@ -62,14 +62,14 @@ export default async function HomePage() {
           </div>
           <div className="flex flex-col gap-4 sm:flex-row">
             <Link href="/products">
-              <Button size="lg" className="btn-primary text-white">
-                Browse All Products
+              <Button size="lg" className="btn-primary text-white px-8 py-4 text-base font-semibold">
+                Configure Your Cockpit
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
             <Link href="/collections/featured">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                View Featured Products
+              <Button size="lg" variant="outline" className="border-white/60 text-white hover:bg-white/10 px-8 py-4 text-base font-semibold">
+                Explore Pilot Favorites
               </Button>
             </Link>
           </div>
@@ -132,8 +132,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-background-secondary py-16 sm:py-20">
-        <div className="container space-y-12">
+      <section className="bg-background-secondary py-12 md:py-16 lg:py-20">
+        <Reveal className="container space-y-12">
           <div className="text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">Featured Products</h2>
             <p className="text-lg text-foreground-secondary">Our most popular professional flight simulator hardware.</p>
@@ -151,21 +151,21 @@ export default async function HomePage() {
               </Button>
             </Link>
           </div>
-        </div>
+        </Reveal>
       </section>
 
-      <section className="bg-background-primary py-16 sm:py-20">
-        <div className="container space-y-12">
+      <section className="bg-background-primary py-12 md:py-16 lg:py-20">
+        <Reveal className="container space-y-12">
           <div className="text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">Product Collections</h2>
             <p className="text-lg text-foreground-secondary">Browse our professional flight simulator hardware by series.</p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {collections.map((collection) => (
-              <Card key={collection.handle} className="overflow-hidden border-0 shadow-sm">
+              <Card key={collection.handle} tone="elevated" className="overflow-hidden">
                 <div className="relative h-56 w-full">
                   <Image src={collection.heroImage} alt={collection.title} fill className="object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
+                  <div className="absolute inset-0" style={{ background: "var(--gradient-hero)" }} />
                   <div className="absolute bottom-4 left-4 right-4 text-white">
                     <p className="text-sm uppercase tracking-widest text-white/70">{collection.highlight}</p>
                     <h3 className="text-2xl font-semibold">{collection.title}</h3>
@@ -181,18 +181,18 @@ export default async function HomePage() {
               </Card>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
-      <section className="bg-background-secondary py-16 sm:py-20">
-        <div className="container space-y-8">
+      <section className="bg-background-secondary py-12 md:py-16 lg:py-20">
+        <Reveal className="container space-y-8">
           <div className="text-center">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">What Pilots Say</h2>
             <p className="text-lg text-foreground-secondary">Testimonials from professionals using our hardware daily.</p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {testimonials.map((testimonial) => (
-              <Card key={testimonial.author} className="h-full border-border-primary bg-background-primary/80">
+              <Card key={testimonial.author} tone="elevated" className="h-full bg-background-primary">
                 <CardContent className="space-y-4 p-6">
                   <p className="text-lg text-foreground-secondary">“{testimonial.quote}”</p>
                   <div>
@@ -203,11 +203,11 @@ export default async function HomePage() {
               </Card>
             ))}
           </div>
-        </div>
+        </Reveal>
       </section>
 
-      <section className="bg-background-primary py-16 sm:py-20">
-        <div className="container">
+      <section className="bg-background-primary py-12 md:py-16 lg:py-20">
+        <Reveal className="container">
           <div className="rounded-3xl bg-background-secondary p-8 md:p-12 shadow-card grid gap-8 md:grid-cols-2 items-center">
             <div>
               <p className="text-sm uppercase tracking-widest text-primary-500 mb-2">Newsletter</p>
@@ -227,7 +227,7 @@ export default async function HomePage() {
               </Button>
             </form>
           </div>
-        </div>
+        </Reveal>
       </section>
     </div>
   )

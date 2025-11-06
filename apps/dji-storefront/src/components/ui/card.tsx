@@ -1,12 +1,24 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => (
+type CardTone = "default" | "elevated"
+
+type CardProps = React.HTMLAttributes<HTMLDivElement> & {
+  tone?: CardTone
+}
+
+const toneClasses: Record<CardTone, string> = {
+  default: "border bg-background-secondary",
+  elevated: "border-0 bg-white shadow-card",
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, tone = "default", ...props }, ref) => (
     <div
       ref={ref}
       className={cn(
-        "rounded-base border bg-background-secondary text-foreground-primary shadow-sm hover:shadow-md transition-all duration-300 ease hover:transform hover:-translate-y-1 card-hover",
+        "rounded-base text-foreground-primary shadow-sm hover:shadow-md transition-all duration-300 ease hover:transform hover:-translate-y-1 card-hover",
+        toneClasses[tone],
         className
       )}
       {...props}

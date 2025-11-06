@@ -23,14 +23,13 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+  const [condensed, setCondensed] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
       if (typeof window === "undefined") return
-      setScrolled(window.scrollY > 40)
+      setCondensed(window.scrollY > 64)
     }
-
     handleScroll()
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
@@ -46,21 +45,14 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-colors duration-300",
-        scrolled
-          ? "border-b border-border-primary bg-background-primary/90 backdrop-blur-md shadow-sm"
-          : "border-transparent bg-transparent"
+        "sticky top-0 z-50 w-full border-b border-border-primary bg-background-primary/95 backdrop-blur-md transition-all duration-300",
+        condensed ? "shadow-lg" : "shadow-sm"
       )}
     >
       <div className="container mx-auto px-4 lg:px-12">
-        <div className="flex h-16 items-center justify-between">
-          <Link
-            href="/"
-            className={cn(
-              "text-lg font-semibold transition-colors duration-300",
-              scrolled ? "text-gradient" : "text-white"
-            )}
-          >
+        <div className={cn("flex items-center justify-between transition-all duration-300", condensed ? "h-14" : "h-16")}
+        >
+          <Link href="/" className="text-lg font-semibold text-gradient">
             DJI Storefront
           </Link>
 
@@ -69,15 +61,11 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={cn(
-                  "text-sm font-medium transition-colors duration-300 border-b-2 border-transparent pb-1",
-                  scrolled ? "text-foreground-primary hover:text-primary-500" : "text-white/85 hover:text-white",
+                className={`text-sm font-medium transition-colors duration-300 hover:text-primary-400 ${
                   isActive(item.href)
-                    ? scrolled
-                      ? "text-primary-500 border-primary-500"
-                      : "text-white border-white/80"
-                    : undefined
-                )}
+                    ? "text-primary-500 border-b-2 border-primary-500 pb-1"
+                    : "text-foreground-primary"
+                }`}
               >
                 {item.name}
               </Link>
@@ -89,10 +77,7 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
               variant="ghost"
               size="icon"
               aria-label="Toggle theme"
-              className={cn(
-                "touch-target transition-colors duration-300",
-                scrolled ? "" : "text-white hover:bg-white/10"
-              )}
+              className="touch-target"
               onClick={toggleTheme}
             >
               {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -101,35 +86,18 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
               variant="ghost"
               size="icon"
               aria-label="Search"
-              className={cn(
-                "hidden md:flex touch-target transition-colors duration-300",
-                scrolled ? "" : "text-white hover:bg-white/10"
-              )}
+              className="hidden md:flex touch-target"
               onClick={() => setSearchOpen((prev) => !prev)}
             >
               <Search className="h-5 w-5" />
             </Button>
             <Link href="/account" aria-label="Account">
-              <Button
-                variant="ghost"
-                size="icon"
-                className={cn(
-                  "touch-target transition-colors duration-300",
-                  scrolled ? "" : "text-white hover:bg-white/10"
-                )}
-              >
+              <Button variant="ghost" size="icon" className="touch-target">
                 <User className="h-5 w-5" />
               </Button>
             </Link>
             <Link href="/cart" aria-label="Cart" className="relative">
-              <Button
-                variant="ghost"
-                size="icon"
-                className={cn(
-                  "touch-target transition-colors duration-300",
-                  scrolled ? "" : "text-white hover:bg-white/10"
-                )}
-              >
+              <Button variant="ghost" size="icon" className="touch-target">
                 <ShoppingCart className="h-5 w-5" />
                 <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary-500 text-neutral-50 text-xs flex items-center justify-center font-bold">
                   {cartItemCount}
@@ -139,10 +107,7 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
             <Button
               variant="ghost"
               size="icon"
-              className={cn(
-                "lg:hidden touch-target transition-colors duration-300",
-                scrolled ? "" : "text-white hover:bg-white/10"
-              )}
+              className="lg:hidden touch-target"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label="Toggle navigation"
             >
@@ -150,12 +115,20 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
             </Button>
           </div>
         </div>
-        {searchOpen && (
-          <div className="py-3 animate-fade-in">
+      </div>
+      {condensed && <div className="h-0.5 bg-primary-500/80" />}
+      {searchOpen && (
+        <div className="relative z-50">
+          <div className="container mx-auto px-4 lg:px-12 py-3 animate-scale-in origin-top">
             <Input type="search" placeholder="Search products..." className="max-w-md" autoFocus />
           </div>
-        )}
-      </div>
+          <button
+            aria-label="Close search overlay"
+            className="fixed inset-0 z-40 bg-background-overlay/60 lg:hidden"
+            onClick={() => setSearchOpen(false)}
+          />
+        </div>
+      )}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-border-primary bg-background-primary animate-slide-up">
           <nav className="container mx-auto px-4 py-4 space-y-2">

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -41,12 +41,20 @@ const formatDate = (date: string) =>
     day: "numeric",
   })
 
+const getSeriesLabel = (handle: string) => handle.split("-")[0]?.toUpperCase() ?? "DJI"
+
 export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
   const [activeTab, setActiveTab] = useState("profile")
   const [mutableUser, setMutableUser] = useState(user)
   const [isEditing, setIsEditing] = useState(false)
+  const [hydrated, setHydrated] = useState(false)
 
   const initials = `${mutableUser.firstName.charAt(0) ?? ""}${mutableUser.lastName.charAt(0) ?? ""}`.toUpperCase()
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setHydrated(true))
+    return () => cancelAnimationFrame(id)
+  }, [])
 
   const handleFieldChange = (field: EditableProfileField, value: string) => {
     setMutableUser((prev) => ({ ...prev, [field]: value }))
@@ -165,7 +173,15 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
               <CardDescription>All cockpit mock orders with delivery status.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {orders.length === 0 ? (
+              {!hydrated ? (
+                Array.from({ length: 2 }).map((_, index) => (
+                  <div key={`order-skeleton-${index}`} className="rounded-base border border-border-primary p-6 animate-pulse space-y-4">
+                    <div className="h-4 w-1/3 rounded bg-foreground-muted/20" />
+                    <div className="h-3 w-1/4 rounded bg-foreground-muted/10" />
+                    <div className="h-24 rounded bg-background-elevated" />
+                  </div>
+                ))
+              ) : orders.length === 0 ? (
                 <p className="text-sm text-foreground-secondary">No orders found.</p>
               ) : (
                 orders.map((order) => (
@@ -239,7 +255,15 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
-              {mutableUser.addresses.length === 0 ? (
+              {!hydrated ? (
+                Array.from({ length: 2 }).map((_, index) => (
+                  <div key={`address-skeleton-${index}`} className="rounded-base border border-border-primary p-6 animate-pulse space-y-3">
+                    <div className="h-4 w-1/3 rounded bg-foreground-muted/20" />
+                    <div className="h-3 w-2/3 rounded bg-foreground-muted/10" />
+                    <div className="h-3 w-1/2 rounded bg-foreground-muted/10" />
+                  </div>
+                ))
+              ) : mutableUser.addresses.length === 0 ? (
                 <p className="text-sm text-foreground-secondary">No addresses on file.</p>
               ) : (
                 mutableUser.addresses.map((address) => (
@@ -286,8 +310,19 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
               <CardTitle>Wishlist</CardTitle>
               <CardDescription>Saved cockpit simulator products.</CardDescription>
             </CardHeader>
-            <CardContent>
-              {wishlist.length === 0 ? (
+          <CardContent>
+              {!hydrated ? (
+                <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                  {Array.from({ length: 3 }).map((_, index) => (
+                    <div key={`wishlist-skeleton-${index}`} className="rounded-base border border-border-primary p-5 animate-pulse space-y-3">
+                      <div className="h-48 w-full rounded-base bg-background-elevated" />
+                      <div className="h-4 w-2/3 rounded bg-foreground-muted/20" />
+                      <div className="h-3 w-1/3 rounded bg-foreground-muted/10" />
+                      <div className="h-3 w-full rounded bg-foreground-muted/10" />
+                    </div>
+                  ))}
+                </div>
+              ) : wishlist.length === 0 ? (
                 <p className="text-sm text-foreground-secondary">No items saved yet.</p>
               ) : (
                 <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -302,8 +337,11 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
                         )}
                       </div>
                       <h3 className="text-lg font-semibold text-foreground-primary">{item.product.title}</h3>
+                      <span className="inline-flex items-center rounded-full bg-primary-500/10 text-primary-500 text-xs font-semibold px-3 py-1 mt-1">
+                        {getSeriesLabel(item.product.handle)} SERIES
+                      </span>
                       <p className="mt-2 line-clamp-2 text-sm text-foreground-secondary">{item.product.description}</p>
-                      <div className="mt-4 space-y-3">
+                      <div className="mt-4 border-t border-border-secondary pt-3 space-y-3">
                         <span className="text-lg font-semibold text-foreground-primary">{currencyFormatter(item.product.price)}</span>
                         <Button size="sm" className="w-full justify-center">
                           Add to Cart

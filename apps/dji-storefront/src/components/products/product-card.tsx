@@ -15,6 +15,7 @@ export function ProductCard({ product, viewMode = "grid" }: { product: MockProdu
   const discount = product.compareAtPrice
     ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
     : 0
+  const requiresConfiguration = product.variants?.length > 1
 
   const handleAddToCart = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -22,15 +23,27 @@ export function ProductCard({ product, viewMode = "grid" }: { product: MockProdu
     console.info("Add to cart", product.handle)
   }
 
+  const getButtonLabel = () => {
+    if (!product.inStock) return "Out of Stock"
+    return requiresConfiguration ? "Configure" : "Add to Cart"
+  }
+
   if (viewMode === "list") {
     return (
-      <Card className="group overflow-hidden bg-background-secondary border-0 shadow-sm rounded-base">
+      <Card tone="elevated" className="group overflow-hidden">
         <div className="flex flex-col sm:flex-row">
           <Link
             href={`/products/${product.handle}`}
             className="relative block w-full sm:w-48 h-48 sm:h-32 overflow-hidden bg-background-elevated flex-shrink-0"
           >
-            {image && <Image src={image} alt={product.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" />}
+            {image && (
+              <Image
+                src={image}
+                alt={product.title}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[0.3deg]"
+              />
+            )}
             {product.isNew && <Badge label="NEW" />}
             {product.isSale && <Badge label={`-${discount}%`} position="right" />}
           </Link>
@@ -49,7 +62,7 @@ export function ProductCard({ product, viewMode = "grid" }: { product: MockProdu
                 </div>
               </div>
               <p className="text-sm text-foreground-secondary mb-4 flex-1 line-clamp-2">{product.description}</p>
-              <div className="space-y-3">
+              <div className="mt-6 border-t border-border-secondary pt-4 space-y-3">
                 <div className="flex flex-wrap items-baseline gap-2">
                   <span className="text-2xl font-bold text-primary-400">{currencyFormatter(product.price)}</span>
                   {product.compareAtPrice && (
@@ -64,13 +77,8 @@ export function ProductCard({ product, viewMode = "grid" }: { product: MockProdu
                   disabled={!product.inStock}
                   onClick={handleAddToCart}
                 >
-                  {product.inStock ? (
-                    <>
-                      <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
-                    </>
-                  ) : (
-                    "Out of Stock"
-                  )}
+                  {product.inStock && <ShoppingCart className="mr-2 h-4 w-4" />}
+                  {getButtonLabel()}
                 </Button>
               </div>
             </div>
@@ -81,9 +89,9 @@ export function ProductCard({ product, viewMode = "grid" }: { product: MockProdu
   }
 
   return (
-    <Card className="group overflow-hidden bg-background-secondary border-0 shadow-sm rounded-base">
+    <Card tone="elevated" className="group overflow-hidden">
       <Link href={`/products/${product.handle}`} className="block relative overflow-hidden aspect-square bg-background-elevated">
-        {image && <Image src={image} alt={product.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" />}
+        {image && <Image src={image} alt={product.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[0.3deg]" />}
         {product.isNew && <Badge label="NEW" />}
         {product.isSale && <Badge label={`-${discount}%`} position="right" />}
       </Link>
@@ -99,7 +107,7 @@ export function ProductCard({ product, viewMode = "grid" }: { product: MockProdu
           <span className="text-sm text-foreground-muted">({product.reviewCount})</span>
         </div>
         <p className="text-sm text-foreground-secondary line-clamp-2 mb-4">{product.description}</p>
-        <div className="space-y-3">
+        <div className="mt-6 border-t border-border-secondary pt-4 space-y-3">
           <div className="flex flex-wrap items-baseline gap-2">
             <span className="text-2xl font-bold text-primary-400">{currencyFormatter(product.price)}</span>
             {product.compareAtPrice && (
@@ -109,13 +117,8 @@ export function ProductCard({ product, viewMode = "grid" }: { product: MockProdu
             )}
           </div>
           <Button size="sm" className="w-full justify-center touch-target" disabled={!product.inStock} onClick={handleAddToCart}>
-            {product.inStock ? (
-              <>
-                <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
-              </>
-            ) : (
-              "Out of Stock"
-            )}
+            {product.inStock && <ShoppingCart className="mr-2 h-4 w-4" />}
+            {getButtonLabel()}
           </Button>
         </div>
       </div>
