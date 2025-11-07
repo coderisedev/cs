@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
+
 // Temporarily disabled due to Turbopack font loading issues
 // import { JetBrains_Mono, Open_Sans } from "next/font/google"
 import "./globals.css"
-import type { Metadata } from "next"
 import { SiteHeader } from "@/components/layout/site-header"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { retrieveCart } from "@/lib/data/cart"

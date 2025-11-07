@@ -1,9 +1,69 @@
-export type BlogCategory = {
-  id: string
-  name: string
+"use server"
+
+import { revalidateTag } from "next/cache"
+import { getStrapiClient } from "@/lib/strapi/client"
+
+const strapi = getStrapiClient()
+
+const POPULATE_FIELDS = ["cover_image", "coverImage", "author", "seo", "seo.ogImage", "seo.metaImage", "seo.shareImage"].join(",")
+const DEFAULT_PAGE_SIZE = 6
+const BLOG_REVALIDATE_SECONDS = 60
+
+export const BLOG_CACHE_TAG = "blog"
+
+type StrapiEntity<T> = {
+  id: number
+  attributes: T & {
+    createdAt?: string
+    updatedAt?: string
+    publishedAt?: string | null
+    published_at?: string | null
+    locale?: string | null
+  }
+}
+
+type StrapiMediaAttributes = {
+  url: string
+  alternativeText?: string | null
+  caption?: string | null
+}
+
+type StrapiRelation<T> = {
+  data: StrapiEntity<T> | null
+} | null
+
+export type StrapiPagination = {
+  page: number
+  pageSize: number
+  pageCount: number
+  total: number
+}
+
+export type StrapiPostAttributes = {
+  title: string
   slug: string
-  description: string
-  postCount: number
+  excerpt?: string | null
+  content?: string | null
+  cover_image?: StrapiRelation<StrapiMediaAttributes>
+  coverImage?: StrapiRelation<StrapiMediaAttributes>
+  author?: StrapiRelation<{
+    name?: string | null
+    title?: string | null
+  }>
+  seo?: {
+    metaTitle?: string | null
+    metaDescription?: string | null
+    ogImage?: StrapiRelation<StrapiMediaAttributes>
+    metaImage?: StrapiRelation<StrapiMediaAttributes>
+    shareImage?: StrapiRelation<StrapiMediaAttributes>
+  }
+}
+
+export type StrapiPostResponse = {
+  data: StrapiEntity<StrapiPostAttributes>[]
+  meta: {
+    pagination: StrapiPagination
+  }
 }
 
 export type BlogPost = {
@@ -12,132 +72,154 @@ export type BlogPost = {
   slug: string
   excerpt: string
   content: string
-  author: string
-  authorAvatar: string
-  publishDate: string
-  readTime: number
-  category: string
-  tags: string[]
-  featuredImage: string
-  isPublished: boolean
-  views: number
+  coverImageUrl: string | null
+  coverImageAlt: string | null
+  publishedAt: string | null
+  authorName: string | null
+  authorTitle: string | null
+  estimatedReadingMinutes: number | null
+  seo: {
+    metaTitle?: string | null
+    metaDescription?: string | null
+    ogImageUrl?: string | null
+  }
 }
 
-const categories: BlogCategory[] = [
-  { id: "1", name: "Flight Simulation", slug: "flight-simulation", description: "Latest trends and insights", postCount: 12 },
-  { id: "2", name: "Product Reviews", slug: "product-reviews", description: "In-depth hardware reviews", postCount: 8 },
-  { id: "3", name: "Tutorials", slug: "tutorials", description: "Step-by-step cockpit guides", postCount: 15 },
-  { id: "4", name: "Industry News", slug: "industry-news", description: "News from aviation", postCount: 6 },
-  { id: "5", name: "Technology", slug: "technology", description: "Cutting-edge tooling", postCount: 9 },
-]
+export type BlogPagination = StrapiPagination
 
-const posts: BlogPost[] = [
-  {
-    id: "1",
-    title: "The Evolution of Flight Simulation Technology",
-    slug: "evolution-flight-simulation-technology",
-    excerpt:
-      "Explore how flight simulation has transformed from simple computer programs to incredibly realistic experiences that rival actual flight training.",
-    content:
-      "Flight simulation has advanced rapidly thanks to GPU rendering, motion platforms, and the software ecosystems that surround MSFS 2024. This article breaks down the milestones and how home cockpit builders can take advantage of the same techniques.",
-    author: "Sarah Johnson",
-    authorAvatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-    publishDate: "2024-10-28",
-    readTime: 8,
-    category: "flight-simulation",
-    tags: ["technology", "innovation", "simulation"],
-    featuredImage: "https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=800&h=400&fit=crop",
-    isPublished: true,
-    views: 1250,
-  },
-  {
-    id: "2",
-    title: "A320 CDU vs Traditional Instruments: A Comprehensive Comparison",
-    slug: "a320-cdu-vs-traditional-instruments",
-    excerpt:
-      "Detailed analysis of how the A320 Control Display Unit compares to traditional flight instruments in terms of functionality and user experience.",
-    content:
-      "The Airbus A320 CDU offers automation and data handling that analog instruments simply cannot match. We cover the tactile experience, configuration steps, and software pairings that make the CDU shine inside a DJI-aligned cockpit.",
-    author: "Michael Chen",
-    authorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-    publishDate: "2024-10-25",
-    readTime: 12,
-    category: "product-reviews",
-    tags: ["a320", "cdu", "comparison", "instruments"],
-    featuredImage: "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=800&h=400&fit=crop",
-    isPublished: true,
-    views: 890,
-  },
-  {
-    id: "3",
-    title: "Building Your First Home Cockpit Simulator",
-    slug: "building-first-home-cockpit-simulator",
-    excerpt: "A complete guide to setting up your first home cockpit simulator, from hardware selection to software configuration.",
-    content:
-      "From choosing the airframe to mounting FCU/CDU stacks, we outline every step including recommended spacing, cable management, and software profiles.",
-    author: "David Rodriguez",
-    authorAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-    publishDate: "2024-10-22",
-    readTime: 15,
-    category: "tutorials",
-    tags: ["tutorial", "beginner", "setup", "hardware"],
-    featuredImage: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=400&fit=crop",
-    isPublished: true,
-    views: 2100,
-  },
-  {
-    id: "4",
-    title: "The Future of Virtual Reality in Flight Training",
-    slug: "future-vr-flight-training",
-    excerpt: "How VR technology is revolutionizing flight training programs and making pilot education more accessible and effective.",
-    content:
-      "Virtual reality is redefining flight training. We examine hardware requirements, common pitfalls, and how CS Bridge integrates with VR-specific plugins.",
-    author: "Emily Watson",
-    authorAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-    publishDate: "2024-10-20",
-    readTime: 10,
-    category: "technology",
-    tags: ["vr", "training", "future", "technology"],
-    featuredImage: "https://images.unsplash.com/photo-1592478411213-6153e4ebc696?w=800&h=400&fit=crop",
-    isPublished: true,
-    views: 1567,
-  },
-  {
-    id: "5",
-    title: "Boeing 737 Series: Most Popular Cockpit Simulator Platform",
-    slug: "boeing-737-most-popular-simulator",
-    excerpt: "Understanding why the Boeing 737 series remains the most popular choice for cockpit simulator enthusiasts worldwide.",
-    content:
-      "We look at adoption statistics, plugin availability, and training resources that keep the 737 series at the top of home cockpit builds.",
-    author: "Robert Kim",
-    authorAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-    publishDate: "2024-10-18",
-    readTime: 7,
-    category: "industry-news",
-    tags: ["737", "popular", "platform", "statistics"],
-    featuredImage: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&h=400&fit=crop",
-    isPublished: true,
-    views: 980,
-  },
-  {
-    id: "6",
-    title: "Advanced FCU Programming Techniques",
-    slug: "advanced-fcu-programming-techniques",
-    excerpt: "Master advanced programming techniques for Flight Control Units to create more realistic and functional simulator experiences.",
-    content:
-      "Power users can extend CS Bridge with custom scripts. We cover the FCU APIs, debugging tips, and recommended workflows.",
-    author: "Lisa Park",
-    authorAvatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
-    publishDate: "2024-10-15",
-    readTime: 18,
-    category: "tutorials",
-    tags: ["fcu", "programming", "advanced", "techniques"],
-    featuredImage: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=400&fit=crop",
-    isPublished: true,
-    views: 743,
-  },
-]
+export type BlogListOptions = {
+  page?: number
+  pageSize?: number
+  locale?: string
+}
 
-export const getBlogPosts = () => posts
-export const getBlogCategories = () => categories
-export const getBlogPost = (slug: string) => posts.find((post) => post.slug === slug)
+export type BlogListResult = {
+  posts: BlogPost[]
+  pagination: BlogPagination
+  error?: string
+}
+
+const defaultPagination = ({ page = 1, pageSize = DEFAULT_PAGE_SIZE }: { page?: number; pageSize?: number }): StrapiPagination => ({
+  page,
+  pageSize,
+  pageCount: 1,
+  total: 0,
+})
+
+export const listPosts = async (options: BlogListOptions = {}): Promise<BlogListResult> => {
+  const pageSize = options.pageSize ?? DEFAULT_PAGE_SIZE
+  const page = options.page ?? 1
+
+  try {
+    const response = await strapi.fetch<StrapiPostResponse>("/api/posts", {
+      query: {
+        populate: POPULATE_FIELDS,
+        sort: "publishedAt:desc",
+        "pagination[page]": page,
+        "pagination[pageSize]": pageSize,
+        ...(options.locale ? { locale: options.locale } : {}),
+        publicationState: "live",
+      },
+      tags: [BLOG_CACHE_TAG],
+      revalidate: BLOG_REVALIDATE_SECONDS,
+    })
+
+    const pagination = response.meta?.pagination ?? defaultPagination({ page, pageSize })
+    return {
+      posts: response.data.map(mapStrapiPost),
+      pagination,
+    }
+  } catch (error) {
+    console.error("[blog] Failed to list posts", error)
+    return {
+      posts: [],
+      pagination: defaultPagination({ page, pageSize }),
+      error: error instanceof Error ? error.message : "Unknown Strapi error",
+    }
+  }
+}
+
+export const getPost = async (slug: string, locale?: string): Promise<BlogPost | null> => {
+  try {
+    const response = await strapi.fetch<StrapiPostResponse>("/api/posts", {
+      query: {
+        populate: POPULATE_FIELDS,
+        "filters[slug][$eq]": slug,
+        "pagination[page]": 1,
+        "pagination[pageSize]": 1,
+        ...(locale ? { locale } : {}),
+        publicationState: "live",
+      },
+      tags: [BLOG_CACHE_TAG, `blog-post-${slug}`],
+      revalidate: BLOG_REVALIDATE_SECONDS,
+    })
+
+    const entity = response.data[0]
+    return entity ? mapStrapiPost(entity) : null
+  } catch (error) {
+    console.error(`[blog] Failed to fetch post ${slug}`, error)
+    return null
+  }
+}
+
+export const getFeaturedPosts = async (limit = 3, locale?: string) => {
+  const { posts } = await listPosts({ pageSize: limit, locale })
+  return posts
+}
+
+export const revalidateStrapiBlog = async () => {
+  "use server"
+  revalidateTag(BLOG_CACHE_TAG)
+}
+
+const mapStrapiPost = (entity: StrapiEntity<StrapiPostAttributes>): BlogPost => {
+  const { id, attributes } = entity
+  const coverMedia = attributes.cover_image ?? attributes.coverImage
+  const coverImageUrl = extractMediaUrl(coverMedia)
+  const coverImageAlt = coverMedia?.data?.attributes?.alternativeText ?? null
+  const seoImageUrl =
+    extractMediaUrl(attributes.seo?.ogImage) ||
+    extractMediaUrl(attributes.seo?.metaImage) ||
+    extractMediaUrl(attributes.seo?.shareImage) ||
+    coverImageUrl
+
+  return {
+    id: String(id),
+    title: attributes.title,
+    slug: attributes.slug,
+    excerpt: attributes.excerpt?.trim() || buildExcerpt(attributes.content),
+    content: attributes.content ?? "",
+    coverImageUrl,
+    coverImageAlt,
+    publishedAt: attributes.publishedAt ?? attributes.published_at ?? null,
+    authorName: attributes.author?.data?.attributes?.name ?? null,
+    authorTitle: attributes.author?.data?.attributes?.title ?? null,
+    estimatedReadingMinutes: estimateReadingTime(attributes.content),
+    seo: {
+      metaTitle: attributes.seo?.metaTitle ?? attributes.title,
+      metaDescription: attributes.seo?.metaDescription ?? attributes.excerpt ?? buildExcerpt(attributes.content),
+      ogImageUrl: seoImageUrl,
+    },
+  }
+}
+
+const extractMediaUrl = (media?: StrapiRelation<StrapiMediaAttributes> | null) => {
+  const url = media?.data?.attributes?.url
+  return url ? strapi.resolveMedia(url) : null
+}
+
+const estimateReadingTime = (content?: string | null) => {
+  if (!content) {
+    return null
+  }
+  const words = content.trim().split(/\s+/).length
+  return Math.max(1, Math.round(words / 200))
+}
+
+const buildExcerpt = (content?: string | null) => {
+  if (!content) {
+    return ""
+  }
+  const trimmed = content.trim()
+  return trimmed.slice(0, 180).concat(trimmed.length > 180 ? "…" : "")
+}

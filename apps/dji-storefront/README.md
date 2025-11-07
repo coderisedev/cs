@@ -11,8 +11,19 @@ Create `apps/dji-storefront/.env.local` (or rely on repo-level env injection) wi
 | `MEDUSA_BACKEND_URL` | `http://localhost:9000` | Base URL for the Medusa server. Defaults to `http://localhost:9000` if unset. |
 | `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` | `pk_test_xxx` | Publishable API key generated in Medusa Admin (exposed to the browser). |
 | `NEXT_PUBLIC_DEFAULT_REGION` | `us` | Fallback country code if middleware cannot geolocate the visitor. |
+| `STRAPI_API_URL` | `http://localhost:1337` | Base URL for the Strapi CMS powering the blog. |
+| `STRAPI_API_TOKEN` | `strapi_xxx` | Server-side token used to authorize blog API calls (kept private). |
+| `REVALIDATE_SECRET` | `changeme` | Optional shared secret required by `/api/revalidate` before triggering cache busts. |
 
 > When these env vars are **not** defined the storefront continues to run purely on mock data; once defined, subsequent phases of the migration will start calling the live `/store/*` endpoints.
+
+### Strapi content service
+
+1. `pnpm --filter strapi develop` to boot the CMS at `http://localhost:1337`.
+2. Create a `Post` collection type with the fields from `docs/task/strapi-blog-integration.md`, publish a few entries, and create an API token with `find`/`findOne` scopes.
+3. Copy `apps/dji-storefront/.env.example` → `.env.local`, fill in `STRAPI_API_URL` and `STRAPI_API_TOKEN`, then restart the Next.js dev server.
+4. Blog routes (`/us/blog` and `/us/blog/[slug]`) use ISR (`revalidate = 300`) plus the `blog` cache tag—point a Strapi webhook at `/api/revalidate?tag=blog&secret=$REVALIDATE_SECRET` so published/unpublished posts call `revalidateStrapiBlog()` instantly.
+5. Manual QA: verify the blog list paginates correctly, individual posts render markdown + SEO tags, and shutting down Strapi shows the graceful fallback banner on the listing page.
 
 ## Local commands
 

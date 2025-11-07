@@ -1,6 +1,5 @@
 "use server"
 
-import { redirect } from "next/navigation"
 import { updateCart, retrieveCart, setShippingMethod, initiatePaymentSession, listCartOptions } from "@/lib/data/cart"
 import { placeOrder } from "@/lib/data/checkout"
 import { HttpTypes } from "@medusajs/types"
@@ -103,8 +102,9 @@ export async function placeOrderAction(_currentState: unknown, formData: FormDat
 
     // This line should never be reached due to redirect in placeOrder
     return "Order placement failed. Please try again."
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : null
     console.error("Error placing order:", error)
-    return error.message || "Failed to place order. Please check your information and try again."
+    return message || "Failed to place order. Please check your information and try again."
   }
 }

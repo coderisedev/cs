@@ -1,12 +1,42 @@
-export default function medusaError(error: any): never {
-  if (error.response) {
-    const message = error.response.data?.message || error.response.data || "Unknown error"
-    throw new Error(message)
+type MedusaResponse = {
+  data?: { message?: string } | string
+}
+
+type ErrorWithResponse = {
+  response?: MedusaResponse
+}
+
+type ErrorWithRequest = {
+  request?: unknown
+}
+
+type ErrorWithMessage = {
+  message?: string
+}
+
+const isObject = (value: unknown): value is Record<string, unknown> => typeof value === "object" && value !== null
+
+const hasResponse = (error: unknown): error is ErrorWithResponse => isObject(error) && "response" in error
+
+const hasRequest = (error: unknown): error is ErrorWithRequest => isObject(error) && "request" in error
+
+const hasMessage = (error: unknown): error is ErrorWithMessage =>
+  typeof error === "object" && error !== null && "message" in error
+
+export default function medusaError(error: unknown): never {
+  if (hasResponse(error) && error.response) {
+    const payload = error.response
+    const message = typeof payload.data === "string" ? payload.data : payload.data?.message
+    throw new Error(message || "Unknown error")
   }
 
-  if (error.request) {
+  if (hasRequest(error)) {
     throw new Error("No response received from Medusa backend")
   }
 
-  throw new Error(error.message ?? "Medusa request failed")
+  if (hasMessage(error)) {
+    throw new Error(error.message ?? "Medusa request failed")
+  }
+
+  throw new Error("Medusa request failed")
 }

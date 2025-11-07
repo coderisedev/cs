@@ -30,9 +30,10 @@ export async function loginAction(_currentState: unknown, formData: FormData) {
 
     // Transfer anonymous cart to logged in user if exists
     await transferCart()
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Login failed. Please check your credentials."
     console.error("Login error:", error)
-    return error.message || "Login failed. Please check your credentials."
+    return message
   }
 
   redirect("/us/account")
@@ -88,9 +89,10 @@ export async function registerAction(_currentState: unknown, formData: FormData)
     revalidateTag(customerCacheTag)
 
     await transferCart()
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Registration failed. Please try again."
     console.error("Registration error:", error)
-    return error.message || "Registration failed. Please try again."
+    return message
   }
 
   redirect("/us/account")

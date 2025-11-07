@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
 
-// Plan A: Force all traffic to /us for global USD site
-const DEFAULT_REGION = "us"
 const SKIP_REGION_MIDDLEWARE =
   process.env.NEXT_SKIP_REGION_MIDDLEWARE === "true" ||
   process.env.NEXT_PUBLIC_SKIP_REGION_MIDDLEWARE === "true"
@@ -16,7 +14,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  const { pathname, search } = request.nextUrl
+  const { pathname } = request.nextUrl
 
   // Skip static assets
   if (pathname.includes(".")) {

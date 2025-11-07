@@ -34,7 +34,7 @@ export const retrieveCart = async (cartId?: string, fields?: string) => {
   }
 }
 
-export const getOrSetCart = async (countryCode: string) => {
+export const getOrSetCart = async () => {
   // Plan A: Always use US region regardless of countryCode
   let cart = await retrieveCart(undefined, "id,region_id")
   const headers = {
@@ -65,7 +65,8 @@ export const getOrSetCart = async (countryCode: string) => {
 }
 
 export const addToCart = async ({ variantId, quantity, countryCode }: { variantId: string; quantity: number; countryCode: string }) => {
-  const cart = await getOrSetCart(countryCode)
+  void countryCode
+  const cart = await getOrSetCart()
   const headers = {
     ...(await getAuthHeaders()),
   }

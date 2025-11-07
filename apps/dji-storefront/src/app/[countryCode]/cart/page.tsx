@@ -1,4 +1,3 @@
-import Link from "next/link"
 import { retrieveCart } from "@/lib/data/cart"
 import { CartClient } from "@/components/cart/cart-client"
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"

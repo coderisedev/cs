@@ -89,5 +89,12 @@
 6. **记录配置**
    - 将 `STRAPI_API_URL`、`STRAPI_API_TOKEN`（如有）填入 `apps/dji-storefront/.env`。
    - 若使用 CDN/R2，自定义媒体域名并更新前端 `resolveStrapiMedia`。
+7. **配置 Webhook → 触发 Next ISR**
+   - Admin → *Settings* → *Webhooks* → *Create new webhook*。
+   - Name: `Next Blog Revalidate`（随意）。
+   - URL: `https://<next-host>/api/revalidate?tag=blog&secret=<REVALIDATE_SECRET>`（本地可用 `http://localhost:3000`）。
+   - Headers: 可选地添加 `Content-Type: application/json`，其余留空。
+   - Events: 仅勾选 `Entry.publish`、`Entry.unpublish`（collection: `Post`）。
+   - 保存后点击 *Trigger* 测试：Strapi 应返回 `{"success":true,"tag":"blog"}`。
 
 执行完以上步骤后，Next.js 端即可按计划中的数据层实现对 Strapi 实例的访问。

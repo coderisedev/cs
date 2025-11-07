@@ -3,7 +3,6 @@
 import { useState, useTransition } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { currencyFormatter } from "@/lib/number"
 import { updateLineItemAction, deleteLineItemAction } from "@/lib/actions/cart"

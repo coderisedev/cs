@@ -1,4 +1,4 @@
-import { getBlogPosts, getBlogCategories } from "@/lib/data/blog"
+import { listPosts } from "@/lib/data/blog"
 import { BlogPageClient } from "./blog-client"
 
 export const metadata = {
@@ -6,9 +6,24 @@ export const metadata = {
   description: "Insights, tutorials, and reviews for flight-sim builders",
 }
 
-export default function BlogPage() {
-  const posts = getBlogPosts()
-  const categories = getBlogCategories()
-  
-  return <BlogPageClient posts={posts} categories={categories} />
+export const revalidate = 300
+
+type BlogPageProps = {
+  params: { countryCode: string }
+  searchParams?: { page?: string | string[] }
+}
+
+export default async function BlogPage({ params, searchParams = {} }: BlogPageProps) {
+  const pageParam = Array.isArray(searchParams.page) ? searchParams.page[0] : searchParams.page
+  const page = pageParam ? Math.max(1, Number(pageParam) || 1) : 1
+  const { posts, pagination, error } = await listPosts({ page })
+
+  return (
+    <BlogPageClient
+      posts={posts}
+      pagination={pagination}
+      countryCode={params.countryCode}
+      isUnavailable={Boolean(error)}
+    />
+  )
 }

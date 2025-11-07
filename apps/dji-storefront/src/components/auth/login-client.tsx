@@ -68,7 +68,7 @@ export function LoginClient() {
                 </Button>
               </form>
               <div className="mt-6 text-center text-sm text-foreground-secondary">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <button
                   type="button"
                   onClick={() => setCurrentView("register")}
