@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useEffect, useState, useActionState } from "react"
+import { useRouter } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -10,33 +11,20 @@ import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { currencyFormatter } from "@/lib/number"
 import type { AccountOrder, AccountUser, WishlistItem } from "@/lib/data/account"
-import { updateCustomerProfile } from "@/lib/actions/account"
+import {
+  addCustomerAddress,
+  deleteCustomerAddress,
+  updateCustomerAddress,
+  updateCustomerProfile,
+} from "@/lib/actions/account"
 import { Loader2 } from "lucide-react"
 
 type EditableProfileField = "firstName" | "lastName" | "phone"
-
-type AccountOrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled"
 
 type AccountClientProps = {
   user: AccountUser | null
   orders: AccountOrder[]
   wishlist: WishlistItem[]
-}
-
-const STATUS_STYLES: Record<AccountOrderStatus, string> = {
-  pending: "bg-amber-500",
-  processing: "bg-blue-500",
-  shipped: "bg-purple-500",
-  delivered: "bg-emerald-500",
-  cancelled: "bg-red-500",
-}
-
-const STATUS_LABELS: Record<AccountOrderStatus, string> = {
-  pending: "Pending",
-  processing: "Processing",
-  shipped: "Shipped",
-  delivered: "Delivered",
-  cancelled: "Cancelled",
 }
 
 const formatDate = (date: string | Date) =>
@@ -49,12 +37,30 @@ const formatDate = (date: string | Date) =>
 const getSeriesLabel = (handle: string) => handle.split("-")[0]?.toUpperCase() ?? "DJI"
 
 export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState("profile")
   const [mutableUser, setMutableUser] = useState(user)
   const [isEditing, setIsEditing] = useState(false)
   const [hydrated, setHydrated] = useState(false)
   const [updateResult, updateAction, isPending] = useActionState(updateCustomerProfile, null)
-  const [formRef, setFormRef] = useState<HTMLFormElement | null>(null)
+  const [isAddingAddress, setIsAddingAddress] = useState(false)
+  const [editingAddressId, setEditingAddressId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setHydrated(true))
+    return () => cancelAnimationFrame(id)
+  }, [])
+
+  useEffect(() => {
+    if (updateResult?.success) {
+      setIsEditing(false)
+      router.refresh()
+    }
+  }, [router, updateResult?.success])
+
+  useEffect(() => {
+    setMutableUser(user)
+  }, [user])
 
   // If user is not authenticated, show login prompt
   if (!mutableUser) {
@@ -81,21 +87,7 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
   }
 
   const initials = `${mutableUser.firstName.charAt(0) ?? ""}${mutableUser.lastName.charAt(0) ?? ""}`.toUpperCase()
-
-  useEffect(() => {
-    const id = requestAnimationFrame(() => setHydrated(true))
-    return () => cancelAnimationFrame(id)
-  }, [])
-
-  useEffect(() => {
-    if (updateResult?.success) {
-      setIsEditing(false)
-      // Refresh user data
-      if (mutableUser) {
-        setMutableUser({ ...mutableUser })
-      }
-    }
-  }, [updateResult])
+  const addresses = mutableUser.addresses ?? []
 
   const handleFieldChange = (field: EditableProfileField, value: string) => {
     if (!mutableUser) return
@@ -160,7 +152,7 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
               </div>
             </CardHeader>
             <CardContent>
-              <form ref={setFormRef} id="profile-form" action={updateAction} className="space-y-8">
+              <form id="profile-form" action={updateAction} className="space-y-8">
               {updateResult?.error && (
                 <div className="p-3 rounded-base bg-red-50 border border-red-200 text-sm text-red-600">
                   {updateResult.error}
@@ -318,10 +310,39 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
                   <CardTitle>Address Management</CardTitle>
                   <CardDescription>Shipping and billing cards mirrored from the cockpit simulator.</CardDescription>
                 </div>
-                <Button>Add New Address</Button>
+                <Button
+                  variant={isAddingAddress ? "outline" : "default"}
+                  onClick={() => {
+                    setIsAddingAddress((prev) => !prev)
+                    setEditingAddressId(null)
+                  }}
+                >
+                  {isAddingAddress ? "Close Form" : "Add New Address"}
+                </Button>
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
+              {isAddingAddress && (
+                <div className="rounded-base border border-border-primary bg-background-secondary/40 p-6">
+                  <div className="mb-4 space-y-1">
+                    <h3 className="text-lg font-semibold text-foreground-primary">New address</h3>
+                    <p className="text-sm text-foreground-secondary">
+                      Save a shipping or billing destination for faster checkout.
+                    </p>
+                  </div>
+                  <AddressForm
+                    mode="create"
+                    action={addCustomerAddress}
+                    defaultBilling={addresses.length === 0}
+                    defaultShipping={addresses.length === 0}
+                    onCancel={() => setIsAddingAddress(false)}
+                    onSuccess={() => {
+                      setIsAddingAddress(false)
+                      router.refresh()
+                    }}
+                  />
+                </div>
+              )}
               {!hydrated ? (
                 Array.from({ length: 2 }).map((_, index) => (
                   <div key={`address-skeleton-${index}`} className="rounded-base border border-border-primary p-6 animate-pulse space-y-3">
@@ -330,41 +351,88 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
                     <div className="h-3 w-1/2 rounded bg-foreground-muted/10" />
                   </div>
                 ))
-              ) : mutableUser.addresses.length === 0 ? (
+              ) : addresses.length === 0 ? (
                 <p className="text-sm text-foreground-secondary">No addresses on file.</p>
               ) : (
-                mutableUser.addresses.map((address) => (
+                addresses.map((address) => (
                   <div key={address.id} className="rounded-base border border-border-primary p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                  <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="text-lg font-semibold text-foreground-primary">
-                          {address.firstName} {address.lastName}
-                        </h3>
-                        <span className="rounded-full bg-primary-500 px-2 py-0.5 text-xs font-medium text-white capitalize">
-                          {address.type}
-                        </span>
-                        {address.isDefault && <span className="rounded-full bg-emerald-500 px-2 py-0.5 text-xs font-medium text-white">Default</span>}
+                    {editingAddressId === address.id ? (
+                      <div>
+                        <div className="mb-4 space-y-1">
+                          <h3 className="text-lg font-semibold text-foreground-primary">Edit address</h3>
+                          <p className="text-sm text-foreground-secondary">
+                            Update the details for {address.firstName} {address.lastName}.
+                          </p>
+                        </div>
+                        <AddressForm
+                          mode="edit"
+                          action={updateCustomerAddress}
+                          address={address}
+                          onCancel={() => setEditingAddressId(null)}
+                          onSuccess={() => {
+                            setEditingAddressId(null)
+                            router.refresh()
+                          }}
+                        />
                       </div>
-                      <p className="mt-2 text-sm text-foreground-secondary">
-                        {address.address1}
-                        <br />
-                        {address.city}, {address.state} {address.postalCode}
-                        <br />
-                        {address.country}
-                      </p>
-                      {address.phone && <p className="mt-2 text-sm text-foreground-secondary">{address.phone}</p>}
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        Edit
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        Delete
-                      </Button>
-                    </div>
+                    ) : (
+                      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                        <div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="text-lg font-semibold text-foreground-primary">
+                              {address.firstName} {address.lastName}
+                            </h3>
+                            {address.isDefaultShipping && (
+                              <span className="rounded-full bg-primary-500 px-2 py-0.5 text-xs font-medium text-white">
+                                Default Shipping
+                              </span>
+                            )}
+                            {address.isDefaultBilling && (
+                              <span className="rounded-full bg-emerald-500 px-2 py-0.5 text-xs font-medium text-white">
+                                Default Billing
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-2 text-sm text-foreground-secondary">
+                            {address.address1}
+                            {address.address2 && (
+                              <>
+                                <br />
+                                {address.address2}
+                              </>
+                            )}
+                            <br />
+                            {address.city}
+                            {address.province ? `, ${address.province}` : ""} {address.postalCode}
+                            <br />
+                            {address.country || address.countryCode?.toUpperCase() || ""}
+                          </p>
+                          {address.phone && <p className="mt-2 text-sm text-foreground-secondary">{address.phone}</p>}
+                        </div>
+                        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setEditingAddressId(address.id)
+                              setIsAddingAddress(false)
+                            }}
+                          >
+                            Edit
+                          </Button>
+                          <DeleteAddressButton
+                            addressId={address.id}
+                            onSuccess={() => {
+                              if (editingAddressId === address.id) {
+                                setEditingAddressId(null)
+                              }
+                              router.refresh()
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
                 ))
               )}
             </CardContent>
@@ -475,6 +543,217 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
           </div>
         </TabsContent>
       </Tabs>
+    </div>
+  )
+}
+
+type AddressActionState = { success: boolean; error: string | null }
+type AddressServerAction = (
+  state: AddressActionState,
+  formData: FormData
+) => Promise<AddressActionState>
+
+type AddressFormProps = {
+  mode: "create" | "edit"
+  action: AddressServerAction
+  onCancel: () => void
+  onSuccess: () => void
+  address?: AccountUser["addresses"][number]
+  defaultShipping?: boolean
+  defaultBilling?: boolean
+}
+
+function AddressForm({
+  mode,
+  action,
+  address,
+  onCancel,
+  onSuccess,
+  defaultShipping = false,
+  defaultBilling = false,
+}: AddressFormProps) {
+  const [state, formAction, isSubmitting] = useActionState(action, {
+    success: false,
+    error: null,
+  })
+
+  useEffect(() => {
+    if (state?.success) {
+      onSuccess()
+    }
+  }, [state?.success, onSuccess])
+
+  const defaultCountryCode = (address?.countryCode || "us").toLowerCase() || "us"
+
+  return (
+    <form action={formAction} className="space-y-4">
+      {mode === "edit" && address && (
+        <input type="hidden" name="address_id" value={address.id} />
+      )}
+      {mode === "create" && (
+        <>
+          <input type="hidden" name="is_default_shipping" value={defaultShipping ? "true" : "false"} />
+          <input type="hidden" name="is_default_billing" value={defaultBilling ? "true" : "false"} />
+        </>
+      )}
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor={`address-first-name-${address?.id || "new"}`}>First Name *</Label>
+          <Input
+            id={`address-first-name-${address?.id || "new"}`}
+            name="first_name"
+            defaultValue={address?.firstName ?? ""}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor={`address-last-name-${address?.id || "new"}`}>Last Name *</Label>
+          <Input
+            id={`address-last-name-${address?.id || "new"}`}
+            name="last_name"
+            defaultValue={address?.lastName ?? ""}
+            required
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor={`address-company-${address?.id || "new"}`}>Company</Label>
+        <Input
+          id={`address-company-${address?.id || "new"}`}
+          name="company"
+          defaultValue={address?.company ?? ""}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor={`address-line1-${address?.id || "new"}`}>Address *</Label>
+        <Input
+          id={`address-line1-${address?.id || "new"}`}
+          name="address_1"
+          defaultValue={address?.address1 ?? ""}
+          required
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor={`address-line2-${address?.id || "new"}`}>Apartment, suite, etc.</Label>
+        <Input
+          id={`address-line2-${address?.id || "new"}`}
+          name="address_2"
+          defaultValue={address?.address2 ?? ""}
+        />
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor={`address-city-${address?.id || "new"}`}>City *</Label>
+          <Input
+            id={`address-city-${address?.id || "new"}`}
+            name="city"
+            defaultValue={address?.city ?? ""}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor={`address-province-${address?.id || "new"}`}>State / Province</Label>
+          <Input
+            id={`address-province-${address?.id || "new"}`}
+            name="province"
+            defaultValue={address?.province ?? ""}
+          />
+        </div>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor={`address-postal-${address?.id || "new"}`}>Postal Code *</Label>
+          <Input
+            id={`address-postal-${address?.id || "new"}`}
+            name="postal_code"
+            defaultValue={address?.postalCode ?? ""}
+            required
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor={`address-country-${address?.id || "new"}`}>Country *</Label>
+          <select
+            id={`address-country-${address?.id || "new"}`}
+            name="country_code"
+            defaultValue={defaultCountryCode}
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            required
+          >
+            <option value="us">United States</option>
+          </select>
+          <p className="text-xs text-foreground-muted">Currently, only US addresses are supported.</p>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor={`address-phone-${address?.id || "new"}`}>Phone</Label>
+        <Input
+          id={`address-phone-${address?.id || "new"}`}
+          name="phone"
+          type="tel"
+          defaultValue={address?.phone ?? ""}
+        />
+      </div>
+
+      {state?.error && (
+        <div className="rounded-base border border-red-200 bg-red-50 p-3 text-sm text-red-600">{state.error}</div>
+      )}
+
+      <div className="flex flex-wrap justify-end gap-3">
+        <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
+          Cancel
+        </Button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Saving...
+            </>
+          ) : mode === "create" ? (
+            "Save Address"
+          ) : (
+            "Update Address"
+          )}
+        </Button>
+      </div>
+    </form>
+  )
+}
+
+function DeleteAddressButton({ addressId, onSuccess }: { addressId: string; onSuccess: () => void }) {
+  const [state, formAction, isDeleting] = useActionState(deleteCustomerAddress, {
+    success: false,
+    error: null,
+  })
+
+  useEffect(() => {
+    if (state?.success) {
+      onSuccess()
+    }
+  }, [state?.success, onSuccess])
+
+  return (
+    <div className="flex flex-col gap-1">
+      <form action={formAction} className="flex">
+        <input type="hidden" name="address_id" value={addressId} />
+        <Button variant="outline" size="sm" type="submit" disabled={isDeleting}>
+          {isDeleting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Deleting...
+            </>
+          ) : (
+            "Delete"
+          )}
+        </Button>
+      </form>
+      {state?.error && <p className="text-xs text-red-600">{state.error}</p>}
     </div>
   )
 }
