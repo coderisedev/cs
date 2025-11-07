@@ -185,6 +185,35 @@ const resolveRegion = async ({ countryCode, regionId }: { countryCode?: string; 
   return null
 }
 
+const buildImageGallery = (
+  thumbnail?: string | null,
+  images?: Array<{ url?: string } | string>
+) => {
+  const gallery = (images ?? [])
+    .map((image) => {
+      if (typeof image === "string") {
+        return image
+      }
+
+      return image?.url ?? ""
+    })
+    .filter((url): url is string => Boolean(url))
+
+  if (thumbnail) {
+    const existingIndex = gallery.indexOf(thumbnail)
+
+    if (existingIndex > 0) {
+      gallery.splice(existingIndex, 1)
+    }
+
+    if (existingIndex !== 0) {
+      gallery.unshift(thumbnail)
+    }
+  }
+
+  return gallery
+}
+
 const mapStoreProduct = (product: HttpTypes.StoreProduct): StorefrontProduct => {
   // Get the cheapest variant for base price calculation
   const cheapestVariant: any = product.variants?.length
@@ -226,7 +255,7 @@ const mapStoreProduct = (product: HttpTypes.StoreProduct): StorefrontProduct => 
     description: product.description ?? "",
     price,
     compareAtPrice: compareAt,
-    images: product.thumbnail ? [product.thumbnail] : (product.images?.map((img: any) => img.url ?? img) ?? []),
+    images: buildImageGallery(product.thumbnail, product.images),
     rating: (product.metadata?.rating as number) ?? 4.8,
     reviewCount: (product.metadata?.review_count as number) ?? 32,
     inStock,
@@ -247,7 +276,7 @@ const mapMockProduct = (product: MockProduct): StorefrontProduct => ({
   description: product.description,
   price: product.price,
   compareAtPrice: product.compareAtPrice,
-  images: product.images,
+  images: buildImageGallery(product.images?.[0], product.images),
   rating: product.rating ?? 4.8,
   reviewCount: product.reviewCount ?? 32,
   inStock: product.inStock ?? true,
