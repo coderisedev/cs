@@ -13,7 +13,7 @@ import type { AccountOrder, AccountOrderStatus, AccountUser, WishlistItem } from
 type EditableProfileField = "firstName" | "lastName" | "email" | "phone"
 
 type AccountClientProps = {
-  user: AccountUser
+  user: AccountUser | null
   orders: AccountOrder[]
   wishlist: WishlistItem[]
 }
@@ -48,6 +48,28 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
   const [mutableUser, setMutableUser] = useState(user)
   const [isEditing, setIsEditing] = useState(false)
   const [hydrated, setHydrated] = useState(false)
+
+  // If user is not authenticated, show login prompt
+  if (!mutableUser) {
+    return (
+      <div className="container mx-auto px-4 lg:px-12 py-16">
+        <Card className="max-w-md mx-auto">
+          <CardHeader>
+            <CardTitle>Sign In Required</CardTitle>
+            <CardDescription>Please sign in to view your account information.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-foreground-secondary">
+              You need to be signed in to access your account page.
+            </p>
+            <Button className="w-full" onClick={() => window.location.href = '/us/login'}>
+              Sign In
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
   const initials = `${mutableUser.firstName.charAt(0) ?? ""}${mutableUser.lastName.charAt(0) ?? ""}`.toUpperCase()
 
