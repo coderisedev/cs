@@ -47,6 +47,20 @@ const categories: ProductCategory[] = [
   { id: "accessories", title: "Accessories & Mounts" },
 ]
 
+const toCurrencyAmount = (value?: number | null) => {
+  if (value === null || value === undefined) {
+    return undefined
+  }
+
+  const numericValue = typeof value === "number" ? value : Number(value)
+
+  if (Number.isNaN(numericValue)) {
+    return undefined
+  }
+
+  return numericValue
+}
+
 export const getProductCategories = async () => categories
 
 export const getProductSummaries = async (options?: ProductListOptions) => {
@@ -185,18 +199,20 @@ const mapStoreProduct = (product: HttpTypes.StoreProduct): StorefrontProduct => 
     : null
 
   // Extract price from calculated_price object (Medusa v2 format)
-  const priceInMinor = cheapestVariant?.calculated_price?.calculated_amount ?? 0
-  const price = priceInMinor / 100
-  const originalPriceInMinor = cheapestVariant?.calculated_price?.original_amount
-  const compareAt = originalPriceInMinor && originalPriceInMinor !== priceInMinor ? originalPriceInMinor / 100 : undefined
+  const priceAmount = toCurrencyAmount(cheapestVariant?.calculated_price?.calculated_amount) ?? 0
+  const originalPriceAmount = toCurrencyAmount(cheapestVariant?.calculated_price?.original_amount)
+  const compareAt =
+    originalPriceAmount !== undefined && originalPriceAmount !== priceAmount
+      ? originalPriceAmount
+      : undefined
 
   const variants: StorefrontProductVariant[] =
     product.variants?.map((variant: any) => {
-      const variantPriceMinor = variant.calculated_price?.calculated_amount ?? priceInMinor
+      const variantPrice = toCurrencyAmount(variant.calculated_price?.calculated_amount) ?? priceAmount
       return {
         id: variant.id,
         title: variant.title ?? "Default",
-        price: variantPriceMinor / 100,
+        price: variantPrice,
         inStock: (variant.inventory_quantity ?? 0) > 0,
       }
     }) ?? []

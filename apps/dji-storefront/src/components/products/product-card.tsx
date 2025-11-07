@@ -16,11 +16,11 @@ import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 export function ProductCard({ product, viewMode = "grid", countryCode }: { product: StorefrontProduct; viewMode?: ViewMode; countryCode: string }) {
   const [isPending, startTransition] = useTransition()
+  const resolvedCountryCode = countryCode || DEFAULT_COUNTRY_CODE
   const image = product.images[0]
   const discount = product.compareAtPrice
     ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
     : 0
-  const requiresConfiguration = product.variants?.length > 1
 
   const handleAddToCart = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -30,7 +30,7 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
     startTransition(async () => {
       try {
         // Plan A: Always use US countryCode
-        await addToCartAction({ variantId, quantity: 1, countryCode: DEFAULT_COUNTRY_CODE })
+        await addToCartAction({ variantId, quantity: 1, countryCode: resolvedCountryCode })
       } catch (error) {
         console.error("Add to cart failed", error)
       }
@@ -39,7 +39,7 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
 
   const getButtonLabel = () => {
     if (!product.inStock) return "Out of Stock"
-    return requiresConfiguration ? "Configure" : "Add to Cart"
+    return "Add to Cart"
   }
 
   if (viewMode === "list") {
