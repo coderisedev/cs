@@ -3,27 +3,33 @@ import { getStrapiClient } from "@/lib/strapi/client"
 
 const strapi = getStrapiClient()
 
-const POPULATE_FIELDS = ["cover_image", "coverImage", "author", "seo", "seo.ogImage", "seo.metaImage", "seo.shareImage"].join(",")
+const POPULATE_FIELDS = "*"
 const DEFAULT_PAGE_SIZE = 6
 const BLOG_REVALIDATE_SECONDS = 60
 
 export const BLOG_CACHE_TAG = "blog"
 
-type StrapiEntity<T> = {
+type StrapiEntity<T> = T & {
   id: number
-  attributes: T & {
-    createdAt?: string
-    updatedAt?: string
-    publishedAt?: string | null
-    published_at?: string | null
-    locale?: string | null
-  }
+  documentId?: string
+  createdAt?: string
+  updatedAt?: string
+  publishedAt?: string | null
+  published_at?: string | null
+  locale?: string | null
 }
 
 type StrapiMediaAttributes = {
   url: string
   alternativeText?: string | null
   caption?: string | null
+  width?: number
+  height?: number
+}
+
+type StrapiMediaData = StrapiMediaAttributes & {
+  id: number
+  documentId: string
 }
 
 type StrapiRelation<T> = {
@@ -42,8 +48,8 @@ export type StrapiPostAttributes = {
   slug: string
   excerpt?: string | null
   content?: string | null
-  cover_image?: StrapiRelation<StrapiMediaAttributes>
-  coverImage?: StrapiRelation<StrapiMediaAttributes>
+  cover_image?: StrapiMediaData[] | StrapiRelation<StrapiMediaAttributes>
+  coverImage?: StrapiMediaData[] | StrapiRelation<StrapiMediaAttributes>
   author?: StrapiRelation<{
     name?: string | null
     title?: string | null
@@ -117,7 +123,6 @@ export const listPosts = async (options: BlogListOptions = {}): Promise<BlogList
         "pagination[page]": page,
         "pagination[pageSize]": pageSize,
         ...(options.locale ? { locale: options.locale } : {}),
-        publicationState: "live",
       },
       tags: [BLOG_CACHE_TAG],
       revalidate: BLOG_REVALIDATE_SECONDS,
@@ -148,7 +153,6 @@ export const getPost = async (slug: string, locale?: string): Promise<BlogPost |
         "pagination[page]": 1,
         "pagination[pageSize]": 1,
         ...(locale ? { locale } : {}),
-        publicationState: "live",
       },
       tags: [BLOG_CACHE_TAG, `blog-post-${slug}`],
       revalidate: BLOG_REVALIDATE_SECONDS,
@@ -174,38 +178,58 @@ export const revalidateStrapiBlog = async () => {
 }
 
 const mapStrapiPost = (entity: StrapiEntity<StrapiPostAttributes>): BlogPost => {
-  const { id, attributes } = entity
-  const coverMedia = attributes.cover_image ?? attributes.coverImage
+  const coverMedia = entity.cover_image ?? entity.coverImage
   const coverImageUrl = extractMediaUrl(coverMedia)
-  const coverImageAlt = coverMedia?.data?.attributes?.alternativeText ?? null
+  
+  // Extract alt text from array or relation format
+  let coverImageAlt: string | null = null
+  if (coverMedia) {
+    if (Array.isArray(coverMedia)) {
+      coverImageAlt = coverMedia[0]?.alternativeText ?? null
+    } else if ('data' in coverMedia) {
+      coverImageAlt = coverMedia?.data?.alternativeText ?? null
+    }
+  }
+  
   const seoImageUrl =
-    extractMediaUrl(attributes.seo?.ogImage) ||
-    extractMediaUrl(attributes.seo?.metaImage) ||
-    extractMediaUrl(attributes.seo?.shareImage) ||
+    extractMediaUrl(entity.seo?.ogImage) ||
+    extractMediaUrl(entity.seo?.metaImage) ||
+    extractMediaUrl(entity.seo?.shareImage) ||
     coverImageUrl
 
   return {
-    id: String(id),
-    title: attributes.title,
-    slug: attributes.slug,
-    excerpt: attributes.excerpt?.trim() || buildExcerpt(attributes.content),
-    content: attributes.content ?? "",
+    id: String(entity.id),
+    title: entity.title,
+    slug: entity.slug,
+    excerpt: entity.excerpt?.trim() || buildExcerpt(entity.content),
+    content: entity.content ?? "",
     coverImageUrl,
     coverImageAlt,
-    publishedAt: attributes.publishedAt ?? attributes.published_at ?? null,
-    authorName: attributes.author?.data?.attributes?.name ?? null,
-    authorTitle: attributes.author?.data?.attributes?.title ?? null,
-    estimatedReadingMinutes: estimateReadingTime(attributes.content),
+    publishedAt: entity.publishedAt ?? entity.published_at ?? null,
+    authorName: entity.author?.data?.name ?? null,
+    authorTitle: entity.author?.data?.title ?? null,
+    estimatedReadingMinutes: estimateReadingTime(entity.content),
     seo: {
-      metaTitle: attributes.seo?.metaTitle ?? attributes.title,
-      metaDescription: attributes.seo?.metaDescription ?? attributes.excerpt ?? buildExcerpt(attributes.content),
+      metaTitle: entity.seo?.metaTitle ?? entity.title,
+      metaDescription: entity.seo?.metaDescription ?? entity.excerpt ?? buildExcerpt(entity.content),
       ogImageUrl: seoImageUrl,
     },
   }
 }
 
-const extractMediaUrl = (media?: StrapiRelation<StrapiMediaAttributes> | null) => {
-  const url = media?.data?.attributes?.url
+const extractMediaUrl = (media?: StrapiRelation<StrapiMediaAttributes> | StrapiMediaData[] | null) => {
+  if (!media) {
+    return null
+  }
+  
+  // Handle array format (Strapi v5)
+  if (Array.isArray(media)) {
+    const url = media[0]?.url
+    return url ? strapi.resolveMedia(url) : null
+  }
+  
+  // Handle relation format (Strapi v4/v5)
+  const url = media?.data?.url
   return url ? strapi.resolveMedia(url) : null
 }
 

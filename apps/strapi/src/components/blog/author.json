@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_blog_authors",
+  "info": {
+    "displayName": "author",
+    "icon": "calendar"
+  },
+  "options": {},
+  "attributes": {},
+  "config": {}
+}
