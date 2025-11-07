@@ -3,7 +3,12 @@ export default ({ env }) => ({
     config: {
       provider: "@strapi/provider-upload-aws-s3",
       providerOptions: {
-        baseUrl: env("AWS_PUBLIC_URL", env("AWS_ENDPOINT")),
+        baseUrl: env(
+          "AWS_PUBLIC_URL",
+          env("AWS_ENDPOINT") && env("AWS_BUCKET_NAME")
+            ? `${env("AWS_ENDPOINT")!.replace(/\/$/, "")}/${env("AWS_BUCKET_NAME")}`
+            : undefined
+        ),
         rootPath: env("AWS_S3_PATH_PREFIX", ""),
         s3Options: {
           credentials: {
@@ -12,7 +17,7 @@ export default ({ env }) => ({
           },
           endpoint: env("AWS_ENDPOINT"),
           region: env("AWS_REGION", "auto"),
-          forcePathStyle: env.bool("AWS_FORCE_PATH_STYLE", false),
+          forcePathStyle: env.bool("AWS_FORCE_PATH_STYLE", true),
           signatureVersion: "v4",
           params: {
             Bucket: env("AWS_BUCKET_NAME"),
