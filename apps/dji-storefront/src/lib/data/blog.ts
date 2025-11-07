@@ -1,5 +1,3 @@
-"use server"
-
 import { revalidateTag } from "next/cache"
 import { getStrapiClient } from "@/lib/strapi/client"
 
@@ -107,6 +105,7 @@ const defaultPagination = ({ page = 1, pageSize = DEFAULT_PAGE_SIZE }: { page?: 
 })
 
 export const listPosts = async (options: BlogListOptions = {}): Promise<BlogListResult> => {
+  "use server"
   const pageSize = options.pageSize ?? DEFAULT_PAGE_SIZE
   const page = options.page ?? 1
 
@@ -140,6 +139,7 @@ export const listPosts = async (options: BlogListOptions = {}): Promise<BlogList
 }
 
 export const getPost = async (slug: string, locale?: string): Promise<BlogPost | null> => {
+  "use server"
   try {
     const response = await strapi.fetch<StrapiPostResponse>("/api/posts", {
       query: {
@@ -163,6 +163,7 @@ export const getPost = async (slug: string, locale?: string): Promise<BlogPost |
 }
 
 export const getFeaturedPosts = async (limit = 3, locale?: string) => {
+  "use server"
   const { posts } = await listPosts({ pageSize: limit, locale })
   return posts
 }
