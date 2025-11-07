@@ -1,5 +1,7 @@
 "use client"
+"use client"
 
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { currencyFormatter } from "@/lib/number"
-import type { AccountOrder, AccountOrderStatus, AccountUser, WishlistItem } from "@/lib/data/account"
+import type { AccountOrder, AccountUser, WishlistItem } from "@/lib/data/account"
 
 type EditableProfileField = "firstName" | "lastName" | "email" | "phone"
 
@@ -62,9 +64,11 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
             <p className="text-sm text-foreground-secondary">
               You need to be signed in to access your account page.
             </p>
-            <Button className="w-full" onClick={() => window.location.href = '/us/login'}>
-              Sign In
-            </Button>
+            <Link href="/us/login">
+              <Button className="w-full">
+                Sign In
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
