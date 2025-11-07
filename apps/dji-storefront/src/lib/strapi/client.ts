@@ -1,5 +1,3 @@
-"use server"
-
 type QueryPrimitive = string | number | boolean
 type QueryValue = QueryPrimitive | QueryPrimitive[] | null | undefined
 
