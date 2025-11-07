@@ -21,6 +21,7 @@ import type { StorefrontProduct } from "@/lib/data/products"
 import type { Review } from "@/lib/data/reviews"
 import { currencyFormatter } from "@/lib/number"
 import { addToCartAction } from "@/app/actions/cart"
+import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 interface ProductDetailClientProps {
   product: StorefrontProduct
@@ -40,8 +41,6 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
   const totalPrice = (variant?.price ?? product.price) * quantity
   const originalPrice = product.compareAtPrice ? product.compareAtPrice * quantity : undefined
   const discount = originalPrice ? Math.round(((originalPrice - totalPrice) / originalPrice) * 100) : 0
-
-import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
   const handleAddToCart = () => {
     if (!variant?.id) return

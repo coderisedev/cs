@@ -1,7 +1,16 @@
 import { mockMedusaClient, type MockCollectionWithProducts, type MockCollection } from "@cs/medusa-client"
 
-const allCollectionsWithProducts = () => mockMedusaClient.listCollections({ includeProducts: true }) as MockCollectionWithProducts[]
-const allCollections = () => mockMedusaClient.listCollections({ includeProducts: false }) as MockCollection[]
+const allCollectionsWithProducts = () => {
+  const result = mockMedusaClient.listCollections({ includeProducts: true })
+  // Handle both array and object responses
+  return Array.isArray(result) ? result : ((result as any).collections || []) as MockCollectionWithProducts[]
+}
+
+const allCollections = () => {
+  const result = mockMedusaClient.listCollections({ includeProducts: false })
+  // Handle both array and object responses
+  return Array.isArray(result) ? result : ((result as any).collections || []) as MockCollection[]
+}
 
 export const getMockCollections = ({ limit, offset = 0 }: { limit?: string; offset?: string }) => {
   const parsedLimit = limit ? parseInt(limit, 10) : undefined

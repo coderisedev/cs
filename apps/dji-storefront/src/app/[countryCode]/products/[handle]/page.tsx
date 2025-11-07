@@ -11,8 +11,9 @@ export async function generateStaticParams() {
   return handles.map((handle) => ({ handle }))
 }
 
-export async function generateMetadata({ params }: { params: { handle: string } }): Promise<Metadata> {
-  const product = await getProductDetail(params.handle, DEFAULT_COUNTRY_CODE)
+export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }): Promise<Metadata> {
+  const { handle } = await params
+  const product = await getProductDetail(handle, DEFAULT_COUNTRY_CODE)
   if (!product) {
     return { title: "Product · DJI Storefront" }
   }
@@ -22,9 +23,10 @@ export async function generateMetadata({ params }: { params: { handle: string } 
   }
 }
 
-export default async function ProductDetailPage({ params }: { params: { handle: string } }) {
+export default async function ProductDetailPage({ params }: { params: Promise<{ handle: string }> }) {
+  const { handle } = await params
   const countryCode = DEFAULT_COUNTRY_CODE
-  const product = await getProductDetail(params.handle, countryCode)
+  const product = await getProductDetail(handle, countryCode)
   if (!product) {
     notFound()
   }

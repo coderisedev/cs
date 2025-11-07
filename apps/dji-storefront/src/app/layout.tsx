@@ -1,21 +1,24 @@
 import type { Metadata } from "next"
-import { JetBrains_Mono, Open_Sans } from "next/font/google"
+// Temporarily disabled due to Turbopack font loading issues
+// import { JetBrains_Mono, Open_Sans } from "next/font/google"
 import "./globals.css"
+import type { Metadata } from "next"
 import { SiteHeader } from "@/components/layout/site-header"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { retrieveCart } from "@/lib/data/cart"
 
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-open-sans",
-})
+// Fallback to system fonts until Google Fonts issue is resolved
+// const openSans = Open_Sans({
+//   subsets: ["latin"],
+//   weight: ["300", "400", "500", "600", "700"],
+//   variable: "--font-open-sans",
+// })
 
-const jetBrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-jetbrains-mono",
-})
+// const jetBrainsMono = JetBrains_Mono({
+//   subsets: ["latin"],
+//   weight: ["400", "500", "600"],
+//   variable: "--font-jetbrains-mono",
+// })
 
 export const metadata: Metadata = {
   title: "DJI Storefront",
@@ -31,9 +34,7 @@ export default async function RootLayout({
   const cart = await retrieveCart()
   return (
     <html lang="en" className="bg-background-primary">
-      <body
-        className={`${openSans.variable} ${jetBrainsMono.variable} antialiased bg-background-primary text-foreground-primary`}
-      >
+      <body className="antialiased bg-background-primary text-foreground-primary">
         <SiteHeader cartItemCount={cart?.items.length ?? 0} />
         <main>{children}</main>
         <SiteFooter />

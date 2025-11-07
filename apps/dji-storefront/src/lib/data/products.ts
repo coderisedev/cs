@@ -77,7 +77,7 @@ export const listProducts = async ({
   if (!region) {
     const fallback = getMockProducts({ limit, offset, collection_id: queryParams.collection_id as string | undefined })
     const nextPage = fallback.count > offset + limit ? pageParam + 1 : null
-    return { response: mapMockProducts(fallback.products), nextPage }
+    return { response: { products: mapMockProducts(fallback.products), count: fallback.count }, nextPage }
   }
 
   const headers = {
@@ -97,7 +97,7 @@ export const listProducts = async ({
         limit,
         offset,
         region_id: region.id,
-        fields: "+variants.inventory_quantity",
+        fields: "+variants.inventory_quantity,+variants.calculated_price",
         ...queryParams,
       },
       headers,
@@ -105,10 +105,19 @@ export const listProducts = async ({
       cache: "force-cache",
     })
 
+    // If no products returned, fall back to mock data
+    if (!products || products.length === 0) {
+      console.log("No products returned from API, falling back to mock data")
+      const fallback = getMockProducts({ limit, offset, collection_id: queryParams.collection_id as string | undefined })
+      const nextPage = fallback.count > offset + limit ? pageParam + 1 : null
+      return { response: { products: mapMockProducts(fallback.products), count: fallback.count }, nextPage }
+    }
+
     const nextPage = count > offset + limit ? pageParam + 1 : null
 
     return { response: { products: products.map(mapStoreProduct), count }, nextPage }
-  } catch {
+  } catch (error) {
+    console.log("Error fetching products from API, falling back to mock data:", error)
     const fallback = getMockProducts({ limit, offset, collection_id: queryParams.collection_id as string | undefined })
     const nextPage = fallback.count > offset + limit ? pageParam + 1 : null
     return { response: { products: mapMockProducts(fallback.products), count: fallback.count }, nextPage }
@@ -126,20 +135,28 @@ export const retrieveProduct = async (handle: string, countryCode?: string, regi
   }
 
   try {
-    return await sdk.client
-      .fetch<{ product: HttpTypes.StoreProduct }>(`/store/products/${handle}`, {
-        method: "GET",
-        query: {
-          region_id: region?.id,
-          fields: "+variants.inventory_quantity",
-        },
-        headers,
-        next,
-        cache: "force-cache",
-      })
-      .then(({ product }) => mapStoreProduct(product))
+    // Medusa v2 API: Use list endpoint with handle filter to get product by handle
+    const { products } = await sdk.client.fetch<{
+      products: HttpTypes.StoreProduct[]
+    }>(`/store/products`, {
+      method: "GET",
+      query: {
+        handle,
+        region_id: region?.id,
+        fields: "+variants.inventory_quantity,+variants.calculated_price",
+      },
+      headers,
+      next,
+      cache: "force-cache",
+    })
+
+    if (!products || products.length === 0) {
+      return null
+    }
+
+    return mapStoreProduct(products[0])
   } catch {
-    const fallback = getMockProducts({ limit: 50, offset: 0 }).products.find((product) => product.handle === handle)
+    const fallback = getMockProducts({ limit: 50, offset: 0 }).products.find((product: MockProduct) => product.handle === handle)
     return fallback ? mapMockProduct(fallback) : null
   }
 }
@@ -155,16 +172,34 @@ const resolveRegion = async ({ countryCode, regionId }: { countryCode?: string; 
 }
 
 const mapStoreProduct = (product: HttpTypes.StoreProduct): StorefrontProduct => {
-  const priceInMinor = product.price?.calculated_price ?? product.variants?.[0]?.prices?.[0]?.amount ?? 0
+  // Get the cheapest variant for base price calculation
+  const cheapestVariant: any = product.variants?.length
+    ? product.variants
+        .filter((v: any) => !!v.calculated_price)
+        .sort((a: any, b: any) => {
+          return (
+            (a.calculated_price?.calculated_amount ?? 0) -
+            (b.calculated_price?.calculated_amount ?? 0)
+          )
+        })[0]
+    : null
+
+  // Extract price from calculated_price object (Medusa v2 format)
+  const priceInMinor = cheapestVariant?.calculated_price?.calculated_amount ?? 0
   const price = priceInMinor / 100
-  const compareAt = product.price?.original_price ? product.price.original_price / 100 : undefined
+  const originalPriceInMinor = cheapestVariant?.calculated_price?.original_amount
+  const compareAt = originalPriceInMinor && originalPriceInMinor !== priceInMinor ? originalPriceInMinor / 100 : undefined
+
   const variants: StorefrontProductVariant[] =
-    product.variants?.map((variant) => ({
-      id: variant.id,
-      title: variant.title ?? "Default",
-      price: (variant.calculated_price ?? variant.prices?.[0]?.amount ?? priceInMinor) / 100,
-      inStock: (variant.inventory_quantity ?? 0) > 0,
-    })) ?? []
+    product.variants?.map((variant: any) => {
+      const variantPriceMinor = variant.calculated_price?.calculated_amount ?? priceInMinor
+      return {
+        id: variant.id,
+        title: variant.title ?? "Default",
+        price: variantPriceMinor / 100,
+        inStock: (variant.inventory_quantity ?? 0) > 0,
+      }
+    }) ?? []
 
   const inStock = variants.length ? variants.some((v) => v.inStock) : true
 
@@ -175,7 +210,7 @@ const mapStoreProduct = (product: HttpTypes.StoreProduct): StorefrontProduct => 
     description: product.description ?? "",
     price,
     compareAtPrice: compareAt,
-    images: product.thumbnail ? [product.thumbnail] : product.images ?? [],
+    images: product.thumbnail ? [product.thumbnail] : (product.images?.map((img: any) => img.url ?? img) ?? []),
     rating: (product.metadata?.rating as number) ?? 4.8,
     reviewCount: (product.metadata?.review_count as number) ?? 32,
     inStock,
