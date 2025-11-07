@@ -1,23 +1,26 @@
 "use client"
 
-import { useState, useActionState } from "react"
+import { useState, useActionState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { currencyFormatter } from "@/lib/number"
-import { placeOrderAction, updateCartEmailAction } from "@/lib/actions/checkout"
+import { placeOrderAction } from "@/lib/actions/checkout"
 import { Loader2, ShoppingBag, ArrowLeft, Package, CreditCard, MapPin } from "lucide-react"
 import { HttpTypes } from "@medusajs/types"
+import type { AccountAddress } from "@/lib/data/account"
+import { cn } from "@/lib/utils"
 
 type CheckoutClientProps = {
   cart: HttpTypes.StoreCart
   customer: HttpTypes.StoreCustomer | null
   countryCode: string
+  customerAddresses: AccountAddress[]
 }
 
-export function CheckoutClient({ cart, customer, countryCode }: CheckoutClientProps) {
+export function CheckoutClient({ cart, customer, countryCode, customerAddresses }: CheckoutClientProps) {
   const [email, setEmail] = useState(customer?.email || cart.email || "")
   const [shippingAddress, setShippingAddress] = useState({
     first_name: customer?.first_name || "",
@@ -30,6 +33,7 @@ export function CheckoutClient({ cart, customer, countryCode }: CheckoutClientPr
     phone: customer?.phone || "",
   })
   const [sameAsBilling, setSameAsBilling] = useState(true)
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null)
   
   const [orderMessage, orderFormAction, orderPending] = useActionState(placeOrderAction, null)
 
@@ -54,6 +58,34 @@ export function CheckoutClient({ cart, customer, countryCode }: CheckoutClientPr
     formData.append("country_code", countryCode)
 
     await orderFormAction(formData)
+  }
+
+  const applySavedAddress = (address: AccountAddress) => {
+    setShippingAddress({
+      first_name: address.firstName,
+      last_name: address.lastName,
+      address_1: address.address1,
+      city: address.city,
+      province: address.province || "",
+      postal_code: address.postalCode,
+      country_code: address.countryCode || "us",
+      phone: address.phone || "",
+    })
+  }
+
+  const defaultSavedAddress = customerAddresses.find((addr) => addr.isDefaultShipping) || customerAddresses[0]
+
+  useEffect(() => {
+    if (!defaultSavedAddress || selectedAddressId) {
+      return
+    }
+    setSelectedAddressId(defaultSavedAddress.id)
+    applySavedAddress(defaultSavedAddress)
+  }, [defaultSavedAddress, selectedAddressId])
+
+  const handleSelectAddress = (address: AccountAddress) => {
+    setSelectedAddressId(address.id)
+    applySavedAddress(address)
   }
 
   return (
@@ -86,6 +118,42 @@ export function CheckoutClient({ cart, customer, countryCode }: CheckoutClientPr
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              {customerAddresses.length > 0 && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium text-foreground-primary">Saved addresses</p>
+                    <Link className="text-xs text-primary-500" href={`/${countryCode}/account`}>
+                      Manage
+                    </Link>
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    {customerAddresses.map((address) => (
+                      <button
+                        type="button"
+                        key={address.id}
+                        className={cn(
+                          "text-left border rounded-lg p-3 transition-colors",
+                          selectedAddressId === address.id
+                            ? "border-primary-500 bg-primary-500/5"
+                            : "border-border-primary hover:border-border-secondary"
+                        )}
+                        onClick={() => handleSelectAddress(address)}
+                        disabled={orderPending}
+                      >
+                        <div className="flex items-center justify-between text-sm font-medium text-foreground-primary">
+                          <span>
+                            {address.firstName} {address.lastName}
+                          </span>
+                          {address.isDefaultShipping && <span className="text-xs text-primary-500">Default</span>}
+                        </div>
+                        <p className="text-xs text-foreground-secondary mt-1">
+                          {address.address1}, {address.city}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
               <div className="space-y-2">
                 <Label htmlFor="email">Email Address *</Label>
                 <Input

@@ -1,7 +1,7 @@
 import { retrieveCart } from "@/lib/data/cart"
-import { getCustomer } from "@/lib/data/account"
+import { getCustomer, getAddresses } from "@/lib/data/account"
 import { CheckoutClient } from "@/components/checkout/checkout-client"
-import { notFound, redirect } from "next/navigation"
+import { redirect } from "next/navigation"
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 export const metadata = {
@@ -15,7 +15,14 @@ export default async function CheckoutPage() {
     redirect(`/${DEFAULT_COUNTRY_CODE}/cart`)
   }
 
-  const customer = await getCustomer()
+  const [customer, addresses] = await Promise.all([getCustomer(), getAddresses()])
 
-  return <CheckoutClient cart={cart} customer={customer} countryCode={DEFAULT_COUNTRY_CODE} />
+  return (
+    <CheckoutClient
+      cart={cart}
+      customer={customer}
+      countryCode={DEFAULT_COUNTRY_CODE}
+      customerAddresses={addresses}
+    />
+  )
 }
