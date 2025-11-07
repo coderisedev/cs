@@ -1,8 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import type { MockCollectionWithProducts } from "@cs/medusa-client"
-import { currencyFormatter } from "@/lib/number"
+import { HttpTypes } from "@medusajs/types"
+import { resolveCollectionHeroImage, resolveCollectionHighlight } from "@/lib/util/collections"
+import Image from "next/image"
 
-export function CollectionsPreview({ collections }: { collections: MockCollectionWithProducts[] }) {
+export function CollectionsPreview({ collections }: { collections: HttpTypes.StoreCollection[] }) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {collections.map((collection) => (
@@ -13,14 +14,24 @@ export function CollectionsPreview({ collections }: { collections: MockCollectio
             <CardDescription>{collection.description}</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-foreground-secondary mb-2">Sample products</p>
-            <ul className="space-y-1 text-sm text-foreground-primary">
-              {collection.products.slice(0, 3).map((product) => (
-                <li key={product.id}>
-                  {product.title} · {currencyFormatter(product.price)}
-                </li>
-              ))}
-            </ul>
+            <div className="flex gap-3 items-center">
+              <div className="relative h-16 w-16 overflow-hidden rounded-base">
+                <Image src={resolveCollectionHeroImage(collection)} alt={collection.title} fill className="object-cover" />
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-widest text-foreground-muted">{resolveCollectionHighlight(collection)}</p>
+                <p className="text-sm text-foreground-secondary">
+                  {collection.products?.length ? `${collection.products.length} products` : "Curated selection"}
+                </p>
+              </div>
+            </div>
+            {collection.products && collection.products.length > 0 && (
+              <ul className="space-y-1 text-sm text-foreground-primary mt-3">
+                {collection.products.slice(0, 3).map((product) => (
+                  <li key={product.id}>{product.title}</li>
+                ))}
+              </ul>
+            )}
           </CardContent>
         </Card>
       ))}

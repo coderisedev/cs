@@ -2,7 +2,6 @@
 
 import { sdk } from "@/lib/medusa"
 import { getCacheOptions } from "@/lib/server/cookies"
-import { getMockCollectionByHandle, getMockCollectionById, getMockCollections } from "@/lib/data/mock-collections"
 import { HttpTypes } from "@medusajs/types"
 
 export const listCollections = async (queryParams: Record<string, string> = {}) => {
@@ -16,18 +15,17 @@ export const listCollections = async (queryParams: Record<string, string> = {}) 
     ...queryParams,
   }
 
-  try {
-    return await sdk.client
-      .fetch<{ collections: HttpTypes.StoreCollection[]; count: number }>("/store/collections", {
-        method: "GET",
-        query,
-        next,
-        cache: "force-cache",
-      })
-      .then(({ collections, count }) => ({ collections, count }))
-  } catch {
-    return getMockCollections(query)
-  }
+  const { collections, count } = await sdk.client.fetch<{ collections: HttpTypes.StoreCollection[]; count: number }>(
+    "/store/collections",
+    {
+      method: "GET",
+      query,
+      next,
+      cache: "force-cache",
+    }
+  )
+
+  return { collections, count }
 }
 
 export const retrieveCollection = async (id: string) => {
@@ -35,17 +33,16 @@ export const retrieveCollection = async (id: string) => {
     ...(await getCacheOptions(`collections-${id}`)),
   }
 
-  try {
-    return await sdk.client
-      .fetch<{ collection: HttpTypes.StoreCollection }>(`/store/collections/${id}`, {
-        method: "GET",
-        next,
-        cache: "force-cache",
-      })
-      .then(({ collection }) => collection)
-  } catch {
-    return getMockCollectionById(id)
-  }
+  const { collection } = await sdk.client.fetch<{ collection: HttpTypes.StoreCollection }>(
+    `/store/collections/${id}`,
+    {
+      method: "GET",
+      next,
+      cache: "force-cache",
+    }
+  )
+
+  return collection
 }
 
 export const getCollectionByHandle = async (handle: string) => {
@@ -53,18 +50,17 @@ export const getCollectionByHandle = async (handle: string) => {
     ...(await getCacheOptions("collections")),
   }
 
-  try {
-    return await sdk.client
-      .fetch<{ collections: HttpTypes.StoreCollection[] }>(`/store/collections`, {
-        method: "GET",
-        query: { handle },
-        next,
-        cache: "force-cache",
-      })
-      .then(({ collections }) => collections[0] ?? null)
-  } catch {
-    return getMockCollectionByHandle(handle) ?? null
-  }
+  const { collections } = await sdk.client.fetch<{ collections: HttpTypes.StoreCollection[] }>(
+    `/store/collections`,
+    {
+      method: "GET",
+      query: { handle },
+      next,
+      cache: "force-cache",
+    }
+  )
+
+  return collections[0] ?? null
 }
 
 export const getCollections = async ({
@@ -78,11 +74,11 @@ export const getCollections = async ({
     limit: limit?.toString(),
   })
 
-  if (includeProducts) {
-    return collections
+  if (!includeProducts) {
+    return collections.map((collection) => ({ ...collection, products: undefined }))
   }
 
-  return collections.map((collection) => ({ ...collection, products: undefined }))
+  return collections
 }
 
 export const getCollectionDetail = async (handle: string) => {
