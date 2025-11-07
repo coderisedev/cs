@@ -1,8 +1,7 @@
 "use client"
-"use client"
 
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useActionState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -11,8 +10,12 @@ import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { currencyFormatter } from "@/lib/number"
 import type { AccountOrder, AccountUser, WishlistItem } from "@/lib/data/account"
+import { updateCustomerProfile } from "@/lib/actions/account"
+import { Loader2 } from "lucide-react"
 
-type EditableProfileField = "firstName" | "lastName" | "email" | "phone"
+type EditableProfileField = "firstName" | "lastName" | "phone"
+
+type AccountOrderStatus = "pending" | "processing" | "shipped" | "delivered" | "cancelled"
 
 type AccountClientProps = {
   user: AccountUser | null
@@ -36,7 +39,7 @@ const STATUS_LABELS: Record<AccountOrderStatus, string> = {
   cancelled: "Cancelled",
 }
 
-const formatDate = (date: string) =>
+const formatDate = (date: string | Date) =>
   new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -50,6 +53,8 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
   const [mutableUser, setMutableUser] = useState(user)
   const [isEditing, setIsEditing] = useState(false)
   const [hydrated, setHydrated] = useState(false)
+  const [updateResult, updateAction, isPending] = useActionState(updateCustomerProfile, null)
+  const [formRef, setFormRef] = useState<HTMLFormElement | null>(null)
 
   // If user is not authenticated, show login prompt
   if (!mutableUser) {
@@ -82,12 +87,23 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
     return () => cancelAnimationFrame(id)
   }, [])
 
+  useEffect(() => {
+    if (updateResult?.success) {
+      setIsEditing(false)
+      // Refresh user data
+      if (mutableUser) {
+        setMutableUser({ ...mutableUser })
+      }
+    }
+  }, [updateResult])
+
   const handleFieldChange = (field: EditableProfileField, value: string) => {
-    setMutableUser((prev) => ({ ...prev, [field]: value }))
+    if (!mutableUser) return
+    setMutableUser({ ...mutableUser, [field]: value })
   }
 
-  const handleSaveProfile = () => {
-    // Persist via Medusa API when backend connectivity is available.
+  const handleCancelEdit = () => {
+    setMutableUser(user)
     setIsEditing(false)
   }
 
@@ -129,12 +145,33 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
                   <CardTitle>Personal Information</CardTitle>
                   <CardDescription>Mirror of the cockpit simulator profile layout.</CardDescription>
                 </div>
-                <Button variant={isEditing ? "default" : "outline"} onClick={() => (isEditing ? handleSaveProfile() : setIsEditing(true))}>
-                  {isEditing ? "Save" : "Edit"}
-                </Button>
+                <div className="flex gap-2">
+                  {isEditing && (
+                    <Button type="button" variant="outline" onClick={handleCancelEdit} disabled={isPending}>
+                      Cancel
+                    </Button>
+                  )}
+                  {!isEditing && (
+                    <Button type="button" variant="outline" onClick={() => setIsEditing(true)}>
+                      Edit
+                    </Button>
+                  )}
+                </div>
               </div>
             </CardHeader>
-            <CardContent className="space-y-8">
+            <CardContent>
+              <form ref={setFormRef} id="profile-form" action={updateAction} className="space-y-8">
+              {updateResult?.error && (
+                <div className="p-3 rounded-base bg-red-50 border border-red-200 text-sm text-red-600">
+                  {updateResult.error}
+                </div>
+              )}
+              {updateResult?.success && (
+                <div className="p-3 rounded-base bg-green-50 border border-green-200 text-sm text-green-600">
+                  Profile updated successfully!
+                </div>
+              )}
+
               <div className="flex flex-col gap-6 md:flex-row md:items-center">
                 <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary-500 text-2xl font-semibold text-white">
                   {initials}
@@ -154,6 +191,7 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
                   <Label htmlFor="firstName">First Name</Label>
                   <Input
                     id="firstName"
+                    name="firstName"
                     value={mutableUser.firstName}
                     onChange={(event) => handleFieldChange("firstName", event.target.value)}
                     disabled={!isEditing}
@@ -163,6 +201,7 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
                   <Label htmlFor="lastName">Last Name</Label>
                   <Input
                     id="lastName"
+                    name="lastName"
                     value={mutableUser.lastName}
                     onChange={(event) => handleFieldChange("lastName", event.target.value)}
                     disabled={!isEditing}
@@ -172,22 +211,37 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
+                    name="email"
                     type="email"
                     value={mutableUser.email}
-                    onChange={(event) => handleFieldChange("email", event.target.value)}
-                    disabled={!isEditing}
+                    disabled={true}
                   />
+                  <p className="text-xs text-foreground-muted">Email cannot be changed</p>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone</Label>
                   <Input
                     id="phone"
+                    name="phone"
                     value={mutableUser.phone}
                     onChange={(event) => handleFieldChange("phone", event.target.value)}
                     disabled={!isEditing}
                   />
                 </div>
               </div>
+              {isEditing && (
+                <div className="flex justify-end">
+                  <Button type="submit" disabled={isPending}>
+                    {isPending ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Saving...
+                      </>
+                    ) : "Save Changes"}
+                  </Button>
+                </div>
+              )}
+            </form>
             </CardContent>
           </Card>
         </TabsContent>
@@ -212,57 +266,44 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
               ) : (
                 orders.map((order) => (
                   <div key={order.id} className="rounded-base border border-border-primary p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                  <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold text-foreground-primary">Order {order.orderNumber}</h3>
-                      <p className="text-sm text-foreground-secondary">{formatDate(order.date)}</p>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-4">
-                      <span className={cn("rounded-full px-3 py-1 text-sm font-medium text-white", STATUS_STYLES[order.status])}>{STATUS_LABELS[order.status]}</span>
-                      <p className="text-lg font-semibold text-foreground-primary">{currencyFormatter(order.total)}</p>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 space-y-4">
-                    {order.items.map((item) => (
-                      <div key={item.id} className="flex items-center gap-4">
-                        <div className="flex h-16 w-16 items-center justify-center rounded-base bg-background-elevated text-xs text-foreground-muted">
-                          Product Image
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-medium text-foreground-primary">{item.title}</p>
-                          <p className="text-sm text-foreground-secondary">
-                            {item.variantTitle} · Qty {item.quantity}
-                          </p>
-                        </div>
-                        <p className="text-sm font-semibold text-foreground-primary">{currencyFormatter(item.price)}</p>
+                    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                      <div>
+                        <h3 className="text-lg font-semibold text-foreground-primary">Order #{order.display_id}</h3>
+                        <p className="text-sm text-foreground-secondary">{formatDate(order.created_at ?? "")}</p>
                       </div>
-                    ))}
-                  </div>
-
-                  {order.trackingNumber && (
-                    <div className="mt-6 rounded-base bg-background-elevated p-4 text-sm text-foreground-secondary">
-                      <p>Tracking number: {order.trackingNumber}</p>
-                      {order.estimatedDelivery && <p>Estimated delivery: {formatDate(order.estimatedDelivery)}</p>}
+                      <div className="flex flex-wrap items-center gap-4">
+                        <span className={cn("rounded-full px-3 py-1 text-sm font-medium text-white bg-blue-500")}>
+                          {order.fulfillment_status || "Pending"}
+                        </span>
+                        <p className="text-lg font-semibold text-foreground-primary">{currencyFormatter(order.total ?? 0)}</p>
+                      </div>
                     </div>
-                  )}
 
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <Button variant="outline" size="sm">
-                      View Details
-                    </Button>
-                    {order.status === "delivered" && (
-                      <Button variant="outline" size="sm">
-                        Review Products
-                      </Button>
-                    )}
-                    {order.status === "shipped" && (
-                      <Button variant="outline" size="sm">
-                        Track Package
-                      </Button>
-                    )}
+                    <div className="mt-6 space-y-4">
+                      {order.items?.map((item) => (
+                        <div key={item.id} className="flex items-center gap-4">
+                          <div className="flex h-16 w-16 items-center justify-center rounded-base bg-background-elevated text-xs text-foreground-muted">
+                            Product Image
+                          </div>
+                          <div className="flex-1">
+                            <p className="font-medium text-foreground-primary">{item.title}</p>
+                            <p className="text-sm text-foreground-secondary">
+                              {item.variant_title || "Default"} · Qty {item.quantity}
+                            </p>
+                          </div>
+                          <p className="text-sm font-semibold text-foreground-primary">{currencyFormatter(item.unit_price ?? 0)}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <Link href={`/us/order/${order.id}/confirmed`}>
+                        <Button variant="outline" size="sm">
+                          View Details
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
-                </div>
                 ))
               )}
             </CardContent>
@@ -355,20 +396,17 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
                   {wishlist.map((item) => (
                     <div key={item.id} className="rounded-base border border-border-primary p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                       <div
-                        className="mb-4 h-48 w-full rounded-base bg-cover bg-center"
-                        style={{ backgroundImage: item.product.image ? `url(${item.product.image})` : undefined }}
+                        className="mb-4 h-48 w-full rounded-base bg-cover bg-center bg-background-elevated"
                       >
-                        {!item.product.image && (
-                          <div className="flex h-full w-full items-center justify-center text-sm text-foreground-muted">Product Image</div>
-                        )}
+                        <div className="flex h-full w-full items-center justify-center text-sm text-foreground-muted">Product Image</div>
                       </div>
                       <h3 className="text-lg font-semibold text-foreground-primary">{item.product.title}</h3>
                       <span className="inline-flex items-center rounded-full bg-primary-500/10 text-primary-500 text-xs font-semibold px-3 py-1 mt-1">
-                        {getSeriesLabel(item.product.handle)} SERIES
+                        {getSeriesLabel(item.product.handle || "")} SERIES
                       </span>
                       <p className="mt-2 line-clamp-2 text-sm text-foreground-secondary">{item.product.description}</p>
                       <div className="mt-4 border-t border-border-secondary pt-3 space-y-3">
-                        <span className="text-lg font-semibold text-foreground-primary">{currencyFormatter(item.product.price)}</span>
+                        <span className="text-lg font-semibold text-foreground-primary">$0.00</span>
                         <Button size="sm" className="w-full justify-center">
                           Add to Cart
                         </Button>

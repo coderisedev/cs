@@ -22,11 +22,11 @@ export const retrieveCart = async (cartId?: string, fields?: string) => {
     const { cart } = await sdk.client.fetch<{ cart: HttpTypes.StoreCart }>(`/store/carts/${id}`, {
       method: "GET",
       query: {
-        fields: fields ?? "*items, *region, *items.product, *items.variant",
+        fields: fields ?? "*items, *region, *items.product, *items.variant, *payment_collection, *payment_collection.payment_sessions, *shipping_methods, *shipping_address, *billing_address",
       },
       headers,
       next,
-      cache: "force-cache",
+      cache: "no-store", // Don't cache to ensure we get fresh cart data during checkout
     })
     return cart
   } catch {
@@ -137,4 +137,84 @@ const revalidateCart = async () => {
   if (cartTag) {
     revalidateTag(cartTag)
   }
+}
+
+export const updateCart = async (data: HttpTypes.StoreUpdateCart) => {
+  const cartId = await getCartId()
+  if (!cartId) {
+    throw new Error("No cart found")
+  }
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  try {
+    const { cart } = await sdk.store.cart.update(cartId, data, {}, headers)
+    await revalidateCart()
+    return cart
+  } catch (error) {
+    throw medusaError(error)
+  }
+}
+
+export const setShippingMethod = async ({
+  cartId,
+  shippingMethodId,
+}: {
+  cartId: string
+  shippingMethodId: string
+}) => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  try {
+    await sdk.store.cart.addShippingMethod(
+      cartId,
+      { option_id: shippingMethodId },
+      {},
+      headers
+    )
+    await revalidateCart()
+  } catch (error) {
+    throw medusaError(error)
+  }
+}
+
+export const initiatePaymentSession = async (
+  cart: HttpTypes.StoreCart,
+  data: HttpTypes.StoreInitializePaymentSession
+) => {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  try {
+    const resp = await sdk.store.payment.initiatePaymentSession(
+      cart,
+      data,
+      {},
+      headers
+    )
+    await revalidateCart()
+    return resp
+  } catch (error) {
+    throw medusaError(error)
+  }
+}
+
+export const listCartOptions = async () => {
+  const cartId = await getCartId()
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  return await sdk.client.fetch<{
+    shipping_options: HttpTypes.StoreCartShippingOption[]
+  }>("/store/shipping-options", {
+    query: { cart_id: cartId },
+    headers,
+    cache: "no-store", // Don't cache shipping options as they depend on cart address
+  })
 }
