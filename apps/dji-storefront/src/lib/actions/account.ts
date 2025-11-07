@@ -43,6 +43,58 @@ export async function updateCustomerProfile(
   }
 }
 
+type PreferenceActionState = { success: boolean; error: string | null }
+
+export async function updateCustomerPreferences(
+  _currentState: PreferenceActionState,
+  formData: FormData
+): Promise<PreferenceActionState> {
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  if (!headers.authorization) {
+    return { success: false, error: "Please sign in to update preferences." }
+  }
+
+  const notifications = formData.get("notifications") === "on"
+  const newsletter = formData.get("newsletter") === "on"
+  const language = (formData.get("language") as string) || "English (US)"
+  const currency = (formData.get("currency") as string) || "USD ($)"
+
+  try {
+    const { customer } = await sdk.store.customer.retrieve({}, headers)
+    const existingMetadata = customer.metadata ?? {}
+
+    await sdk.store.customer.update(
+      {
+        metadata: {
+          ...existingMetadata,
+          preferences: {
+            notifications,
+            newsletter,
+            language,
+            currency,
+          },
+        },
+      },
+      {},
+      headers
+    )
+
+    const customerCacheTag = await getCacheTag("customers")
+    if (customerCacheTag) {
+      revalidateTag(customerCacheTag)
+    }
+
+    return { success: true, error: null }
+  } catch (error) {
+    console.error("Update customer preferences error:", error)
+    const message = error instanceof Error ? error.message : "Failed to update preferences"
+    return { success: false, error: message }
+  }
+}
+
 type AddressActionState = { success: boolean; error: string | null }
 
 const ADDRESS_SUCCESS: AddressActionState = { success: true, error: null }

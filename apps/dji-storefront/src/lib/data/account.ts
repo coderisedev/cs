@@ -65,6 +65,30 @@ const mapAddress = (address: HttpTypes.StoreCustomerAddress): AccountAddress => 
   ),
 })
 
+const extractPreferences = (customer: HttpTypes.StoreCustomer | null): AccountUser["preferences"] => {
+  const metadata = (customer?.metadata?.preferences as Record<string, unknown>) || {}
+
+  const toBoolean = (value: unknown, fallback: boolean) => {
+    if (typeof value === "boolean") return value
+    if (typeof value === "string") return value === "true"
+    return fallback
+  }
+
+  const toStringValue = (value: unknown, fallback: string) => {
+    if (typeof value === "string" && value.trim().length > 0) {
+      return value
+    }
+    return fallback
+  }
+
+  return {
+    notifications: toBoolean(metadata.notifications, true),
+    newsletter: toBoolean(metadata.newsletter, true),
+    language: toStringValue(metadata.language, "English (US)"),
+    currency: toStringValue(metadata.currency, "USD ($)"),
+  }
+}
+
 export const getAddresses = async () => {
   const headers = {
     ...(await getAuthHeaders()),
@@ -126,12 +150,7 @@ export const getAccountPageData = async () => {
         avatar: customer.metadata?.avatar ?? "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
         phone: customer.phone ?? "",
         dateJoined: customer.created_at ?? "",
-        preferences: {
-          notifications: true,
-          newsletter: true,
-          language: "English (US)",
-          currency: "USD ($)",
-        },
+        preferences: extractPreferences(customer),
         addresses,
       }
     : null

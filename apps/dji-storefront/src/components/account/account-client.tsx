@@ -16,6 +16,7 @@ import {
   addCustomerAddress,
   deleteCustomerAddress,
   updateCustomerAddress,
+  updateCustomerPreferences,
   updateCustomerProfile,
 } from "@/lib/actions/account"
 import { Loader2 } from "lucide-react"
@@ -48,6 +49,10 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
   const [updateResult, updateAction, isPending] = useActionState(updateCustomerProfile, null)
   const [isAddingAddress, setIsAddingAddress] = useState(false)
   const [editingAddressId, setEditingAddressId] = useState<string | null>(null)
+  const [preferencesState, preferencesAction, preferencesPending] = useActionState(updateCustomerPreferences, {
+    success: false,
+    error: null,
+  })
   const { items: wishlistItems, removeItem: removeWishlistItem } = useWishlist()
   const fallbackWishlist = useMemo<LocalWishlistItem[]>(
     () =>
@@ -520,21 +525,87 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
             <Card>
               <CardHeader>
                 <CardTitle>Preferences</CardTitle>
-                <CardDescription>Matches cockpit settings structure.</CardDescription>
+                <CardDescription>Manage notifications, locale, and currency synced with your Medusa profile.</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <PreferenceRow
-                  title="Email Notifications"
-                  description="Receive order updates and cockpit news"
-                  value={mutableUser.preferences.notifications ? "Enabled" : "Disabled"}
-                />
-                <PreferenceRow
-                  title="Newsletter Subscription"
-                  description="Stay up to date with launch content"
-                  value={mutableUser.preferences.newsletter ? "Subscribed" : "Not Subscribed"}
-                />
-                <PreferenceRow title="Language" description="Preferred storefront language" value={mutableUser.preferences.language} />
-                <PreferenceRow title="Currency" description="Preferred storefront currency" value={mutableUser.preferences.currency} />
+              <CardContent>
+                <form action={preferencesAction} className="space-y-6">
+                  {preferencesState?.error && (
+                    <div className="rounded-base border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+                      {preferencesState.error}
+                    </div>
+                  )}
+                  {preferencesState?.success && (
+                    <div className="rounded-base border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
+                      Preferences updated successfully
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between border-b border-border-secondary pb-4">
+                    <div>
+                      <p className="font-medium text-foreground-primary">Email Notifications</p>
+                      <p className="text-sm text-foreground-secondary">Receive order updates and cockpit news</p>
+                    </div>
+                    <input
+                      type="checkbox"
+                      name="notifications"
+                      defaultChecked={mutableUser.preferences.notifications}
+                      className="h-5 w-5"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between border-b border-border-secondary pb-4">
+                    <div>
+                      <p className="font-medium text-foreground-primary">Newsletter Subscription</p>
+                      <p className="text-sm text-foreground-secondary">Stay up to date with launch content</p>
+                    </div>
+                    <input
+                      type="checkbox"
+                      name="newsletter"
+                      defaultChecked={mutableUser.preferences.newsletter}
+                      className="h-5 w-5"
+                    />
+                  </div>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="language-select">Language</Label>
+                      <select
+                        id="language-select"
+                        name="language"
+                        defaultValue={mutableUser.preferences.language}
+                        className="w-full rounded-base border border-border-primary bg-background-secondary px-3 py-2"
+                      >
+                        <option value="English (US)">English (US)</option>
+                        <option value="English (UK)">English (UK)</option>
+                        <option value="中文 (简体)">中文 (简体)</option>
+                        <option value="日本語">日本語</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="currency-select">Currency</Label>
+                      <select
+                        id="currency-select"
+                        name="currency"
+                        defaultValue={mutableUser.preferences.currency}
+                        className="w-full rounded-base border border-border-primary bg-background-secondary px-3 py-2"
+                      >
+                        <option value="USD ($)">USD ($)</option>
+                        <option value="EUR (€)">EUR (€)</option>
+                        <option value="GBP (£)">GBP (£)</option>
+                        <option value="CNY (¥)">CNY (¥)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="flex justify-end">
+                    <Button type="submit" disabled={preferencesPending}>
+                      {preferencesPending ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Saving…
+                        </>
+                      ) : (
+                        "Save Preferences"
+                      )}
+                    </Button>
+                  </div>
+                </form>
               </CardContent>
             </Card>
 
@@ -781,26 +852,6 @@ function DeleteAddressButton({ addressId, onSuccess }: { addressId: string; onSu
         </Button>
       </form>
       {state?.error && <p className="text-xs text-red-600">{state.error}</p>}
-    </div>
-  )
-}
-
-type PreferenceRowProps = {
-  title: string
-  description: string
-  value: string
-}
-
-function PreferenceRow({ title, description, value }: PreferenceRowProps) {
-  return (
-    <div className="flex flex-col gap-2 border-b border-border-secondary pb-5 last:border-b-0 last:pb-0 lg:flex-row lg:items-center">
-      <div className="flex-1">
-        <h4 className="text-base font-medium text-foreground-primary">{title}</h4>
-        <p className="text-sm text-foreground-secondary">{description}</p>
-      </div>
-      <Button variant="outline" size="sm" className="self-start lg:self-auto">
-        {value}
-      </Button>
     </div>
   )
 }
