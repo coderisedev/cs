@@ -3,7 +3,7 @@
 import { sdk } from "@/lib/medusa"
 import medusaError from "@/lib/util/medusa-error"
 import { getAuthHeaders, getCacheOptions, getCartId, setCartId, removeCartId, getCacheTag } from "@/lib/server/cookies"
-import { getRegion } from "@/lib/data/regions"
+import { US_REGION_ID } from "@/lib/constants"
 import { HttpTypes } from "@medusajs/types"
 import { revalidateTag } from "next/cache"
 
@@ -35,28 +35,25 @@ export const retrieveCart = async (cartId?: string, fields?: string) => {
 }
 
 export const getOrSetCart = async (countryCode: string) => {
-  const region = await getRegion(countryCode)
-  if (!region) {
-    throw new Error(`Region not found for country code: ${countryCode}`)
-  }
-
+  // Plan A: Always use US region regardless of countryCode
   let cart = await retrieveCart(undefined, "id,region_id")
   const headers = {
     ...(await getAuthHeaders()),
   }
 
   if (!cart) {
-    const { cart: newCart } = await sdk.store.cart.create({ region_id: region.id }, {}, headers)
+    const { cart: newCart } = await sdk.store.cart.create({ region_id: US_REGION_ID }, {}, headers)
     cart = newCart
     await setCartId(cart.id)
     await revalidateCart()
   }
 
-  if (cart.region_id !== region.id) {
+  // Ensure cart is using US region
+  if (cart.region_id !== US_REGION_ID) {
     cart = (
       await sdk.store.cart.update(
         cart.id,
-        { region_id: region.id },
+        { region_id: US_REGION_ID },
         {},
         headers
       )
@@ -126,10 +123,10 @@ export const completeCart = async () => {
   if (!cartId) throw new Error("Missing cart id")
 
   try {
-    const { cart } = await sdk.store.cart.complete(cartId)
+    const result = await sdk.store.cart.complete(cartId)
     await removeCartId()
     await revalidateCart()
-    return cart
+    return result
   } catch (error) {
     throw medusaError(error)
   }

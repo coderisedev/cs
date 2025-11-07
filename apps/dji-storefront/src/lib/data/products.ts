@@ -47,7 +47,7 @@ const categories: ProductCategory[] = [
   { id: "accessories", title: "Accessories & Mounts" },
 ]
 
-export const getProductCategories = () => categories
+export const getProductCategories = async () => categories
 
 export const getProductSummaries = async (options?: ProductListOptions) => {
   const { response } = await listProducts({ limit: 4, ...options })

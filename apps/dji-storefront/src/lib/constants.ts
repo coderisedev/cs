@@ -1,1 +1,4 @@
-export const DEFAULT_COUNTRY_CODE = process.env.NEXT_PUBLIC_DEFAULT_REGION ?? "us"
+// Plan A: Global USD site constants
+export const DEFAULT_COUNTRY_CODE = "us"
+export const US_REGION_ID = process.env.NEXT_PUBLIC_REGION_ID || "reg_01K917GBJZ2ZJMV6A4PARVCE1K"
+export const DEFAULT_CURRENCY = "USD"

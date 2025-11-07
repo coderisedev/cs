@@ -1,29 +1,28 @@
 import { HttpTypes } from "@medusajs/types"
+import { US_REGION_ID } from "@/lib/constants"
 
+// Plan A: Only US region for global USD site
 const mockRegions: HttpTypes.StoreRegion[] = [
   {
-    id: "reg_mock_us",
+    id: US_REGION_ID,
     name: "United States",
     currency_code: "usd",
-    tax_rate: 0,
-    countries: [{ iso_2: "us", name: "United States" }],
-  },
-  {
-    id: "reg_mock_eu",
-    name: "European Union",
-    currency_code: "eur",
-    tax_rate: 0,
     countries: [
-      { iso_2: "de", name: "Germany" },
-      { iso_2: "fr", name: "France" },
-      { iso_2: "es", name: "Spain" },
+      { id: "us", iso_2: "us", name: "United States" },
+      { id: "cn", iso_2: "cn", name: "China" },
+      { id: "tw", iso_2: "tw", name: "Taiwan" },
     ],
   },
 ]
 
 export const getMockRegions = () => mockRegions
 
-export const getMockRegionByCountry = (countryCode: string) =>
-  mockRegions.find((region) => region.countries?.some((c) => c.iso_2 === countryCode))
+export const getMockRegionByCountry = (countryCode: string) => {
+  // Always return US region regardless of country code
+  return mockRegions[0]
+}
 
-export const getMockRegionById = (id: string) => mockRegions.find((region) => region.id === id)
+export const getMockRegionById = (id: string) => {
+  // Always return US region
+  return mockRegions[0]
+}

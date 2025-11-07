@@ -41,11 +41,14 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
   const originalPrice = product.compareAtPrice ? product.compareAtPrice * quantity : undefined
   const discount = originalPrice ? Math.round(((originalPrice - totalPrice) / originalPrice) * 100) : 0
 
+import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
+
   const handleAddToCart = () => {
     if (!variant?.id) return
     startTransition(async () => {
       try {
-        await addToCartAction({ variantId: variant.id, quantity, countryCode })
+        // Plan A: Always use US countryCode
+        await addToCartAction({ variantId: variant.id, quantity, countryCode: DEFAULT_COUNTRY_CODE })
       } catch (error) {
         console.error("Add to cart failed", error)
       }

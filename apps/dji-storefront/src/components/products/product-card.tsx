@@ -12,6 +12,8 @@ import { addToCartAction } from "@/app/actions/cart"
 
 type ViewMode = "grid" | "list"
 
+import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
+
 export function ProductCard({ product, viewMode = "grid", countryCode }: { product: StorefrontProduct; viewMode?: ViewMode; countryCode: string }) {
   const [isPending, startTransition] = useTransition()
   const image = product.images[0]
@@ -27,7 +29,8 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
     if (!variantId) return
     startTransition(async () => {
       try {
-        await addToCartAction({ variantId, quantity: 1, countryCode })
+        // Plan A: Always use US countryCode
+        await addToCartAction({ variantId, quantity: 1, countryCode: DEFAULT_COUNTRY_CODE })
       } catch (error) {
         console.error("Add to cart failed", error)
       }
