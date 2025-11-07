@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useState, useActionState } from "react"
+import Image from "next/image"
+import { useEffect, useMemo, useState, useActionState } from "react"
 import { useRouter } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,7 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { currencyFormatter } from "@/lib/number"
-import type { AccountOrder, AccountUser, WishlistItem } from "@/lib/data/account"
+import type { AccountOrder, AccountUser, WishlistItem as AccountWishlistItem } from "@/lib/data/account"
 import {
   addCustomerAddress,
   deleteCustomerAddress,
@@ -18,13 +19,15 @@ import {
   updateCustomerProfile,
 } from "@/lib/actions/account"
 import { Loader2 } from "lucide-react"
+import { useWishlist, WishlistItem as LocalWishlistItem } from "@/lib/context/wishlist-context"
+import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 type EditableProfileField = "firstName" | "lastName" | "phone"
 
 type AccountClientProps = {
   user: AccountUser | null
   orders: AccountOrder[]
-  wishlist: WishlistItem[]
+  wishlist: AccountWishlistItem[]
 }
 
 const formatDate = (date: string | Date) =>
@@ -45,6 +48,21 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
   const [updateResult, updateAction, isPending] = useActionState(updateCustomerProfile, null)
   const [isAddingAddress, setIsAddingAddress] = useState(false)
   const [editingAddressId, setEditingAddressId] = useState<string | null>(null)
+  const { items: wishlistItems, removeItem: removeWishlistItem } = useWishlist()
+  const fallbackWishlist = useMemo<LocalWishlistItem[]>(
+    () =>
+      wishlist.map((item) => ({
+        id: item.product.id,
+        title: item.product.title,
+        handle: item.product.handle ?? item.product.id,
+        thumbnail: item.product.thumbnail ?? item.product.images?.[0] ?? null,
+        description: item.product.description ?? "",
+        price: 0,
+        addedAt: item.addedDate,
+      })),
+    [wishlist]
+  )
+  const displayedWishlist = hydrated ? wishlistItems : fallbackWishlist
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setHydrated(true))
@@ -457,29 +475,38 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
                     </div>
                   ))}
                 </div>
-              ) : wishlist.length === 0 ? (
+              ) : displayedWishlist.length === 0 ? (
                 <p className="text-sm text-foreground-secondary">No items saved yet.</p>
               ) : (
                 <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                  {wishlist.map((item) => (
+                  {displayedWishlist.map((item) => (
                     <div key={item.id} className="rounded-base border border-border-primary p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                      <div
-                        className="mb-4 h-48 w-full rounded-base bg-cover bg-center bg-background-elevated"
-                      >
-                        <div className="flex h-full w-full items-center justify-center text-sm text-foreground-muted">Product Image</div>
+                      <div className="mb-4 h-48 w-full rounded-base bg-background-elevated overflow-hidden relative">
+                        {item.thumbnail ? (
+                          <Image src={item.thumbnail} alt={item.title} fill className="object-cover" />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-sm text-foreground-muted">Product Image</div>
+                        )}
                       </div>
-                      <h3 className="text-lg font-semibold text-foreground-primary">{item.product.title}</h3>
+                      <h3 className="text-lg font-semibold text-foreground-primary">{item.title}</h3>
                       <span className="inline-flex items-center rounded-full bg-primary-500/10 text-primary-500 text-xs font-semibold px-3 py-1 mt-1">
-                        {getSeriesLabel(item.product.handle || "")} SERIES
+                        {getSeriesLabel(item.handle || "")} SERIES
                       </span>
-                      <p className="mt-2 line-clamp-2 text-sm text-foreground-secondary">{item.product.description}</p>
+                      <p className="mt-2 line-clamp-2 text-sm text-foreground-secondary">{item.description || "Saved for later"}</p>
                       <div className="mt-4 border-t border-border-secondary pt-3 space-y-3">
-                        <span className="text-lg font-semibold text-foreground-primary">$0.00</span>
-                        <Button size="sm" className="w-full justify-center">
-                          Add to Cart
-                        </Button>
+                        <span className="text-lg font-semibold text-foreground-primary">{currencyFormatter(item.price)}</span>
+                        <div className="flex gap-2">
+                          <Button size="sm" variant="outline" className="flex-1 justify-center" asChild>
+                            <Link href={`/${DEFAULT_COUNTRY_CODE}/products/${item.handle}`}>
+                              View Product
+                            </Link>
+                          </Button>
+                          <Button size="sm" variant="ghost" onClick={() => removeWishlistItem(item.id)}>
+                            Remove
+                          </Button>
+                        </div>
                       </div>
-                      <p className="mt-2 text-xs text-foreground-muted">Added on {formatDate(item.addedDate)}</p>
+                      <p className="mt-2 text-xs text-foreground-muted">Added on {formatDate(item.addedAt)}</p>
                     </div>
                   ))}
                 </div>

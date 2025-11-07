@@ -22,6 +22,7 @@ import type { Review } from "@/lib/data/reviews"
 import { currencyFormatter } from "@/lib/number"
 import { addToCartAction } from "@/app/actions/cart"
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
+import { buildWishlistInput, useWishlist } from "@/lib/context/wishlist-context"
 
 interface ProductDetailClientProps {
   product: StorefrontProduct
@@ -34,9 +35,12 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
   const [selectedImage, setSelectedImage] = useState(0)
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]?.id ?? "")
   const [quantity, setQuantity] = useState(1)
+  const { toggleItem: toggleWishlistItem, isInWishlist } = useWishlist()
+  const resolvedCountryCode = countryCode || DEFAULT_COUNTRY_CODE
 
   const variant = useMemo(() => product.variants.find((v) => v.id === selectedVariant) ?? product.variants[0], [product, selectedVariant])
   const heroImage = product.images[selectedImage] ?? product.images[0]
+  const isWishlisted = isInWishlist(product.id)
 
   const totalPrice = (variant?.price ?? product.price) * quantity
   const originalPrice = product.compareAtPrice ? product.compareAtPrice * quantity : undefined
@@ -46,12 +50,17 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
     if (!variant?.id) return
     startTransition(async () => {
       try {
-        // Plan A: Always use US countryCode
-        await addToCartAction({ variantId: variant.id, quantity, countryCode: DEFAULT_COUNTRY_CODE })
+        await addToCartAction({ variantId: variant.id, quantity, countryCode: resolvedCountryCode })
       } catch (error) {
         console.error("Add to cart failed", error)
       }
     })
+  }
+
+  const handleWishlistToggle = () => {
+    toggleWishlistItem(
+      buildWishlistInput(product, variant?.price ?? product.price)
+    )
   }
 
   return (
@@ -170,8 +179,9 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
               <ShoppingCart className="mr-2 h-5 w-5" />
               {variant?.inStock === false ? "Out of Stock" : isPending ? "Adding…" : "Add to Cart"}
             </Button>
-            <Button variant="outline" className="w-full">
-              <Heart className="mr-2 h-4 w-4" /> Add to Wishlist
+            <Button variant={isWishlisted ? "default" : "outline"} className="w-full" onClick={handleWishlistToggle}>
+              <Heart className={`mr-2 h-4 w-4 ${isWishlisted ? "fill-white" : ""}`} />
+              {isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
             </Button>
           </div>
 
