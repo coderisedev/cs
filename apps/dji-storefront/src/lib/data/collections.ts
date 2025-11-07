@@ -61,9 +61,9 @@ export const getCollectionByHandle = async (handle: string) => {
         next,
         cache: "force-cache",
       })
-      .then(({ collections }) => collections[0])
+      .then(({ collections }) => collections[0] ?? null)
   } catch {
-    return getMockCollectionByHandle(handle)
+    return getMockCollectionByHandle(handle) ?? null
   }
 }
 
@@ -83,4 +83,12 @@ export const getCollections = async ({
   }
 
   return collections.map((collection) => ({ ...collection, products: undefined }))
+}
+
+export const getCollectionDetail = async (handle: string) => {
+  try {
+    return await getCollectionByHandle(handle)
+  } catch {
+    return null
+  }
 }

@@ -3,6 +3,7 @@ import Image from "next/image"
 import { ArrowRight, Star, Shield, Zap, Headphones } from "lucide-react"
 import { getProducts } from "@/lib/data/products"
 import { getCollections } from "@/lib/data/collections"
+import { resolveCollectionHeroImage, resolveCollectionHighlight } from "@/lib/util/collections"
 import { ProductCard } from "@/components/products/product-card"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -166,10 +167,10 @@ export default async function HomePage() {
             {collections.map((collection) => (
               <Card key={collection.handle} tone="elevated" className="overflow-hidden">
                 <div className="relative h-56 w-full">
-                  <Image src={collection.heroImage} alt={collection.title} fill className="object-cover" />
+                  <Image src={resolveCollectionHeroImage(collection)} alt={collection.title} fill className="object-cover" />
                   <div className="absolute inset-0" style={{ background: "var(--gradient-hero)" }} />
                   <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <p className="text-sm uppercase tracking-widest text-white/70">{collection.highlight}</p>
+                    <p className="text-sm uppercase tracking-widest text-white/70">{resolveCollectionHighlight(collection)}</p>
                     <h3 className="text-2xl font-semibold">{collection.title}</h3>
                     <p className="text-sm text-white/80">{collection.description}</p>
                   </div>

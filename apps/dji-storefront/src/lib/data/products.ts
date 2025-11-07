@@ -89,7 +89,7 @@ export const listProducts = async ({
   const region = await resolveRegion({ countryCode, regionId })
 
   if (!region) {
-    const fallback = getMockProducts({ limit, offset, collection_id: queryParams.collection_id as string | undefined })
+    const fallback = await getMockProducts({ limit, offset, collection_id: queryParams.collection_id as string | undefined })
     const nextPage = fallback.count > offset + limit ? pageParam + 1 : null
     return { response: { products: mapMockProducts(fallback.products), count: fallback.count }, nextPage }
   }
@@ -122,7 +122,7 @@ export const listProducts = async ({
     // If no products returned, fall back to mock data
     if (!products || products.length === 0) {
       console.log("No products returned from API, falling back to mock data")
-      const fallback = getMockProducts({ limit, offset, collection_id: queryParams.collection_id as string | undefined })
+      const fallback = await getMockProducts({ limit, offset, collection_id: queryParams.collection_id as string | undefined })
       const nextPage = fallback.count > offset + limit ? pageParam + 1 : null
       return { response: { products: mapMockProducts(fallback.products), count: fallback.count }, nextPage }
     }
@@ -132,7 +132,7 @@ export const listProducts = async ({
     return { response: { products: products.map(mapStoreProduct), count }, nextPage }
   } catch (error) {
     console.log("Error fetching products from API, falling back to mock data:", error)
-    const fallback = getMockProducts({ limit, offset, collection_id: queryParams.collection_id as string | undefined })
+    const fallback = await getMockProducts({ limit, offset, collection_id: queryParams.collection_id as string | undefined })
     const nextPage = fallback.count > offset + limit ? pageParam + 1 : null
     return { response: { products: mapMockProducts(fallback.products), count: fallback.count }, nextPage }
   }
@@ -170,8 +170,9 @@ export const retrieveProduct = async (handle: string, countryCode?: string, regi
 
     return mapStoreProduct(products[0])
   } catch {
-    const fallback = getMockProducts({ limit: 50, offset: 0 }).products.find((product: MockProduct) => product.handle === handle)
-    return fallback ? mapMockProduct(fallback) : null
+    const fallback = await getMockProducts({ limit: 50, offset: 0 })
+    const match = fallback.products.find((product: MockProduct) => product.handle === handle)
+    return match ? mapMockProduct(match) : null
   }
 }
 
