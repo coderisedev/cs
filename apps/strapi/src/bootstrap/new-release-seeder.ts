@@ -122,7 +122,10 @@ export const seedNewReleases = async (strapi: Core.Strapi) => {
 
 const migrateLegacyHeroMedia = async (strapi: Core.Strapi) => {
   const entries = (await strapi.entityService.findMany('api::new-release.new-release', {
-    populate: ['hero_media', 'legacy_hero_media'],
+    populate: {
+      hero_media: true,
+      legacy_hero_media: true,
+    },
     fields: ['id'],
     limit: 1000,
   })) as Array<{ id: number; hero_media?: unknown; legacy_hero_media?: unknown }>
