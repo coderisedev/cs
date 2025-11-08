@@ -28,9 +28,9 @@
       "type": "richtext"
     },
     "hero_media": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": ["images", "videos"]
+      "type": "component",
+      "repeatable": false,
+      "component": "marketing.embed-media"
     },
     "gallery": {
       "type": "media",

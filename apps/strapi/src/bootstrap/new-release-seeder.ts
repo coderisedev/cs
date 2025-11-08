@@ -14,6 +14,10 @@ const NEW_RELEASE_SEEDS = [
     description:
       '<p>Our fan-favorite tee returns with updated microvent fabric, a reinforced neckline, and two new flight-ready colorways.</p>',
     launch_date: daysAgo(0),
+    hero_media: {
+      type: 'embed',
+      embed_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+    },
     cta_label: 'Shop the Tee',
     cta_url: '/products/t-shirt',
     secondary_cta_label: 'Learn More',
@@ -52,6 +56,10 @@ const NEW_RELEASE_SEEDS = [
     description:
       '<p>Flight-ready joggers with articulated knees, stash pockets, and a matching travel pouch. Designed for simulator marathons on the road.</p>',
     launch_date: daysAgo(10),
+    hero_media: {
+      type: 'embed',
+      embed_url: 'https://www.youtube.com/embed/kXYiU_JCYtU'
+    },
     cta_label: 'Reserve Your Kit',
     cta_url: '/products/sweatpants',
     secondary_cta_label: 'View Details',

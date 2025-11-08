@@ -19,6 +19,14 @@ type StrapiMedia = {
   height?: number | null
 }
 
+type StrapiEmbedMediaComponent = {
+  type?: 'image' | 'video' | 'embed'
+  asset?: StrapiMedia | { data?: StrapiMedia | StrapiMedia[] | null } | null
+  embed_url?: string | null
+  thumbnail?: StrapiMedia | { data?: StrapiMedia | null } | null
+  alt_text?: string | null
+}
+
 type StrapiComponent<T> = (T & { id?: number }) | null
 
 type StrapiNewReleaseAttributes = {
@@ -36,7 +44,7 @@ type StrapiNewReleaseAttributes = {
   is_preorder?: boolean | null
   inventory_badge?: string | null
   regions?: string[] | null
-  hero_media?: StrapiMedia | { data?: StrapiMedia | StrapiMedia[] | null } | null
+  hero_media?: StrapiEmbedMediaComponent | null
   gallery?:
     | StrapiMedia[]
     | {
@@ -52,23 +60,31 @@ type StrapiNewReleaseResponse = {
   data: MaybeWithAttributes<StrapiNewReleaseAttributes>[]
 }
 
+export type ReleaseAssetMedia = {
+  kind: 'asset'
+  url: string
+  alt?: string | null
+  width?: number | null
+  height?: number | null
+}
+
+export type ReleaseHeroMedia =
+  | ReleaseAssetMedia
+  | {
+      kind: 'embed'
+      url: string
+    }
+
 export type NewReleaseFeature = {
   heading: string
   body?: string | null
-  media?: ReleaseMedia | null
+  media?: ReleaseAssetMedia | null
 }
 
 export type NewReleaseStat = {
   label: string
   value: string
   description?: string | null
-}
-
-export type ReleaseMedia = {
-  url: string
-  alt?: string | null
-  width?: number | null
-  height?: number | null
 }
 
 export type NewRelease = {
@@ -87,8 +103,8 @@ export type NewRelease = {
   isPreorder: boolean
   inventoryBadge?: string | null
   regions: string[]
-  heroMedia?: ReleaseMedia | null
-  gallery: ReleaseMedia[]
+  heroMedia?: ReleaseHeroMedia | null
+  gallery: ReleaseAssetMedia[]
   features: NewReleaseFeature[]
   stats: NewReleaseStat[]
 }
@@ -138,7 +154,7 @@ const normalizeEntity = (
 const mapNewRelease = (
   entity: StrapiNewReleaseAttributes & { id?: number }
 ): NewRelease => {
-  const heroMedia = extractSingleMedia(entity.hero_media)
+  const heroMedia = extractHeroMedia(entity.hero_media)
   const gallery = extractMediaArray(entity.gallery)
 
   const features = (entity.features ?? [])
@@ -146,7 +162,7 @@ const mapNewRelease = (
     .map((feature) => ({
       heading: feature!.heading ?? '',
       body: feature!.body ?? null,
-      media: extractSingleMedia(feature!.media ?? null),
+      media: extractAssetMedia(feature!.media ?? null),
     }))
 
   const stats = (entity.stats ?? [])
@@ -182,18 +198,38 @@ const mapNewRelease = (
   }
 }
 
-const extractSingleMedia = (media: any): ReleaseMedia | null => {
+const extractHeroMedia = (component: StrapiEmbedMediaComponent | null | undefined): ReleaseHeroMedia | null => {
+  if (!component) {
+    return null
+  }
+
+  if (component.type === 'embed' && component.embed_url) {
+    return { kind: 'embed', url: component.embed_url }
+  }
+
+  const asset = extractAssetMedia(component.asset ?? component.thumbnail ?? null)
+  if (!asset) {
+    return null
+  }
+
+  return {
+    ...asset,
+    alt: component.alt_text ?? asset.alt,
+  }
+}
+
+const extractAssetMedia = (media: any): ReleaseAssetMedia | null => {
   if (!media) {
     return null
   }
 
   if (Array.isArray(media)) {
-    return extractSingleMedia(media[0])
+    return extractAssetMedia(media[0])
   }
 
   if (media?.data) {
     if (Array.isArray(media.data)) {
-      return extractSingleMedia(media.data[0])
+      return extractAssetMedia(media.data[0])
     }
     return formatMedia(media.data)
   }
@@ -201,20 +237,20 @@ const extractSingleMedia = (media: any): ReleaseMedia | null => {
   return formatMedia(media)
 }
 
-const extractMediaArray = (media: any): ReleaseMedia[] => {
+const extractMediaArray = (media: any): ReleaseAssetMedia[] => {
   if (!media) {
     return []
   }
 
   if (Array.isArray(media)) {
-    return media.map(formatMedia).filter((item): item is ReleaseMedia => Boolean(item?.url))
+    return media.map(formatMedia).filter((item): item is ReleaseAssetMedia => Boolean(item?.url))
   }
 
   if (media?.data) {
     if (Array.isArray(media.data)) {
       return media.data
         .map(formatMedia)
-        .filter((item): item is ReleaseMedia => Boolean(item?.url))
+        .filter((item): item is ReleaseAssetMedia => Boolean(item?.url))
     }
     const single = formatMedia(media.data)
     return single ? [single] : []
@@ -224,7 +260,7 @@ const extractMediaArray = (media: any): ReleaseMedia[] => {
   return single ? [single] : []
 }
 
-const formatMedia = (media?: StrapiMedia | null): ReleaseMedia | null => {
+const formatMedia = (media?: StrapiMedia | null): ReleaseAssetMedia | null => {
   if (!media) {
     return null
   }
@@ -235,6 +271,7 @@ const formatMedia = (media?: StrapiMedia | null): ReleaseMedia | null => {
   }
 
   return {
+    kind: 'asset',
     url,
     alt: media.alternativeText ?? media.caption ?? null,
     width: media.width ?? null,

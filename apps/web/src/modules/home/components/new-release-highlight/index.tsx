@@ -89,14 +89,27 @@ export default function NewReleaseHighlight({ release }: NewReleaseHighlightProp
         <div className="space-y-4">
           <div className="relative overflow-hidden rounded-3xl bg-slate-800 shadow-2xl">
             {release.heroMedia ? (
-              <Image
-                src={release.heroMedia.url}
-                alt={release.heroMedia.alt || release.title}
-                width={release.heroMedia.width || 800}
-                height={release.heroMedia.height || 600}
-                className="h-full w-full object-cover"
-                sizes="(min-width: 1024px) 45vw, 90vw"
-              />
+              release.heroMedia.kind === "embed" ? (
+                <div className="aspect-video">
+                  <iframe
+                    src={release.heroMedia.url}
+                    title={release.title}
+                    className="h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <Image
+                  src={release.heroMedia.url}
+                  alt={release.heroMedia.alt || release.title}
+                  width={release.heroMedia.width || 800}
+                  height={release.heroMedia.height || 600}
+                  className="h-full w-full object-cover"
+                  sizes="(min-width: 1024px) 45vw, 90vw"
+                />
+              )
             ) : (
               <div className="aspect-[4/3]" />
             )}
