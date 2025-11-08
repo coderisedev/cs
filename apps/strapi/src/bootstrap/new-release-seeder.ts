@@ -94,6 +94,8 @@ const NEW_RELEASE_SEEDS = [
 ]
 
 export const seedNewReleases = async (strapi: Core.Strapi) => {
+  await migrateLegacyHeroMedia(strapi)
+
   for (const seed of NEW_RELEASE_SEEDS) {
     const existing = await strapi.entityService.findMany('api::new-release.new-release', {
       filters: {
@@ -115,5 +117,47 @@ export const seedNewReleases = async (strapi: Core.Strapi) => {
     })
 
     strapi.log.info(`Seeded new release entry "${seed.slug}"`)
+  }
+}
+
+const migrateLegacyHeroMedia = async (strapi: Core.Strapi) => {
+  const entries = await strapi.entityService.findMany('api::new-release.new-release', {
+    filters: {
+      hero_media: {
+        $null: true,
+      },
+    },
+    fields: ['id'],
+  })
+
+  if (!Array.isArray(entries) || !entries.length) {
+    return
+  }
+
+  for (const entry of entries) {
+    const legacyLink = await strapi.db
+      .connection('upload_file_morph')
+      .where({
+        related_id: entry.id,
+        related_type: 'api::new-release.new-release',
+        field: 'hero_media',
+      })
+      .orderBy('order', 'asc')
+      .first()
+
+    if (!legacyLink?.upload_file_id) {
+      continue
+    }
+
+    await strapi.entityService.update('api::new-release.new-release', entry.id, {
+      data: {
+        hero_media: {
+          type: 'image',
+          asset: legacyLink.upload_file_id,
+        },
+      },
+    })
+
+    strapi.log.info(`Migrated hero media for new release entry ${entry.id}`)
   }
 }
