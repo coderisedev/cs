@@ -1,10 +1,13 @@
 import 'server-only'
 
+import qs from 'qs'
+
 type QueryPrimitive = string | number | boolean
 type QueryValue = QueryPrimitive | QueryPrimitive[] | null | undefined
+type QueryObject = Record<string, QueryValue | QueryObject>
 
 export type StrapiFetchOptions = {
-  query?: Record<string, QueryValue>
+  query?: QueryObject
   init?: globalThis.RequestInit
   revalidate?: number
   tags?: string[]
@@ -62,11 +65,18 @@ export const getStrapiClient = (): StrapiClient => {
   }
 }
 
-const buildUrl = (baseUrl: string, path: string, query?: Record<string, QueryValue>) => {
+const buildUrl = (baseUrl: string, path: string, query?: QueryObject) => {
   const url = path.startsWith('http') ? new URL(path) : new URL(path, baseUrl)
 
   if (query) {
-    Object.entries(query).forEach(([key, value]) => appendQueryParam(url.searchParams, key, value))
+    const queryString = qs.stringify(query, {
+      encodeValuesOnly: true,
+      arrayFormat: 'repeat',
+    })
+
+    if (queryString) {
+      url.search = url.search ? `${url.search}&${queryString}` : queryString
+    }
   }
 
   return url.toString()
@@ -79,19 +89,6 @@ const buildHeaders = (apiToken?: string, existing?: globalThis.HeadersInit) => {
     headers.set('Authorization', `Bearer ${apiToken}`)
   }
   return headers
-}
-
-const appendQueryParam = (params: URLSearchParams, key: string, value: QueryValue) => {
-  if (value === null || value === undefined) {
-    return
-  }
-
-  if (Array.isArray(value)) {
-    value.forEach((entry) => appendQueryParam(params, key, entry))
-    return
-  }
-
-  params.append(key, typeof value === 'boolean' ? String(value) : `${value}`)
 }
 
 const safeReadBody = async (response: Response) => {

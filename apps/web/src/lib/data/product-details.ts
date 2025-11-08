@@ -4,18 +4,7 @@ import { getStrapiClient } from '@lib/strapi/client'
 
 const strapi = getStrapiClient()
 const PRODUCT_DETAIL_CACHE_TAG = 'product-detail'
-const PRODUCT_DETAIL_POPULATE = [
-  'hero_media',
-  'gallery',
-  'specs',
-  'features',
-  'features.media',
-  'faq',
-  'downloads',
-  'downloads.file',
-  'seo',
-  'seo.og_image',
-].join(',')
+const PRODUCT_DETAIL_POPULATE = '*'
 
 type MaybeWithAttributes<T> =
   | (T & { id?: number; documentId?: string })
