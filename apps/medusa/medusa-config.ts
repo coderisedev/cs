@@ -77,26 +77,29 @@ export default defineConfig({
   },
   modules: {
     [Modules.FILE]: {
-      providers: [
-        {
-          id: "r2-file-storage",
-          resolve: "@medusajs/file-s3",
-          options: {
-            access_key_id: AWS_ACCESS_KEY_ID,
-            secret_access_key: AWS_SECRET_ACCESS_KEY,
-            bucket: AWS_BUCKET_NAME,
-            region: AWS_REGION,
-            endpoint: AWS_ENDPOINT,
-            file_url: AWS_PUBLIC_URL,
-            prefix: FILE_PREFIX,
-            cache_control: CACHE_CONTROL,
-            download_file_duration: DOWNLOAD_TTL,
-            additional_client_config: {
-              forcePathStyle: FORCE_PATH_STYLE,
+      resolve: "@medusajs/file",
+      options: {
+        providers: [
+          {
+            id: "r2-file-storage",
+            resolve: "@medusajs/file-s3",
+            options: {
+              access_key_id: AWS_ACCESS_KEY_ID,
+              secret_access_key: AWS_SECRET_ACCESS_KEY,
+              bucket: AWS_BUCKET_NAME,
+              region: AWS_REGION,
+              endpoint: AWS_ENDPOINT,
+              file_url: AWS_PUBLIC_URL,
+              prefix: FILE_PREFIX,
+              cache_control: CACHE_CONTROL,
+              download_file_duration: DOWNLOAD_TTL,
+              additional_client_config: {
+                forcePathStyle: FORCE_PATH_STYLE,
+              },
             },
           },
-        },
-      ],
+        ],
+      },
     },
   },
 })

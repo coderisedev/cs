@@ -38,32 +38,35 @@
        projectConfig: { /* 数据库、CORS 等 */ },
        modules: {
          [Modules.FILE]: {
-           providers: [
-             {
-               id: "r2-file-storage",
-               resolve: "@medusajs/file-s3",
-               options: {
-                 access_key_id: process.env.AWS_ACCESS_KEY_ID,
-                 secret_access_key:
-                   process.env.AWS_SECRET_ACCESS_KEY ??
-                   process.env.AWS_ACCESS_SECRET,
-                 bucket: process.env.AWS_BUCKET_NAME,
-                 region: process.env.AWS_REGION ?? "auto",
-                 endpoint: process.env.AWS_ENDPOINT,
-                 file_url: process.env.AWS_PUBLIC_URL,
-                 prefix: process.env.MEDUSA_FILE_PREFIX ?? "medusa-uploads/",
-                 cache_control: process.env.MEDUSA_FILE_CACHE_CONTROL,
-                 download_file_duration:
-                   Number(process.env.MEDUSA_FILE_DOWNLOAD_TTL ?? 0) || undefined,
-                 additional_client_config: {
-                   forcePathStyle:
-                     (process.env.MEDUSA_FILE_FORCE_PATH_STYLE ??
-                       process.env.AWS_FORCE_PATH_STYLE ??
-                       "true") === "true",
+           resolve: "@medusajs/file",
+           options: {
+             providers: [
+               {
+                 id: "r2-file-storage",
+                 resolve: "@medusajs/file-s3",
+                 options: {
+                   access_key_id: process.env.AWS_ACCESS_KEY_ID,
+                   secret_access_key:
+                     process.env.AWS_SECRET_ACCESS_KEY ??
+                     process.env.AWS_ACCESS_SECRET,
+                   bucket: process.env.AWS_BUCKET_NAME,
+                   region: process.env.AWS_REGION ?? "auto",
+                   endpoint: process.env.AWS_ENDPOINT,
+                   file_url: process.env.AWS_PUBLIC_URL,
+                   prefix: process.env.MEDUSA_FILE_PREFIX ?? "medusa-uploads/",
+                   cache_control: process.env.MEDUSA_FILE_CACHE_CONTROL,
+                   download_file_duration:
+                     Number(process.env.MEDUSA_FILE_DOWNLOAD_TTL ?? 0) || undefined,
+                   additional_client_config: {
+                     forcePathStyle:
+                       (process.env.MEDUSA_FILE_FORCE_PATH_STYLE ??
+                         process.env.AWS_FORCE_PATH_STYLE ??
+                         "true") === "true",
+                   },
                  },
                },
-             },
-           ],
+             ],
+           },
          },
        },
      })
