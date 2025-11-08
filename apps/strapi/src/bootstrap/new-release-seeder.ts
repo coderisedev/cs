@@ -122,31 +122,17 @@ export const seedNewReleases = async (strapi: Core.Strapi) => {
 
 const migrateLegacyHeroMedia = async (strapi: Core.Strapi) => {
   const entries = (await strapi.entityService.findMany('api::new-release.new-release', {
-    populate: ['hero_media'],
+    populate: ['hero_media', 'legacy_hero_media'],
     fields: ['id'],
     limit: 1000,
-  })) as Array<{ id: number; hero_media?: unknown }>
+  })) as Array<{ id: number; hero_media?: unknown; legacy_hero_media?: unknown }>
 
   if (!Array.isArray(entries) || !entries.length) {
     return
   }
 
   for (const entry of entries) {
-    if (entry.hero_media) {
-      continue
-    }
-
-    const legacyLink = await strapi.db
-      .connection('upload_files_related_morphs')
-      .where({
-        related_id: entry.id,
-        related_type: 'api::new-release.new-release',
-        field: 'hero_media',
-      })
-      .orderBy('order', 'asc')
-      .first()
-
-    if (!legacyLink?.upload_file_id) {
+    if (entry.hero_media || !entry.legacy_hero_media) {
       continue
     }
 
@@ -154,7 +140,7 @@ const migrateLegacyHeroMedia = async (strapi: Core.Strapi) => {
       data: {
         hero_media: {
           type: 'image',
-          asset: legacyLink.upload_file_id,
+          asset: entry.legacy_hero_media,
         },
       },
     })

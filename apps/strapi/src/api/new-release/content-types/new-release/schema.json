@@ -80,6 +80,14 @@
     "regions": {
       "type": "json"
     },
+    "legacy_hero_media": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images", "videos"],
+      "config": {
+        "customField": "plugin::upload.media"
+      }
+    },
     "seo": {
       "type": "component",
       "repeatable": false,
