@@ -54,36 +54,46 @@ const regionMap = new Map<string, HttpTypes.StoreRegion>()
 
 export const getRegion = async (countryCode: string) => {
   try {
-    if (regionMap.has(countryCode)) {
-      return regionMap.get(countryCode)
+    const normalizedCode = countryCode?.toLowerCase()
+
+    if (normalizedCode && regionMap.has(normalizedCode)) {
+      return regionMap.get(normalizedCode)
     }
 
     const regions = await listRegions()
 
-    if (!regions) {
+    if (!regions || !regions.length) {
       return null
     }
 
     regions.forEach((region) => {
       region.countries?.forEach((c) => {
-        regionMap.set(c?.iso_2 ?? "", region)
+        const iso = c?.iso_2?.toLowerCase() ?? ""
+        if (iso) {
+          regionMap.set(iso, region)
+        }
       })
     })
 
-    const region = countryCode
-      ? regionMap.get(countryCode)
-      : regionMap.get("us")
+    const defaultRegion =
+      regions.find((region) =>
+        region.countries?.some((c) => c?.iso_2?.toLowerCase() === normalizedCode)
+      ) ?? regions[0]
+
+    const region = normalizedCode
+      ? regionMap.get(normalizedCode) ?? defaultRegion
+      : regionMap.get("us") ?? defaultRegion
 
     return (
       region ||
-      (countryCode
-        ? getMockRegionByCountry(countryCode)
+      (normalizedCode
+        ? getMockRegionByCountry(normalizedCode)
         : getMockRegions()[0]) ||
       null
     )
   } catch (e: any) {
     return countryCode
-      ? getMockRegionByCountry(countryCode)
+      ? getMockRegionByCountry(countryCode.toLowerCase())
       : getMockRegions()[0] || null
   }
 }

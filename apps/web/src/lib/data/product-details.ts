@@ -4,6 +4,18 @@ import { getStrapiClient } from '@lib/strapi/client'
 
 const strapi = getStrapiClient()
 const PRODUCT_DETAIL_CACHE_TAG = 'product-detail'
+const PRODUCT_DETAIL_POPULATE = [
+  'hero_media',
+  'gallery',
+  'specs',
+  'features',
+  'features.media',
+  'faq',
+  'downloads',
+  'downloads.file',
+  'seo',
+  'seo.og_image',
+].join(',')
 
 type MaybeWithAttributes<T> =
   | (T & { id?: number; documentId?: string })
@@ -133,13 +145,7 @@ export const getProductDetail = async (handle: string): Promise<ProductDetail | 
         'pagination[page]': 1,
         'pagination[pageSize]': 1,
         publicationState: 'live',
-        'populate[hero_media]': '*',
-        'populate[gallery]': '*',
-        'populate[specs]': '*',
-        'populate[features][populate]': 'media',
-        'populate[faq]': '*',
-        'populate[downloads][populate]': 'file',
-        'populate[seo][populate]': 'og_image',
+        populate: PRODUCT_DETAIL_POPULATE,
       },
       tags: [PRODUCT_DETAIL_CACHE_TAG, `product-detail-${handle}`],
       revalidate: 300,
