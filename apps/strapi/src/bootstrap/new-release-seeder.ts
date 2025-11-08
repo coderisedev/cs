@@ -121,11 +121,11 @@ export const seedNewReleases = async (strapi: Core.Strapi) => {
 }
 
 const migrateLegacyHeroMedia = async (strapi: Core.Strapi) => {
-  const entries = await strapi.entityService.findMany('api::new-release.new-release', {
+  const entries = (await strapi.entityService.findMany('api::new-release.new-release', {
     populate: ['hero_media'],
     fields: ['id'],
     limit: 1000,
-  })
+  })) as Array<{ id: number; hero_media?: unknown }>
 
   if (!Array.isArray(entries) || !entries.length) {
     return
@@ -137,7 +137,7 @@ const migrateLegacyHeroMedia = async (strapi: Core.Strapi) => {
     }
 
     const legacyLink = await strapi.db
-      .connection('upload_file_morphs')
+      .connection('upload_files_related_morphs')
       .where({
         related_id: entry.id,
         related_type: 'api::new-release.new-release',
