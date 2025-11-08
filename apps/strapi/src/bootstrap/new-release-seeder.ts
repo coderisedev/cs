@@ -145,7 +145,7 @@ const migrateLegacyHeroMedia = async (strapi: Core.Strapi) => {
           type: 'image',
           asset: entry.legacy_hero_media,
         },
-      },
+      } as any,
     })
 
     strapi.log.info(`Migrated hero media for new release entry ${entry.id}`)
