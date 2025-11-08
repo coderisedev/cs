@@ -4,6 +4,7 @@ import { listProducts } from "@lib/data/products"
 import { getRegion, listRegions } from "@lib/data/regions"
 import ProductTemplate from "@modules/products/templates"
 import { HttpTypes } from "@medusajs/types"
+import { getProductDetail } from "@lib/data/product-details"
 
 type Props = {
   params: Promise<{ countryCode: string; handle: string }>
@@ -88,13 +89,23 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     notFound()
   }
 
+  const productDetail = await getProductDetail(handle)
+
+  const title = productDetail?.seo?.metaTitle ?? `${product.title} | Medusa Store`
+  const description =
+    productDetail?.seo?.metaDescription ?? product.description ?? `${product.title}`
+  const ogImage = productDetail?.seo?.ogImageUrl ?? product.thumbnail ?? null
+
   return {
-    title: `${product.title} | Medusa Store`,
-    description: `${product.title}`,
+    title,
+    description,
+    ...(productDetail?.seo?.canonicalUrl
+      ? { alternates: { canonical: productDetail.seo.canonicalUrl } }
+      : {}),
     openGraph: {
-      title: `${product.title} | Medusa Store`,
-      description: `${product.title}`,
-      images: product.thumbnail ? [product.thumbnail] : [],
+      title,
+      description,
+      images: ogImage ? [ogImage] : [],
     },
   }
 }
@@ -119,14 +130,70 @@ export default async function ProductPage(props: Props) {
     notFound()
   }
 
-  const images = getImagesForVariant(pricedProduct, selectedVariantId)
+  const productDetail = await getProductDetail(params.handle)
+  const cmsImages = buildCmsImages(productDetail)
+  const medusaImages = getImagesForVariant(pricedProduct, selectedVariantId) || []
+  const images = mergeImages(cmsImages, medusaImages)
 
   return (
     <ProductTemplate
       product={pricedProduct}
       region={region}
       countryCode={params.countryCode}
-      images={images || []}
+      images={images}
+      productDetail={productDetail}
     />
   )
+}
+
+const buildCmsImages = (
+  productDetail: Awaited<ReturnType<typeof getProductDetail>>
+): HttpTypes.StoreProductImage[] => {
+  if (!productDetail) {
+    return []
+  }
+
+  const images: HttpTypes.StoreProductImage[] = []
+
+  if (productDetail.heroMedia?.url) {
+    images.push({
+      id: productDetail.heroMedia.id?.toString() ?? `cms-hero-${productDetail.handle}`,
+      url: productDetail.heroMedia.url,
+    })
+  }
+
+  productDetail.gallery.forEach((media, index) => {
+    if (media.url) {
+      images.push({
+        id: media.id?.toString() ?? `cms-gallery-${productDetail.handle}-${index}`,
+        url: media.url,
+      })
+    }
+  })
+
+  return images
+}
+
+const mergeImages = (
+  cmsImages: HttpTypes.StoreProductImage[],
+  medusaImages: HttpTypes.StoreProductImage[]
+) => {
+  const seen = new Set<string>()
+  const merged: HttpTypes.StoreProductImage[] = []
+
+  const pushIfNew = (image?: HttpTypes.StoreProductImage | null) => {
+    if (!image || !image.url) {
+      return
+    }
+    if (seen.has(image.url)) {
+      return
+    }
+    seen.add(image.url)
+    merged.push(image)
+  }
+
+  cmsImages.forEach(pushIfNew)
+  medusaImages.forEach(pushIfNew)
+
+  return merged
 }

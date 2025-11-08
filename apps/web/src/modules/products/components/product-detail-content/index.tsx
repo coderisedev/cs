@@ -2,21 +2,24 @@
 
 import { useState } from "react"
 import { HttpTypes } from "@medusajs/types"
-import { Star, ShoppingCart, Truck, Shield, RefreshCw, Check } from "lucide-react"
+import { Star, ShoppingCart, Truck, Shield, RefreshCw } from "lucide-react"
 import { getProductPrice } from "@lib/util/get-product-price"
 import ProductDetailTabs from "@modules/products/components/product-detail-tabs"
 import Image from "next/image"
+import type { ProductDetail } from "@lib/data/product-details"
 
 interface ProductDetailContentProps {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
   images: HttpTypes.StoreProductImage[]
+  productDetail: ProductDetail | null
 }
 
 export default function ProductDetailContent({
   product,
   region,
   images,
+  productDetail,
 }: ProductDetailContentProps) {
   const [selectedImage, setSelectedImage] = useState(0)
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null)
@@ -124,6 +127,12 @@ export default function ProductDetailContent({
             )}
           </div>
 
+          {productDetail?.heroExcerpt && (
+            <p className="text-gray-900 font-medium mb-3 sm:mb-4 leading-relaxed">
+              {productDetail.heroExcerpt}
+            </p>
+          )}
+
           <p className="text-gray-700 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
             {product.description || "No description available."}
           </p>
@@ -207,11 +216,21 @@ export default function ProductDetailContent({
               <p className="text-xs font-medium">30 Day Returns</p>
             </div>
           </div>
+
+          {productDetail?.shippingNote && (
+            <div className="mt-4 sm:mt-6 rounded-lg border border-gray-200 bg-gray-50 p-4 sm:p-5 text-sm sm:text-base leading-relaxed text-gray-700">
+              <p className="font-semibold mb-2">Shipping &amp; Returns</p>
+              <div
+                className="prose prose-sm max-w-none text-gray-700"
+                dangerouslySetInnerHTML={{ __html: productDetail.shippingNote }}
+              />
+            </div>
+          )}
         </div>
       </div>
 
       {/* Product Details Tabs */}
-      <ProductDetailTabs product={product} />
+      <ProductDetailTabs product={product} productDetail={productDetail} />
     </>
   )
 }

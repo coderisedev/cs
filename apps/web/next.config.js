@@ -7,6 +7,26 @@ checkEnvVariables()
  */
 const S3_HOSTNAME = process.env.MEDUSA_CLOUD_S3_HOSTNAME
 const S3_PATHNAME = process.env.MEDUSA_CLOUD_S3_PATHNAME
+const STRAPI_URL = process.env.STRAPI_API_URL || process.env.NEXT_PUBLIC_STRAPI_URL
+
+const strapiRemotePattern = (() => {
+  if (!STRAPI_URL) {
+    return null
+  }
+  try {
+    const parsed = new URL(STRAPI_URL)
+    const protocol = parsed.protocol.replace(":", "")
+    if (protocol !== "http" && protocol !== "https") {
+      return null
+    }
+    return {
+      protocol,
+      hostname: parsed.hostname,
+    }
+  } catch {
+    return null
+  }
+})()
 
 /**
  * @type {import('next').NextConfig}
@@ -46,6 +66,7 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      ...(strapiRemotePattern ? [strapiRemotePattern] : []),
       ...(S3_HOSTNAME && S3_PATHNAME
         ? [
             {

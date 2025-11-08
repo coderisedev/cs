@@ -4,12 +4,14 @@ import { HttpTypes } from "@medusajs/types"
 import ProductDetailContent from "@modules/products/components/product-detail-content"
 import RelatedProducts from "@modules/products/components/related-products"
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products"
+import type { ProductDetail } from "@lib/data/product-details"
 
 type ProductTemplateProps = {
   product: HttpTypes.StoreProduct
   region: HttpTypes.StoreRegion
   countryCode: string
   images: HttpTypes.StoreProductImage[]
+  productDetail: ProductDetail | null
 }
 
 const ProductTemplate: React.FC<ProductTemplateProps> = ({
@@ -17,6 +19,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   region,
   countryCode,
   images,
+  productDetail,
 }) => {
   if (!product || !product.id) {
     return notFound()
@@ -26,7 +29,12 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
     <div className="min-h-screen bg-white">
       <div className="mobile-container py-6 sm:py-8">
         {/* Product Detail Content */}
-        <ProductDetailContent product={product} region={region} images={images} />
+        <ProductDetailContent
+          product={product}
+          region={region}
+          images={images}
+          productDetail={productDetail}
+        />
         
         {/* Related Products */}
         <div className="mt-12 sm:mt-16">
