@@ -66,6 +66,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "img.aidenlux.com",
+      },
       ...(strapiRemotePattern ? [strapiRemotePattern] : []),
       ...(S3_HOSTNAME && S3_PATHNAME
         ? [
