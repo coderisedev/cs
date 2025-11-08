@@ -1,5 +1,6 @@
 import type { Core } from '@strapi/strapi'
 import { seedProductDetails } from './bootstrap/product-detail-seeder'
+import { seedNewReleases } from './bootstrap/new-release-seeder'
 
 export default {
   /**
@@ -20,6 +21,7 @@ export default {
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     try {
       await seedProductDetails(strapi)
+      await seedNewReleases(strapi)
     } catch (error) {
       strapi.log.error('Failed to seed product detail content', error)
     }

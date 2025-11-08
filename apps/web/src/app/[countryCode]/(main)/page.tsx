@@ -6,8 +6,10 @@ import FeaturedProducts from "@modules/home/components/featured-products"
 import WhyChooseUs from "@modules/home/components/why-choose-us"
 import Testimonials from "@modules/home/components/testimonials"
 import Newsletter from "@modules/home/components/newsletter"
+import NewReleaseHighlight from "@modules/home/components/new-release-highlight"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
+import { getLatestNewRelease } from "@lib/data/new-release"
 
 export const metadata: Metadata = {
   title: "Home - Premium E-commerce Store",
@@ -22,11 +24,22 @@ export default async function Home(props: {
 
   const { countryCode } = params
 
-  const region = await getRegion(countryCode)
+  const regionPromise = getRegion(countryCode)
+  const [collectionsResult, newReleaseData, region] = await Promise.all([
+    listCollections(),
+    getLatestNewRelease(),
+    regionPromise,
+  ])
 
-  // TODO: The fields parameter causes issues with the Medusa backend
-  // const { collections } = await listCollections({ fields: "id, handle, title" })
-  const { collections } = await listCollections()
+  const { collections } = collectionsResult
+
+  const normalizedCountry = countryCode?.toLowerCase()
+  const releaseForRegion =
+    newReleaseData && newReleaseData.regions.length && normalizedCountry
+      ? newReleaseData.regions.includes(normalizedCountry)
+        ? newReleaseData
+        : null
+      : newReleaseData
 
   if (!collections || !region) {
     return null
@@ -36,6 +49,9 @@ export default async function Home(props: {
     <div className="min-h-screen">
       {/* Hero Section */}
       <Hero />
+
+      {/* New Release */}
+      <NewReleaseHighlight release={releaseForRegion} />
       
       {/* Features Section */}
       <WhyChooseUs />
