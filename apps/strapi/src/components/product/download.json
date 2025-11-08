@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_product_downloads",
+  "info": {
+    "displayName": "download",
+    "description": "Support files or external resources",
+    "icon": "attachment"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "files",
+        "images"
+      ]
+    },
+    "external_url": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

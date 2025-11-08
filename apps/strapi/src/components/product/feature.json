@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_product_features",
+  "info": {
+    "displayName": "feature",
+    "description": "Highlight block with heading, body, and optional media",
+    "icon": "layout"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "required": true
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "media": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    }
+  },
+  "config": {}
+}

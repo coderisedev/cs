@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_shared_seo",
+  "info": {
+    "displayName": "seo",
+    "description": "Meta fields for product detail pages",
+    "icon": "search"
+  },
+  "options": {},
+  "attributes": {
+    "meta_title": {
+      "type": "string"
+    },
+    "meta_description": {
+      "type": "text"
+    },
+    "canonical_url": {
+      "type": "string"
+    },
+    "og_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "schema_json": {
+      "type": "json"
+    }
+  },
+  "config": {}
+}

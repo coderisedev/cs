@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_product_qas",
+  "info": {
+    "displayName": "qa",
+    "description": "FAQ entry",
+    "icon": "question"
+  },
+  "options": {},
+  "attributes": {
+    "question": {
+      "type": "string",
+      "required": true
+    },
+    "answer": {
+      "type": "richtext"
+    }
+  },
+  "config": {}
+}

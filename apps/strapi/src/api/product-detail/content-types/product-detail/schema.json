@@ -1,0 +1,75 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_details",
+  "info": {
+    "singularName": "product-detail",
+    "pluralName": "product-details",
+    "displayName": "Product Detail",
+    "description": "Rich merchandising content linked to a Medusa product handle"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "handle": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "hero_excerpt": {
+      "type": "text"
+    },
+    "hero_media": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    },
+    "gallery": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    },
+    "overview": {
+      "type": "richtext"
+    },
+    "specs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.spec-item"
+    },
+    "features": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.feature"
+    },
+    "faq": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.qa"
+    },
+    "downloads": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.download"
+    },
+    "shipping_note": {
+      "type": "richtext"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    }
+  }
+}
