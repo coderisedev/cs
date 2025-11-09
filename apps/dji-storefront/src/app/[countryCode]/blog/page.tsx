@@ -9,11 +9,13 @@ export const metadata = {
 export const revalidate = 300
 
 type BlogPageProps = {
-  params: { countryCode: string }
-  searchParams?: { page?: string | string[] }
+  params: Promise<{ countryCode: string }>
+  searchParams?: Promise<{ page?: string | string[] }>
 }
 
-export default async function BlogPage({ params, searchParams = {} }: BlogPageProps) {
+export default async function BlogPage(props: BlogPageProps) {
+  const params = await props.params
+  const searchParams = await props.searchParams || {}
   const pageParam = Array.isArray(searchParams.page) ? searchParams.page[0] : searchParams.page
   const page = pageParam ? Math.max(1, Number(pageParam) || 1) : 1
   const { posts, pagination, error } = await listPosts({ page })

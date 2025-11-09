@@ -36,6 +36,9 @@ export type StorefrontProduct = {
   category?: string
   collection?: string
   variants: StorefrontProductVariant[]
+  features?: string[]
+  compatibility?: string[]
+  specifications?: Array<{ label: string; value: string }>
 }
 
 export type ProductListOptions = HttpTypes.FindParams & HttpTypes.StoreProductListParams & { countryCode?: string; regionId?: string }
@@ -266,7 +269,7 @@ const mapStoreProduct = (product: HttpTypes.StoreProduct): StorefrontProduct => 
     description: product.description ?? "",
     price,
     compareAtPrice: compareAt,
-    images: buildImageGallery(product.thumbnail, product.images),
+    images: buildImageGallery(product.thumbnail, product.images ?? undefined),
     rating: (product.metadata?.rating as number) ?? 4.8,
     reviewCount: (product.metadata?.review_count as number) ?? 32,
     inStock,
@@ -275,5 +278,8 @@ const mapStoreProduct = (product: HttpTypes.StoreProduct): StorefrontProduct => 
     category: product.categories?.[0]?.handle,
     collection: product.collection?.handle,
     variants: variants.length ? variants : [{ id: product.id, title: "Standard", price, inStock }],
+    features: (product.metadata?.features as string[]) ?? undefined,
+    compatibility: (product.metadata?.compatibility as string[]) ?? undefined,
+    specifications: (product.metadata?.specifications as Array<{ label: string; value: string }>) ?? undefined,
   }
 }

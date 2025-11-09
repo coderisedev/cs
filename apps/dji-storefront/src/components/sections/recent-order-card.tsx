@@ -13,7 +13,7 @@ export function RecentOrderCard({ order }: { order?: HttpTypes.StoreOrder }) {
         <p className="text-xs uppercase tracking-widest text-foreground-muted">Latest order</p>
         <CardTitle className="text-xl font-semibold">{order.display_id}</CardTitle>
         <CardDescription>
-          {order.items.length} items · {currencyFormatter(order.total)}
+          {order.items?.length ?? 0} items · {currencyFormatter(order.total)}
         </CardDescription>
       </CardHeader>
       <CardContent>

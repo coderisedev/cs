@@ -59,7 +59,7 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
               />
             )}
             {product.isNew && <Badge label="NEW" />}
-            {product.isSale && <Badge label={`-${discount}%`} position="right" />}
+            {product.compareAtPrice && product.compareAtPrice > product.price && <Badge label={`-${discount}%`} position="right" />}
           </Link>
           <div className="flex-1 p-6 sm:p-8">
             <div className="flex flex-col h-full">
@@ -107,7 +107,7 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
       <Link href={`/products/${product.handle}`} className="block relative overflow-hidden aspect-square bg-background-elevated">
         {image && <Image src={image} alt={product.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[0.3deg]" />}
         {product.isNew && <Badge label="NEW" />}
-        {product.isSale && <Badge label={`-${discount}%`} position="right" />}
+        {product.compareAtPrice && product.compareAtPrice > product.price && <Badge label={`-${discount}%`} position="right" />}
       </Link>
       <div className="p-6">
         <Link href={`/products/${product.handle}`}>

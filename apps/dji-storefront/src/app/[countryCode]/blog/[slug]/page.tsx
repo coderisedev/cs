@@ -24,8 +24,9 @@ export async function generateStaticParams() {
   return allPosts.map((post) => ({ slug: post.slug }))
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = await getPost(params.slug)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const post = await getPost(slug)
   if (!post) {
     return { title: "Blog", description: "Flight simulation stories" }
   }
@@ -80,11 +81,12 @@ const markdownComponents: Components = {
 }
 
 type BlogPostPageProps = {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = await getPost(params.slug)
+  const { slug } = await params
+  const post = await getPost(slug)
 
   if (!post) {
     notFound()

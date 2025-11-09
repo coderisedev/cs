@@ -164,25 +164,28 @@ export default async function HomePage() {
             <p className="text-lg text-foreground-secondary">Browse our professional flight simulator hardware by series.</p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
-            {collections.map((collection) => (
-              <Card key={collection.handle} tone="elevated" className="overflow-hidden">
-                <div className="relative h-56 w-full">
-                  <Image src={resolveCollectionHeroImage(collection)} alt={collection.title} fill className="object-cover" />
-                  <div className="absolute inset-0" style={{ background: "var(--gradient-hero)" }} />
-                  <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <p className="text-sm uppercase tracking-widest text-white/70">{resolveCollectionHighlight(collection)}</p>
-                    <h3 className="text-2xl font-semibold">{collection.title}</h3>
-                    <p className="text-sm text-white/80">{collection.description}</p>
+            {collections.map((collection) => {
+              const description = (collection.metadata?.description as string) ?? ""
+              return (
+                <Card key={collection.handle} tone="elevated" className="overflow-hidden">
+                  <div className="relative h-56 w-full">
+                    <Image src={resolveCollectionHeroImage(collection)} alt={collection.title} fill className="object-cover" />
+                    <div className="absolute inset-0" style={{ background: "var(--gradient-hero)" }} />
+                    <div className="absolute bottom-4 left-4 right-4 text-white">
+                      <p className="text-sm uppercase tracking-widest text-white/70">{resolveCollectionHighlight(collection)}</p>
+                      <h3 className="text-2xl font-semibold">{collection.title}</h3>
+                      {description && <p className="text-sm text-white/80">{description}</p>}
+                    </div>
                   </div>
-                </div>
-                <CardContent className="flex items-center justify-between">
-                  <div className="text-sm text-foreground-secondary">{collection.products?.length ?? 0} featured items</div>
-                  <Link href={`/collections/${collection.handle}`} className="text-primary-500 text-sm font-medium">
-                    View Collection →
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
+                  <CardContent className="flex items-center justify-between">
+                    <div className="text-sm text-foreground-secondary">{collection.products?.length ?? 0} featured items</div>
+                    <Link href={`/collections/${collection.handle}`} className="text-primary-500 text-sm font-medium">
+                      View Collection →
+                    </Link>
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
         </Reveal>
       </section>

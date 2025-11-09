@@ -21,25 +21,28 @@ export default async function CollectionsPage() {
       </section>
 
       <div className="grid gap-6 md:grid-cols-2">
-        {collections.map((collection) => (
-          <article key={collection.handle} className="rounded-3xl border border-border-primary overflow-hidden bg-background-secondary">
-            <div className="relative h-60 w-full">
-              <Image src={resolveCollectionHeroImage(collection)} alt={collection.title} fill className="object-cover" />
-            </div>
-            <div className="p-6 space-y-3">
-              <p className="text-xs uppercase tracking-widest text-foreground-muted">{resolveCollectionHighlight(collection)}</p>
-              <h2 className="text-2xl font-semibold text-foreground-primary">
-                <Link href={`/collections/${collection.handle}`}>{collection.title}</Link>
-              </h2>
-              <p className="text-sm text-foreground-secondary">{collection.description}</p>
-              {"products" in collection && collection.products.length > 0 && (
-                <p className="text-xs text-foreground-muted">
-                  Includes {collection.products.length} featured products
-                </p>
-              )}
-            </div>
-          </article>
-        ))}
+        {collections.map((collection) => {
+          const description = (collection.metadata?.description as string) ?? ""
+          return (
+            <article key={collection.handle} className="rounded-3xl border border-border-primary overflow-hidden bg-background-secondary">
+              <div className="relative h-60 w-full">
+                <Image src={resolveCollectionHeroImage(collection)} alt={collection.title} fill className="object-cover" />
+              </div>
+              <div className="p-6 space-y-3">
+                <p className="text-xs uppercase tracking-widest text-foreground-muted">{resolveCollectionHighlight(collection)}</p>
+                <h2 className="text-2xl font-semibold text-foreground-primary">
+                  <Link href={`/collections/${collection.handle}`}>{collection.title}</Link>
+                </h2>
+                {description && <p className="text-sm text-foreground-secondary">{description}</p>}
+                {"products" in collection && collection.products && collection.products.length > 0 && (
+                  <p className="text-xs text-foreground-muted">
+                    Includes {collection.products.length} featured products
+                  </p>
+                )}
+              </div>
+            </article>
+          )
+        })}
       </div>
     </div>
   )

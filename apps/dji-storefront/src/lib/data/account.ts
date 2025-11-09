@@ -54,7 +54,7 @@ const mapAddress = (address: HttpTypes.StoreCustomerAddress): AccountAddress => 
   city: address.city ?? "",
   province: address.province ?? null,
   postalCode: address.postal_code ?? "",
-  country: address.country ?? address.country_code?.toUpperCase() ?? "",
+  country: address.country_code?.toUpperCase() ?? "",
   countryCode: address.country_code ?? "",
   phone: address.phone ?? null,
   isDefaultShipping: Boolean(
@@ -147,9 +147,9 @@ export const getAccountPageData = async () => {
         email: customer.email ?? "",
         firstName: customer.first_name ?? "",
         lastName: customer.last_name ?? "",
-        avatar: customer.metadata?.avatar ?? "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+        avatar: (customer.metadata?.avatar as string) ?? "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
         phone: customer.phone ?? "",
-        dateJoined: customer.created_at ?? "",
+        dateJoined: customer.created_at instanceof Date ? customer.created_at.toISOString() : (customer.created_at ?? ""),
         preferences: extractPreferences(customer),
         addresses,
       }

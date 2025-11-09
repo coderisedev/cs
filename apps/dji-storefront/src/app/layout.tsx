@@ -35,7 +35,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="bg-background-primary">
       <body className="antialiased bg-background-primary text-foreground-primary">
-        <SiteHeader cartItemCount={cart?.items.length ?? 0} />
+        <SiteHeader cartItemCount={cart?.items?.length ?? 0} />
         <main>{children}</main>
         <SiteFooter />
       </body>

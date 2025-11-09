@@ -5,7 +5,7 @@ export default function CountryLayout({
   children,
 }: {
   children: ReactNode
-  params: { countryCode: string }
+  params: Promise<{ countryCode: string }>
 }) {
   // Plan A: countryCode is always "us" due to middleware
   return <WishlistProvider>{children}</WishlistProvider>
