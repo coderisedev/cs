@@ -2,12 +2,29 @@ import { HttpTypes } from "@medusajs/types"
 
 type SortOptions = "price-low" | "price-high" | "name" | "rating" | "newest" | "created_at"
 
-export const sortProducts = (products: HttpTypes.StoreProduct[], sortBy: SortOptions) => {
-  const getPrice = (product: HttpTypes.StoreProduct) => {
-    const variant = product.variants?.[0] as any
-    return variant?.calculated_price?.calculated_amount ?? 0
+type VariantWithPrice = HttpTypes.StoreProductVariant & {
+  calculated_price?: {
+    calculated_amount?: number | string | null
+  }
+}
+
+const getPrice = (product: HttpTypes.StoreProduct) => {
+  const variant = product.variants?.[0] as VariantWithPrice | undefined
+  const rawAmount = variant?.calculated_price?.calculated_amount
+
+  if (typeof rawAmount === "number") {
+    return rawAmount
   }
 
+  if (typeof rawAmount === "string") {
+    const parsed = Number(rawAmount)
+    return Number.isFinite(parsed) ? parsed : 0
+  }
+
+  return 0
+}
+
+export const sortProducts = (products: HttpTypes.StoreProduct[], sortBy: SortOptions) => {
   switch (sortBy) {
     case "price-low":
       return [...products].sort((a, b) => getPrice(a) - getPrice(b))

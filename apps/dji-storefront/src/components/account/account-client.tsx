@@ -40,6 +40,19 @@ const formatDate = (date: string | Date) =>
 
 const getSeriesLabel = (handle: string) => handle.split("-")[0]?.toUpperCase() ?? "DJI"
 
+const resolveImageUrl = (image: unknown): string | null => {
+  if (typeof image === "string") {
+    return image || null
+  }
+
+  if (image && typeof image === "object") {
+    const { url } = image as { url?: unknown }
+    return typeof url === "string" && url.length > 0 ? url : null
+  }
+
+  return null
+}
+
 export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState("profile")
@@ -57,28 +70,14 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
   const fallbackWishlist = useMemo<LocalWishlistItem[]>(
     () =>
       wishlist.map((item) => {
-        let thumbnail: string | null = null
-        const productThumbnail = item.product.thumbnail
-        if (typeof productThumbnail === 'string') {
-          thumbnail = productThumbnail
-        } else if (productThumbnail && typeof productThumbnail === 'object') {
-          thumbnail = (productThumbnail as any).url ?? null
-        }
-        
-        if (!thumbnail && item.product.images?.[0]) {
-          const firstImage = item.product.images[0]
-          if (typeof firstImage === 'string') {
-            thumbnail = firstImage
-          } else if (firstImage && typeof firstImage === 'object') {
-            thumbnail = (firstImage as any).url ?? null
-          }
-        }
-        
+        const productThumbnail = resolveImageUrl(item.product.thumbnail)
+        const firstImage = resolveImageUrl(item.product.images?.[0])
+
         return {
           id: item.product.id,
           title: item.product.title,
           handle: item.product.handle ?? item.product.id,
-          thumbnail,
+          thumbnail: productThumbnail ?? firstImage,
           description: item.product.description ?? "",
           price: 0,
           addedAt: item.addedDate,
