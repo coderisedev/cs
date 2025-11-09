@@ -17,9 +17,15 @@ const strapiRemotePattern = (() => {
   }
 })()
 
+// Vercel's project root is already `apps/dji-storefront`, but its deployment target prepends the
+// configured root directory once more. Emit builds into a nested folder on Vercel only so the CLI
+// can locate `.next/routes-manifest.json`, while keeping local builds in the default `.next`.
+const distDir = process.env.VERCEL ? "apps/dji-storefront/.next" : ".next"
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   transpilePackages: ["@cs/medusa-client"],
+  distDir,
   eslint: {
     // Next 15 bundles ESLint 9 during builds, which currently crashes on deprecated CLI flags.
     // Disable build-time lint to unblock deploys and rely on pnpm lint instead.
