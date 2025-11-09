@@ -463,6 +463,97 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiNewReleaseNewRelease extends Struct.CollectionTypeSchema {
+  collectionName: 'new_releases';
+  info: {
+    singularName: 'new-release';
+    pluralName: 'new-releases';
+    displayName: 'New Release';
+    description: 'Homepage launch announcements';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    tagline: Schema.Attribute.String;
+    description: Schema.Attribute.RichText;
+    hero_media: Schema.Attribute.Component<'marketing.embed-media', false>;
+    gallery: Schema.Attribute.Media<'images' | 'videos', true>;
+    launch_date: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    cta_label: Schema.Attribute.String;
+    cta_url: Schema.Attribute.String;
+    secondary_cta_label: Schema.Attribute.String;
+    secondary_cta_url: Schema.Attribute.String;
+    features: Schema.Attribute.Component<'marketing.feature', true>;
+    stats: Schema.Attribute.Component<'marketing.stat', true>;
+    sku_reference: Schema.Attribute.String;
+    is_featured: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    is_preorder: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    inventory_badge: Schema.Attribute.String;
+    regions: Schema.Attribute.JSON;
+    legacy_hero_media: Schema.Attribute.Media<'images' | 'videos'>;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::new-release.new-release'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductDetailProductDetail
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_details';
+  info: {
+    singularName: 'product-detail';
+    pluralName: 'product-details';
+    displayName: 'Product Detail';
+    description: 'Rich merchandising content linked to a Medusa product handle';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    handle: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    hero_excerpt: Schema.Attribute.Text;
+    hero_media: Schema.Attribute.Media<'images' | 'videos'>;
+    gallery: Schema.Attribute.Media<'images' | 'videos', true>;
+    overview: Schema.Attribute.RichText;
+    specs: Schema.Attribute.Component<'product.spec-item', true>;
+    features: Schema.Attribute.Component<'product.feature', true>;
+    faq: Schema.Attribute.Component<'product.qa', true>;
+    downloads: Schema.Attribute.Component<'product.download', true>;
+    shipping_note: Schema.Attribute.RichText;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-detail.product-detail'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -973,7 +1064,9 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::new-release.new-release': ApiNewReleaseNewRelease;
       'api::post.post': ApiPostPost;
+      'api::product-detail.product-detail': ApiProductDetailProductDetail;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

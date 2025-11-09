@@ -24,7 +24,8 @@ COPY . .
 
 RUN pnpm install --filter medusa... --frozen-lockfile \
   && pnpm --filter medusa build \
-  && npx -y @medusajs/admin-bundler@2.10.3 build --outDir apps/medusa/public/admin || true
+  && mkdir -p apps/medusa/public \
+  && cp -a apps/medusa/.medusa/server/public/. apps/medusa/public/
 
 FROM node:20-bookworm-slim AS runner
 
