@@ -20,6 +20,11 @@ const strapiRemotePattern = (() => {
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   transpilePackages: ["@cs/medusa-client"],
+  eslint: {
+    // Next 15 bundles ESLint 9 during builds, which currently crashes on deprecated CLI flags.
+    // Disable build-time lint to unblock deploys and rely on pnpm lint instead.
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
