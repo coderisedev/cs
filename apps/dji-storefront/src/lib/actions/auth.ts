@@ -4,10 +4,13 @@ import { sdk } from "@/lib/medusa"
 import { setAuthToken, removeAuthToken, getCacheTag, getCartId, getAuthHeaders } from "@/lib/server/cookies"
 import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
+import { buildDefaultAccountPath, sanitizeRedirectPath } from "@/lib/util/redirect"
 
 export async function loginAction(_currentState: unknown, formData: FormData) {
   const email = formData.get("email") as string
   const password = formData.get("password") as string
+  const fallbackRedirect = buildDefaultAccountPath()
+  const requestedRedirect = sanitizeRedirectPath(formData.get("returnTo"), fallbackRedirect)
 
   if (!email || !password) {
     return "Email and password are required"
@@ -36,7 +39,7 @@ export async function loginAction(_currentState: unknown, formData: FormData) {
     return message
   }
 
-  redirect("/us/account")
+  redirect(requestedRedirect)
 }
 
 export async function registerAction(_currentState: unknown, formData: FormData) {
@@ -45,6 +48,9 @@ export async function registerAction(_currentState: unknown, formData: FormData)
   const email = formData.get("email") as string
   const phone = formData.get("phone") as string
   const password = formData.get("password") as string
+
+  const fallbackRedirect = buildDefaultAccountPath()
+  const requestedRedirect = sanitizeRedirectPath(formData.get("returnTo"), fallbackRedirect)
 
   if (!firstName || !lastName || !email || !password) {
     return "All required fields must be filled"
@@ -95,7 +101,7 @@ export async function registerAction(_currentState: unknown, formData: FormData)
     return message
   }
 
-  redirect("/us/account")
+  redirect(requestedRedirect)
 }
 
 export async function signoutAction(countryCode: string = "us") {
@@ -113,7 +119,7 @@ export async function signoutAction(countryCode: string = "us") {
   redirect(`/${countryCode}`)
 }
 
-async function transferCart() {
+export async function transferCart() {
   try {
     const cartId = await getCartId()
     if (!cartId) {

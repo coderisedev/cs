@@ -7,17 +7,35 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { loginAction, registerAction } from "@/lib/actions/auth"
 import { Loader2 } from "lucide-react"
+import { GoogleOneTapButton, isGoogleOneTapEnabled } from "@/components/auth/google-one-tap-button"
+import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 type ViewType = "signin" | "register"
 
-export function LoginClient() {
+type LoginClientProps = {
+  returnTo?: string
+  countryCode?: string
+}
+
+export function LoginClient({
+  returnTo,
+  countryCode = DEFAULT_COUNTRY_CODE,
+}: LoginClientProps) {
   const [currentView, setCurrentView] = useState<ViewType>("signin")
   const [loginMessage, loginFormAction, loginPending] = useActionState(loginAction, null)
   const [registerMessage, registerFormAction, registerPending] = useActionState(registerAction, null)
+  const defaultRedirect = `/${countryCode}/account`
+  const redirectTarget = returnTo ?? defaultRedirect
+  const requiresLoginForFlow = redirectTarget !== defaultRedirect
 
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="max-w-md mx-auto">
+        {requiresLoginForFlow && (
+          <div className="mb-6 rounded-base border border-border-primary bg-background-secondary px-4 py-3 text-sm text-foreground-secondary">
+            Please sign in to continue to <span className="font-medium text-foreground-primary">{redirectTarget}</span>.
+          </div>
+        )}
         {currentView === "signin" ? (
           <Card>
             <CardHeader>
@@ -27,7 +45,16 @@ export function LoginClient() {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              {isGoogleOneTapEnabled && (
+                <div className="mb-6">
+                  <GoogleOneTapButton returnTo={redirectTarget} />
+                  <div className="mt-4 text-center text-xs uppercase tracking-wide text-foreground-muted">
+                    or continue with email
+                  </div>
+                </div>
+              )}
               <form action={loginFormAction} className="space-y-4">
+                <input type="hidden" name="returnTo" value={redirectTarget} />
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
@@ -90,6 +117,7 @@ export function LoginClient() {
             </CardHeader>
             <CardContent>
               <form action={registerFormAction} className="space-y-4">
+                <input type="hidden" name="returnTo" value={redirectTarget} />
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="firstName">First Name</Label>

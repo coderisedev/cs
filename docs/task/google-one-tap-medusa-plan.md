@@ -13,7 +13,7 @@
 
 ## 2. Architecture & Limitations
 - Medusa v2 未提供官方 Google Auth 插件，需要自建 provider：
-  - 利用 Auth Module（v2）或自定义 `/store/auth/google` API
+  - 利用 Auth Module（v2）
   - 后端使用 `@google-auth-library` 验证 ID Token，按 `sub`/`email` 查找或创建用户
   - 返回 Medusa session / JWT，使前端与现有登录流程一致
 - 数据模型：
@@ -30,7 +30,7 @@
 
 ### 3.2 Medusa Backend
 1. **Provider / Route**
-   - 建立 `modules/auth/providers/google`（v2）或 API route（v1 风格）
+   - 建立 `modules/auth/providers/google`（v2）
    - 实现 `authenticate(data)` 或控制器：`verifyIdToken({ idToken, audience: GOOGLE_CLIENT_ID })`
 2. **User Flow**
    - Google 返回的 ID Token (`response.credential`) 解码后包含 `email`, `email_verified`, `sub`, `name`, `picture` 等字段
@@ -67,3 +67,31 @@
 3. 阶段三：开启全站 One Tap 提示（可按地理或用户组渐进式放量）
 
 该计划兼顾用户体验（可匿名浏览 + 关键节点登录）、无现成插件的技术现实，以及两人团队的交付节奏。完成后可提升注册转化并减少表单输入阻力。
+
+## 6. Task Breakdown
+1. **Product Checklist** — ✅ 完成  
+   - 决定强制登录的触发点，并写接受标准：匿名浏览允许、结账/账户等需登录、One Tap 暂停/拒绝行为。  
+   - 产出：`docs/task/google-one-tap-product-checklist.md`
+2. **Credential Setup** — ✅ 完成  
+   - 在 Google Console 创建 One Tap 客户端，配置 localhost/Vercel/Prod origins。  
+   - 将 `GOOGLE_CLIENT_ID` (`GOOGLE_CLIENT_SECRET` 如需) 写入 `.env`, `.env.production`, Vercel/Medusa 环境。  
+   - 产出：`docs/task/google-one-tap-credential-setup.md`，并在 `.env` 模板中加入变量。
+3. **Medusa Backend – Provider** — ✅ 完成  
+   - Scaffold `modules/auth/providers/google`（或等效服务）并接入 `@google-auth-library`。（实现：`apps/medusa/src/modules/auth-google-one-tap`）  
+   - 校验 ID Token，查找/创建客户，存储 `googleSub`/头像，生成 session/JWT。  
+   - 已接入 `medusa-config.ts`，并在存在 `GOOGLE_CLIENT_ID` 时自动启用。
+4. **Backend Testing & Docs** — ⚠️ 未完成  
+   - 编写 unit/integration tests（mock `verifyIdToken`、验证 cart merge）。  
+   - 更新 README / `.env.example` / onboarding steps。  
+   - 需要补充测试覆盖与文档说明。
+5. **Next.js Frontend** — ✅ 完成  
+   - 在登录页/公共入口加载 Google Identity Services script 并初始化 One Tap。  
+   - 处理 `credential` 回调，调用 `/api/auth/google-one-tap`，刷新登录状态与购物车。  
+   - 添加显式 “Continue with Google” 按钮作为 fallback。
+6. **Experience Guards** — ✅ 完成  
+   - 确保匿名 cart 持续存在，登录后自动 merge；在 checkout/account/wishlist 等路由实施登录墙。  
+   - 任何受限操作给出引导文案和 One Tap/传统登录选项。  
+   - Account/Checkout 页面现已要求登录并保留 `returnTo`。
+7. **Validation & Rollout** — ⚠️ 部分完成  
+   - 按第 4 节清单跑 lint/tests + 预览验证（已运行 lint，本地验证就绪，待补写说明/截图）。  
+   - 设置 feature flag/env toggle，分阶段放量，监控错误率与转化率（目前通过 `NEXT_PUBLIC_ENABLE_GOOGLE_ONE_TAP` 控制，但未记录监控/发布步骤）。

@@ -63,6 +63,20 @@ const FORCE_PATH_STYLE =
     "true"
   ).toLowerCase() === "true"
 
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+
+const AUTH_PROVIDERS = GOOGLE_CLIENT_ID
+  ? [
+      {
+        resolve: "./src/modules/auth-google-one-tap",
+        id: "google-one-tap",
+        options: {
+          clientId: GOOGLE_CLIENT_ID,
+        },
+      },
+    ]
+  : []
+
 export default defineConfig({
   projectConfig: {
     databaseUrl: DATABASE_URL,
@@ -76,6 +90,12 @@ export default defineConfig({
     },
   },
   modules: {
+    [Modules.AUTH]: {
+      resolve: "@medusajs/auth",
+      options: {
+        providers: AUTH_PROVIDERS,
+      },
+    },
     [Modules.FILE]: {
       resolve: "@medusajs/file",
       options: {
