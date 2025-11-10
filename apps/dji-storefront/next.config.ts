@@ -41,6 +41,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "medusa-public-images.s3.eu-west-1.amazonaws.com",
       },
+      {
+        protocol: "https",
+        hostname: "img.aidenlux.com",
+      },
       ...(strapiRemotePattern ? [strapiRemotePattern] : []),
     ],
   },
