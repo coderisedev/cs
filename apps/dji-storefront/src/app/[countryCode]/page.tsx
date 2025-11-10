@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Reveal } from "@/components/reveal"
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
-const heroImage = "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2070&q=80"
+const heroImage = "https://img.aidenlux.com/medusa-uploads/hero.jpg"
 
 const testimonials = [
   {
