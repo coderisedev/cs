@@ -1,12 +1,14 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import { ShoppingCart, Search, Menu, User, X, Sun, Moon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
+import { BRAND_LOGO_URL, BRAND_NAME } from "@/lib/constants"
 
 const NAV_ITEMS = [
   { name: "Home", href: "/" },
@@ -50,10 +52,17 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
       )}
     >
       <div className="container mx-auto px-4 lg:px-12">
-        <div className={cn("flex items-center justify-between transition-all duration-300", condensed ? "h-14" : "h-16")}
-        >
-          <Link href="/" className="text-lg font-semibold text-gradient">
-            DJI Storefront
+        <div className={cn("flex items-center justify-between transition-all duration-300", condensed ? "h-14" : "h-16")}>
+          <Link href="/" className="inline-flex items-center" aria-label={BRAND_NAME}>
+            <Image
+              src={BRAND_LOGO_URL}
+              alt={BRAND_NAME}
+              width={144}
+              height={36}
+              priority
+              className="h-9 w-auto"
+              sizes="144px"
+            />
           </Link>
 
           <nav className="hidden lg:flex items-center space-x-6">

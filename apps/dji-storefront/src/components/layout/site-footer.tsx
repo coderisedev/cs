@@ -1,5 +1,7 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from "lucide-react"
+import { BRAND_LOGO_URL, BRAND_NAME } from "@/lib/constants"
 
 export function SiteFooter() {
   const currentYear = new Date().getFullYear()
@@ -9,7 +11,9 @@ export function SiteFooter() {
       <div className="container mx-auto px-4 lg:px-12 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
-            <h3 className="text-lg font-bold mb-4 text-gradient">DJI Storefront</h3>
+            <Link href="/" className="inline-flex items-center mb-4" aria-label={BRAND_NAME}>
+              <Image src={BRAND_LOGO_URL} alt={BRAND_NAME} width={160} height={40} className="h-10 w-auto" sizes="160px" />
+            </Link>
             <p className="text-sm text-foreground-secondary mb-4">
               Professional flight simulation hardware inspired by the DJI design system.
             </p>

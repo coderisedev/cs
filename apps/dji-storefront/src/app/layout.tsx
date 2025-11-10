@@ -24,6 +24,9 @@ export const metadata: Metadata = {
   title: "DJI Storefront",
   description:
     "DJI design-system storefront scaffold derived from the cockpit simulator reference.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 }
 
 export default async function RootLayout({
