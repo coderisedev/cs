@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
+import Script from "next/script"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
@@ -27,38 +28,6 @@ declare global {
   }
 }
 
-const loadGoogleScript = (() => {
-  let loaderPromise: Promise<void> | null = null
-
-  return () => {
-    if (loaderPromise) {
-      return loaderPromise
-    }
-
-    loaderPromise = new Promise<void>((resolve, reject) => {
-      if (typeof window === "undefined") {
-        return resolve()
-      }
-
-      const existingScript = document.querySelector<HTMLScriptElement>("script[data-google-one-tap]")
-      if (existingScript) {
-        return resolve()
-      }
-
-      const script = document.createElement("script")
-      script.src = "https://accounts.google.com/gsi/client"
-      script.async = true
-      script.defer = true
-      script.dataset.googleOneTap = "true"
-      script.onload = () => resolve()
-      script.onerror = () => reject(new Error("Failed to load Google Identity Services"))
-      document.head.appendChild(script)
-    })
-
-    return loaderPromise
-  }
-})()
-
 export const isGoogleOneTapEnabled = Boolean(GOOGLE_CLIENT_ID && GOOGLE_ONE_TAP_ENABLED)
 
 type GoogleOneTapButtonProps = {
@@ -70,6 +39,7 @@ export function GoogleOneTapButton({ returnTo, autoPrompt = true }: GoogleOneTap
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [processing, setProcessing] = useState(false)
+  const [scriptReady, setScriptReady] = useState(false)
   const buttonRef = useRef<HTMLDivElement | null>(null)
   const initializedRef = useRef(false)
   const promptedRef = useRef(false)
@@ -115,51 +85,48 @@ export function GoogleOneTapButton({ returnTo, autoPrompt = true }: GoogleOneTap
   )
 
   useEffect(() => {
-    if (!isGoogleOneTapEnabled || !GOOGLE_CLIENT_ID) {
+    if (!isGoogleOneTapEnabled || !GOOGLE_CLIENT_ID || !scriptReady) {
       return
     }
 
-    let cancelled = false
-
-    loadGoogleScript()
-      .then(() => {
-        if (cancelled || typeof window === "undefined" || !window.google?.accounts?.id) {
-          return
-        }
-
-        if (!initializedRef.current) {
-          window.google.accounts.id.initialize({
-            client_id: GOOGLE_CLIENT_ID,
-            callback: handleCredentialResponse,
-            auto_select: false,
-            cancel_on_tap_outside: true,
-          })
-          initializedRef.current = true
-        }
-
-        if (buttonRef.current && buttonRef.current.childElementCount === 0) {
-          window.google.accounts.id.renderButton(buttonRef.current, {
-            theme: "filled_blue",
-            text: "continue_with",
-            shape: "pill",
-            size: "large",
-            width: "100%",
-          })
-        }
-
-        if (autoPrompt && !promptedRef.current) {
-          window.google.accounts.id.prompt()
-          promptedRef.current = true
-        }
-      })
-      .catch((err: Error) => {
-        setError(err.message)
-      })
-
-    return () => {
-      cancelled = true
+    if (typeof window === "undefined" || !window.google?.accounts?.id) {
+      setError("Google Identity Services unavailable in this environment")
+      return
     }
-  }, [autoPrompt, handleCredentialResponse])
+
+    if (!initializedRef.current) {
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleCredentialResponse,
+        auto_select: false,
+        cancel_on_tap_outside: true,
+      })
+      initializedRef.current = true
+    }
+
+    if (buttonRef.current && buttonRef.current.childElementCount === 0) {
+      window.google.accounts.id.renderButton(buttonRef.current, {
+        theme: "filled_blue",
+        text: "continue_with",
+        shape: "pill",
+        size: "large",
+        width: "100%",
+      })
+    }
+
+    if (autoPrompt && !promptedRef.current) {
+      window.google.accounts.id.prompt((notification) => {
+        const notDisplayed =
+          typeof notification === "object" && notification !== null
+            ? (notification as { isNotDisplayed?: () => boolean }).isNotDisplayed
+            : undefined
+        if (typeof notDisplayed === "function" && notDisplayed()) {
+          setError("Unable to show Google prompt. Please enable third-party cookies.")
+        }
+      })
+      promptedRef.current = true
+    }
+  }, [autoPrompt, handleCredentialResponse, scriptReady])
 
   if (!isGoogleOneTapEnabled || !GOOGLE_CLIENT_ID) {
     return null
@@ -167,6 +134,12 @@ export function GoogleOneTapButton({ returnTo, autoPrompt = true }: GoogleOneTap
 
   return (
     <div className="space-y-3">
+      <Script
+        src="https://accounts.google.com/gsi/client"
+        strategy="afterInteractive"
+        onLoad={() => setScriptReady(true)}
+        onError={() => setError("Failed to load Google Identity Services")}
+      />
       <div className="flex flex-col gap-3">
         <div ref={buttonRef} className="flex justify-center" />
         <Button
