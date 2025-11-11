@@ -9,14 +9,16 @@ export const metadata: Metadata = {
 }
 
 type LoginPageProps = {
-  params: { countryCode: string }
-  searchParams?: Record<string, string | string[] | undefined>
+  params: Promise<{ countryCode?: string }>
+  searchParams?: Promise<Record<string, string | string[] | undefined>>
 }
 
-export default function LoginPage({ params, searchParams }: LoginPageProps) {
-  const countryCode = params?.countryCode ?? DEFAULT_COUNTRY_CODE
+export default async function LoginPage({ params, searchParams }: LoginPageProps) {
+  const resolvedParams = (await params) ?? {}
+  const countryCode = resolvedParams.countryCode ?? DEFAULT_COUNTRY_CODE
   const fallbackRedirect = buildDefaultAccountPath(countryCode)
-  const requestedReturnTo = searchParams?.returnTo
+  const resolvedSearchParams = searchParams ? await searchParams : undefined
+  const requestedReturnTo = resolvedSearchParams?.returnTo
   const returnToValue = Array.isArray(requestedReturnTo)
     ? requestedReturnTo[0]
     : requestedReturnTo

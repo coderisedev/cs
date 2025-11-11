@@ -8,11 +8,12 @@ export const metadata = {
 }
 
 type AccountPageProps = {
-  params: { countryCode: string }
+  params: Promise<{ countryCode?: string }>
 }
 
 export default async function AccountPage({ params }: AccountPageProps) {
-  const countryCode = params?.countryCode ?? DEFAULT_COUNTRY_CODE
+  const resolvedParams = (await params) ?? {}
+  const countryCode = resolvedParams.countryCode ?? DEFAULT_COUNTRY_CODE
   const data = await getAccountPageData()
 
   if (!data.user) {

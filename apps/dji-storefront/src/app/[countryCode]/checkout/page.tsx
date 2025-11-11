@@ -9,11 +9,12 @@ export const metadata = {
 }
 
 type CheckoutPageProps = {
-  params: { countryCode: string }
+  params: Promise<{ countryCode?: string }>
 }
 
 export default async function CheckoutPage({ params }: CheckoutPageProps) {
-  const countryCode = params?.countryCode ?? DEFAULT_COUNTRY_CODE
+  const resolvedParams = (await params) ?? {}
+  const countryCode = resolvedParams.countryCode ?? DEFAULT_COUNTRY_CODE
   const cart = await retrieveCart()
 
   if (!cart || !cart.items || cart.items.length === 0) {
