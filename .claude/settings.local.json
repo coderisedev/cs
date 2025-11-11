@@ -11,7 +11,8 @@
       "Bash(do:*)",
       "Bash(done)",
       "Bash(git merge:*)",
-      "Bash(git branch:*)"
+      "Bash(git branch:*)",
+      "Bash(NODE_ENV=production node -e \"console.log(''NODE_ENV:'', process.env.NODE_ENV)\")"
     ],
     "deny": [],
     "ask": []

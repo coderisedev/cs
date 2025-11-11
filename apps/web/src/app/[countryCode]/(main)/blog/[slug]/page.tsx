@@ -1,16 +1,16 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { getPostBySlug, getAllPosts, getRelatedPosts } from "@/lib/blog/utils"
+import { getPostBySlug, getAllPosts } from "@/lib/data/blog"
 import BlogDetailTemplate from "@/modules/blog/templates/blog-detail"
 
 interface BlogPostPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateStaticParams() {
-  const posts = getAllPosts()
+  const posts = await getAllPosts()
   return posts.map((post) => ({
     slug: post.slug,
   }))
@@ -19,7 +19,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
-  const post = getPostBySlug(params.slug)
+  const { slug } = await params
+  const post = await getPostBySlug(slug)
 
   if (!post) {
     return {
@@ -36,21 +37,31 @@ export async function generateMetadata({
       images: post.featuredImage ? [post.featuredImage] : [],
       type: "article",
       publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt,
       authors: [post.author.name],
       tags: post.tags,
     },
   }
 }
 
-export default function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = getPostBySlug(params.slug)
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const { slug } = await params
+  const [post, allPosts] = await Promise.all([
+    getPostBySlug(slug),
+    getAllPosts(),
+  ])
 
   if (!post) {
     notFound()
   }
 
-  const relatedPosts = getRelatedPosts(post, 3)
+  // Get related posts by category or tags
+  const relatedPosts = allPosts
+    .filter((p) => {
+      if (p.id === post.id) return false
+      if (p.category === post.category) return true
+      return p.tags.some((tag) => post.tags.includes(tag))
+    })
+    .slice(0, 3)
 
   return <BlogDetailTemplate post={post} relatedPosts={relatedPosts} />
 }

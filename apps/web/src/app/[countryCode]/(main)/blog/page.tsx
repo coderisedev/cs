@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { getAllPostSummaries, getAllCategories } from "@/lib/blog/utils"
+import { getAllPostSummaries, getAllCategories } from "@/lib/data/blog"
 import BlogListTemplate from "@/modules/blog/templates/blog-list"
 
 export const metadata: Metadata = {
@@ -8,9 +8,11 @@ export const metadata: Metadata = {
     "Explore articles, tutorials, and insights about flight simulation technology, hardware reviews, and expert tips from the CockpitSim community.",
 }
 
-export default function BlogPage() {
-  const posts = getAllPostSummaries()
-  const categories = getAllCategories()
+export default async function BlogPage() {
+  const [posts, categories] = await Promise.all([
+    getAllPostSummaries(),
+    getAllCategories(),
+  ])
 
   return <BlogListTemplate posts={posts} categories={categories} />
 }

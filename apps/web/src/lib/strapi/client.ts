@@ -51,7 +51,16 @@ export const getStrapiClient = (): StrapiClient => {
 
     if (!response.ok) {
       const errorPayload = await safeReadBody(response)
-      throw new Error(`Strapi request failed (${response.status}): ${errorPayload}`)
+      const errorMessage = `Strapi request failed (${response.status}): ${errorPayload}`
+      
+      // In development, log warning instead of throwing for auth errors
+      if (process.env.NODE_ENV === 'development' && response.status === 401) {
+        console.warn(`[Strapi] ${errorMessage}`)
+        console.warn('[Strapi] Check STRAPI_API_TOKEN in .env.local or make the endpoint public')
+        throw new Error(errorMessage) // Still throw to trigger catch handlers
+      }
+      
+      throw new Error(errorMessage)
     }
 
     return (await response.json()) as T

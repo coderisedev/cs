@@ -430,6 +430,54 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiNewReleaseNewRelease extends Struct.CollectionTypeSchema {
+  collectionName: 'new_releases';
+  info: {
+    description: 'Homepage launch announcements';
+    displayName: 'New Release';
+    pluralName: 'new-releases';
+    singularName: 'new-release';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    cta_label: Schema.Attribute.String;
+    cta_url: Schema.Attribute.String;
+    description: Schema.Attribute.RichText;
+    features: Schema.Attribute.Component<'marketing.feature', true>;
+    gallery: Schema.Attribute.Media<'images' | 'videos', true>;
+    hero_media: Schema.Attribute.Component<'marketing.embed-media', false>;
+    inventory_badge: Schema.Attribute.String;
+    is_featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    is_preorder: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    launch_date: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    legacy_hero_media: Schema.Attribute.Media<'images' | 'videos'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::new-release.new-release'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    regions: Schema.Attribute.JSON;
+    secondary_cta_label: Schema.Attribute.String;
+    secondary_cta_url: Schema.Attribute.String;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    sku_reference: Schema.Attribute.String;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    stats: Schema.Attribute.Component<'marketing.stat', true>;
+    tagline: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiPostPost extends Struct.CollectionTypeSchema {
   collectionName: 'posts';
   info: {
@@ -463,91 +511,41 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiNewReleaseNewRelease extends Struct.CollectionTypeSchema {
-  collectionName: 'new_releases';
-  info: {
-    singularName: 'new-release';
-    pluralName: 'new-releases';
-    displayName: 'New Release';
-    description: 'Homepage launch announcements';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    tagline: Schema.Attribute.String;
-    description: Schema.Attribute.RichText;
-    hero_media: Schema.Attribute.Component<'marketing.embed-media', false>;
-    gallery: Schema.Attribute.Media<'images' | 'videos', true>;
-    launch_date: Schema.Attribute.DateTime & Schema.Attribute.Required;
-    cta_label: Schema.Attribute.String;
-    cta_url: Schema.Attribute.String;
-    secondary_cta_label: Schema.Attribute.String;
-    secondary_cta_url: Schema.Attribute.String;
-    features: Schema.Attribute.Component<'marketing.feature', true>;
-    stats: Schema.Attribute.Component<'marketing.stat', true>;
-    sku_reference: Schema.Attribute.String;
-    is_featured: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
-    is_preorder: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
-    inventory_badge: Schema.Attribute.String;
-    regions: Schema.Attribute.JSON;
-    legacy_hero_media: Schema.Attribute.Media<'images' | 'videos'>;
-    seo: Schema.Attribute.Component<'shared.seo', false>;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::new-release.new-release'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiProductDetailProductDetail
   extends Struct.CollectionTypeSchema {
   collectionName: 'product_details';
   info: {
-    singularName: 'product-detail';
-    pluralName: 'product-details';
-    displayName: 'Product Detail';
     description: 'Rich merchandising content linked to a Medusa product handle';
+    displayName: 'Product Detail';
+    pluralName: 'product-details';
+    singularName: 'product-detail';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    handle: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    hero_excerpt: Schema.Attribute.Text;
-    hero_media: Schema.Attribute.Media<'images' | 'videos'>;
-    gallery: Schema.Attribute.Media<'images' | 'videos', true>;
-    overview: Schema.Attribute.RichText;
-    specs: Schema.Attribute.Component<'product.spec-item', true>;
-    features: Schema.Attribute.Component<'product.feature', true>;
-    faq: Schema.Attribute.Component<'product.qa', true>;
-    downloads: Schema.Attribute.Component<'product.download', true>;
-    shipping_note: Schema.Attribute.RichText;
-    seo: Schema.Attribute.Component<'shared.seo', false>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    downloads: Schema.Attribute.Component<'product.download', true>;
+    faq: Schema.Attribute.Component<'product.qa', true>;
+    features: Schema.Attribute.Component<'product.feature', true>;
+    gallery: Schema.Attribute.Media<'images' | 'videos', true>;
+    handle: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    hero_excerpt: Schema.Attribute.Text;
+    hero_media: Schema.Attribute.Media<'images' | 'videos'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::product-detail.product-detail'
     > &
       Schema.Attribute.Private;
+    overview: Schema.Attribute.RichText;
     publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    shipping_note: Schema.Attribute.RichText;
+    specs: Schema.Attribute.Component<'product.spec-item', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

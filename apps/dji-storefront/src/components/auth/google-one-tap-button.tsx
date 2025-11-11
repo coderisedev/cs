@@ -40,6 +40,7 @@ export function GoogleOneTapButton({ returnTo, autoPrompt = true }: GoogleOneTap
   const [error, setError] = useState<string | null>(null)
   const [processing, setProcessing] = useState(false)
   const [scriptReady, setScriptReady] = useState(false)
+  const [scriptLoadTimeout, setScriptLoadTimeout] = useState(false)
   const buttonRef = useRef<HTMLDivElement | null>(null)
   const initializedRef = useRef(false)
   const promptedRef = useRef(false)
@@ -84,13 +85,34 @@ export function GoogleOneTapButton({ returnTo, autoPrompt = true }: GoogleOneTap
     [processing, returnTo, router]
   )
 
+  // Detect script loading timeout (network issues, firewall, VPN required)
+  useEffect(() => {
+    if (!isGoogleOneTapEnabled || !GOOGLE_CLIENT_ID) {
+      return
+    }
+
+    const timeout = setTimeout(() => {
+      if (!scriptReady && !window.google?.accounts?.id) {
+        setScriptLoadTimeout(true)
+        setError(
+          "Unable to load Google services. This may be due to network restrictions or firewall. " +
+          "Please check your connection or use email login instead."
+        )
+      }
+    }, 10000) // 10 second timeout
+
+    return () => clearTimeout(timeout)
+  }, [scriptReady])
+
   useEffect(() => {
     if (!isGoogleOneTapEnabled || !GOOGLE_CLIENT_ID || !scriptReady) {
       return
     }
 
     if (typeof window === "undefined" || !window.google?.accounts?.id) {
-      setError("Google Identity Services unavailable in this environment")
+      if (!scriptLoadTimeout) {
+        setError("Google Identity Services unavailable in this environment")
+      }
       return
     }
 
@@ -137,8 +159,16 @@ export function GoogleOneTapButton({ returnTo, autoPrompt = true }: GoogleOneTap
       <Script
         src="https://accounts.google.com/gsi/client"
         strategy="afterInteractive"
-        onLoad={() => setScriptReady(true)}
-        onError={() => setError("Failed to load Google Identity Services")}
+        onLoad={() => {
+          setScriptReady(true)
+          setScriptLoadTimeout(false)
+        }}
+        onError={() => {
+          setError(
+            "Failed to load Google services. This may indicate network restrictions. " +
+            "Please use email login or check your VPN/firewall settings."
+          )
+        }}
       />
       <div className="flex flex-col gap-3">
         <div ref={buttonRef} className="flex justify-center" />
@@ -146,7 +176,7 @@ export function GoogleOneTapButton({ returnTo, autoPrompt = true }: GoogleOneTap
           type="button"
           variant="ghost"
           className="w-full border border-border-primary"
-          disabled={processing}
+          disabled={processing || scriptLoadTimeout || !scriptReady}
           onClick={() => {
             setError(null)
             if (typeof window !== "undefined" && window.google?.accounts?.id) {
@@ -155,6 +185,8 @@ export function GoogleOneTapButton({ returnTo, autoPrompt = true }: GoogleOneTap
                   setError("Unable to show Google prompt. Please ensure third-party cookies are enabled.")
                 }
               })
+            } else if (!scriptReady) {
+              setError("Google services are still loading, please wait...")
             }
           }}
         >
@@ -162,6 +194,13 @@ export function GoogleOneTapButton({ returnTo, autoPrompt = true }: GoogleOneTap
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Connecting to Google...
+            </>
+          ) : scriptLoadTimeout ? (
+            "Google Login Unavailable"
+          ) : !scriptReady ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Loading Google...
             </>
           ) : (
             "Use Google One Tap"

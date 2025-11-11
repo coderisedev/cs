@@ -1,6 +1,6 @@
 export interface BlogAuthor {
   name: string
-  avatar?: string
+  avatar?: string | null
   bio?: string
 }
 
@@ -11,7 +11,7 @@ export interface BlogPost {
   excerpt: string
   content: string // Markdown content
   author: BlogAuthor
-  featuredImage?: string
+  featuredImage?: string | null
   category: string
   tags: string[]
   readTime: number // in minutes

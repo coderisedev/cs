@@ -110,6 +110,17 @@ export type NewRelease = {
 }
 
 export const getLatestNewRelease = async (): Promise<NewRelease | null> => {
+  // Skip Strapi fetch if not configured
+  const strapiUrl = process.env.STRAPI_API_URL ?? process.env.NEXT_PUBLIC_STRAPI_URL
+  const strapiToken = process.env.STRAPI_API_TOKEN
+  
+  if (!strapiUrl || !strapiToken) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('[new-release] Strapi not configured (missing URL or token), skipping new release fetch')
+    }
+    return null
+  }
+
   const now = new Date().toISOString()
 
   try {
@@ -134,7 +145,9 @@ export const getLatestNewRelease = async (): Promise<NewRelease | null> => {
     const normalized = normalizeEntity(entity)
     return mapNewRelease(normalized)
   } catch (error) {
-    console.error('[new-release] Failed to fetch data from Strapi', error)
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('[new-release] Failed to fetch data from Strapi:', error instanceof Error ? error.message : error)
+    }
     return null
   }
 }

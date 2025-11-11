@@ -12,31 +12,31 @@ export interface BlogAuthor extends Struct.ComponentSchema {
 export interface MarketingEmbedMedia extends Struct.ComponentSchema {
   collectionName: 'components_marketing_embed_media';
   info: {
-    displayName: 'embed-media';
     description: 'Hero media supporting uploads or external embeds';
+    displayName: 'embed-media';
     icon: 'play';
   };
   attributes: {
-    type: Schema.Attribute.Enumeration<['image', 'video', 'embed']> &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'image'>;
+    alt_text: Schema.Attribute.String;
     asset: Schema.Attribute.Media<'images' | 'videos'>;
     embed_url: Schema.Attribute.String;
     thumbnail: Schema.Attribute.Media<'images'>;
-    alt_text: Schema.Attribute.String;
+    type: Schema.Attribute.Enumeration<['image', 'video', 'embed']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'image'>;
   };
 }
 
 export interface MarketingFeature extends Struct.ComponentSchema {
   collectionName: 'components_marketing_features';
   info: {
-    displayName: 'feature';
     description: 'Homepage release feature highlight';
+    displayName: 'feature';
     icon: 'star';
   };
   attributes: {
-    heading: Schema.Attribute.String & Schema.Attribute.Required;
     body: Schema.Attribute.RichText;
+    heading: Schema.Attribute.String & Schema.Attribute.Required;
     media: Schema.Attribute.Media<'images' | 'videos'>;
   };
 }
@@ -44,41 +44,41 @@ export interface MarketingFeature extends Struct.ComponentSchema {
 export interface MarketingStat extends Struct.ComponentSchema {
   collectionName: 'components_marketing_stats';
   info: {
-    displayName: 'stat';
     description: 'Key metric for release banner';
+    displayName: 'stat';
     icon: 'chartBubble';
   };
   attributes: {
+    description: Schema.Attribute.String;
     label: Schema.Attribute.String & Schema.Attribute.Required;
     value: Schema.Attribute.String & Schema.Attribute.Required;
-    description: Schema.Attribute.String;
   };
 }
 
 export interface ProductDownload extends Struct.ComponentSchema {
   collectionName: 'components_product_downloads';
   info: {
-    displayName: 'download';
     description: 'Support files or external resources';
+    displayName: 'download';
     icon: 'attachment';
   };
   attributes: {
-    label: Schema.Attribute.String & Schema.Attribute.Required;
-    file: Schema.Attribute.Media<'files' | 'images'>;
     external_url: Schema.Attribute.String;
+    file: Schema.Attribute.Media<'files' | 'images'>;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
 export interface ProductFeature extends Struct.ComponentSchema {
   collectionName: 'components_product_features';
   info: {
-    displayName: 'feature';
     description: 'Highlight block with heading, body, and optional media';
+    displayName: 'feature';
     icon: 'layout';
   };
   attributes: {
-    heading: Schema.Attribute.String & Schema.Attribute.Required;
     body: Schema.Attribute.RichText;
+    heading: Schema.Attribute.String & Schema.Attribute.Required;
     media: Schema.Attribute.Media<'images' | 'videos'>;
   };
 }
@@ -86,21 +86,21 @@ export interface ProductFeature extends Struct.ComponentSchema {
 export interface ProductQa extends Struct.ComponentSchema {
   collectionName: 'components_product_qas';
   info: {
-    displayName: 'qa';
     description: 'FAQ entry';
+    displayName: 'qa';
     icon: 'question';
   };
   attributes: {
-    question: Schema.Attribute.String & Schema.Attribute.Required;
     answer: Schema.Attribute.RichText;
+    question: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
 export interface ProductSpecItem extends Struct.ComponentSchema {
   collectionName: 'components_product_spec_items';
   info: {
-    displayName: 'spec-item';
     description: 'Key/value row for technical specifications';
+    displayName: 'spec-item';
     icon: 'file-text';
   };
   attributes: {
@@ -112,14 +112,14 @@ export interface ProductSpecItem extends Struct.ComponentSchema {
 export interface SharedSeo extends Struct.ComponentSchema {
   collectionName: 'components_shared_seo';
   info: {
-    displayName: 'seo';
     description: 'Meta fields for product detail pages';
+    displayName: 'seo';
     icon: 'search';
   };
   attributes: {
-    meta_title: Schema.Attribute.String;
-    meta_description: Schema.Attribute.Text;
     canonical_url: Schema.Attribute.String;
+    meta_description: Schema.Attribute.Text;
+    meta_title: Schema.Attribute.String;
     og_image: Schema.Attribute.Media<'images'>;
     schema_json: Schema.Attribute.JSON;
   };
