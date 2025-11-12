@@ -304,7 +304,8 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
     const top = window.screenY + Math.max(0, (window.outerHeight - height) / 2)
     const left = window.screenX + Math.max(0, (window.outerWidth - width) / 2)
     const features = `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
-    const url = `/auth/google?returnTo=${encodeURIComponent(returnTo)}`
+    const origin = window.location.origin
+    const url = `${origin}/auth/google?returnTo=${encodeURIComponent(returnTo)}`
     const popup = window.open(url, "google-oauth-popup", features)
 
     if (!popup) {
