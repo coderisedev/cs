@@ -7,7 +7,12 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { loginAction, registerAction } from "@/lib/actions/auth"
 import { Loader2 } from "lucide-react"
-import { GoogleOneTapButton, isGoogleOneTapEnabled } from "@/components/auth/google-one-tap-button"
+import {
+  GoogleOAuthPopupButton,
+  GoogleOneTapButton,
+  isGoogleOAuthPopupEnabled,
+  isGoogleOneTapEnabled,
+} from "@/components/auth/google-one-tap-button"
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 type ViewType = "signin" | "register"
@@ -27,6 +32,7 @@ export function LoginClient({
   const defaultRedirect = `/${countryCode}/account`
   const redirectTarget = returnTo ?? defaultRedirect
   const requiresLoginForFlow = redirectTarget !== defaultRedirect
+  const googleLoginAvailable = isGoogleOneTapEnabled || isGoogleOAuthPopupEnabled
 
   return (
     <div className="container mx-auto px-4 py-16">
@@ -45,10 +51,13 @@ export function LoginClient({
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {isGoogleOneTapEnabled && (
-                <div className="mb-6">
-                  <GoogleOneTapButton returnTo={redirectTarget} />
-                  <div className="mt-4 text-center text-xs uppercase tracking-wide text-foreground-muted">
+              {googleLoginAvailable && (
+                <div className="mb-6 space-y-4">
+                  {isGoogleOAuthPopupEnabled && (
+                    <GoogleOAuthPopupButton returnTo={redirectTarget} />
+                  )}
+                  {isGoogleOneTapEnabled && <GoogleOneTapButton returnTo={redirectTarget} />}
+                  <div className="text-center text-xs uppercase tracking-wide text-foreground-muted">
                     or continue with email
                   </div>
                 </div>

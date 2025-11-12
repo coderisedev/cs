@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react"
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
 const GOOGLE_ONE_TAP_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_ONE_TAP === "true"
+const GOOGLE_OAUTH_POPUP_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_OAUTH_POPUP === "true"
 
 type CredentialResponse = {
   credential?: string
@@ -29,6 +30,7 @@ declare global {
 }
 
 export const isGoogleOneTapEnabled = Boolean(GOOGLE_CLIENT_ID && GOOGLE_ONE_TAP_ENABLED)
+export const isGoogleOAuthPopupEnabled = Boolean(GOOGLE_CLIENT_ID && GOOGLE_OAUTH_POPUP_ENABLED)
 
 type GoogleOneTapButtonProps = {
   returnTo: string
@@ -148,7 +150,7 @@ export function GoogleOneTapButton({ returnTo, autoPrompt = true }: GoogleOneTap
       })
       promptedRef.current = true
     }
-  }, [autoPrompt, handleCredentialResponse, scriptReady])
+  }, [autoPrompt, handleCredentialResponse, scriptReady, scriptLoadTimeout])
 
   if (!isGoogleOneTapEnabled || !GOOGLE_CLIENT_ID) {
     return null
@@ -207,6 +209,131 @@ export function GoogleOneTapButton({ returnTo, autoPrompt = true }: GoogleOneTap
           )}
         </Button>
       </div>
+      {error && (
+        <p className="text-sm text-red-500" role="alert">
+          {error}
+        </p>
+      )}
+    </div>
+  )
+}
+
+type GoogleOAuthPopupButtonProps = {
+  returnTo: string
+}
+
+export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps) {
+  const router = useRouter()
+  const popupRef = useRef<Window | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [launching, setLaunching] = useState(false)
+
+  const closePopup = useCallback(() => {
+    if (popupRef.current && !popupRef.current.closed) {
+      popupRef.current.close()
+    }
+    popupRef.current = null
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return
+    }
+
+    const handleMessage = (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) {
+        return
+      }
+
+      const data = event.data as {
+        source?: string
+        success?: boolean
+        redirectUrl?: string
+        error?: string
+      }
+
+      if (data?.source !== "google-oauth-popup") {
+        return
+      }
+
+      closePopup()
+      setLaunching(false)
+
+      if (data.success && data.redirectUrl) {
+        router.push(data.redirectUrl)
+        router.refresh()
+        return
+      }
+
+      setError(data.error ?? "Google sign-in was cancelled or failed")
+    }
+
+    window.addEventListener("message", handleMessage)
+    return () => window.removeEventListener("message", handleMessage)
+  }, [closePopup, router])
+
+  useEffect(() => {
+    if (!launching || typeof window === "undefined") {
+      return
+    }
+
+    const interval = window.setInterval(() => {
+      if (!popupRef.current || popupRef.current.closed) {
+        window.clearInterval(interval)
+        setLaunching(false)
+      }
+    }, 500)
+
+    return () => window.clearInterval(interval)
+  }, [launching])
+
+  if (!isGoogleOAuthPopupEnabled) {
+    return null
+  }
+
+  const openPopup = () => {
+    if (typeof window === "undefined") {
+      return
+    }
+
+    setError(null)
+    setLaunching(true)
+
+    const width = 480
+    const height = 640
+    const top = window.screenY + Math.max(0, (window.outerHeight - height) / 2)
+    const left = window.screenX + Math.max(0, (window.outerWidth - width) / 2)
+    const features = `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+    const url = `/auth/google?returnTo=${encodeURIComponent(returnTo)}`
+    const popup = window.open(url, "google-oauth-popup", features)
+
+    if (!popup) {
+      setLaunching(false)
+      setError("Popup was blocked. Please allow popups for this site or use email login.")
+      return
+    }
+
+    popupRef.current = popup
+  }
+
+  return (
+    <div className="space-y-2">
+      <Button
+        type="button"
+        variant="outline"
+        className="w-full"
+        disabled={launching}
+        onClick={openPopup}
+      >
+        {launching ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Opening Google...
+          </>
+        ) : (
+          "Continue with Google (Popup)"
+        )}
+      </Button>
       {error && (
         <p className="text-sm text-red-500" role="alert">
           {error}
