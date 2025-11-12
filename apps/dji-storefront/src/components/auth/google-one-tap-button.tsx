@@ -240,7 +240,7 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
       return
     }
 
-    const handleMessage = (event: MessageEvent) => {
+    const handleMessage = async (event: MessageEvent) => {
       const origin = event.origin
       const selfOrigin = window.location.origin
       const allowedOrigins = [selfOrigin, "https://prd.aidenlux.com"]
@@ -254,6 +254,7 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
         success?: boolean
         redirectUrl?: string
         error?: string
+        token?: string
       }
 
       if (data?.source !== "google-oauth-popup") {
@@ -264,6 +265,19 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
       setLaunching(false)
 
       if (data.success && data.redirectUrl) {
+        // If the popup provided a token, persist it via server API to ensure cookies are set in the top window context
+        if (data.token) {
+          try {
+            await fetch("/api/auth/session", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({ token: data.token }),
+            })
+          } catch {
+            // non-fatal; we'll still navigate
+          }
+        }
         router.push(data.redirectUrl)
         router.refresh()
         return

@@ -21,6 +21,8 @@ out/
 .env.development.local
 .env.test.local
 .env.production.local
+# Deployment service envs (sensitive)
+deploy/gce/*.env
 
 # Logs
 npm-debug.log*

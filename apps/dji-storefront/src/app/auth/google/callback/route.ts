@@ -9,7 +9,7 @@ import { buildDefaultAccountPath, sanitizeRedirectPath } from "@/lib/util/redire
 const DEFAULT_REDIRECT = buildDefaultAccountPath()
 
 type PopupPayload =
-  | { source: "google-oauth-popup"; success: true; redirectUrl: string }
+  | { source: "google-oauth-popup"; success: true; redirectUrl: string; token?: string }
   | { source: "google-oauth-popup"; success: false; error: string }
 
 const buildPopupResponse = (payload: PopupPayload) => {
@@ -79,10 +79,19 @@ export async function GET(request: NextRequest) {
       cache: "no-store",
     })
 
-    const payload = await medusaResponse.json().catch(() => ({}))
+    const payload = await medusaResponse.json().catch(() => ({})) as any
 
-    if (medusaResponse.ok && typeof payload?.token === "string") {
-      const token = payload.token
+    // Be tolerant to different provider payload shapes
+    const tokenCandidate =
+      payload?.token ||
+      payload?.access_token ||
+      payload?.jwt ||
+      payload?.result?.token ||
+      payload?.data?.token ||
+      payload?.session?.token
+
+    if (medusaResponse.ok && typeof tokenCandidate === "string") {
+      const token = tokenCandidate as string
       await setAuthToken(token)
       const customerCacheTag = await getCacheTag("customers")
       if (customerCacheTag) {
@@ -95,6 +104,7 @@ export async function GET(request: NextRequest) {
         source: "google-oauth-popup",
         success: true,
         redirectUrl: returnTo,
+        token,
       })
 
       response.cookies.set("_medusa_jwt", token, {
