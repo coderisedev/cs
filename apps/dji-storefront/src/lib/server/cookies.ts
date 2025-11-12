@@ -7,12 +7,16 @@ export const getAuthHeaders = async (): Promise<Record<string, string>> => {
   try {
     const cookies = await nextCookies()
     const token = cookies.get("_medusa_jwt")?.value
+    const pk = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
 
-    if (!token) {
-      return {}
+    const headers: Record<string, string> = {}
+    if (pk) {
+      headers["x-publishable-api-key"] = pk
     }
-
-    return { authorization: `Bearer ${token}` }
+    if (token) {
+      headers["authorization"] = `Bearer ${token}`
+    }
+    return headers
   } catch {
     return {}
   }
