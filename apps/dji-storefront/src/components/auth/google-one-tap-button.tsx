@@ -361,3 +361,21 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
     </div>
   )
 }
+
+export function GoogleOAuthRedirectButton({ returnTo }: { returnTo: string }) {
+  return (
+    <Button
+      type="button"
+      variant="secondary"
+      className="w-full"
+      onClick={() => {
+        if (typeof window !== "undefined") {
+          const origin = window.location.origin
+          window.location.href = `${origin}/auth/google?returnTo=${encodeURIComponent(returnTo)}`
+        }
+      }}
+    >
+      Continue with Google (Full Page)
+    </Button>
+  )
+}

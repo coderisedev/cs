@@ -9,6 +9,7 @@ import { loginAction, registerAction } from "@/lib/actions/auth"
 import { Loader2 } from "lucide-react"
 import {
   GoogleOAuthPopupButton,
+  GoogleOAuthRedirectButton,
   GoogleOneTapButton,
   isGoogleOAuthPopupEnabled,
   isGoogleOneTapEnabled,
@@ -54,7 +55,10 @@ export function LoginClient({
               {googleLoginAvailable && (
                 <div className="mb-6 space-y-4">
                   {isGoogleOAuthPopupEnabled && (
-                    <GoogleOAuthPopupButton returnTo={redirectTarget} />
+                    <>
+                      <GoogleOAuthPopupButton returnTo={redirectTarget} />
+                      <GoogleOAuthRedirectButton returnTo={redirectTarget} />
+                    </>
                   )}
                   {isGoogleOneTapEnabled && <GoogleOneTapButton returnTo={redirectTarget} />}
                   <div className="text-center text-xs uppercase tracking-wide text-foreground-muted">
