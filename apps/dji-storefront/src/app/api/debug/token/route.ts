@@ -27,6 +27,8 @@ export async function GET() {
   const redacted = payload
     ? {
         sub: payload.sub,
+        actor_id: payload.actor_id,
+        id: payload.id,
         email: payload.email || payload.mail || payload.preferred_username || undefined,
         actor_type: payload.actor_type,
         iss: payload.iss,
@@ -38,4 +40,3 @@ export async function GET() {
     : null
   return NextResponse.json({ ok: true, header, claims: redacted }, { status: 200 })
 }
-

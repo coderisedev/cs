@@ -3,6 +3,17 @@
 import "server-only"
 import { cookies as nextCookies } from "next/headers"
 
+function decodeJwtPayload(token: string): Record<string, unknown> | null {
+  try {
+    const parts = token.split(".")
+    if (parts.length !== 3) return null
+    const b64 = parts[1].replace(/-/g, "+").replace(/_/g, "/")
+    const json = Buffer.from(b64, "base64").toString("utf8")
+    return JSON.parse(json)
+  } catch {
+    return null
+  }
+}
 export const getAuthHeaders = async (): Promise<Record<string, string>> => {
   try {
     const cookies = await nextCookies()
@@ -17,6 +28,11 @@ export const getAuthHeaders = async (): Promise<Record<string, string>> => {
       headers["authorization"] = `Bearer ${token}`
       headers["x-medusa-access-token"] = token
       headers["x-medusa-actor-type"] = "customer"
+      const claims = decodeJwtPayload(token)
+      const actorId = (claims?.["actor_id"] || claims?.["sub"] || claims?.["id"]) as string | undefined
+      if (actorId) {
+        headers["x-medusa-actor-id"] = actorId
+      }
     }
     return headers
   } catch {
