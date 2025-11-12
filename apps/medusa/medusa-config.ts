@@ -1,5 +1,6 @@
 import path from "path"
 import { Modules, defineConfig, loadEnv } from "@medusajs/framework/utils"
+import type { AuthModuleOptions } from "@medusajs/auth/dist/types"
 
 const projectRoot = path.resolve(__dirname, "..")
 
@@ -64,18 +65,43 @@ const FORCE_PATH_STYLE =
   ).toLowerCase() === "true"
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
+const GOOGLE_OAUTH_CALLBACK_URL = process.env.GOOGLE_OAUTH_CALLBACK_URL
 
-const AUTH_PROVIDERS = GOOGLE_CLIENT_ID
-  ? [
-      {
-        resolve: "./src/modules/auth-google-one-tap",
-        id: "google-one-tap",
-        options: {
-          clientId: GOOGLE_CLIENT_ID,
-        },
-      },
-    ]
-  : []
+const AUTH_PROVIDERS: NonNullable<AuthModuleOptions["providers"]> = []
+
+const EMAILPASS_DISABLED =
+  (process.env.MEDUSA_AUTH_EMAILPASS_DISABLED ?? "false").toLowerCase() === "true"
+
+if (!EMAILPASS_DISABLED) {
+  AUTH_PROVIDERS.push({
+    resolve: "@medusajs/auth-emailpass",
+    id: "emailpass",
+    options: {},
+  })
+}
+
+if (GOOGLE_CLIENT_ID) {
+  AUTH_PROVIDERS.push({
+    resolve: "./src/modules/auth-google-one-tap",
+    id: "google-one-tap",
+    options: {
+      clientId: GOOGLE_CLIENT_ID,
+    },
+  })
+}
+
+if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && GOOGLE_OAUTH_CALLBACK_URL) {
+  AUTH_PROVIDERS.push({
+    resolve: "@medusajs/auth-google",
+    id: "google",
+    options: {
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
+      callbackUrl: GOOGLE_OAUTH_CALLBACK_URL,
+    },
+  })
+}
 
 export default defineConfig({
   projectConfig: {
