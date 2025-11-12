@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing token" }, { status: 400 })
     }
     await setAuthToken(token)
+    console.log(`[auth] session cookie set at`, new Date().toISOString())
     return new NextResponse(null, { status: 204 })
   } catch (error) {
     const msg = error instanceof Error ? error.message : "Failed to set session"
