@@ -21,9 +21,21 @@ const buildPopupResponse = (payload: PopupPayload) => {
         (function() {
           const message = ${JSON.stringify(payload)};
           if (window.opener && !window.opener.closed) {
-            window.opener.postMessage(message, window.location.origin);
+            try {
+              window.opener.postMessage(message, window.location.origin);
+            } catch (err) {
+              console.warn('Unable to postMessage to opener', err);
+            }
+            if (message.success && message.redirectUrl) {
+              try {
+                window.opener.location.href = message.redirectUrl;
+                window.opener.focus();
+              } catch (err) {
+                console.warn('Unable to navigate opener', err);
+              }
+            }
           }
-          window.close();
+          setTimeout(() => window.close(), 250);
         })();
       </script>
     </body>
