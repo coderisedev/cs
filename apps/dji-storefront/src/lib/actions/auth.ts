@@ -119,14 +119,20 @@ export async function signoutAction(countryCode: string = "us") {
   redirect(`/${countryCode}`)
 }
 
-export async function transferCart() {
+export async function transferCart(authToken?: string) {
   try {
     const cartId = await getCartId()
     if (!cartId) {
       return
     }
 
-    const headers = await getAuthHeaders()
+    let headers = await getAuthHeaders()
+    if (authToken) {
+      headers = {
+        ...headers,
+        authorization: `Bearer ${authToken}`,
+      }
+    }
     if (!headers.authorization) {
       return
     }

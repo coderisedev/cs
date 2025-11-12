@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { revalidateTag } from "next/cache"
 import { MEDUSA_BACKEND_URL } from "@/lib/medusa"
-import { setAuthToken, getCacheTag } from "@/lib/server/cookies"
+import { getCacheTag } from "@/lib/server/cookies"
 import { transferCart } from "@/lib/actions/auth"
 import { buildDefaultAccountPath, sanitizeRedirectPath } from "@/lib/util/redirect"
 
@@ -70,14 +70,13 @@ export async function GET(request: NextRequest) {
     const payload = await medusaResponse.json().catch(() => ({}))
 
     if (medusaResponse.ok && typeof payload?.token === "string") {
-      await setAuthToken(payload.token)
-
+      const token = payload.token
       const customerCacheTag = await getCacheTag("customers")
       if (customerCacheTag) {
         revalidateTag(customerCacheTag)
       }
 
-      await transferCart()
+      await transferCart(token)
 
       const response = buildPopupResponse({
         source: "google-oauth-popup",
@@ -85,7 +84,7 @@ export async function GET(request: NextRequest) {
         redirectUrl: returnTo,
       })
 
-      response.cookies.set("_medusa_jwt", payload.token, {
+      response.cookies.set("_medusa_jwt", token, {
         maxAge: 60 * 60 * 24 * 7,
         httpOnly: true,
         sameSite: "strict",
