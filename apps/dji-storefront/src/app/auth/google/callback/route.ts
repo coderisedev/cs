@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { revalidateTag } from "next/cache"
 import { MEDUSA_BACKEND_URL } from "@/lib/medusa"
-import { getCacheTag } from "@/lib/server/cookies"
+import { setAuthToken, getCacheTag } from "@/lib/server/cookies"
 import { transferCart } from "@/lib/actions/auth"
 import { buildDefaultAccountPath, sanitizeRedirectPath } from "@/lib/util/redirect"
 
@@ -71,6 +71,7 @@ export async function GET(request: NextRequest) {
 
     if (medusaResponse.ok && typeof payload?.token === "string") {
       const token = payload.token
+      await setAuthToken(token)
       const customerCacheTag = await getCacheTag("customers")
       if (customerCacheTag) {
         revalidateTag(customerCacheTag)
