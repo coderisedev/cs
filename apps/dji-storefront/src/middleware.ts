@@ -21,6 +21,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // Allow auth popup routes (e.g., /auth/google) without forcing /us prefix
+  if (pathname === "/auth" || pathname.startsWith("/auth/")) {
+    return NextResponse.next()
+  }
+
   // Already on /us path - allow through
   if (pathname === "/us" || pathname.startsWith("/us/")) {
     // Set cache ID cookie if not present
