@@ -77,11 +77,21 @@ export async function GET(request: NextRequest) {
 
       await transferCart()
 
-      return buildPopupResponse({
+      const response = buildPopupResponse({
         source: "google-oauth-popup",
         success: true,
         redirectUrl: returnTo,
       })
+
+      response.cookies.set("_medusa_jwt", payload.token, {
+        maxAge: 60 * 60 * 24 * 7,
+        httpOnly: true,
+        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
+      })
+
+      return response
     }
 
     const errorMessage =
