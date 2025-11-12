@@ -26,7 +26,8 @@ const buildPopupResponse = (payload: PopupPayload) => {
           const message = ${JSON.stringify(payload)};
           if (window.opener && !window.opener.closed) {
             try {
-              window.opener.postMessage(message, window.location.origin);
+              // Send to any origin; the opener validates event.origin.
+              window.opener.postMessage(message, "*");
             } catch (err) {
               console.warn('Unable to postMessage to opener', err);
             }
