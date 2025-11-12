@@ -116,6 +116,39 @@ export async function GET(request: NextRequest) {
 
       await transferCart(token)
 
+      // Verify customer availability; if missing, attempt lightweight bootstrap
+      try {
+        const pk = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+        const headers: Record<string, string> = {
+          authorization: `Bearer ${token}`,
+        }
+        if (pk) headers["x-publishable-api-key"] = pk
+
+        const meRes = await fetch(new URL(`/store/customers/me`, MEDUSA_BACKEND_URL), {
+          method: "GET",
+          headers,
+          cache: "no-store",
+        })
+
+        if (meRes.status === 401) {
+          // Try to decode email from JWT to create a minimal customer profile
+          const parts = token.split(".")
+          if (parts.length === 3) {
+            try {
+              const json = JSON.parse(Buffer.from(parts[1].replace(/-/g, "+").replace(/_/g, "/"), "base64").toString("utf8"))
+              const email = (json.email || json.mail || json.upn || json.preferred_username || "").toString()
+              if (email) {
+                await fetch(new URL(`/store/customers`, MEDUSA_BACKEND_URL), {
+                  method: "POST",
+                  headers: { ...headers, "Content-Type": "application/json" },
+                  body: JSON.stringify({ email }),
+                }).catch(() => {})
+              }
+            } catch {}
+          }
+        }
+      } catch {}
+
       const response = buildPopupResponse({
         source: "google-oauth-popup",
         success: true,
