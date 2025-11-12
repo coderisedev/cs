@@ -15,6 +15,8 @@ export const getAuthHeaders = async (): Promise<Record<string, string>> => {
     }
     if (token) {
       headers["authorization"] = `Bearer ${token}`
+      headers["x-medusa-access-token"] = token
+      headers["x-medusa-actor-type"] = "customer"
     }
     return headers
   } catch {
