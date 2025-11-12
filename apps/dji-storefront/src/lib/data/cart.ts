@@ -78,7 +78,7 @@ export const addToCart = async ({ variantId, quantity, countryCode }: { variantI
         variant_id: variantId,
         quantity,
       },
-      {},
+      undefined,
       headers
     )
     await revalidateCart()
@@ -96,7 +96,7 @@ export const updateLineItem = async ({ lineId, quantity }: { lineId: string; qua
   }
 
   try {
-    await sdk.store.cart.updateLineItem(cartId, lineId, { quantity }, {}, headers)
+    await sdk.store.cart.updateLineItem(cartId, lineId, { quantity }, undefined, headers)
     await revalidateCart()
   } catch (error) {
     throw medusaError(error)
@@ -112,7 +112,7 @@ export const deleteLineItem = async (lineId: string) => {
   }
 
   try {
-    await sdk.store.cart.deleteLineItem(cartId, lineId, {}, headers)
+    await sdk.store.cart.deleteLineItem(cartId, lineId, headers)
     await revalidateCart()
   } catch (error) {
     throw medusaError(error)

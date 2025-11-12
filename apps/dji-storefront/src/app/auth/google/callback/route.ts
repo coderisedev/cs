@@ -47,7 +47,7 @@ const getReturnRedirect = async (state?: string | null) => {
   const stored = cookieStore.get(cookieName)?.value
 
   if (stored) {
-    cookieStore.delete(cookieName, { path: "/" })
+    cookieStore.delete({ name: cookieName, path: "/" })
     return sanitizeRedirectPath(decodeURIComponent(stored), DEFAULT_REDIRECT)
   }
 
