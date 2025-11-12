@@ -2,6 +2,7 @@ import { AccountClient } from "@/components/account/account-client"
 import { getAccountPageData } from "@/lib/data/account"
 import { redirect } from "next/navigation"
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
+import { signoutAction } from "@/lib/actions/auth"
 
 export const metadata = {
   title: "Account · DJI Storefront",
@@ -21,5 +22,14 @@ export default async function AccountPage({ params }: AccountPageProps) {
     redirect(`/${countryCode}/login?returnTo=${target}`)
   }
 
-  return <AccountClient user={data.user} orders={data.orders} wishlist={data.wishlist} />
+  const boundSignout = signoutAction.bind(null, countryCode)
+
+  return (
+    <AccountClient
+      user={data.user}
+      orders={data.orders}
+      wishlist={data.wishlist}
+      onSignOut={boundSignout}
+    />
+  )
 }

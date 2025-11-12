@@ -3,6 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useEffect, useMemo, useState, useActionState } from "react"
+import { useFormStatus } from "react-dom"
 import { useRouter } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -29,6 +30,7 @@ type AccountClientProps = {
   user: AccountUser | null
   orders: AccountOrder[]
   wishlist: AccountWishlistItem[]
+  onSignOut: (formData: FormData) => Promise<void>
 }
 
 const formatDate = (date: string | Date) =>
@@ -53,7 +55,7 @@ const resolveImageUrl = (image: unknown): string | null => {
   return null
 }
 
-export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
+export function AccountClient({ user, orders, wishlist, onSignOut }: AccountClientProps) {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState("profile")
   const [mutableUser, setMutableUser] = useState(user)
@@ -142,13 +144,18 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
 
   return (
     <div className="container mx-auto px-4 lg:px-12 py-16 space-y-10">
-      <header className="space-y-2">
-        <p className="text-xs uppercase tracking-[0.3em] text-foreground-muted">Account</p>
-        <h1 className="text-4xl font-semibold text-foreground-primary">My Account</h1>
-        <p className="text-foreground-secondary max-w-2xl">
-          Manage your personal information, review orders, maintain addresses, and control storefront preferences – fully
-          aligned with the cockpit simulator experience.
-        </p>
+      <header className="space-y-4 md:space-y-0 md:flex md:items-start md:justify-between">
+        <div className="space-y-2 max-w-2xl">
+          <p className="text-xs uppercase tracking-[0.3em] text-foreground-muted">Account</p>
+          <h1 className="text-4xl font-semibold text-foreground-primary">My Account</h1>
+          <p className="text-foreground-secondary">
+            Manage your personal information, review orders, maintain addresses, and control storefront preferences – fully
+            aligned with the cockpit simulator experience.
+          </p>
+        </div>
+        <form action={onSignOut} className="flex justify-end">
+          <SignOutButton />
+        </form>
       </header>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -660,6 +667,23 @@ export function AccountClient({ user, orders, wishlist }: AccountClientProps) {
         </TabsContent>
       </Tabs>
     </div>
+  )
+}
+
+function SignOutButton() {
+  const { pending } = useFormStatus()
+
+  return (
+    <Button type="submit" variant="outline" disabled={pending} className="min-w-[8rem]">
+      {pending ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Signing out...
+        </>
+      ) : (
+        "Sign Out"
+      )}
+    </Button>
   )
 }
 
