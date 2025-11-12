@@ -13,11 +13,17 @@ export async function GET(request: NextRequest) {
 
   try {
     const startUrl = new URL("/auth/customer/google", MEDUSA_BACKEND_URL)
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    }
+    const pk = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+    if (pk) {
+      headers["x-publishable-api-key"] = pk
+    }
+
     const medusaResponse = await fetch(startUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
       cache: "no-store",
     })
 

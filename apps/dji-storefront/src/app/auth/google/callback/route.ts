@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { revalidateTag } from "next/cache"
-import { MEDUSA_BACKEND_URL } from "@/lib/medusa"
+import { MEDUSA_BACKEND_URL, sdk } from "@/lib/medusa"
 import { setAuthToken, getCacheTag } from "@/lib/server/cookies"
 import { transferCart } from "@/lib/actions/auth"
 import { buildDefaultAccountPath, sanitizeRedirectPath } from "@/lib/util/redirect"
@@ -74,23 +74,33 @@ export async function GET(request: NextRequest) {
   const callbackUrl = new URL(`/auth/customer/google/callback${request.nextUrl.search}`, MEDUSA_BACKEND_URL)
 
   try {
-    const medusaResponse = await fetch(callbackUrl, {
-      method: "GET",
-      cache: "no-store",
-    })
+    let tokenCandidate: string | undefined
 
-    const payload = await medusaResponse.json().catch(() => ({})) as any
+    // Preferred: use SDK which automatically attaches publishable key
+    try {
+      const queryParams = Object.fromEntries(request.nextUrl.searchParams.entries())
+      tokenCandidate = (await sdk.auth.callback("customer", "google", queryParams as any)) as unknown as string
+    } catch {
+      // Fallback to direct fetch
+      const pk = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+      const headers: Record<string, string> = {}
+      if (pk) headers["x-publishable-api-key"] = pk
+      const medusaResponse = await fetch(callbackUrl, {
+        method: "GET",
+        headers,
+        cache: "no-store",
+      })
+      const payload = (await medusaResponse.json().catch(() => ({}))) as any
+      tokenCandidate =
+        payload?.token ||
+        payload?.access_token ||
+        payload?.jwt ||
+        payload?.result?.token ||
+        payload?.data?.token ||
+        payload?.session?.token
+    }
 
-    // Be tolerant to different provider payload shapes
-    const tokenCandidate =
-      payload?.token ||
-      payload?.access_token ||
-      payload?.jwt ||
-      payload?.result?.token ||
-      payload?.data?.token ||
-      payload?.session?.token
-
-    if (medusaResponse.ok && typeof tokenCandidate === "string") {
+    if (typeof tokenCandidate === "string" && tokenCandidate) {
       const token = tokenCandidate as string
       await setAuthToken(token)
       const customerCacheTag = await getCacheTag("customers")
