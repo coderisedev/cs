@@ -31,14 +31,8 @@ const buildPopupResponse = (payload: PopupPayload) => {
             } catch (err) {
               console.warn('Unable to postMessage to opener', err);
             }
-            if (message.success && message.redirectUrl) {
-              try {
-                window.opener.location.href = message.redirectUrl;
-                window.opener.focus();
-              } catch (err) {
-                console.warn('Unable to navigate opener', err);
-              }
-            }
+            // Do not navigate the opener here; let the opener handle
+            // session persistence first, then navigate.
           }
           setTimeout(() => window.close(), 250);
         })();

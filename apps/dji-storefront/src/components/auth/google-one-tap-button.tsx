@@ -265,7 +265,7 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
       setLaunching(false)
 
       if (data.success && data.redirectUrl) {
-        // If the popup provided a token, persist it via server API to ensure cookies are set in the top window context
+        // Persist token in main window first, then do a full navigation
         if (data.token) {
           try {
             await fetch("/api/auth/session", {
@@ -274,13 +274,16 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
               credentials: "include",
               body: JSON.stringify({ token: data.token }),
             })
+            // small delay to ensure Set-Cookie is applied before navigation
+            await new Promise((r) => setTimeout(r, 100))
           } catch {
             // non-fatal; we'll still navigate
           }
         }
-        router.push(data.redirectUrl)
-        router.refresh()
-        return
+        if (typeof window !== "undefined") {
+          window.location.href = data.redirectUrl
+          return
+        }
       }
 
       setError(data.error ?? "Google sign-in was cancelled or failed")

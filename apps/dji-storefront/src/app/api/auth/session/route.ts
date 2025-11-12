@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     }
     await setAuthToken(token)
     console.log(`[auth] session cookie set at`, new Date().toISOString())
-    return new NextResponse(null, { status: 204 })
+    return NextResponse.json({ ok: true }, { status: 200, headers: { 'Cache-Control': 'no-store' } })
   } catch (error) {
     const msg = error instanceof Error ? error.message : "Failed to set session"
     return NextResponse.json({ error: msg }, { status: 400 })
