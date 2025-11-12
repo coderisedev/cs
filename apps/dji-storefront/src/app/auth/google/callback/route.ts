@@ -70,43 +70,12 @@ const getReturnRedirect = async (state?: string | null) => {
 export async function GET(request: NextRequest) {
   const state = request.nextUrl.searchParams.get("state")
   const returnTo = await getReturnRedirect(state)
-  const callbackUrl = new URL(`/auth/customer/google/callback${request.nextUrl.search}`, MEDUSA_BACKEND_URL)
-
   try {
-    let tokenCandidate: string | undefined
-    let lastStatus: number | undefined
-    let lastPayload: any
-    let sdkError: unknown
-
-    // Preferred: use SDK which automatically attaches publishable key
-    try {
-      const queryParams = Object.fromEntries(request.nextUrl.searchParams.entries())
-      tokenCandidate = (await sdk.auth.callback("customer", "google", queryParams as any)) as unknown as string
-    } catch (err) {
-      sdkError = err
-      // Fallback to direct fetch
-      const pk = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
-      const headers: Record<string, string> = {}
-      if (pk) headers["x-publishable-api-key"] = pk
-      const medusaResponse = await fetch(callbackUrl, {
-        method: "GET",
-        headers,
-        cache: "no-store",
-      })
-      lastStatus = medusaResponse.status
-      const payload = (await medusaResponse.json().catch(() => ({}))) as any
-      lastPayload = payload
-      tokenCandidate =
-        payload?.token ||
-        payload?.access_token ||
-        payload?.jwt ||
-        payload?.result?.token ||
-        payload?.data?.token ||
-        payload?.session?.token
-    }
+    const queryParams = Object.fromEntries(request.nextUrl.searchParams.entries())
+    const tokenCandidate = (await sdk.auth.callback("customer", "google", queryParams as any)) as unknown as string
 
     if (typeof tokenCandidate === "string" && tokenCandidate) {
-      console.log(`[auth] google callback exchanged token via ${sdkError ? 'fallback' : 'sdk'} at`, new Date().toISOString())
+      console.log(`[auth] google callback exchanged token via sdk at`, new Date().toISOString())
       const token = tokenCandidate as string
       await setAuthToken(token)
       const customerCacheTag = await getCacheTag("customers")
@@ -167,16 +136,11 @@ export async function GET(request: NextRequest) {
       return response
     }
 
-    const errorMessage =
-      lastPayload?.error ||
-      lastPayload?.message ||
-      (lastStatus ? `Medusa rejected OAuth callback (${lastStatus})` : (sdkError instanceof Error ? sdkError.message : "Unable to complete OAuth callback"))
-
-    return buildPopupResponse({
-      source: "google-oauth-popup",
-      success: false,
-      error: errorMessage,
-    })
+      return buildPopupResponse({
+        source: "google-oauth-popup",
+        success: false,
+        error: "Medusa could not issue a session token",
+      })
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unexpected Google OAuth failure"
     return buildPopupResponse({
