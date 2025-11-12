@@ -75,12 +75,16 @@ export async function GET(request: NextRequest) {
 
   try {
     let tokenCandidate: string | undefined
+    let lastStatus: number | undefined
+    let lastPayload: any
+    let sdkError: unknown
 
     // Preferred: use SDK which automatically attaches publishable key
     try {
       const queryParams = Object.fromEntries(request.nextUrl.searchParams.entries())
       tokenCandidate = (await sdk.auth.callback("customer", "google", queryParams as any)) as unknown as string
-    } catch {
+    } catch (err) {
+      sdkError = err
       // Fallback to direct fetch
       const pk = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
       const headers: Record<string, string> = {}
@@ -90,7 +94,9 @@ export async function GET(request: NextRequest) {
         headers,
         cache: "no-store",
       })
+      lastStatus = medusaResponse.status
       const payload = (await medusaResponse.json().catch(() => ({}))) as any
+      lastPayload = payload
       tokenCandidate =
         payload?.token ||
         payload?.access_token ||
@@ -129,7 +135,9 @@ export async function GET(request: NextRequest) {
     }
 
     const errorMessage =
-      payload?.error || payload?.message || `Medusa rejected OAuth callback (${medusaResponse.status})`
+      lastPayload?.error ||
+      lastPayload?.message ||
+      (lastStatus ? `Medusa rejected OAuth callback (${lastStatus})` : (sdkError instanceof Error ? sdkError.message : "Unable to complete OAuth callback"))
 
     return buildPopupResponse({
       source: "google-oauth-popup",
