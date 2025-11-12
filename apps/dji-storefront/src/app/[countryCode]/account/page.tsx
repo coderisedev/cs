@@ -8,6 +8,10 @@ export const metadata = {
   title: "Account · DJI Storefront",
 }
 
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
 type AccountPageProps = {
   params: Promise<{ countryCode?: string }>
 }
