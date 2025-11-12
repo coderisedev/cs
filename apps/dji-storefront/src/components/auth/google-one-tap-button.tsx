@@ -241,7 +241,11 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
     }
 
     const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) {
+      const origin = event.origin
+      const selfOrigin = window.location.origin
+      const allowedOrigins = [selfOrigin, "https://prd.aidenlux.com"]
+
+      if (!allowedOrigins.includes(origin)) {
         return
       }
 
