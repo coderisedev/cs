@@ -112,6 +112,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (typeof tokenCandidate === "string" && tokenCandidate) {
+      console.log(`[auth] google callback exchanged token via ${sdkError ? 'fallback' : 'sdk'} at`, new Date().toISOString())
       const token = tokenCandidate as string
       await setAuthToken(token)
       const customerCacheTag = await getCacheTag("customers")
@@ -131,7 +132,7 @@ export async function GET(request: NextRequest) {
       response.cookies.set("_medusa_jwt", token, {
         maxAge: 60 * 60 * 24 * 7,
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
         path: "/",
       })
