@@ -33,6 +33,8 @@ const buildPopupResponse = (payload: PopupPayload) => {
     status: 200,
     headers: {
       "Content-Type": "text/html; charset=utf-8",
+      "Cross-Origin-Opener-Policy": "unsafe-none",
+      "Cross-Origin-Embedder-Policy": "unsafe-none",
     },
   })
 }
