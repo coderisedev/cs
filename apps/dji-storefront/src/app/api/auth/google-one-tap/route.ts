@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { sdk } from "@/lib/medusa"
 import { setAuthToken, getCacheTag } from "@/lib/server/cookies"
+
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 import { revalidateTag } from "next/cache"
 import { transferCart } from "@/lib/actions/auth"
 import { buildDefaultAccountPath, sanitizeRedirectPath } from "@/lib/util/redirect"

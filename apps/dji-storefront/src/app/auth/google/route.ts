@@ -7,6 +7,10 @@ const DEFAULT_REDIRECT = buildDefaultAccountPath()
 
 const COOKIE_TTL_SECONDS = 10 * 60
 
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
 export async function GET(request: NextRequest) {
   const requestedReturn = request.nextUrl.searchParams.get("returnTo")
   const returnTo = sanitizeRedirectPath(requestedReturn, DEFAULT_REDIRECT)

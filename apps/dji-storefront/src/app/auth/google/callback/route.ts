@@ -8,6 +8,10 @@ import { buildDefaultAccountPath, sanitizeRedirectPath } from "@/lib/util/redire
 
 const DEFAULT_REDIRECT = buildDefaultAccountPath()
 
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
 type PopupPayload =
   | { source: "google-oauth-popup"; success: true; redirectUrl: string; token?: string }
   | { source: "google-oauth-popup"; success: false; error: string }
@@ -61,7 +65,7 @@ const getReturnRedirect = async (state?: string | null) => {
   const stored = cookieStore.get(cookieName)?.value
 
   if (stored) {
-    cookieStore.delete({ name: cookieName, path: "/" })
+    cookieStore.set(cookieName, "", { maxAge: -1, path: "/" })
     return sanitizeRedirectPath(decodeURIComponent(stored), DEFAULT_REDIRECT)
   }
 
