@@ -4,7 +4,7 @@ import { getCollections } from "@/lib/data/collections"
 import { resolveCollectionHeroImage, resolveCollectionHighlight } from "@/lib/util/collections"
 
 export const metadata = {
-  title: "Collections · DJI Storefront",
+  title: "Collections · Cockpit Simulator",
 }
 
 export default async function CollectionsPage() {

@@ -2,8 +2,10 @@
 
 FROM node:20-bookworm-slim AS builder
 
-ENV PNPM_HOME=/root/.local/share/pnpm \
-    PATH="$PNPM_HOME:$PATH"
+ENV PNPM_HOME=/root/.local/share/pnpm
+ENV PATH=${PNPM_HOME}:${PATH}
+ENV PNPM_NODE_LINKER=hoisted
+ENV NODE_PATH=/app/apps/medusa/node_modules:/app/node_modules/.pnpm/node_modules
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends build-essential python3 ca-certificates git \
@@ -22,16 +24,19 @@ COPY scripts scripts
 # Copy the rest of the workspace to ensure shared packages are available
 COPY . .
 
-RUN pnpm install --filter medusa... --frozen-lockfile \
+RUN pnpm install --frozen-lockfile \
   && pnpm --filter medusa build \
   && mkdir -p apps/medusa/public \
   && cp -a apps/medusa/.medusa/server/public/. apps/medusa/public/
 
 FROM node:20-bookworm-slim AS runner
 
-ENV PNPM_HOME=/root/.local/share/pnpm \
-    PATH="$PNPM_HOME:$PATH" \
-    NODE_ENV=production
+ENV PNPM_HOME=/root/.local/share/pnpm
+ENV PATH=${PNPM_HOME}:${PATH}
+ENV PNPM_NODE_LINKER=hoisted
+ENV NODE_ENV=production
+ENV NODE_PATH=/srv/app/apps/medusa/node_modules:/srv/app/node_modules/.pnpm/node_modules
+ENV CI=true
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends ca-certificates curl libpq5 \
@@ -46,6 +51,8 @@ COPY --from=builder /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/apps ./apps
 COPY --from=builder /app/packages ./packages
+
+RUN pnpm install --filter medusa --prod --frozen-lockfile
 
 EXPOSE 9000
 

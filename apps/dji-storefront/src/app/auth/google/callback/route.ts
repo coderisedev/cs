@@ -16,6 +16,8 @@ type PopupPayload =
   | { source: "google-oauth-popup"; success: true; redirectUrl: string; token?: string }
   | { source: "google-oauth-popup"; success: false; error: string }
 
+type OAuthCallbackQuery = Record<string, string>
+
 const buildPopupResponse = (payload: PopupPayload) => {
   const responseBody = `<!doctype html>
   <html>
@@ -71,8 +73,8 @@ export async function GET(request: NextRequest) {
   const state = request.nextUrl.searchParams.get("state")
   const returnTo = await getReturnRedirect(state)
   try {
-    const queryParams = Object.fromEntries(request.nextUrl.searchParams.entries())
-    const tokenCandidate = (await sdk.auth.callback("customer", "google", queryParams as any)) as unknown as string
+    const queryParams = Object.fromEntries(request.nextUrl.searchParams.entries()) as OAuthCallbackQuery
+    const tokenCandidate = (await sdk.auth.callback("customer", "google", queryParams)) as unknown as string
 
     if (typeof tokenCandidate === "string" && tokenCandidate) {
       console.log(`[auth] google callback exchanged token via sdk at`, new Date().toISOString())
@@ -111,12 +113,18 @@ export async function GET(request: NextRequest) {
                   method: "POST",
                   headers: { ...headers, "Content-Type": "application/json" },
                   body: JSON.stringify({ email }),
-                }).catch(() => {})
+                }).catch((creationError) => {
+                  console.warn("Failed to bootstrap Medusa customer via Google fallback", creationError)
+                })
               }
-            } catch {}
+            } catch (decodeError) {
+              console.warn("Failed to decode Google token payload for Medusa bootstrap", decodeError)
+            }
           }
         }
-      } catch {}
+      } catch (verificationError) {
+        console.warn("Unable to verify Google-authenticated customer", verificationError)
+      }
 
       const response = buildPopupResponse({
         source: "google-oauth-popup",
@@ -136,11 +144,11 @@ export async function GET(request: NextRequest) {
       return response
     }
 
-      return buildPopupResponse({
-        source: "google-oauth-popup",
-        success: false,
-        error: "Medusa could not issue a session token",
-      })
+    return buildPopupResponse({
+      source: "google-oauth-popup",
+      success: false,
+      error: "Medusa could not issue a session token",
+    })
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unexpected Google OAuth failure"
     return buildPopupResponse({

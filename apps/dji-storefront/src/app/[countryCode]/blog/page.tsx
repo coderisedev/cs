@@ -2,7 +2,7 @@ import { listPosts } from "@/lib/data/blog"
 import { BlogPageClient } from "./blog-client"
 
 export const metadata = {
-  title: "Blog · DJI Storefront",
+  title: "Blog · Cockpit Simulator",
   description: "Insights, tutorials, and reviews for flight-sim builders",
 }
 

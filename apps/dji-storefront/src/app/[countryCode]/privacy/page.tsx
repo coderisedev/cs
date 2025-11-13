@@ -1,8 +1,8 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Privacy Policy · DJI Storefront",
-  description: "Learn how DJI Storefront collects, uses, and protects your personal data.",
+  title: "Privacy Policy · Cockpit Simulator",
+  description: "Learn how Cockpit Simulator collects, uses, and protects your personal data.",
 }
 
 const sections = [
@@ -56,7 +56,7 @@ export default function PrivacyPage() {
       <header className="space-y-4 text-center">
         <h1 className="text-4xl font-bold">Privacy Policy</h1>
         <p className="text-foreground-secondary max-w-3xl mx-auto">
-          DJI Storefront builds flight simulation hardware for professionals and enthusiasts. Protecting your personal data is essential
+          Cockpit Simulator builds flight simulation hardware for professionals and enthusiasts. Protecting your personal data is essential
           to earning your trust. This policy explains what we collect, how we use it, and the choices you have.
         </p>
         <p className="text-sm text-foreground-muted">Effective date: November 13, 2025</p>
@@ -82,7 +82,7 @@ export default function PrivacyPage() {
           <a href="mailto:privacy@dji-storefront.com" className="text-primary-500 hover:underline">
             privacy@dji-storefront.com
           </a>{" "}
-          or write to DJI Storefront Privacy Team, 123 Flight Deck Blvd, San Jose, CA 95134.
+          or write to Cockpit Simulator Privacy Team, 123 Flight Deck Blvd, San Jose, CA 95134.
         </p>
       </section>
     </main>

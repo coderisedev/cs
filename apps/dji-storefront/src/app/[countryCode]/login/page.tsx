@@ -4,8 +4,8 @@ import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 import { buildDefaultAccountPath, sanitizeRedirectPath } from "@/lib/util/redirect"
 
 export const metadata: Metadata = {
-  title: "Sign In · DJI Storefront",
-  description: "Sign in to your DJI Storefront account",
+  title: "Sign In · Cockpit Simulator",
+  description: "Sign in to your Cockpit Simulator account",
 }
 
 type LoginPageProps = {

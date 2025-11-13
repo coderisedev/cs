@@ -4,7 +4,7 @@ import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 import { ProductsPageClient } from "./products-client"
 
 export const metadata: Metadata = {
-  title: "Products · DJI Storefront",
+  title: "Products · Cockpit Simulator",
 }
 
 export default async function ProductsPage() {

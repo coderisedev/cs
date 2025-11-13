@@ -21,7 +21,7 @@ import { retrieveCart } from "@/lib/data/cart"
 // })
 
 export const metadata: Metadata = {
-  title: "DJI Storefront",
+  title: "Cockpit Simulator",
   description:
     "DJI design-system storefront scaffold derived from the cockpit simulator reference.",
   icons: {

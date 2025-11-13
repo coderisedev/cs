@@ -32,6 +32,32 @@ declare global {
 export const isGoogleOneTapEnabled = Boolean(GOOGLE_CLIENT_ID && GOOGLE_ONE_TAP_ENABLED)
 export const isGoogleOAuthPopupEnabled = Boolean(GOOGLE_CLIENT_ID && GOOGLE_OAUTH_POPUP_ENABLED)
 
+const GoogleGlyph = () => (
+  <svg
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+    focusable="false"
+    className="h-4 w-4"
+  >
+    <path
+      fill="#4285F4"
+      d="M23.5 12.3c0-.9-.1-1.6-.3-2.3H12v4.3h6.5c-.3 1.6-1.3 3-2.9 3.9v3.2h4.7c2.8-2.5 3.2-6.2 3.2-9.1z"
+    />
+    <path
+      fill="#34A853"
+      d="M12 24c3.2 0 5.9-1.1 7.9-3l-4.7-3.2c-.8.5-1.8.9-3.2.9-2.5 0-4.6-1.7-5.3-4H1.8v3.3C3.8 21.8 7.6 24 12 24z"
+    />
+    <path
+      fill="#FBBC05"
+      d="M6.7 14.7c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H1.8C.9 9.1.4 11 .4 13s.5 3.9 1.4 5.6l4.9-3.9z"
+    />
+    <path
+      fill="#EA4335"
+      d="M12 4.8c1.8 0 3.3.6 4.5 1.7l3.4-3.4C17.9 1.2 15.2 0 12 0 7.6 0 3.8 2.2 1.8 5.4l4.9 3.9c.7-2.3 2.8-4.5 5.3-4.5z"
+    />
+  </svg>
+)
+
 type GoogleOneTapButtonProps = {
   returnTo: string
   autoPrompt?: boolean
@@ -343,7 +369,7 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
       <Button
         type="button"
         variant="outline"
-        className="w-full"
+        className="w-full justify-center gap-2 border-border-primary bg-card hover:bg-card/90"
         disabled={launching}
         onClick={openPopup}
       >
@@ -353,7 +379,10 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
             Opening Google...
           </>
         ) : (
-          "Continue with Google (Popup)"
+          <>
+            <GoogleGlyph />
+            <span>Sign in with Google</span>
+          </>
         )}
       </Button>
       {error && (
@@ -362,23 +391,5 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
         </p>
       )}
     </div>
-  )
-}
-
-export function GoogleOAuthRedirectButton({ returnTo }: { returnTo: string }) {
-  return (
-    <Button
-      type="button"
-      variant="secondary"
-      className="w-full"
-      onClick={() => {
-        if (typeof window !== "undefined") {
-          const origin = window.location.origin
-          window.location.href = `${origin}/auth/google?returnTo=${encodeURIComponent(returnTo)}`
-        }
-      }}
-    >
-      Continue with Google (Full Page)
-    </Button>
   )
 }

@@ -1,8 +1,8 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Terms of Service · DJI Storefront",
-  description: "Review the terms and conditions for purchasing simulator hardware from DJI Storefront.",
+  title: "Terms of Service · Cockpit Simulator",
+  description: "Review the terms and conditions for purchasing simulator hardware from Cockpit Simulator.",
 }
 
 export default function TermsPage() {
@@ -11,7 +11,7 @@ export default function TermsPage() {
       <header className="space-y-4 text-center">
         <h1 className="text-4xl font-bold">Terms of Service</h1>
         <p className="text-foreground-secondary max-w-3xl mx-auto">
-          These terms describe the conditions under which DJI Storefront supplies flight simulation products, software licenses, and
+          These terms describe the conditions under which Cockpit Simulator supplies flight simulation products, software licenses, and
           support services. By placing an order or using our site you agree to the clauses below.
         </p>
         <p className="text-sm text-foreground-muted">Last updated: November 13, 2025</p>
@@ -47,7 +47,7 @@ export default function TermsPage() {
       <section className="rounded-3xl border border-border-primary bg-background-secondary/60 p-6 md:p-8 shadow-card space-y-4">
         <h2 className="text-2xl font-semibold">4. Limitation of Liability</h2>
         <p className="text-foreground-secondary">
-          DJI Storefront is not liable for indirect, incidental, or consequential damages arising from simulator downtime, lost missions,
+          Cockpit Simulator is not liable for indirect, incidental, or consequential damages arising from simulator downtime, lost missions,
           or third-party software incompatibilities. Our total liability is limited to the amount you paid for the affected product.
         </p>
       </section>
@@ -67,7 +67,7 @@ export default function TermsPage() {
           <a href="mailto:legal@dji-storefront.com" className="text-primary-500 hover:underline">
             legal@dji-storefront.com
           </a>{" "}
-          or mail DJI Storefront Legal, 123 Flight Deck Blvd, San Jose, CA 95134.
+          or mail Cockpit Simulator Legal, 123 Flight Deck Blvd, San Jose, CA 95134.
         </p>
       </section>
     </main>

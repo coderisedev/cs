@@ -9,7 +9,6 @@ import { loginAction, registerAction } from "@/lib/actions/auth"
 import { Loader2 } from "lucide-react"
 import {
   GoogleOAuthPopupButton,
-  GoogleOAuthRedirectButton,
   GoogleOneTapButton,
   isGoogleOAuthPopupEnabled,
   isGoogleOneTapEnabled,
@@ -36,15 +35,17 @@ export function LoginClient({
   const googleLoginAvailable = isGoogleOneTapEnabled || isGoogleOAuthPopupEnabled
 
   return (
-    <div className="container mx-auto px-4 py-16">
-      <div className="max-w-md mx-auto">
+    <div className="px-4 py-16 sm:py-20 bg-gradient-to-b from-background via-background-secondary/30 to-background">
+      <div className="relative mx-auto max-w-md">
+        <div className="absolute inset-0 -z-10 rounded-[36px] bg-primary-500/10 blur-3xl" aria-hidden />
+        <div className="absolute inset-x-6 top-6 -z-10 h-32 rounded-full bg-primary-500/5 blur-2xl" aria-hidden />
         {requiresLoginForFlow && (
           <div className="mb-6 rounded-base border border-border-primary bg-background-secondary px-4 py-3 text-sm text-foreground-secondary">
             Please sign in to continue to <span className="font-medium text-foreground-primary">{redirectTarget}</span>.
           </div>
         )}
         {currentView === "signin" ? (
-          <Card>
+          <Card className="shadow-xl shadow-primary-500/10 border-border-primary/70">
             <CardHeader>
               <CardTitle className="text-2xl">Welcome Back</CardTitle>
               <CardDescription>
@@ -54,12 +55,7 @@ export function LoginClient({
             <CardContent>
               {googleLoginAvailable && (
                 <div className="mb-6 space-y-4">
-                  {isGoogleOAuthPopupEnabled && (
-                    <>
-                      <GoogleOAuthPopupButton returnTo={redirectTarget} />
-                      <GoogleOAuthRedirectButton returnTo={redirectTarget} />
-                    </>
-                  )}
+                  {isGoogleOAuthPopupEnabled && <GoogleOAuthPopupButton returnTo={redirectTarget} />}
                   {isGoogleOneTapEnabled && <GoogleOneTapButton returnTo={redirectTarget} />}
                   <div className="text-center text-xs uppercase tracking-wide text-foreground-muted">
                     or continue with email
@@ -121,7 +117,7 @@ export function LoginClient({
             </CardContent>
           </Card>
         ) : (
-          <Card>
+          <Card className="shadow-xl shadow-primary-500/10 border-border-primary/70">
             <CardHeader>
               <CardTitle className="text-2xl">Create Account</CardTitle>
               <CardDescription>

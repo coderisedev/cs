@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return { title: "Blog", description: "Flight simulation stories" }
   }
   return {
-    title: post.seo.metaTitle ?? `${post.title} · DJI Storefront`,
+    title: post.seo.metaTitle ?? `${post.title} · Cockpit Simulator`,
     description: post.seo.metaDescription ?? post.excerpt,
     openGraph: {
       title: post.seo.metaTitle ?? post.title,

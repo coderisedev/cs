@@ -107,6 +107,7 @@ export const listProducts = async ({
   const next = {
     ...(await getCacheOptions("products")),
   }
+  const hasCacheTags = "tags" in next && next.tags.length > 0
 
   const { products, count } = await sdk.client.fetch<{
     products: HttpTypes.StoreProduct[]
@@ -122,7 +123,7 @@ export const listProducts = async ({
     },
     headers,
     next,
-    cache: "force-cache",
+    cache: hasCacheTags ? "force-cache" : "no-store",
   })
 
   const nextPage = count > offset + limit ? pageParam + 1 : null
@@ -139,6 +140,7 @@ export const retrieveProduct = async (handle: string, countryCode?: string, regi
   const next = {
     ...(await getCacheOptions(`product-${handle}`)),
   }
+  const hasCacheTags = "tags" in next && next.tags.length > 0
 
   try {
     // Medusa v2 API: Use list endpoint with handle filter to get product by handle
@@ -153,7 +155,7 @@ export const retrieveProduct = async (handle: string, countryCode?: string, regi
       },
       headers,
       next,
-      cache: "force-cache",
+      cache: hasCacheTags ? "force-cache" : "no-store",
     })
 
     if (!products || products.length === 0) {

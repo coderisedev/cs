@@ -15,10 +15,17 @@ export async function GET() {
       cache: "no-store",
     })
     return NextResponse.json({ ok: true, status: 200, body: res }, { status: 200 })
-  } catch (e: any) {
-    const status = typeof e?.status === "number" ? e.status : 500
-    const body = e?.body ?? e?.message ?? String(e)
+  } catch (error: unknown) {
+    const status =
+      typeof error === "object" && error !== null && "status" in error && typeof (error as { status?: unknown }).status === "number"
+        ? ((error as { status: number }).status)
+        : 500
+    const body =
+      typeof error === "object" && error !== null && "body" in error
+        ? (error as { body?: unknown }).body
+        : error instanceof Error
+          ? error.message
+          : String(error)
     return NextResponse.json({ ok: false, status, body }, { status: 200 })
   }
 }
-

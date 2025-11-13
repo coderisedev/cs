@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 export const metadata = {
-  title: "Checkout · DJI Storefront",
+  title: "Checkout · Cockpit Simulator",
 }
 
 type CheckoutPageProps = {

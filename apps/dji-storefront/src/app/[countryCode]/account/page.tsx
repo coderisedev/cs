@@ -5,7 +5,7 @@ import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 import { signoutAction } from "@/lib/actions/auth"
 
 export const metadata = {
-  title: "Account · DJI Storefront",
+  title: "Account · Cockpit Simulator",
 }
 
 export const runtime = "nodejs"

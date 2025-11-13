@@ -3,7 +3,7 @@ import { CartClient } from "@/components/cart/cart-client"
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 export const metadata = {
-  title: "Cart · DJI Storefront",
+  title: "Cart · Cockpit Simulator",
 }
 
 export default async function CartPage() {

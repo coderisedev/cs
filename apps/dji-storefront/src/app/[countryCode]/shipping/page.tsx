@@ -1,8 +1,8 @@
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Shipping & Fulfillment · DJI Storefront",
-  description: "Learn about processing times, carriers, and international delivery for DJI Storefront hardware orders.",
+  title: "Shipping & Fulfillment · Cockpit Simulator",
+  description: "Learn about processing times, carriers, and international delivery for Cockpit Simulator hardware orders.",
 }
 
 const policies = [

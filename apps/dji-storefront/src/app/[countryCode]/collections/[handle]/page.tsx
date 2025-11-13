@@ -15,12 +15,12 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
   const collection = await getCollectionDetail(handle)
   if (!collection) {
     return {
-      title: "Collection · DJI Storefront",
+      title: "Collection · Cockpit Simulator",
     }
   }
   const description = (collection.metadata?.description as string) ?? ""
   return {
-    title: `${collection.title} · DJI Storefront`,
+    title: `${collection.title} · Cockpit Simulator`,
     description,
   }
 }

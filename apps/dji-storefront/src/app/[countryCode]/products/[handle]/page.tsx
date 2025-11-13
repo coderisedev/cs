@@ -15,10 +15,10 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
   const { handle } = await params
   const product = await getProductDetail(handle, DEFAULT_COUNTRY_CODE)
   if (!product) {
-    return { title: "Product · DJI Storefront" }
+    return { title: "Product · Cockpit Simulator" }
   }
   return {
-    title: `${product.title} · DJI Storefront`,
+    title: `${product.title} · Cockpit Simulator`,
     description: product.description,
   }
 }
