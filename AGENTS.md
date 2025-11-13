@@ -17,3 +17,7 @@ This folder is not under Git in the provided workspace; default to Conventional 
 
 ## Security & Configuration Tips
 Sensitive settings live in `bmad/bmm/config.yaml` and `bmad/core/config.yaml`. Avoid committing personal values; document required keys and prefer `{project-root}` tokens so deployments stay portable. When sharing examples, scrub user names (e.g., `Aiden Lux`) unless demonstrating defaults, and ensure new agents read configuration through interpolation rather than hard-coded paths.
+
+## Operational Memory
+- When you need to inspect Medusa data (e.g., confirm a product configuration), connect straight to the production Postgres instance using the credentials in `deploy/gce/.env`. Replace `host.docker.internal` with `localhost` before running `psql`.  
+- The full step-by-step database checklist lives in `docs/runbooks/medusa-db-analysis.md`; review it before running ad-hoc queries so every agent follows the same procedure.
