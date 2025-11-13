@@ -60,8 +60,11 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
               width={144}
               height={36}
               priority
-              className="h-9 w-auto"
-              sizes="144px"
+              className={cn(
+                "w-auto transition-all duration-300 dark:invert dark:brightness-150",
+                condensed ? "h-12" : "h-14"
+              )}
+              sizes="(max-width: 768px) 40vw, 144px"
             />
           </Link>
 

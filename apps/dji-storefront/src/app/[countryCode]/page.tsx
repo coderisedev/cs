@@ -44,21 +44,28 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen">
-      <section className="relative flex min-h-[620px] items-center justify-center overflow-hidden">
+      <section className="relative flex min-h-[75vh] sm:min-h-[85vh] lg:min-h-[calc(100vh-5rem)] overflow-hidden border border-white/10 bg-background-secondary/40 shadow-2xl shadow-primary-500/20 backdrop-blur">
         <div className="absolute inset-0">
-          <Image src={heroImage} alt="Flight Simulator Cockpit" fill className="object-cover" priority />
-          <div className="absolute inset-0" style={{ background: "var(--gradient-hero)" }} />
+          <Image
+            src={heroImage}
+            alt="Flight Simulator Cockpit"
+            fill
+            priority
+            className="object-cover object-center scale-105 md:scale-100"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/35" />
+          <div className="absolute inset-y-0 right-0 w-2/5 bg-gradient-to-l from-primary-500/30 via-transparent to-transparent blur-[120px]" />
         </div>
-        <div className="container relative z-10 space-y-8 text-white py-20 md:py-24">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 backdrop-blur-sm text-sm font-medium tracking-[0.3em] uppercase">
+        <div className="container relative z-10 flex min-h-[60vh] flex-col justify-center gap-10 text-white py-16 sm:py-20 lg:py-24">
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 backdrop-blur-sm text-sm font-medium tracking-[0.3em] uppercase">
             <Star className="h-4 w-4 text-semantic-warning fill-semantic-warning" />
             <span className="text-sm font-medium">Professional Flight Simulator Hardware</span>
           </div>
-          <div className="space-y-6 max-w-3xl">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[64px] font-bold leading-tight tracking-[-0.02em]">
+          <div className="space-y-6 max-w-4xl">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[72px] font-bold leading-tight tracking-[-0.02em]">
               Build Your <span className="block text-gradient">Dream Cockpit</span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-white/85">
+            <p className="text-lg sm:text-xl md:text-2xl text-white/85 max-w-3xl">
               Authentic aviation control panels and equipment designed for serious flight simulation enthusiasts.
               <span className="mt-2 block text-base sm:text-lg text-white/70">Compatible with MSFS 2024, X-Plane 12, and Prepar3D.</span>
             </p>
@@ -91,7 +98,7 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/80">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/80">
           <div className="flex flex-col items-center animate-bounce">
             <span className="text-sm mb-2">Scroll Down</span>
             <div className="h-10 w-6 rounded-full border-2 flex justify-center">

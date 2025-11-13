@@ -12,10 +12,17 @@ export function SiteFooter() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
             <Link href="/" className="inline-flex items-center mb-4" aria-label={BRAND_NAME}>
-              <Image src={BRAND_LOGO_URL} alt={BRAND_NAME} width={160} height={40} className="h-10 w-auto" sizes="160px" />
+              <Image
+                src={BRAND_LOGO_URL}
+                alt={BRAND_NAME}
+                width={200}
+                height={48}
+                className="h-14 w-auto dark:invert dark:brightness-150"
+                sizes="200px"
+              />
             </Link>
             <p className="text-sm text-foreground-secondary mb-4">
-              Professional flight simulation hardware inspired by the DJI design system.
+              Professional flight simulation hardware inspired by the Cockpit Simulator system.
             </p>
             <div className="flex gap-3 text-foreground-muted">
               {[Facebook, Twitter, Instagram, Youtube].map((Icon) => (
@@ -51,7 +58,7 @@ export function SiteFooter() {
             <ul className="space-y-3 text-sm text-foreground-secondary">
               <li className="flex items-start gap-2">
                 <Mail className="h-5 w-5 text-primary-400 mt-0.5" />
-                <a href="mailto:support@dji-storefront.com" className="hover:text-primary-400">support@dji-storefront.com</a>
+                <a href="mailto:support@cockpit-simulator.com" className="hover:text-primary-400">support@cockpit-simulator .com</a>
               </li>
               <li className="flex items-start gap-2">
                 <Phone className="h-5 w-5 text-primary-400 mt-0.5" />
@@ -66,7 +73,7 @@ export function SiteFooter() {
         </div>
 
         <div className="border-t border-border-primary pt-6 flex flex-col md:flex-row justify-between text-sm text-foreground-muted gap-4">
-          <p>&copy; {currentYear} DJI Storefront. All rights reserved.</p>
+          <p>&copy; {currentYear} Cockpit Simulator. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="hover:text-primary-400">Privacy</Link>
             <Link href="/terms" className="hover:text-primary-400">Terms</Link>
