@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, Star, Shield, Zap, Headphones } from "lucide-react"
-import { getProducts } from "@/lib/data/products"
+import { getProductsByCollectionHandle } from "@/lib/data/products"
 import { getCollections } from "@/lib/data/collections"
 import { resolveCollectionHeroImage, resolveCollectionHighlight } from "@/lib/util/collections"
 import { ProductCard } from "@/components/products/product-card"
@@ -35,12 +35,10 @@ const testimonials = [
 
 export default async function HomePage() {
   const countryCode = DEFAULT_COUNTRY_CODE
-  const [allProducts, collections] = await Promise.all([
-    getProducts({ countryCode }),
+  const [featuredProducts, collections] = await Promise.all([
+    getProductsByCollectionHandle("featured", { countryCode, limit: 4 }),
     getCollections({ limit: 3, includeProducts: true }),
   ])
-
-  const featuredProducts = allProducts.filter((product) => product.collection === "featured").slice(0, 8)
 
   return (
     <div className="min-h-screen">

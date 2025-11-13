@@ -13,6 +13,8 @@ import {
   Truck,
   Shield,
   Award,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -40,6 +42,7 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
 
   const variant = useMemo(() => product.variants.find((v) => v.id === selectedVariant) ?? product.variants[0], [product, selectedVariant])
   const heroImage = product.images[selectedImage] ?? product.images[0]
+  const totalImages = product.images.length
   const isWishlisted = isInWishlist(product.id)
 
   const totalPrice = (variant?.price ?? product.price) * quantity
@@ -80,7 +83,25 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
       <div className="grid gap-12 lg:grid-cols-2">
         <div className="space-y-4">
           <div className="relative aspect-square bg-background-elevated rounded-xl overflow-hidden">
-            <Image src={heroImage} alt={product.title} fill className="object-cover" />
+            <Image src={heroImage} alt={product.title} fill className="object-contain object-center" />
+            {totalImages > 1 && (
+              <>
+                <button
+                  aria-label="Previous image"
+                  onClick={() => setSelectedImage((prev) => (prev - 1 + totalImages) % totalImages)}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 hover:bg-black/60 transition"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  aria-label="Next image"
+                  onClick={() => setSelectedImage((prev) => (prev + 1) % totalImages)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded-full p-2 hover:bg-black/60 transition"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </>
+            )}
           </div>
           {product.images.length > 1 && (
             <div className="flex gap-3 overflow-x-auto">
@@ -92,7 +113,7 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
                     selectedImage === index ? "border-primary-500" : "border-border-primary hover:border-border-secondary"
                   }`}
                 >
-                  <Image src={image} alt={`${product.title}-${index + 1}`} width={80} height={80} className="object-cover" />
+                  <Image src={image} alt={`${product.title}-${index + 1}`} width={80} height={80} className="object-contain" />
                 </button>
               ))}
             </div>

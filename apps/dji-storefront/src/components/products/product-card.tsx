@@ -55,7 +55,7 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
                 src={image}
                 alt={product.title}
                 fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[0.3deg]"
+                className="object-contain object-center transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[0.3deg]"
               />
             )}
             {product.isNew && <Badge label="NEW" />}
@@ -105,7 +105,14 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
   return (
     <Card tone="elevated" className="group overflow-hidden">
       <Link href={`/products/${product.handle}`} className="block relative overflow-hidden aspect-square bg-background-elevated">
-        {image && <Image src={image} alt={product.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[0.3deg]" />}
+        {image && (
+          <Image
+            src={image}
+            alt={product.title}
+            fill
+            className="object-contain object-center transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[0.3deg]"
+          />
+        )}
         {product.isNew && <Badge label="NEW" />}
         {product.compareAtPrice && product.compareAtPrice > product.price && <Badge label={`-${discount}%`} position="right" />}
       </Link>

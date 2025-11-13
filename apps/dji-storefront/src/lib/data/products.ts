@@ -3,6 +3,7 @@
 import { sdk } from "@/lib/medusa"
 import { getAuthHeaders, getCacheOptions } from "@/lib/server/cookies"
 import { getRegion, retrieveRegion } from "@/lib/data/regions"
+import { getCollectionByHandle } from "@/lib/data/collections"
 import { HttpTypes } from "@medusajs/types"
 import { US_REGION_ID } from "@/lib/constants"
 
@@ -82,6 +83,25 @@ export const getProducts = async (options?: ProductListOptions) => {
   return response.products
 }
 
+export const getProductsByCollectionHandle = async (
+  handle: string,
+  options?: ProductListOptions & { limit?: number }
+) => {
+  const collection = await getCollectionByHandle(handle)
+  if (!collection?.id) {
+    return []
+  }
+
+  const { limit = 4, ...rest } = options ?? {}
+  const { response } = await listProducts({
+    ...rest,
+    limit,
+    collection_id: collection.id,
+  })
+
+  return response.products
+}
+
 export const getProductDetail = async (handle: string, countryCode?: string, regionId?: string) => {
   return retrieveProduct(handle, countryCode, regionId)
 }
@@ -104,10 +124,14 @@ export const listProducts = async ({
   const headers = {
     ...(await getAuthHeaders()),
   }
-  const next = {
-    ...(await getCacheOptions("products")),
-  }
-  const hasCacheTags = "tags" in next && next.tags.length > 0
+  const cacheOptions = await getCacheOptions("products")
+  const next =
+    "tags" in cacheOptions
+      ? {
+          ...cacheOptions,
+          revalidate: 0,
+        }
+      : { revalidate: 0 }
 
   const { products, count } = await sdk.client.fetch<{
     products: HttpTypes.StoreProduct[]
@@ -123,7 +147,7 @@ export const listProducts = async ({
     },
     headers,
     next,
-    cache: hasCacheTags ? "force-cache" : "no-store",
+    cache: "no-store",
   })
 
   const nextPage = count > offset + limit ? pageParam + 1 : null

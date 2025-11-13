@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { revalidateStrapiBlog, BLOG_CACHE_TAG } from "@/lib/data/blog"
+import { revalidateTag } from "next/cache"
 
 const handleRequest = async (request: Request) => {
   const url = new URL(request.url)
@@ -15,6 +16,11 @@ const handleRequest = async (request: Request) => {
 
   if (tag === BLOG_CACHE_TAG) {
     await revalidateStrapiBlog()
+    return NextResponse.json({ success: true, tag })
+  }
+
+  if (tag.startsWith("products-")) {
+    await revalidateTag(tag)
     return NextResponse.json({ success: true, tag })
   }
 
