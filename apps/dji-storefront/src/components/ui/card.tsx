@@ -8,8 +8,8 @@ type CardProps = React.HTMLAttributes<HTMLDivElement> & {
 }
 
 const toneClasses: Record<CardTone, string> = {
-  default: "border bg-background-secondary",
-  elevated: "border-0 bg-white shadow-card",
+  default: "border border-border-primary bg-background-secondary dark:bg-background-primary/80",
+  elevated: "border border-border-primary bg-background-primary dark:bg-background-secondary shadow-card",
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
