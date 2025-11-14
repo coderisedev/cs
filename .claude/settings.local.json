@@ -12,7 +12,9 @@
       "Bash(done)",
       "Bash(git merge:*)",
       "Bash(git branch:*)",
-      "Bash(NODE_ENV=production node -e \"console.log(''NODE_ENV:'', process.env.NODE_ENV)\")"
+      "Bash(NODE_ENV=production node -e \"console.log(''NODE_ENV:'', process.env.NODE_ENV)\")",
+      "Bash(git clean:*)",
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []
