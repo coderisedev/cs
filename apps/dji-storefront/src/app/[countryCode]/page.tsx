@@ -18,18 +18,21 @@ const testimonials = [
       "The cockpit hardware quality is exceptional. Every interaction feels like the real aircraft, making our training sessions more effective.",
     author: "Captain Sarah Johnson",
     role: "Airbus Training Lead",
+    avatar: "https://img.aidenlux.com/avatar1.jpg",
   },
   {
     quote:
       "Setup was plug-and-play. We were airborne in minutes and the DJI styling brings a premium polish to every panel.",
     author: "Michael Chen",
     role: "Home Simulator Builder",
+    avatar: "https://img.aidenlux.com/avatar2.jpg",
   },
   {
     quote:
       "Our students love the tactile realism. The panels integrate perfectly with MSFS and X-Plane with zero scripting.",
     author: "Emily Watson",
     role: "Flight School Director",
+    avatar: "https://img.aidenlux.com/avatar3.jpg",
   },
 ]
 
@@ -206,9 +209,20 @@ export default async function HomePage() {
               <Card key={testimonial.author} tone="elevated" className="h-full bg-background-primary">
                 <CardContent className="space-y-4 p-6">
                   <p className="text-lg text-foreground-secondary">“{testimonial.quote}”</p>
-                  <div>
-                    <p className="font-semibold text-foreground-primary">{testimonial.author}</p>
-                    <p className="text-sm text-foreground-muted">{testimonial.role}</p>
+                  <div className="flex items-center gap-3">
+                    <div className="relative h-12 w-12">
+                      <Image
+                        src={testimonial.avatar}
+                        alt={testimonial.author}
+                        fill
+                        className="rounded-full object-cover"
+                        sizes="48px"
+                      />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground-primary">{testimonial.author}</p>
+                      <p className="text-sm text-foreground-muted">{testimonial.role}</p>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
