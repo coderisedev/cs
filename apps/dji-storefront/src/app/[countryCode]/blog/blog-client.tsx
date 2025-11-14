@@ -6,16 +6,18 @@ import Image from "next/image"
 import { Calendar, Clock, Search as SearchIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import type { BlogPagination, BlogPost } from "@/lib/data/blog"
+import type { BlogPagination, BlogPost, BlogCategory } from "@/lib/data/blog"
 
 interface BlogPageClientProps {
   posts: BlogPost[]
   pagination: BlogPagination
   countryCode: string
+  categories: BlogCategory[]
+  activeCategory?: string | null
   isUnavailable?: boolean
 }
 
-export function BlogPageClient({ posts, pagination, countryCode, isUnavailable }: BlogPageClientProps) {
+export function BlogPageClient({ posts, pagination, countryCode, categories, activeCategory, isUnavailable }: BlogPageClientProps) {
   const [searchTerm, setSearchTerm] = useState("")
 
   const filteredPosts = useMemo(() => {
@@ -46,7 +48,19 @@ export function BlogPageClient({ posts, pagination, countryCode, isUnavailable }
   const pageCount = Math.max(1, pagination.pageCount)
   const prevPage = pagination.page > 1 ? pagination.page - 1 : null
   const nextPage = pagination.page < pageCount ? pagination.page + 1 : null
-  const getPageHref = (page: number) => (page <= 1 ? basePath : `${basePath}?page=${page}`)
+  const buildHref = (page?: number | null, categorySlug?: string | null) => {
+    const params = new URLSearchParams()
+    if (page && page > 1) {
+      params.set("page", page.toString())
+    }
+    if (categorySlug) {
+      params.set("category", categorySlug)
+    }
+    const qs = params.toString()
+    return qs ? `${basePath}?${qs}` : basePath
+  }
+  const getPageHref = (page: number) => buildHref(page, activeCategory ?? null)
+  const getCategoryHref = (slug: string | null) => buildHref(null, slug)
 
   const hasNoResults = filteredPosts.length === 0
 
@@ -77,6 +91,33 @@ export function BlogPageClient({ posts, pagination, countryCode, isUnavailable }
             className="mx-auto max-w-2xl rounded-2xl border border-semantic-warning/40 bg-semantic-warning/10 px-4 py-3 text-sm text-semantic-warning"
           >
             Unable to reach Strapi right now. Showing cached content if available.
+          </div>
+        )}
+        {categories.length > 0 && (
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Button
+              key="all-categories"
+              variant={activeCategory ? "outline" : "default"}
+              size="sm"
+              className={activeCategory ? undefined : "bg-primary-500 text-white"}
+              asChild
+            >
+              <Link href={getCategoryHref(null)}>All topics</Link>
+            </Button>
+            {categories.map((category) => {
+              const isActive = category.slug === activeCategory
+              return (
+                <Button
+                  key={category.slug}
+                  variant={isActive ? "default" : "outline"}
+                  size="sm"
+                  className={isActive ? "bg-primary-500 text-white" : undefined}
+                  asChild
+                >
+                  <Link href={getCategoryHref(category.slug)}>{category.name}</Link>
+                </Button>
+              )
+            })}
           </div>
         )}
       </div>
@@ -116,6 +157,7 @@ export function BlogPageClient({ posts, pagination, countryCode, isUnavailable }
                 </h2>
                 <p className="text-sm text-foreground-secondary line-clamp-3">{post.excerpt}</p>
                 <div className="flex flex-wrap items-center gap-4 text-xs text-foreground-muted">
+                  {post.category && <span className="rounded-full bg-background-primary/70 px-2 py-1 text-foreground-secondary">{post.category}</span>}
                   {formatDate(post.publishedAt) && (
                     <span className="flex items-center gap-1">
                       <Calendar className="h-4 w-4" /> {formatDate(post.publishedAt)}

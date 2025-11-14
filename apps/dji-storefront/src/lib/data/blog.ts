@@ -8,6 +8,7 @@ const DEFAULT_PAGE_SIZE = 6
 const BLOG_REVALIDATE_SECONDS = 60
 
 export const BLOG_CACHE_TAG = "blog"
+export const BLOG_CATEGORIES_CACHE_TAG = "blog-categories"
 
 type StrapiEntity<T> = T & {
   id: number
@@ -48,6 +49,7 @@ export type StrapiPostAttributes = {
   slug: string
   excerpt?: string | null
   content?: string | null
+  category?: string | null
   cover_image?: StrapiMediaData[] | StrapiRelation<StrapiMediaAttributes>
   coverImage?: StrapiMediaData[] | StrapiRelation<StrapiMediaAttributes>
   author?: StrapiRelation<{
@@ -76,6 +78,7 @@ export type BlogPost = {
   slug: string
   excerpt: string
   content: string
+  category: string | null
   coverImageUrl: string | null
   coverImageAlt: string | null
   publishedAt: string | null
@@ -89,12 +92,18 @@ export type BlogPost = {
   }
 }
 
+export type BlogCategory = {
+  name: string
+  slug: string
+}
+
 export type BlogPagination = StrapiPagination
 
 export type BlogListOptions = {
   page?: number
   pageSize?: number
   locale?: string
+  category?: string
 }
 
 export type BlogListResult = {
@@ -123,6 +132,7 @@ export const listPosts = async (options: BlogListOptions = {}): Promise<BlogList
         "pagination[page]": page,
         "pagination[pageSize]": pageSize,
         ...(options.locale ? { locale: options.locale } : {}),
+        ...(options.category ? { "filters[category][$eq]": options.category } : {}),
       },
       tags: [BLOG_CACHE_TAG],
       revalidate: BLOG_REVALIDATE_SECONDS,
@@ -175,6 +185,40 @@ export const getFeaturedPosts = async (limit = 3, locale?: string) => {
 export const revalidateStrapiBlog = async () => {
   "use server"
   revalidateTag(BLOG_CACHE_TAG)
+  revalidateTag(BLOG_CATEGORIES_CACHE_TAG)
+}
+
+export const getBlogCategories = async (): Promise<BlogCategory[]> => {
+  "use server"
+  try {
+    const response = await strapi.fetch<StrapiPostResponse>("/api/posts", {
+      query: {
+        "fields[0]": "category",
+        "pagination[page]": 1,
+        "pagination[pageSize]": 200,
+        sort: "category:asc",
+      },
+      tags: [BLOG_CATEGORIES_CACHE_TAG],
+      revalidate: BLOG_REVALIDATE_SECONDS,
+    })
+
+    const unique = new Map<string, string>()
+    response.data.forEach((entity) => {
+      if (!entity.category) return
+      const slug = slugifyCategory(entity.category)
+      if (!slug) return
+      if (!unique.has(slug)) {
+        unique.set(slug, entity.category)
+      }
+    })
+
+    return Array.from(unique.entries())
+      .map(([slug, name]) => ({ slug, name }))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  } catch (error) {
+    console.error("[blog] Failed to fetch categories", error)
+    return []
+  }
 }
 
 const mapStrapiPost = (entity: StrapiEntity<StrapiPostAttributes>): BlogPost => {
@@ -203,6 +247,7 @@ const mapStrapiPost = (entity: StrapiEntity<StrapiPostAttributes>): BlogPost => 
     slug: entity.slug,
     excerpt: entity.excerpt?.trim() || buildExcerpt(entity.content),
     content: entity.content ?? "",
+    category: entity.category ?? null,
     coverImageUrl,
     coverImageAlt,
     publishedAt: entity.publishedAt ?? entity.published_at ?? null,
@@ -248,3 +293,11 @@ const buildExcerpt = (content?: string | null) => {
   const trimmed = content.trim()
   return trimmed.slice(0, 180).concat(trimmed.length > 180 ? "…" : "")
 }
+
+export const slugifyCategory = (value: string) =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+/, "")
+    .replace(/-+$/, "")
