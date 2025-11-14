@@ -1,14 +1,9 @@
 "use server"
 
 import { sdk } from "@/lib/medusa"
-import { getCacheOptions } from "@/lib/server/cookies"
 import { HttpTypes } from "@medusajs/types"
 
 export const listCollections = async (queryParams: Record<string, string> = {}) => {
-  const next = {
-    ...(await getCacheOptions("collections")),
-  }
-
   const query = {
     limit: queryParams.limit ?? "100",
     offset: queryParams.offset ?? "0",
@@ -20,8 +15,8 @@ export const listCollections = async (queryParams: Record<string, string> = {}) 
       .fetch<{ collections: HttpTypes.StoreCollection[]; count: number }>("/store/collections", {
         method: "GET",
         query,
-        next,
-        cache: "force-cache",
+        next: { revalidate: 0 },
+        cache: "no-store",
       })
       .then(({ collections, count }) => ({ collections, count }))
   } catch (error) {
@@ -31,16 +26,12 @@ export const listCollections = async (queryParams: Record<string, string> = {}) 
 }
 
 export const retrieveCollection = async (id: string) => {
-  const next = {
-    ...(await getCacheOptions(`collections-${id}`)),
-  }
-
   try {
     return await sdk.client
       .fetch<{ collection: HttpTypes.StoreCollection }>(`/store/collections/${id}`, {
         method: "GET",
-        next,
-        cache: "force-cache",
+        next: { revalidate: 0 },
+        cache: "no-store",
       })
       .then(({ collection }) => collection)
   } catch (error) {
@@ -50,17 +41,13 @@ export const retrieveCollection = async (id: string) => {
 }
 
 export const getCollectionByHandle = async (handle: string) => {
-  const next = {
-    ...(await getCacheOptions("collections")),
-  }
-
   try {
     return await sdk.client
       .fetch<{ collections: HttpTypes.StoreCollection[] }>(`/store/collections`, {
         method: "GET",
         query: { handle },
-        next,
-        cache: "force-cache",
+        next: { revalidate: 0 },
+        cache: "no-store",
       })
       .then(({ collections }) => collections[0] ?? null)
   } catch (error) {
