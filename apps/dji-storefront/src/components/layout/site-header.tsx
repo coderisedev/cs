@@ -8,7 +8,7 @@ import { ShoppingCart, Search, Menu, User, X, Sun, Moon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
-import { BRAND_LOGO_URL, BRAND_NAME } from "@/lib/constants"
+import { BRAND_LOGO_URL, BRAND_LOGO_URL_DARK, BRAND_NAME } from "@/lib/constants"
 
 const NAV_ITEMS = [
   { name: "Home", href: "/" },
@@ -54,18 +54,24 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
       <div className="container mx-auto px-4 lg:px-12">
         <div className={cn("flex items-center justify-between transition-all duration-300", condensed ? "h-14" : "h-16")}>
           <Link href="/" className="inline-flex items-center" aria-label={BRAND_NAME}>
-            <Image
-              src={BRAND_LOGO_URL}
-              alt={BRAND_NAME}
-              width={144}
-              height={36}
-              priority
-              className={cn(
-                "w-auto transition-all duration-300 dark:invert dark:brightness-150",
-                condensed ? "h-12" : "h-14"
-              )}
-              sizes="(max-width: 768px) 40vw, 144px"
-            />
+            <div className="relative w-[144px]" style={{ height: condensed ? 48 : 56 }}>
+              <Image
+                src={BRAND_LOGO_URL}
+                alt={BRAND_NAME}
+                fill
+                priority
+                className={cn("object-contain transition-opacity duration-300", isDarkMode ? "opacity-0" : "opacity-100")}
+                sizes="(max-width: 768px) 40vw, 144px"
+              />
+              <Image
+                src={BRAND_LOGO_URL_DARK}
+                alt={`${BRAND_NAME} dark logo`}
+                fill
+                priority
+                className={cn("object-contain transition-opacity duration-300", isDarkMode ? "opacity-100" : "opacity-0")}
+                sizes="(max-width: 768px) 40vw, 144px"
+              />
+            </div>
           </Link>
 
           <nav className="hidden lg:flex items-center space-x-6">

@@ -6,3 +6,4 @@ export const DEFAULT_CURRENCY = "USD"
 
 export const BRAND_NAME = "DJI Storefront"
 export const BRAND_LOGO_URL = "https://img.aidenlux.com/medusa-uploads/logo.png"
+export const BRAND_LOGO_URL_DARK = "https://img.aidenlux.com/medusa-uploads/logo-white.png"
