@@ -489,7 +489,8 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    author: Schema.Attribute.Component<'blog.author', false>;
+    author: Schema.Attribute.Text;
+    category: Schema.Attribute.String;
     content: Schema.Attribute.RichText;
     cover_image: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',

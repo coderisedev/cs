@@ -35,9 +35,10 @@
       ]
     },
     "author": {
-      "type": "component",
-      "component": "blog.author",
-      "repeatable": false
+      "type": "text"
+    },
+    "category": {
+      "type": "string"
     }
   }
 }

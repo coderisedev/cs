@@ -1,0 +1,50 @@
+[
+  {
+    "title": "CS 320A MCDU: Metal Craft That Feels Like The Flight Deck",
+    "slug": "cs-320a-mcdu-metal-craft",
+    "excerpt": "How our all-new Airbus MCDU delivers 1:1 scale fidelity with CNC-machined metal and silicone keys.",
+    "content": "## Why the 320A Feels Authentic\\n\\nWe start with a full CNC-machined metal chassis so the dimensions, mounting points, and surface finish match the real Airbus unit. Tactile silicone buttons mirror the resistance pilots expect, so you can fly raw data legs or FMS work without adapting muscle memory.\\n\\n**Quick specs**\\n\\n- 1:1 enclosure, no exposed fasteners on the front bezel.\\n- Silicone keycaps molded from the same geometry as the aircraft part number.\\n- Plug-and-play USB: power and data travel through a single cable, no driver hunt.\\n\\nPair it with the pedestal you already own or drop it on a desk and run it with MSFS, X-Plane, or Prepar3D. Explore the full gallery at https://www.cockpit-simulator.com/shop/cs-320a-mcdu/.\\n",
+    "author": "Cockpit Simulator Team",
+    "category": "Product Insights"
+  },
+  {
+    "title": "Why the Daisy Chain Cable Kit Simplifies Multi-Module Setups",
+    "slug": "daisy-chain-kit-simplifies-setups",
+    "excerpt": "Bundle power and data for MCDUs, MCPs, and EFIS modules through a single USB path and keep the flight deck tidy.",
+    "content": "## Less Cable, More Flying\\n\\nOur Daisy Chain Cable Kit lets you feed multiple CS peripherals through one USB port so your rig does not need four powered hubs. Each lead locks in place to preserve signal integrity for CDU key matrices and encoder data.\\n\\n### Typical workflow\\n1. Connect the hub lead to your PC or powered USB expander.\\n2. Run the short jumpers between adjacent CS modules (MCP, EFIS, CDU, etc.).\\n3. Label the order so you can reassemble the same chain after events or transport.\\n\\nThe result is a cockpit stack that travels easily and keeps EMI noise off your desk. Grab the kit here: https://www.cockpit-simulator.com/shop/daisy-chain-cables-kit/.\\n",
+    "author": "Systems Engineering",
+    "category": "Setup Guides"
+  },
+  {
+    "title": "CS 737M CDU v2 Manufacturing Upgrade Notes",
+    "slug": "cs-737m-cdu-v2-upgrade-notes",
+    "excerpt": "Second-generation machining, silicone buttons, and USB plug-and-play make the MAX-era CDU ready for daily sim sessions.",
+    "content": "## What Changed in v2\\n\\n- **CNC aluminum shell** for MAX-series proportions and bezel stiffness.\\n- **Silicone keypad matrix** that mirrors the detent and rebound of the aircraft unit.\\n- **Single USB link** for both power and data, so setup is literally plug-and-play with no config utility.\\n\\nEvery unit is hand-assembled, calibrated, and burn-in tested before shipping, so your FMC workflows behave like the real LNAV/VNAV pages. Read more at https://www.cockpit-simulator.com/shop/cs-737m-cdu/.\\n",
+    "author": "737 Program Lead",
+    "category": "Product Updates"
+  },
+  {
+    "title": "Picking the Right CDU: 737X, 777X, or 747X?",
+    "slug": "pick-right-cdu-737x-777x-747x",
+    "excerpt": "Use this guide to match our NG, Triple Seven, and Queen of the Skies CDUs to your preferred long-haul fleet.",
+    "content": "## A Quick Decision Matrix\\n\\n| Aircraft family | Recommended CDU | Notes |\\n| --- | --- | --- |\\n| 737 NG | CS 737X CDU v2 | Matte bezel, NG-specific key legends. |\\n| 737 MAX | CS 737M CDU v2 | Updated lighting tone and keypad font. |\\n| 777 | CS 777X CDU v2 | Larger screen aperture and modern annunciators. |\\n| 747-8 | CS 747X CDU v2 | Quad-engine EICAS shortcut keys. |\\n\\nAll four variants share the same construction DNA: CNC shells, silicone buttons, and true plug-and-play USB connectivity with zero config utilities. Pick the unit that matches your virtual hangar, drop it on the desk, and load the respective study-level aircraft. Product pages live under https://www.cockpit-simulator.com/shop/.\\n",
+    "author": "Product Marketing",
+    "category": "Buyer Guides"
+  },
+  {
+    "title": "CS 320N FCU Ecosystem: Center, L/R, and Desktop Stand",
+    "slug": "cs-320n-fcu-ecosystem-overview",
+    "excerpt": "Break down how the FCU-C, FCU-L/R, and desktop stand snap together for a true Airbus narrow-body glare shield.",
+    "content": "## Modules Built For The Desk\\n\\n- **FCU-C** delivers a 1:1 recreation of Airbus center panels with engineered plastic shells and pro-grade encoders.\\n- **FCU-L/R** mirrors the left/right glare shield wings so you can align altitude, heading, and speed knobs where your muscle memory expects them.\\n- **Desktop stand** ships with two socket plates, meaning you can park the FCU stack on any work surface without drilling.\\n\\nEverything shares the \"real product\" philosophy described on https://www.cockpit-simulator.com/cs-320n-fcu-c/ and the matching L/R and stand pages, so you get sturdy parts instead of hobby-grade DIY kits.\\n",
+    "author": "Airbus Product Owner",
+    "category": "Cockpit Builds"
+  },
+  {
+    "title": "737X MCP + EFIS: Building a Complete Mode Control Stack",
+    "slug": "737x-mcp-efis-mode-control-stack",
+    "excerpt": "Combine the CS 737X MCP, EFIS, and desktop stand options to recreate the NG glare shield workflow at home.",
+    "content": "## Why Pair MCP and EFIS\\n\\nThe MCP handles A/P mode logic while the dual EFIS units feed your navigation displays. Our 1:1 housings use engineering plastics, custom molds (17 for MCP, 6 for EFIS), and laser-etched legends so the detents and brightness lines feel right.\\n\\n### Setup checklist\\n- Mount MCP centered on the stand or your custom glare shield.\\n- Add EFIS units on both sides, wired through the Daisy Chain Cable Kit to minimize USB ports.\\n- Run lighting and functional tests with your preferred 737 suite before the next online event.\\n\\nDive into the hardware galleries: https://www.cockpit-simulator.com/cs-737x-mcp/ and https://www.cockpit-simulator.com/cs-737x-efis/.\\n",
+    "author": "Flight Deck Integrations",
+    "category": "Setup Guides"
+  }
+]

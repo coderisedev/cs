@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import ReactMarkdown from "react-markdown"
 import type { Components } from "react-markdown"
+import remarkGfm from "remark-gfm"
+import remarkBreaks from "remark-breaks"
 import { notFound } from "next/navigation"
 import { Calendar, Clock, User } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -136,8 +138,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       )}
 
       <div className="space-y-4 text-lg text-foreground-primary leading-relaxed">
-        <ReactMarkdown components={markdownComponents}>{post.content}</ReactMarkdown>
-      </div>
+        <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} components={markdownComponents}>
+          {post.content}
+        </ReactMarkdown>
+     </div>
     </article>
   )
 }
