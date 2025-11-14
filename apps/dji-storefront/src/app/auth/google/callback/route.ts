@@ -5,6 +5,7 @@ import { MEDUSA_BACKEND_URL, sdk } from "@/lib/medusa"
 import { setAuthToken, getCacheTag } from "@/lib/server/cookies"
 import { transferCart } from "@/lib/actions/auth"
 import { buildDefaultAccountPath, sanitizeRedirectPath } from "@/lib/util/redirect"
+import { getMedusaPublishableKey } from "@/lib/publishable-key"
 
 const DEFAULT_REDIRECT = buildDefaultAccountPath()
 
@@ -89,7 +90,7 @@ export async function GET(request: NextRequest) {
 
       // Verify customer availability; if missing, attempt lightweight bootstrap
       try {
-        const pk = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+        const pk = getMedusaPublishableKey()
         const headers: Record<string, string> = {
           authorization: `Bearer ${token}`,
         }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { MEDUSA_BACKEND_URL } from "@/lib/medusa"
 import { buildDefaultAccountPath, sanitizeRedirectPath } from "@/lib/util/redirect"
+import { getMedusaPublishableKey } from "@/lib/publishable-key"
 
 const DEFAULT_REDIRECT = buildDefaultAccountPath()
 
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
     }
-    const pk = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+    const pk = getMedusaPublishableKey()
     if (pk) {
       headers["x-publishable-api-key"] = pk
     }

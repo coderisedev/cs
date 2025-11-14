@@ -2,6 +2,7 @@
 
 import "server-only"
 import { cookies as nextCookies } from "next/headers"
+import { getMedusaPublishableKey } from "@/lib/publishable-key"
 
 function decodeJwtPayload(token: string): Record<string, unknown> | null {
   try {
@@ -18,7 +19,7 @@ export const getAuthHeaders = async (): Promise<Record<string, string>> => {
   try {
     const cookies = await nextCookies()
     const token = cookies.get("_medusa_jwt")?.value
-    const pk = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
+    const pk = getMedusaPublishableKey()
 
     const headers: Record<string, string> = {}
     if (pk) {

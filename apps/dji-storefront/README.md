@@ -10,6 +10,7 @@ Create `apps/dji-storefront/.env.local` (or rely on repo-level env injection) wi
 | ---- | ------- | ----------- |
 | `MEDUSA_BACKEND_URL` | `http://localhost:9000` | Base URL for the Medusa server. Defaults to `http://localhost:9000` if unset. |
 | `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` | `pk_test_xxx` | Publishable API key generated in Medusa Admin (exposed to the browser). |
+| `MEDUSA_PUBLISHABLE_KEY` | `pk_test_xxx` | Optional server-only fallback for the same publishable key (useful when the `NEXT_PUBLIC` variant is not defined in a given environment). |
 | `NEXT_PUBLIC_DEFAULT_REGION` | `us` | Fallback country code if middleware cannot geolocate the visitor. |
 | `STRAPI_API_URL` | `http://localhost:1337` | Base URL for the Strapi CMS powering the blog. |
 | `STRAPI_API_TOKEN` | `strapi_xxx` | Server-side token used to authorize blog API calls (kept private). |
