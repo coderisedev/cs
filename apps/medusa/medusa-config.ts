@@ -67,6 +67,14 @@ const FORCE_PATH_STYLE =
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
 const GOOGLE_OAUTH_CALLBACK_URL = process.env.GOOGLE_OAUTH_CALLBACK_URL
+const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID
+const DISCORD_CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET
+const DISCORD_OAUTH_CALLBACK_URL = process.env.DISCORD_OAUTH_CALLBACK_URL
+const DISCORD_SCOPE = process.env.DISCORD_SCOPE
+const FACEBOOK_CLIENT_ID = process.env.FACEBOOK_CLIENT_ID
+const FACEBOOK_CLIENT_SECRET = process.env.FACEBOOK_CLIENT_SECRET
+const FACEBOOK_OAUTH_CALLBACK_URL = process.env.FACEBOOK_OAUTH_CALLBACK_URL
+const FACEBOOK_FIELDS = process.env.FACEBOOK_FIELDS
 
 const AUTH_PROVIDERS: NonNullable<AuthModuleOptions["providers"]> = []
 
@@ -99,6 +107,32 @@ if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && GOOGLE_OAUTH_CALLBACK_URL) {
       clientId: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackUrl: GOOGLE_OAUTH_CALLBACK_URL,
+    },
+  })
+}
+
+if (DISCORD_CLIENT_ID && DISCORD_CLIENT_SECRET && DISCORD_OAUTH_CALLBACK_URL) {
+  AUTH_PROVIDERS.push({
+    resolve: "./src/modules/auth-discord",
+    id: "discord",
+    options: {
+      clientId: DISCORD_CLIENT_ID,
+      clientSecret: DISCORD_CLIENT_SECRET,
+      callbackUrl: DISCORD_OAUTH_CALLBACK_URL,
+      scope: DISCORD_SCOPE,
+    },
+  })
+}
+
+if (FACEBOOK_CLIENT_ID && FACEBOOK_CLIENT_SECRET && FACEBOOK_OAUTH_CALLBACK_URL) {
+  AUTH_PROVIDERS.push({
+    resolve: "./src/modules/auth-facebook",
+    id: "facebook",
+    options: {
+      clientId: FACEBOOK_CLIENT_ID,
+      clientSecret: FACEBOOK_CLIENT_SECRET,
+      callbackUrl: FACEBOOK_OAUTH_CALLBACK_URL,
+      fields: FACEBOOK_FIELDS,
     },
   })
 }

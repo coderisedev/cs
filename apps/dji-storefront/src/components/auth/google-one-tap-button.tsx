@@ -1,14 +1,21 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react"
 import Script from "next/script"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
+import { getPopupSource, OAuthProviderId } from "@/lib/auth/providers"
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
 const GOOGLE_ONE_TAP_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_ONE_TAP === "true"
 const GOOGLE_OAUTH_POPUP_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_OAUTH_POPUP === "true"
+const DISCORD_OAUTH_ENABLED = process.env.NEXT_PUBLIC_ENABLE_DISCORD_OAUTH === "true"
+const FACEBOOK_OAUTH_ENABLED = process.env.NEXT_PUBLIC_ENABLE_FACEBOOK_OAUTH === "true"
+const ADDITIONAL_POPUP_ORIGINS = (process.env.NEXT_PUBLIC_AUTH_POPUP_ALLOWED_ORIGINS ?? "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean)
 
 type CredentialResponse = {
   credential?: string
@@ -31,8 +38,10 @@ declare global {
 
 export const isGoogleOneTapEnabled = Boolean(GOOGLE_CLIENT_ID && GOOGLE_ONE_TAP_ENABLED)
 export const isGoogleOAuthPopupEnabled = Boolean(GOOGLE_CLIENT_ID && GOOGLE_OAUTH_POPUP_ENABLED)
+export const isDiscordOAuthEnabled = DISCORD_OAUTH_ENABLED
+export const isFacebookOAuthEnabled = FACEBOOK_OAUTH_ENABLED
 
-const GoogleGlyph = () => (
+export const GoogleGlyph = () => (
   <svg
     viewBox="0 0 24 24"
     aria-hidden="true"
@@ -54,6 +63,24 @@ const GoogleGlyph = () => (
     <path
       fill="#EA4335"
       d="M12 4.8c1.8 0 3.3.6 4.5 1.7l3.4-3.4C17.9 1.2 15.2 0 12 0 7.6 0 3.8 2.2 1.8 5.4l4.9 3.9c.7-2.3 2.8-4.5 5.3-4.5z"
+    />
+  </svg>
+)
+
+export const DiscordGlyph = () => (
+  <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true" focusable="false">
+    <path
+      fill="#5865F2"
+      d="M20.317 4.369a19.791 19.791 0 00-4.885-1.515.07.07 0 00-.073.034c-.211.375-.444.864-.608 1.25a18.248 18.248 0 00-5.363 0 12.63 12.63 0 00-.617-1.25.076.076 0 00-.073-.034c-1.7.321-3.34.86-4.885 1.515a.064.064 0 00-.03.025C.533 9.043-.319 13.58.099 18.063a.08.08 0 00.031.055c2.052 1.507 4.043 2.422 5.992 3.029a.077.077 0 00.084-.028c.461-.63.873-1.295 1.226-1.999a.076.076 0 00-.041-.104c-.652-.247-1.27-.548-1.871-.889a.077.077 0 01-.008-.129c.125-.094.25-.19.37-.29a.076.076 0 01.081-.01c3.927 1.793 8.18 1.793 12.062 0a.076.076 0 01.082.009c.12.1.245.197.37.291a.077.077 0 01-.006.129 12.299 12.299 0 01-1.872.888.076.076 0 00-.04.105c.361.703.773 1.368 1.225 1.998a.076.076 0 00.084.029c1.957-.607 3.948-1.522 6-3.03a.077.077 0 00.03-.054c.5-5.177-.838-9.68-3.548-13.666a.061.061 0 00-.03-.025zM8.02 15.331c-1.183 0-2.155-1.086-2.155-2.419 0-1.333.951-2.419 2.155-2.419 1.214 0 2.176 1.096 2.155 2.419 0 1.333-.951 2.419-2.155 2.419zm7.975 0c-1.183 0-2.155-1.086-2.155-2.419 0-1.333.951-2.419 2.155-2.419 1.214 0 2.176 1.096 2.155 2.419 0 1.333-.941 2.419-2.155 2.419z"
+    />
+  </svg>
+)
+
+export const FacebookGlyph = () => (
+  <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true" focusable="false">
+    <path
+      fill="#1877F2"
+      d="M22.675 0H1.325C.593 0 0 .593 0 1.326v21.348C0 23.407.593 24 1.325 24h11.495v-9.294H9.691v-3.622h3.129V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.764v2.314h3.587l-.467 3.622h-3.12V24h6.116C23.407 24 24 23.407 24 22.674V1.326C24 .593 23.407 0 22.675 0z"
     />
   </svg>
 )
@@ -244,12 +271,21 @@ export function GoogleOneTapButton({ returnTo, autoPrompt = true }: GoogleOneTap
   )
 }
 
-type GoogleOAuthPopupButtonProps = {
+type OAuthPopupButtonProps = {
+  provider: OAuthProviderId
+  label: string
+  icon?: ReactNode
   returnTo: string
+  enabled: boolean
 }
 
-export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps) {
-  const router = useRouter()
+export function OAuthPopupButton({
+  provider,
+  label,
+  icon,
+  returnTo,
+  enabled,
+}: OAuthPopupButtonProps) {
   const popupRef = useRef<Window | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [launching, setLaunching] = useState(false)
@@ -269,9 +305,9 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
     const handleMessage = async (event: MessageEvent) => {
       const origin = event.origin
       const selfOrigin = window.location.origin
-      const allowedOrigins = [selfOrigin, "https://prd.aidenlux.com"]
+      const allowedOrigins = new Set([selfOrigin, ...ADDITIONAL_POPUP_ORIGINS])
 
-      if (!allowedOrigins.includes(origin)) {
+      if (!allowedOrigins.has(origin)) {
         return
       }
 
@@ -283,7 +319,7 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
         token?: string
       }
 
-      if (data?.source !== "google-oauth-popup") {
+      if (data?.source !== getPopupSource(provider)) {
         return
       }
 
@@ -291,7 +327,6 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
       setLaunching(false)
 
       if (data.success && data.redirectUrl) {
-        // Persist token in main window first, then do a full navigation
         if (data.token) {
           try {
             await fetch("/api/auth/session", {
@@ -300,10 +335,9 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
               credentials: "include",
               body: JSON.stringify({ token: data.token }),
             })
-            // small delay to ensure Set-Cookie is applied before navigation
             await new Promise((r) => setTimeout(r, 100))
           } catch {
-            // non-fatal; we'll still navigate
+            // non-fatal
           }
         }
         if (typeof window !== "undefined") {
@@ -312,12 +346,12 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
         }
       }
 
-      setError(data.error ?? "Google sign-in was cancelled or failed")
+      setError(data.error ?? `${label} sign-in was cancelled or failed`)
     }
 
     window.addEventListener("message", handleMessage)
     return () => window.removeEventListener("message", handleMessage)
-  }, [closePopup, router])
+  }, [closePopup, provider, label])
 
   useEffect(() => {
     if (!launching || typeof window === "undefined") {
@@ -334,7 +368,7 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
     return () => window.clearInterval(interval)
   }, [launching])
 
-  if (!isGoogleOAuthPopupEnabled) {
+  if (!enabled) {
     return null
   }
 
@@ -352,8 +386,10 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
     const left = window.screenX + Math.max(0, (window.outerWidth - width) / 2)
     const features = `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
     const origin = window.location.origin
-    const url = `${origin}/auth/google?returnTo=${encodeURIComponent(returnTo)}`
-    const popup = window.open(url, "google-oauth-popup", features)
+    const popupUrl = new URL(`${origin}/auth/${provider}`)
+    popupUrl.searchParams.set("returnTo", returnTo)
+
+    const popup = window.open(popupUrl.toString(), `${provider}-oauth-popup`, features)
 
     if (!popup) {
       setLaunching(false)
@@ -363,6 +399,8 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
 
     popupRef.current = popup
   }
+
+  const iconNode = icon ?? <GoogleGlyph />
 
   return (
     <div className="space-y-2">
@@ -376,12 +414,12 @@ export function GoogleOAuthPopupButton({ returnTo }: GoogleOAuthPopupButtonProps
         {launching ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Opening Google...
+            Opening {label}...
           </>
         ) : (
           <>
-            <GoogleGlyph />
-            <span>Sign in with Google</span>
+            {iconNode}
+            <span>{label}</span>
           </>
         )}
       </Button>

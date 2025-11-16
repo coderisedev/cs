@@ -101,6 +101,26 @@ This runbook captures the manual steps referenced in `docs/solution-architecture
    docker run --env-file apps/medusa/.env.local --network host medusa-local:dev
    ```
 
+8. **Social login variables** – populate the OAuth placeholders in `apps/medusa/.env.local` and the GCP templates before wiring the providers in `medusa-config.ts`:
+
+   ```
+   GOOGLE_CLIENT_ID=your-google-client-id
+   GOOGLE_CLIENT_SECRET=your-google-client-secret
+   GOOGLE_OAUTH_CALLBACK_URL=http://localhost:9000/auth/google/callback
+
+   DISCORD_CLIENT_ID=your-discord-client-id
+   DISCORD_CLIENT_SECRET=your-discord-client-secret
+   DISCORD_OAUTH_CALLBACK_URL=http://localhost:9000/auth/discord/callback
+
+   FACEBOOK_CLIENT_ID=your-facebook-app-id
+   FACEBOOK_CLIENT_SECRET=your-facebook-app-secret
+   FACEBOOK_OAUTH_CALLBACK_URL=http://localhost:9000/auth/facebook/callback
+   ```
+
+   Each provider becomes active only when the corresponding vars are available, so keep staging/prod secrets in `infra/gcp/env/medusa.env.example` and `deploy/gce/.env` aligned.
+
+9. **Provider modules** – Discord (`src/modules/auth-discord`) 与 Facebook (`src/modules/auth-facebook`) 均遵循 `AbstractAuthModuleProvider` 合约。配置好环境变量后，重启 Medusa 并在浏览器中 smoke test `/auth/<provider>/callback` 流程，确保能够颁发会话再推广到上游。
+
 ## 4. Strapi Service (`apps/strapi`)
 
 1. Scaffold Strapi without running immediately:

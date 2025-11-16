@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useActionState } from "react"
+import type { ReactNode } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,11 +9,17 @@ import { Label } from "@/components/ui/label"
 import { loginAction, registerAction } from "@/lib/actions/auth"
 import { Loader2 } from "lucide-react"
 import {
-  GoogleOAuthPopupButton,
   GoogleOneTapButton,
+  OAuthPopupButton,
+  isDiscordOAuthEnabled,
+  isFacebookOAuthEnabled,
   isGoogleOAuthPopupEnabled,
   isGoogleOneTapEnabled,
+  DiscordGlyph,
+  FacebookGlyph,
+  GoogleGlyph,
 } from "@/components/auth/google-one-tap-button"
+import type { OAuthProviderId } from "@/lib/auth/providers"
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 type ViewType = "signin" | "register"
@@ -32,7 +39,34 @@ export function LoginClient({
   const defaultRedirect = `/${countryCode}/account`
   const redirectTarget = returnTo ?? defaultRedirect
   const requiresLoginForFlow = redirectTarget !== defaultRedirect
-  const googleLoginAvailable = isGoogleOneTapEnabled || isGoogleOAuthPopupEnabled
+  const popupButtons: Array<{
+    id: OAuthProviderId
+    label: string
+    enabled: boolean
+    icon: ReactNode
+  }> = [
+    {
+      id: "google",
+      label: "Sign in with Google",
+      enabled: isGoogleOAuthPopupEnabled,
+      icon: <GoogleGlyph />,
+    },
+    {
+      id: "discord",
+      label: "Sign in with Discord",
+      enabled: isDiscordOAuthEnabled,
+      icon: <DiscordGlyph />,
+    },
+    {
+      id: "facebook",
+      label: "Continue with Facebook",
+      enabled: isFacebookOAuthEnabled,
+      icon: <FacebookGlyph />,
+    },
+  ]
+
+  const activePopupButtons = popupButtons.filter((button) => button.enabled)
+  const showSocialLogin = isGoogleOneTapEnabled || activePopupButtons.length > 0
 
   return (
     <div className="px-4 py-16 sm:py-20 bg-gradient-to-b from-background via-background-secondary/30 to-background">
@@ -53,9 +87,18 @@ export function LoginClient({
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {googleLoginAvailable && (
+              {showSocialLogin && (
                 <div className="mb-6 space-y-4">
-                  {isGoogleOAuthPopupEnabled && <GoogleOAuthPopupButton returnTo={redirectTarget} />}
+                  {activePopupButtons.map((button) => (
+                    <OAuthPopupButton
+                      key={button.id}
+                      provider={button.id}
+                      label={button.label}
+                      icon={button.icon}
+                      returnTo={redirectTarget}
+                      enabled={button.enabled}
+                    />
+                  ))}
                   {isGoogleOneTapEnabled && <GoogleOneTapButton returnTo={redirectTarget} />}
                   <div className="text-center text-xs uppercase tracking-wide text-foreground-muted">
                     or continue with email
