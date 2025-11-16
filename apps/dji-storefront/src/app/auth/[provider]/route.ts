@@ -16,11 +16,17 @@ export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
 
+type RouteParams = { provider: string }
+type RouteContext =
+  | { params: RouteParams }
+  | { params: Promise<RouteParams> }
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { provider: string } }
+  context: RouteContext
 ) {
-  const providerParam = params?.provider?.toLowerCase()
+  const resolvedParams = await Promise.resolve(context.params)
+  const providerParam = resolvedParams?.provider?.toLowerCase()
   const config = getOAuthProviderConfig(providerParam)
 
   if (!config || !isOAuthProviderEnabled(config.id)) {

@@ -8,7 +8,6 @@ import { buildDefaultAccountPath, sanitizeRedirectPath } from "@/lib/util/redire
 import { getMedusaPublishableKey } from "@/lib/publishable-key"
 import {
   getOAuthProviderConfig,
-  getPopupSource,
   getStateCookieName,
   isOAuthProviderEnabled,
   OAuthProviderId,
@@ -20,40 +19,10 @@ export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
 
-type PopupPayload =
-  | { source: string; success: true; redirectUrl: string; token?: string }
-  | { source: string; success: false; error: string }
-
-const buildPopupResponse = (label: string, payload: PopupPayload) => {
-  const responseBody = `<!doctype html>
-  <html>
-    <body style="font-family:sans-serif;padding:2rem;">
-      <p>${payload.success ? `${label} sign-in successful. You can close this window.` : `${label} sign-in failed.`}</p>
-      <script>
-        (function() {
-          const message = ${JSON.stringify(payload)};
-          if (window.opener && !window.opener.closed) {
-            try {
-              window.opener.postMessage(message, "*");
-            } catch (err) {
-              console.warn('Unable to postMessage to opener', err);
-            }
-          }
-          setTimeout(() => window.close(), 250);
-        })();
-      </script>
-    </body>
-  </html>`
-
-  return new NextResponse(responseBody, {
-    status: 200,
-    headers: {
-      "Content-Type": "text/html; charset=utf-8",
-      "Cross-Origin-Opener-Policy": "unsafe-none",
-      "Cross-Origin-Embedder-Policy": "unsafe-none",
-    },
-  })
-}
+type RouteParams = { provider: string }
+type RouteContext =
+  | { params: RouteParams }
+  | { params: Promise<RouteParams> }
 
 const getReturnRedirect = async (provider: OAuthProviderId, state?: string | null) => {
   if (!state) {
@@ -74,9 +43,10 @@ const getReturnRedirect = async (provider: OAuthProviderId, state?: string | nul
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { provider: string } }
+  context: RouteContext
 ) {
-  const providerParam = params?.provider?.toLowerCase()
+  const resolvedParams = await Promise.resolve(context.params)
+  const providerParam = resolvedParams?.provider?.toLowerCase()
   const config = getOAuthProviderConfig(providerParam)
 
   if (!config || !isOAuthProviderEnabled(config.id)) {
@@ -88,7 +58,6 @@ export async function GET(
 
   const state = request.nextUrl.searchParams.get("state")
   const returnTo = await getReturnRedirect(config.id, state)
-  const popupSource = getPopupSource(config.id)
 
   try {
     const queryParams = Object.fromEntries(request.nextUrl.searchParams.entries())
@@ -159,38 +128,31 @@ export async function GET(
         console.warn(`Unable to verify ${config.id}-authenticated customer`, verificationError)
       }
 
-      const response = buildPopupResponse(config.label, {
-        source: popupSource,
-        success: true,
-        redirectUrl: returnTo,
-        token,
+      return NextResponse.redirect(returnTo, {
+        status: 302,
       })
-
-      response.cookies.set("_medusa_jwt", token, {
-        maxAge: 60 * 60 * 24 * 7,
-        httpOnly: true,
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
-        path: "/",
-      })
-
-      return response
     }
 
-    return buildPopupResponse(config.label, {
-      source: popupSource,
-      success: false,
-      error: "Medusa could not issue a session token",
-    })
+    return new NextResponse(
+      `<!doctype html><html><body style="font-family:sans-serif;padding:2rem;">
+        <h1>${config.label} sign-in failed</h1>
+        <p>Medusa could not issue a session token.</p>
+        <p>Please return to the storefront and try again.</p>
+      </body></html>`,
+      { status: 500, headers: { "Content-Type": "text/html; charset=utf-8" } }
+    )
   } catch (error) {
     const message =
       error instanceof Error
         ? error.message
-        : `Unexpected ${config.label} OAuth failure`
-    return buildPopupResponse(config.label, {
-      source: popupSource,
-      success: false,
-      error: message,
-    })
+        : "Unexpected OAuth failure"
+    return new NextResponse(
+      `<!doctype html><html><body style="font-family:sans-serif;padding:2rem;">
+        <h1>${config.label} sign-in unavailable</h1>
+        <p>${message}</p>
+        <p>Please return to the storefront and try again later.</p>
+      </body></html>`,
+      { status: 500, headers: { "Content-Type": "text/html; charset=utf-8" } }
+    )
   }
 }

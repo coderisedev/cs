@@ -20,14 +20,15 @@ Create `apps/dji-storefront/.env.local` (or rely on repo-level env injection) wi
 | `NEXT_PUBLIC_ENABLE_GOOGLE_OAUTH_POPUP` | `true` | Toggle for the Google popup-based OAuth button. |
 | `NEXT_PUBLIC_ENABLE_DISCORD_OAUTH` | `false` | Enable the Discord popup button once Medusa’s Discord provider is configured. |
 | `NEXT_PUBLIC_ENABLE_FACEBOOK_OAUTH` | `false` | Enable the Facebook popup button. |
-| `NEXT_PUBLIC_AUTH_POPUP_ALLOWED_ORIGINS` | `https://prd.aidenlux.com` | Additional origins (comma-separated) allowed to postMessage popup results back to the opener. |
+| `NEXT_PUBLIC_ENABLE_DISCORD_OAUTH` | `false` | Enable the Discord login button once Medusa’s Discord provider is configured. |
+| `NEXT_PUBLIC_ENABLE_FACEBOOK_OAUTH` | `false` | Enable the Facebook login button once Medusa’s Facebook provider is configured. |
 
 > When these env vars are **not** defined the storefront continues to run purely on mock data; once defined, subsequent phases of the migration will start calling the live `/store/*` endpoints.
 
 ### Social OAuth entry-points
 
-- `/auth/[provider]` and `/auth/[provider]/callback` drive the popup-based OAuth flow for `google`, `discord`, `twitter`, and `facebook`. The pages proxy through Next.js, call Medusa’s `/auth/customer/<provider>` endpoints, and rely on `window.postMessage` to pipe the issued JWT back to the opener.
-- Set the corresponding `NEXT_PUBLIC_ENABLE_*` env variable to `true` (and configure the Medusa provider) before surfacing each button in the login form. If multiple origins hit the storefront (e.g., content CDN + marketing domains), list them in `NEXT_PUBLIC_AUTH_POPUP_ALLOWED_ORIGINS` so the opener can accept `postMessage` payloads securely.
+- `/auth/[provider]` and `/auth/[provider]/callback` handle the OAuth flow for `google`, `discord`, and `facebook`. The routes proxy through Next.js, call Medusa’s `/auth/customer/<provider>` endpoints, and redirect the browser back to the storefront once a session is issued (no postMessage/popup bridge required).
+- Set the corresponding `NEXT_PUBLIC_ENABLE_*` env variable to `true` (and configure the Medusa provider) before surfacing each button in the login form. Buttons perform a full-page navigation so users complete the flow in a regular tab instead of a constrained popup window.
 
 ### Strapi content service
 

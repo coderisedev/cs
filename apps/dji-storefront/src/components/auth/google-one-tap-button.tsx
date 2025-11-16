@@ -5,17 +5,13 @@ import Script from "next/script"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
-import { getPopupSource, OAuthProviderId } from "@/lib/auth/providers"
+import { OAuthProviderId } from "@/lib/auth/providers"
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
 const GOOGLE_ONE_TAP_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_ONE_TAP === "true"
 const GOOGLE_OAUTH_POPUP_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_OAUTH_POPUP === "true"
 const DISCORD_OAUTH_ENABLED = process.env.NEXT_PUBLIC_ENABLE_DISCORD_OAUTH === "true"
 const FACEBOOK_OAUTH_ENABLED = process.env.NEXT_PUBLIC_ENABLE_FACEBOOK_OAUTH === "true"
-const ADDITIONAL_POPUP_ORIGINS = (process.env.NEXT_PUBLIC_AUTH_POPUP_ALLOWED_ORIGINS ?? "")
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean)
 
 type CredentialResponse = {
   credential?: string
@@ -286,148 +282,44 @@ export function OAuthPopupButton({
   returnTo,
   enabled,
 }: OAuthPopupButtonProps) {
-  const popupRef = useRef<Window | null>(null)
-  const [error, setError] = useState<string | null>(null)
   const [launching, setLaunching] = useState(false)
-
-  const closePopup = useCallback(() => {
-    if (popupRef.current && !popupRef.current.closed) {
-      popupRef.current.close()
-    }
-    popupRef.current = null
-  }, [])
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return
-    }
-
-    const handleMessage = async (event: MessageEvent) => {
-      const origin = event.origin
-      const selfOrigin = window.location.origin
-      const allowedOrigins = new Set([selfOrigin, ...ADDITIONAL_POPUP_ORIGINS])
-
-      if (!allowedOrigins.has(origin)) {
-        return
-      }
-
-      const data = event.data as {
-        source?: string
-        success?: boolean
-        redirectUrl?: string
-        error?: string
-        token?: string
-      }
-
-      if (data?.source !== getPopupSource(provider)) {
-        return
-      }
-
-      closePopup()
-      setLaunching(false)
-
-      if (data.success && data.redirectUrl) {
-        if (data.token) {
-          try {
-            await fetch("/api/auth/session", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              credentials: "include",
-              body: JSON.stringify({ token: data.token }),
-            })
-            await new Promise((r) => setTimeout(r, 100))
-          } catch {
-            // non-fatal
-          }
-        }
-        if (typeof window !== "undefined") {
-          window.location.href = data.redirectUrl
-          return
-        }
-      }
-
-      setError(data.error ?? `${label} sign-in was cancelled or failed`)
-    }
-
-    window.addEventListener("message", handleMessage)
-    return () => window.removeEventListener("message", handleMessage)
-  }, [closePopup, provider, label])
-
-  useEffect(() => {
-    if (!launching || typeof window === "undefined") {
-      return
-    }
-
-    const interval = window.setInterval(() => {
-      if (!popupRef.current || popupRef.current.closed) {
-        window.clearInterval(interval)
-        setLaunching(false)
-      }
-    }, 500)
-
-    return () => window.clearInterval(interval)
-  }, [launching])
 
   if (!enabled) {
     return null
   }
 
-  const openPopup = () => {
+  const startOAuth = () => {
     if (typeof window === "undefined") {
       return
     }
 
-    setError(null)
     setLaunching(true)
-
-    const width = 480
-    const height = 640
-    const top = window.screenY + Math.max(0, (window.outerHeight - height) / 2)
-    const left = window.screenX + Math.max(0, (window.outerWidth - width) / 2)
-    const features = `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
     const origin = window.location.origin
-    const popupUrl = new URL(`${origin}/auth/${provider}`)
-    popupUrl.searchParams.set("returnTo", returnTo)
-
-    const popup = window.open(popupUrl.toString(), `${provider}-oauth-popup`, features)
-
-    if (!popup) {
-      setLaunching(false)
-      setError("Popup was blocked. Please allow popups for this site or use email login.")
-      return
-    }
-
-    popupRef.current = popup
+    const url = `${origin}/auth/${provider}?returnTo=${encodeURIComponent(returnTo)}`
+    window.location.href = url
   }
 
   const iconNode = icon ?? <GoogleGlyph />
 
   return (
-    <div className="space-y-2">
-      <Button
-        type="button"
-        variant="outline"
-        className="w-full justify-center gap-2 border-border-primary bg-card hover:bg-card/90"
-        disabled={launching}
-        onClick={openPopup}
-      >
-        {launching ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Opening {label}...
-          </>
-        ) : (
-          <>
-            {iconNode}
-            <span>{label}</span>
-          </>
-        )}
-      </Button>
-      {error && (
-        <p className="text-sm text-red-500" role="alert">
-          {error}
-        </p>
+    <Button
+      type="button"
+      variant="outline"
+      className="w-full justify-center gap-2 border-border-primary bg-card hover:bg-card/90"
+      disabled={launching}
+      onClick={startOAuth}
+    >
+      {launching ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Opening {label}...
+        </>
+      ) : (
+        <>
+          {iconNode}
+          <span>{label}</span>
+        </>
       )}
-    </div>
+    </Button>
   )
 }

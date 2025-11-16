@@ -60,7 +60,5 @@ export const getStateCookieName = (provider: OAuthProviderId, state: string) => 
   return `${prefix}_${state}`
 }
 
-export const getPopupSource = (provider: OAuthProviderId) => `${provider}-oauth-popup`
-
 export const listEnabledProviders = () =>
   (Object.keys(PROVIDERS) as OAuthProviderId[]).filter((id) => isOAuthProviderEnabled(id))
