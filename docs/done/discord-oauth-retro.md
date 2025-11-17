@@ -1,3 +1,12 @@
+---
+last_updated: 2025-11-17
+status: ✅ Active
+related_docs:
+  - docs/done/discord-oauth-explained.md
+  - docs/plan/dev-env-discord-plan.md
+  - docs/basic/google-oauth-login-flow.md
+---
+
 # Discord OAuth Launch – Dev Instance Retrospective
 
 **Date:** 2025-11-16  
@@ -16,7 +25,7 @@
 
 1. **Stateful Medusa provider**  
    - `apps/medusa/src/modules/auth-discord/service.ts` now mirrors Google’s start flow: generate `state`, persist `{ callback_url }`, return Discord’s consent URL.  
-   - `deploy/gce/.env` updated so `DISCORD_OAUTH_CALLBACK_URL=https://dev.aidenlux.com/auth/discord/callback`, aligning Medusa with the dev domain.
+   - `deploy/gce/.env.prod` updated so `DISCORD_OAUTH_CALLBACK_URL=https://dev.aidenlux.com/auth/discord/callback`, aligning Medusa with the dev domain.
 
 2. **Custom Discord callback (Medusa)**  
    - Added `apps/medusa/src/api/auth/customer/discord/callback/route.ts`.  
@@ -30,7 +39,7 @@
    - Login UI switched to full-page navigation, matching the “no popup” preference.
 
 4. **Infra**  
-   - Rebuilt `cs-medusa:prod` with the new callback logic and recycled the `medusa` container (`docker compose -f deploy/gce/docker-compose.yml up -d medusa`).
+   - Rebuilt `cs-medusa:prod` with the new callback logic and recycled the `medusa` container (`docker compose -p cs-prod --env-file deploy/gce/.env.prod -f deploy/gce/prod/docker-compose.yml up -d medusa`).
 
 ## Validation
 

@@ -21,10 +21,12 @@ out/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.*
 # keep templates/examples
 !apps/**/.env*.example
 # Deployment service envs (sensitive)
 deploy/gce/*.env
+deploy/gce/.env*
 
 # Logs
 npm-debug.log*

@@ -1,6 +1,12 @@
-# Google OAuth Login Flow – DJI Storefront x Medusa v2
+---
+last_updated: 2025-11-12
+status: ✅ Active
+related_docs:
+  - docs/plan/social-auth-expansion-plan.md
+  - docs/done/discord-oauth-retro.md
+---
 
-Last updated: 2025-11-12
+# Google OAuth Login Flow – DJI Storefront x Medusa v2
 
 ## Overview
 
@@ -30,7 +36,7 @@ Vercel (apps/dji-storefront):
 - `NEXT_PUBLIC_ENABLE_GOOGLE_OAUTH_POPUP=true`
 - `NEXT_PUBLIC_DEFAULT_REGION=us`
 
-Medusa (deploy/gce/.env):
+Medusa (deploy/gce/.env.prod):
 - `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_OAUTH_CALLBACK_URL=https://prd.aidenlux.com/auth/google/callback`
 - `STORE_CORS` and `AUTH_CORS` include `https://prd.aidenlux.com`
 
@@ -127,4 +133,3 @@ If enabled, main window obtains a Google `credential` and calls the Next API rou
 - Google Callback: `GET https://prd.aidenlux.com/auth/google/callback?code=...&state=...`
 - Persist session (main window): `POST https://prd.aidenlux.com/api/auth/session`
 - Verify session: `GET https://api.aidenlux.com/store/customers/me`
-

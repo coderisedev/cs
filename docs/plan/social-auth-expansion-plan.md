@@ -1,3 +1,12 @@
+---
+last_updated: 2025-11-17
+status: 🕒 Draft
+related_docs:
+  - docs/done/discord-oauth-retro.md
+  - docs/done/discord-oauth-explained.md
+  - docs/plan/dev-env-discord-plan.md
+---
+
 # Social Auth Expansion Plan
 
 ## Context
@@ -11,7 +20,7 @@
    - 模块通过 `ModuleProvider(Modules.AUTH, { services: [...] })` 导出，并在 `medusa-config.ts` 里依据环境变量拼装 `AUTH_PROVIDERS`。
 2. **统一配置与密钥管理**  
    - 在 `apps/medusa/.env.template`、`deploy/gce/env/medusa.env`、`docs/medusa-strapi-local-setup.md` 补充 `DISCORD_CLIENT_ID`/`SECRET`/`OAUTH_CALLBACK_URL` 等占位符，保持一处更新。  
-   - 生产 secrets 依旧注入到 `deploy/gce/.env`，并通过 Terraform/Pulumi 复制到 Vercel/Cloudflare 等边缘层。
+   - 生产 secrets 依旧注入到 `deploy/gce/.env.prod`，并通过 Terraform/Pulumi 复制到 Vercel/Cloudflare 等边缘层。
 3. **前端配合**  
    - `apps/dji-storefront`（Next.js 14 App Router）是唯一客户入口：它只负责发起 `/auth/{provider}` 跳转并处理窗口通信，所有 token 交换仍在 Medusa 完成。  
    - 新增的 Discord/Facebook 按钮共用与 `auth/google` 相同的弹窗/回调框架；无需在前端维护第三方 access token。

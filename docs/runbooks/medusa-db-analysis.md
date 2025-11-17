@@ -1,9 +1,17 @@
+---
+last_updated: 2025-11-17
+status: ✅ Active
+related_docs:
+  - docs/basic/dev-db-clone.md
+  - docs/fix/2025-11-17-docker-db-access.md
+---
+
 # Medusa Database Inspection Cheat Sheet
 
 Use this playbook whenever you need to answer “does Medusa already have *X* configured?” without spinning up the full backend stack. It documents the direct Postgres connection method we verified while troubleshooting the CS 320A MCDU listing.
 
 ## 1. Source credentials
-1. Open `deploy/gce/.env`.
+1. Open `deploy/gce/.env.prod`.
 2. Copy `MEDUSA_DATABASE_URL`. Replace the `host.docker.internal` host with `localhost` because the Postgres server runs on the host OS.
 
 Example:
@@ -52,4 +60,4 @@ Helpful meta commands once connected:
 - Inventory must exist in a stock location that is attached to the same sales channel as the publishable API key (`publishable_api_key_sales_channel`). Otherwise Medusa reports zero `inventory_quantity` even if another warehouse holds stock.
 
 ## 5. Exit
-Type `\q` to leave `psql`. Keep the `.env` file untouched and avoid committing real credentials.
+Type `\q` to leave `psql`. Keep the `.env.prod` file untouched and avoid committing real credentials.

@@ -3,10 +3,10 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-ENV_FILE="$ROOT_DIR/deploy/gce/.env"
+ENV_FILE="$ROOT_DIR/deploy/gce/.env.prod"
 
 if [[ ! -f "$ENV_FILE" ]]; then
-  echo "[sync-medusa] Missing deploy/gce/.env file" >&2
+  echo "[sync-medusa] Missing deploy/gce/.env.prod file" >&2
   exit 1
 fi
 
@@ -47,6 +47,10 @@ echo "[sync-medusa] Rebuilding cs-medusa:prod Docker image"
 docker build -t cs-medusa:prod -f "$ROOT_DIR/apps/medusa/Dockerfile" "$ROOT_DIR"
 
 echo "[sync-medusa] Restarting medusa service"
-docker compose -f "$ROOT_DIR/deploy/gce/docker-compose.yml" up -d --force-recreate medusa
+docker compose \
+  -p cs-prod \
+  --env-file "$ROOT_DIR/deploy/gce/.env.prod" \
+  -f "$ROOT_DIR/deploy/gce/prod/docker-compose.yml" \
+  up -d --force-recreate medusa
 
 echo "[sync-medusa] Completed"

@@ -1,0 +1,81 @@
+services:
+  medusa:
+    image: ${MEDUSA_IMAGE:-cs-medusa:prod}
+    restart: unless-stopped
+    env_file: ../.env.prod
+    extra_hosts:
+      - "host.docker.internal:172.30.0.1"
+    environment:
+      NODE_ENV: production
+      PORT: ${MEDUSA_PORT:-9000}
+      DATABASE_URL: ${MEDUSA_DATABASE_URL}
+      REDIS_URL: ${MEDUSA_REDIS_URL}
+      STORE_CORS: ${STORE_CORS}
+      ADMIN_CORS: ${ADMIN_CORS}
+      AUTH_CORS: ${AUTH_CORS}
+      JWT_SECRET: ${JWT_SECRET}
+      COOKIE_SECRET: ${COOKIE_SECRET}
+      STRAPI_WEBHOOK_SECRET: ${STRAPI_WEBHOOK_SECRET}
+      MEDUSA_FILE_ACCESS_KEY_ID: ${MEDUSA_FILE_ACCESS_KEY_ID}
+      MEDUSA_FILE_SECRET_ACCESS_KEY: ${MEDUSA_FILE_SECRET_ACCESS_KEY}
+      MEDUSA_FILE_BUCKET: ${MEDUSA_FILE_BUCKET}
+      MEDUSA_FILE_REGION: ${MEDUSA_FILE_REGION}
+      MEDUSA_FILE_ENDPOINT: ${MEDUSA_FILE_ENDPOINT}
+      MEDUSA_FILE_PUBLIC_URL: ${MEDUSA_FILE_PUBLIC_URL}
+      MEDUSA_FILE_PREFIX: ${MEDUSA_FILE_PREFIX}
+      MEDUSA_FILE_FORCE_PATH_STYLE: ${MEDUSA_FILE_FORCE_PATH_STYLE}
+      MEDUSA_FILE_CACHE_CONTROL: ${MEDUSA_FILE_CACHE_CONTROL}
+      MEDUSA_FILE_DOWNLOAD_TTL: ${MEDUSA_FILE_DOWNLOAD_TTL}
+    ports:
+      - "${MEDUSA_PORT:-9000}:9000"
+    networks:
+      - cs-prod-net
+
+  strapi:
+    image: ${STRAPI_IMAGE:-cs-strapi:prod}
+    restart: unless-stopped
+    env_file: ../.env.prod
+    extra_hosts:
+      - "host.docker.internal:172.30.0.1"
+    environment:
+      NODE_ENV: production
+      HOST: ${STRAPI_HOST:-0.0.0.0}
+      PORT: ${STRAPI_PORT:-1337}
+      APP_KEYS: ${APP_KEYS}
+      API_TOKEN_SALT: ${API_TOKEN_SALT}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
+      ADMIN_AUTH_SECRET: ${ADMIN_AUTH_SECRET}
+      STRAPI_ADMIN_BACKEND_URL: ${STRAPI_ADMIN_BACKEND_URL}
+      STRAPI_TELEMETRY_DISABLED: ${STRAPI_TELEMETRY_DISABLED:-true}
+      DATABASE_CLIENT: postgres
+      DATABASE_URL: ${STRAPI_DATABASE_URL}
+      DATABASE_HOST: ${STRAPI_DATABASE_HOST}
+      DATABASE_PORT: ${STRAPI_DATABASE_PORT}
+      DATABASE_NAME: ${STRAPI_DATABASE_NAME}
+      DATABASE_USERNAME: ${STRAPI_DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${STRAPI_DATABASE_PASSWORD}
+      AWS_ACCESS_KEY_ID: ${STRAPI_AWS_ACCESS_KEY_ID}
+      AWS_ACCESS_SECRET: ${STRAPI_AWS_ACCESS_SECRET}
+      AWS_BUCKET_NAME: ${STRAPI_AWS_BUCKET_NAME}
+      AWS_REGION: ${STRAPI_AWS_REGION}
+      AWS_ENDPOINT: ${STRAPI_AWS_ENDPOINT}
+      AWS_PUBLIC_URL: ${STRAPI_AWS_PUBLIC_URL}
+      AWS_FORCE_PATH_STYLE: ${STRAPI_AWS_FORCE_PATH_STYLE}
+    ports:
+      - "${STRAPI_PORT:-1337}:1337"
+    volumes:
+      - strapi_uploads_prod:/app/public/uploads
+    networks:
+      - cs-prod-net
+
+volumes:
+  strapi_uploads_prod:
+
+networks:
+  cs-prod-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/16
+          gateway: 172.30.0.1

@@ -78,6 +78,27 @@ development_status:
   4-2-integrate-strapi-api-with-storefront: backlog
   4-3-build-guide-blog-detail-pages: backlog
   4-4-surface-content-on-product-pages: backlog
+documentation:
+  docs_updated: true
+  updated_docs:
+    - docs/index.md
+    - docs/README.md
+    - docs/done/docker-env-best-practices.md
+    - docs/fix/2025-11-17-docker-db-access.md
+    - docs/basic/docs-maintenance-best-practices.md
+    - docs/plan/dev-env-discord-plan.md
+    - docs/basic/google-oauth-login-flow.md
+    - docs/runbooks/medusa-db-analysis.md
+    - docs/runbooks/rebuild-strapi-medusa-images.md
+    - docs/fix/dev-env-bringup-retro.md
+    - docs/basic/dev-db-clone.md
+    - docs/plan/docker-env-isolation.md
+    - docs/plan/gce-medusa-strapi-r2-deployment.md
+    - docs/plan/social-auth-expansion-plan.md
+    - docs/fix/2025-11-09-strapi-admin-login.md
+    - docs/medusa-strapi-local-setup.md
+    - docs/basic/strapi-post-model-rebuild-mechanism.md
+  needs_review: []
   4-5-implement-content-editorial-workflow: backlog
   4-6-establish-technical-seo-foundation: backlog
   4-7-implement-schema-markup: backlog

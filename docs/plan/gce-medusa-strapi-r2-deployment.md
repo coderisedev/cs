@@ -1,3 +1,12 @@
+---
+last_updated: 2025-11-17
+status: ✅ Active
+related_docs:
+  - docs/done/docker-env-best-practices.md
+  - docs/fix/2025-11-09-strapi-admin-login.md
+  - docs/fix/2025-11-17-docker-db-access.md
+---
+
 # Deployment Plan: Medusa & Strapi on GCE (Docker + R2 + CF Tunnel)
 
 ## 1. Environment Overview
@@ -12,7 +21,7 @@
 /srv/cs/
   docker-compose.yml
   .env
-  strapi/uploads/           # optional local cache
+  (Strapi uploads stored in Docker volume `strapi_uploads_prod`)
   apps/... (optional)       # source if building locally
 ```
 
@@ -116,8 +125,11 @@ services:
     ports:
       - "1337:1337"
     volumes:
-      - ./strapi/uploads:/app/public/uploads
+      - strapi_uploads_prod:/app/public/uploads
     networks: [cs-net]
+
+volumes:
+  strapi_uploads_prod:
 
 networks:
   cs-net:
@@ -145,5 +157,5 @@ networks:
 ## 6. Maintenance & Future Migration
 - Updating images: `docker compose pull` (or rebuild) → `docker compose up -d`.
 - Migrating DB/Redis to managed services: only update `.env` connection strings.
-- Add backups for `/srv/cs/strapi/uploads` (optional) and Cloudflare R2 bucket.
+- Add backups for the `strapi_uploads_prod` Docker volume (optional) and Cloudflare R2 bucket.
 - Document Strapi seed scripts (`strapi console` + `seedNewReleases`) for future schema changes.

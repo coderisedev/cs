@@ -1,3 +1,11 @@
+---
+last_updated: 2025-11-17
+status: ✅ Active
+related_docs:
+  - docs/basic/medusa-sales-channels-basics.md
+  - docs/runbooks/medusa-db-analysis.md
+---
+
 # CS 320A MCDU Product Visibility Check
 
 ## Summary
@@ -6,7 +14,7 @@
 - The only blocker for checkout is stock attribution: available inventory sits exclusively in the Dongguan warehouse, which is not linked to the sales channel that powers the storefront, so Medusa reports zero sellable quantity.
 
 ## Environment & Commands
-- Used `deploy/gce/.env` credentials to access the live Medusa Postgres on `localhost:5432`.
+- Used `deploy/gce/.env.prod` credentials to access the live Medusa Postgres on `localhost:5432`.
 - Verified product data via `psql postgres://cs:n6DYeq3H9uOJudpligATbfYYmjJtUaoV@localhost:5432/medusa_production -c "<query>"`.
 - Inspected storefront sourcing logic in `apps/dji-storefront/src/lib/data/products.ts` and homepage filtering in `apps/dji-storefront/src/app/[countryCode]/page.tsx`.
 

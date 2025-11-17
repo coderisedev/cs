@@ -1,3 +1,11 @@
+---
+last_updated: 2025-11-17
+status: ✅ Active
+related_docs:
+  - docs/done/discord-oauth-retro.md
+  - docs/plan/dev-env-discord-plan.md
+---
+
 # Discord OAuth Flow – Implementation Deep Dive
 
 **Project:** cs  
@@ -36,7 +44,7 @@ File: `apps/dji-storefront/src/app/auth/[provider]/route.ts`
 File: `apps/medusa/src/modules/auth-discord/service.ts`
 
 - `authenticate()` now mirrors Google’s implementation: generate random `state`, persist `{ callback_url }` via `authIdentityService.setState`, build Discord’s authorize URL with `client_id`, `scope`, and `state`.  
-- `deploy/gce/.env` sets `DISCORD_OAUTH_CALLBACK_URL=https://dev.aidenlux.com/auth/discord/callback`, so dev flows always return to the dev domain.  
+- `deploy/gce/.env.prod` sets `DISCORD_OAUTH_CALLBACK_URL=https://dev.aidenlux.com/auth/discord/callback`, so dev flows always return to the dev domain.  
 - Environment alignment is critical—without it Discord would redirect to the old prod callback.
 
 ---
@@ -116,6 +124,6 @@ File: `apps/medusa/src/api/auth/customer/discord/callback/route.ts`
 2. **Custom callback**: When Medusa providers don’t emit a JWT by default, add an API route under `apps/medusa/src/api/auth/.../callback` to mint tokens yourself (same pattern as Google).  
 3. **Cookie alignment**: Authentication only “sticks” if the cookie domain matches the user-facing domain; use `STOREFRONT_BASE_URL`/`AUTH_COOKIE_DOMAIN` to keep Next’s server actions and SSR in sync.  
 4. **Full-page redirects**: Avoid popup race conditions by keeping the entire OAuth experience in the main window.  
-5. **Testing**: After each change, rebuild `cs-medusa:prod`, restart `medusa` (`docker compose -f deploy/gce/docker-compose.yml up -d medusa`), then run the flow on `https://dev.aidenlux.com` while tailing `docker compose logs medusa`.
+5. **Testing**: After each change, rebuild `cs-medusa:prod`, restart `medusa` (`docker compose -p cs-prod --env-file deploy/gce/.env.prod -f deploy/gce/prod/docker-compose.yml up -d medusa`), then run the flow on `https://dev.aidenlux.com` while tailing `docker compose -p cs-prod --env-file deploy/gce/.env.prod -f deploy/gce/prod/docker-compose.yml logs medusa`.
 
 This doc, coupled with `docs/done/discord-oauth-retro.md`, should give you both the timeline (retro) and the mechanics (this file) needed to reason about Discord SSO in this project.

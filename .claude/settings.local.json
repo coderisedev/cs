@@ -14,7 +14,9 @@
       "Bash(git branch:*)",
       "Bash(NODE_ENV=production node -e \"console.log(''NODE_ENV:'', process.env.NODE_ENV)\")",
       "Bash(git clean:*)",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(top:*)",
+      "Bash(iostat:*)"
     ],
     "deny": [],
     "ask": []

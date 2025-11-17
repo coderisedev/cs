@@ -1,3 +1,11 @@
+---
+last_updated: 2025-11-17
+status: ✅ Active
+related_docs:
+  - docs/runbooks/medusa-db-analysis.md
+  - docs/runbooks/rebuild-strapi-medusa-images.md
+---
+
 # Medusa & Strapi Local Environment Setup
 
 This runbook captures the manual steps referenced in `docs/solution-architecture.md` for bootstrapping the commerce (Medusa) and content (Strapi) services on a local workstation.
@@ -117,7 +125,7 @@ This runbook captures the manual steps referenced in `docs/solution-architecture
    FACEBOOK_OAUTH_CALLBACK_URL=http://localhost:9000/auth/facebook/callback
    ```
 
-   Each provider becomes active only when the corresponding vars are available, so keep staging/prod secrets in `infra/gcp/env/medusa.env.example` and `deploy/gce/.env` aligned.
+   Each provider becomes active only when the corresponding vars are available, so keep staging/prod secrets in `infra/gcp/env/medusa.env.example` and `deploy/gce/.env.prod` aligned.
 
 9. **Provider modules** – Discord (`src/modules/auth-discord`) 与 Facebook (`src/modules/auth-facebook`) 均遵循 `AbstractAuthModuleProvider` 合约。配置好环境变量后，重启 Medusa 并在浏览器中 smoke test `/auth/<provider>/callback` 流程，确保能够颁发会话再推广到上游。
 

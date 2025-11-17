@@ -1,15 +1,12 @@
-version: "3.9"
-
 services:
-  medusa:
-    image: ${MEDUSA_IMAGE:-cs-medusa:prod}
-    container_name: medusa
+  medusa_dev:
+    image: ${MEDUSA_DEV_IMAGE:-cs-medusa:dev}
     restart: unless-stopped
-    env_file: .env
+    env_file: ../.env.dev
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "host.docker.internal:172.31.0.1"
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
       PORT: ${MEDUSA_PORT:-9000}
       DATABASE_URL: ${MEDUSA_DATABASE_URL}
       REDIS_URL: ${MEDUSA_REDIS_URL}
@@ -30,19 +27,18 @@ services:
       MEDUSA_FILE_CACHE_CONTROL: ${MEDUSA_FILE_CACHE_CONTROL}
       MEDUSA_FILE_DOWNLOAD_TTL: ${MEDUSA_FILE_DOWNLOAD_TTL}
     ports:
-      - "${MEDUSA_PORT:-9000}:9000"
+      - "9001:9000"
     networks:
-      - cs-net
+      - cs-dev-net
 
-  strapi:
-    image: ${STRAPI_IMAGE:-cs-strapi:prod}
-    container_name: strapi
+  strapi_dev:
+    image: ${STRAPI_DEV_IMAGE:-cs-strapi:dev}
     restart: unless-stopped
-    env_file: .env
+    env_file: ../.env.dev
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "host.docker.internal:172.31.0.1"
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
       HOST: ${STRAPI_HOST:-0.0.0.0}
       PORT: ${STRAPI_PORT:-1337}
       APP_KEYS: ${APP_KEYS}
@@ -67,12 +63,19 @@ services:
       AWS_PUBLIC_URL: ${STRAPI_AWS_PUBLIC_URL}
       AWS_FORCE_PATH_STYLE: ${STRAPI_AWS_FORCE_PATH_STYLE}
     ports:
-      - "${STRAPI_PORT:-1337}:1337"
+      - "1338:1337"
     volumes:
-      - ./strapi/uploads:/app/public/uploads
+      - strapi_uploads_dev:/app/public/uploads
     networks:
-      - cs-net
+      - cs-dev-net
+
+volumes:
+  strapi_uploads_dev:
 
 networks:
-  cs-net:
+  cs-dev-net:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.31.0.0/16
+          gateway: 172.31.0.1
