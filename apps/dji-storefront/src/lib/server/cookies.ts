@@ -15,6 +15,26 @@ function decodeJwtPayload(token: string): Record<string, unknown> | null {
     return null
   }
 }
+
+const resolveCookieDomain = () => {
+  const rawDomain =
+    process.env.AUTH_COOKIE_DOMAIN ??
+    process.env.STOREFRONT_BASE_URL ??
+    process.env.NEXT_PUBLIC_STOREFRONT_BASE_URL
+
+  if (!rawDomain) {
+    return undefined
+  }
+
+  try {
+    const parsed = new URL(rawDomain)
+    return parsed.hostname
+  } catch {
+    return rawDomain.replace(/https?:\/\//, "")
+  }
+}
+
+const COOKIE_DOMAIN = resolveCookieDomain()
 export const getAuthHeaders = async (): Promise<Record<string, string>> => {
   try {
     const cookies = await nextCookies()
@@ -85,6 +105,7 @@ export const setCartId = async (cartId: string) => {
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     path: "/",
+    ...(COOKIE_DOMAIN ? { domain: COOKIE_DOMAIN } : {}),
   })
 }
 
@@ -93,6 +114,7 @@ export const removeCartId = async () => {
   cookies.set("_medusa_cart_id", "", {
     maxAge: -1,
     path: "/",
+    ...(COOKIE_DOMAIN ? { domain: COOKIE_DOMAIN } : {}),
   })
 }
 
@@ -104,6 +126,7 @@ export const setAuthToken = async (token: string) => {
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     path: "/",
+    ...(COOKIE_DOMAIN ? { domain: COOKIE_DOMAIN } : {}),
   })
 }
 
@@ -112,5 +135,6 @@ export const removeAuthToken = async () => {
   cookies.set("_medusa_jwt", "", {
     maxAge: -1,
     path: "/",
+    ...(COOKIE_DOMAIN ? { domain: COOKIE_DOMAIN } : {}),
   })
 }

@@ -1,3 +1,4 @@
+import crypto from "crypto"
 import type {
   AuthenticationInput,
   AuthenticationResponse,
@@ -36,6 +37,10 @@ type DiscordUserResponse = {
   email?: string
   verified?: boolean
   avatar?: string
+}
+
+type DiscordStatePayload = {
+  callback_url?: string
 }
 
 const DISCORD_TOKEN_URL = "https://discord.com/api/oauth2/token"
@@ -79,12 +84,55 @@ export class DiscordAuthService extends AbstractAuthModuleProvider {
     authIdentityService: AuthIdentityProviderService
   ): Promise<AuthenticationResponse> {
     try {
+      const stateKey = crypto.randomBytes(32).toString("hex")
+      const callbackUrl =
+        typeof data.body?.callback_url === "string"
+          ? data.body.callback_url
+          : this.options_.callbackUrl
+
+      await authIdentityService.setState(stateKey, {
+        callback_url: callbackUrl,
+      } satisfies DiscordStatePayload)
+
+      const authorizeUrl = new URL("https://discord.com/oauth2/authorize")
+      authorizeUrl.searchParams.set("response_type", "code")
+      authorizeUrl.searchParams.set("client_id", this.options_.clientId)
+      authorizeUrl.searchParams.set("redirect_uri", callbackUrl)
+      authorizeUrl.searchParams.set("scope", this.options_.scope ?? "identify email")
+      authorizeUrl.searchParams.set("state", stateKey)
+
+      return {
+        success: true,
+        location: authorizeUrl.toString(),
+      }
+    } catch (error) {
+      const message =
+        error instanceof MedusaError ? error.message : "Unable to start Discord sign-in"
+      this.logger_?.error?.("discord-auth", error)
+      return { success: false, error: message }
+    }
+  }
+
+  async validateCallback(
+    data: AuthenticationInput,
+    authIdentityService: AuthIdentityProviderService
+  ): Promise<AuthenticationResponse> {
+    try {
       const code = this.extractCode(data)
       if (!code) {
         return { success: false, error: "Missing Discord authorization code" }
       }
 
-      const token = await this.exchangeCode(code)
+      const stateKey = data.query?.state ?? data.body?.state
+      const storedState = stateKey
+        ? ((await authIdentityService.getState(stateKey)) as DiscordStatePayload | undefined)
+        : undefined
+      const callbackUrl =
+        typeof storedState?.callback_url === "string"
+          ? storedState.callback_url
+          : this.options_.callbackUrl
+
+      const token = await this.exchangeCode(code, callbackUrl)
       const profile = await this.fetchUserProfile(token.access_token)
 
       if (!profile?.email) {
@@ -108,24 +156,17 @@ export class DiscordAuthService extends AbstractAuthModuleProvider {
     }
   }
 
-  async validateCallback(
-    data: AuthenticationInput,
-    authIdentityService: AuthIdentityProviderService
-  ): Promise<AuthenticationResponse> {
-    return this.authenticate(data, authIdentityService)
-  }
-
   protected extractCode(data: AuthenticationInput) {
-    return data.body?.code ?? data.query?.code ?? data.headers?.["x-discord-code"]
+    return data.query?.code ?? data.body?.code
   }
 
-  protected async exchangeCode(code: string) {
+  protected async exchangeCode(code: string, redirectUri?: string) {
     const params = new URLSearchParams({
       client_id: this.options_.clientId,
       client_secret: this.options_.clientSecret,
       grant_type: "authorization_code",
       code,
-      redirect_uri: this.options_.callbackUrl,
+      redirect_uri: redirectUri ?? this.options_.callbackUrl,
       scope: this.options_.scope ?? "identify email",
     })
 

@@ -128,7 +128,9 @@ export async function GET(
         console.warn(`Unable to verify ${config.id}-authenticated customer`, verificationError)
       }
 
-      return NextResponse.redirect(returnTo, {
+      const absoluteReturn = new URL(returnTo, resolveBaseUrl(request)).toString()
+
+      return NextResponse.redirect(absoluteReturn, {
         status: 302,
       })
     }
@@ -155,4 +157,30 @@ export async function GET(
       { status: 500, headers: { "Content-Type": "text/html; charset=utf-8" } }
     )
   }
+}
+
+const resolveBaseUrl = (request: NextRequest) => {
+  const envBase =
+    process.env.STOREFRONT_BASE_URL ?? process.env.NEXT_PUBLIC_STOREFRONT_BASE_URL
+  if (envBase) {
+    try {
+      return new URL(envBase).origin
+    } catch {
+      // fallthrough to headers
+    }
+  }
+
+  const forwardedProto = request.headers.get("x-forwarded-proto")
+  const forwardedHost = request.headers.get("x-forwarded-host")
+  if (forwardedProto && forwardedHost) {
+    return `${forwardedProto}://${forwardedHost}`
+  }
+
+  const host = request.headers.get("host")
+  if (host) {
+    const protocol = request.nextUrl.protocol || "https:"
+    return `${protocol}//${host}`
+  }
+
+  return request.nextUrl.origin
 }
