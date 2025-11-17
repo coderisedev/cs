@@ -20,9 +20,9 @@ export const dynamic = "force-dynamic"
 export const revalidate = 0
 
 type RouteParams = { provider: string }
-type RouteContext =
-  | { params: RouteParams }
-  | { params: Promise<RouteParams> }
+type RouteContext = {
+  params: Promise<RouteParams>
+}
 
 const getReturnRedirect = async (provider: OAuthProviderId, state?: string | null) => {
   if (!state) {
@@ -45,7 +45,7 @@ export async function GET(
   request: NextRequest,
   context: RouteContext
 ) {
-  const resolvedParams = await Promise.resolve(context.params)
+  const resolvedParams = await context.params
   const providerParam = resolvedParams?.provider?.toLowerCase()
   const config = getOAuthProviderConfig(providerParam)
 
