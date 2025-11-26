@@ -47,6 +47,17 @@ related_docs:
    DROP ROLE cs;
    ```
 
+# Authentication model (Ubuntu defaults)
+- Install creates OS user `postgres` and DB superuser role `postgres`; Postgres service runs as that OS user.
+- `pg_hba.conf` default has `local ... postgres peer`, so `sudo -iu postgres psql` works without a password because OS user
+  `postgres` == DB role `postgres`.
+- Other OS users under `peer` must have the same name as a DB role; otherwise they’re rejected on socket connections.
+- TCP connections (`host ...`) typically use `md5`/`scram-sha-256`, so `psql -h localhost -U postgres` needs a password; set one
+  with `\password postgres` or `ALTER ROLE postgres WITH PASSWORD '...'`.
+- To force password for local sockets, change `local ... postgres peer` to `local ... postgres scram-md5` (or `md5`) in
+  `/etc/postgresql/<version>/main/pg_hba.conf`, set the password, then `sudo systemctl reload postgresql`.
+- Avoid `trust` in production; stick to `peer` for the service account plus `md5/scram` for network/local auth as needed.
+
 # Verification
 - `psql` can connect using the app URL (swap `host.docker.internal` to `localhost` when running on the host).
 - `\l` shows `medusa_production` and `strapi_production` with owner `cs`.
