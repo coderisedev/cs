@@ -7,6 +7,7 @@
 - **Best Practices:** `docs/done/docker-env-best-practices.md`
 - **Incident Retro:** `docs/fix/2025-11-17-docker-db-access.md`
 - **How-to (Host Networking):** `docs/basic/docker-container-vs-host-localhost.md`
+- **Custom Networking Notes:** `docs/basic/docker-custom-networking-notes.md`
 - **Docs Maintenance Guide:** `docs/basic/docs-maintenance-best-practices.md`
 
 ## Auth & OAuth
