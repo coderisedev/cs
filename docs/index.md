@@ -25,6 +25,8 @@
 ## Runbooks
 - **Medusa DB Analysis:** `docs/runbooks/medusa-db-analysis.md`
 - **Rebuild Strapi/Medusa Images:** `docs/runbooks/rebuild-strapi-medusa-images.md`
+- **Prod Server Migration (Medusa/Strapi):** `docs/runbooks/prod-server-migration-medusa-strapi.md`
+- **Host Postgres CLI Ops:** `docs/runbooks/postgres-host-cli-ops.md`
 
 ## Dev Environment
 - **Dev Env Retro:** `docs/fix/dev-env-bringup-retro.md`
