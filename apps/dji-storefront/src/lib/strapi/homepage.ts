@@ -81,7 +81,9 @@ export async function getHomepageLayout(): Promise<HomepageLayout | null> {
     try {
         const response = await strapi.fetch<{ data: any }>('/api/homepage-layout', {
             query: {
-                populate: '*',
+                'populate[primaryHero][populate]': '*',
+                'populate[secondaryHero][populate]': '*',
+                'populate[productGrid][populate]': '*',
             },
             tags: ['homepage-layout'],
             revalidate: 60,
@@ -93,7 +95,7 @@ export async function getHomepageLayout(): Promise<HomepageLayout | null> {
 
         return {
             id: response.data.id,
-            ...response.data.attributes,
+            ...response.data,  // Changed from response.data.attributes since single types don't have attributes wrapper
         };
     } catch (error) {
         console.error('Failed to fetch homepage layout:', error);
