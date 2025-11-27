@@ -64,7 +64,7 @@ export interface HomepageLayout {
     primaryHero?: FeaturedProduct;
     secondaryHero?: FeaturedProduct;
     productGrid: FeaturedProduct[];
-    gridColumns: '2' | '3' | '4';
+    gridColumns: 'cols_2' | 'cols_3' | 'cols_4';
     gridLayout: 'grid' | 'masonry' | 'carousel';
     isActive: boolean;
     effectiveDate?: string;

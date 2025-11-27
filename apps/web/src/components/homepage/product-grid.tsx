@@ -87,19 +87,19 @@ export function ProductTile({ product }: ProductTileProps) {
 
 interface ProductGridProps {
     products: FeaturedProduct[];
-    columns?: '2' | '3' | '4';
+    columns?: 'cols_2' | 'cols_3' | 'cols_4';
     layout?: 'grid' | 'masonry' | 'carousel';
 }
 
 export function ProductGrid({
     products,
-    columns = '2',
+    columns = 'cols_2',
     layout = 'grid',
 }: ProductGridProps) {
     const gridColsClass = {
-        '2': 'md:grid-cols-2',
-        '3': 'md:grid-cols-3',
-        '4': 'md:grid-cols-4',
+        'cols_2': 'md:grid-cols-2',
+        'cols_3': 'md:grid-cols-3',
+        'cols_4': 'md:grid-cols-4',
     };
 
     if (layout === 'carousel') {

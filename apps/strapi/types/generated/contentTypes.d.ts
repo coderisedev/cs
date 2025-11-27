@@ -430,6 +430,188 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiFeaturedProductFeaturedProduct
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'featured_products';
+  info: {
+    description: '\u53EF\u91CD\u7528\u7684\u4EA7\u54C1\u5C55\u793A\u5185\u5BB9\uFF0C\u652F\u6301\u591A\u79CD\u5C55\u793A\u5C3A\u5BF8';
+    displayName: 'Featured Product';
+    pluralName: 'featured-products';
+    singularName: 'featured-product';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    abTestVariant: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 50;
+      }>;
+    backgroundColor: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'#ffffff'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    ctaButtons: Schema.Attribute.Component<'homepage.cta-button', true> &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 3;
+        },
+        number
+      >;
+    description: Schema.Attribute.Text &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 500;
+      }>;
+    displaySize: Schema.Attribute.Enumeration<['hero', 'secondary', 'tile']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'tile'>;
+    endDate: Schema.Attribute.DateTime;
+    heroImage: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    heroVideo: Schema.Attribute.Media<'videos'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    highlights: Schema.Attribute.Component<'homepage.product-highlight', true> &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+        },
+        number
+      >;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::featured-product.featured-product'
+    >;
+    mobileImage: Schema.Attribute.Media<'images'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    priority: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 100;
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<50>;
+    productName: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 50;
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    slug: Schema.Attribute.UID<'title'>;
+    startDate: Schema.Attribute.DateTime;
+    subtitle: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 200;
+      }>;
+    textColor: Schema.Attribute.String & Schema.Attribute.DefaultTo<'#000000'>;
+    theme: Schema.Attribute.Enumeration<['light', 'dark']> &
+      Schema.Attribute.DefaultTo<'light'>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiHomepageLayoutHomepageLayout
+  extends Struct.SingleTypeSchema {
+  collectionName: 'homepage_layout';
+  info: {
+    description: '\u7BA1\u7406\u9996\u9875\u7684\u4EA7\u54C1\u5C55\u793A\u987A\u5E8F\u548C\u5E03\u5C40\u914D\u7F6E';
+    displayName: 'Homepage Layout';
+    pluralName: 'homepage-layouts';
+    singularName: 'homepage-layout';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    effectiveDate: Schema.Attribute.DateTime;
+    expiryDate: Schema.Attribute.DateTime;
+    gridColumns: Schema.Attribute.Enumeration<['cols_2', 'cols_3', 'cols_4']> &
+      Schema.Attribute.DefaultTo<'cols_2'>;
+    gridLayout: Schema.Attribute.Enumeration<['grid', 'masonry', 'carousel']> &
+      Schema.Attribute.DefaultTo<'grid'>;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::homepage-layout.homepage-layout'
+    >;
+    metadata: Schema.Attribute.JSON;
+    primaryHero: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::featured-product.featured-product'
+    >;
+    productGrid: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::featured-product.featured-product'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    secondaryHero: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::featured-product.featured-product'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiNewReleaseNewRelease extends Struct.CollectionTypeSchema {
   collectionName: 'new_releases';
   info: {
@@ -1063,6 +1245,8 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::featured-product.featured-product': ApiFeaturedProductFeaturedProduct;
+      'api::homepage-layout.homepage-layout': ApiHomepageLayoutHomepageLayout;
       'api::new-release.new-release': ApiNewReleaseNewRelease;
       'api::post.post': ApiPostPost;
       'api::product-detail.product-detail': ApiProductDetailProductDetail;

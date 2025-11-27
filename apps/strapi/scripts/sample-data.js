@@ -232,7 +232,7 @@ module.exports = {
   ],
 
   homepageLayout: {
-    gridColumns: "2",
+    gridColumns: "cols_2",
     gridLayout: "grid",
     isActive: true,
     // Note: Relations are defined by product slugs, will be resolved during import
