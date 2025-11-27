@@ -1,0 +1,164 @@
+{
+    "kind": "collectionType",
+    "collectionName": "featured_products",
+    "info": {
+        "singularName": "featured-product",
+        "pluralName": "featured-products",
+        "displayName": "Featured Product",
+        "description": "可重用的产品展示内容，支持多种展示尺寸"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "pluginOptions": {
+        "i18n": {
+            "localized": true
+        }
+    },
+    "attributes": {
+        "title": {
+            "type": "string",
+            "required": true,
+            "maxLength": 100,
+            "pluginOptions": {
+                "i18n": {
+                    "localized": true
+                }
+            }
+        },
+        "subtitle": {
+            "type": "string",
+            "maxLength": 200,
+            "pluginOptions": {
+                "i18n": {
+                    "localized": true
+                }
+            }
+        },
+        "description": {
+            "type": "text",
+            "maxLength": 500,
+            "pluginOptions": {
+                "i18n": {
+                    "localized": true
+                }
+            }
+        },
+        "productName": {
+            "type": "string",
+            "required": true,
+            "maxLength": 50,
+            "pluginOptions": {
+                "i18n": {
+                    "localized": true
+                }
+            }
+        },
+        "heroImage": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images"
+            ],
+            "pluginOptions": {
+                "i18n": {
+                    "localized": true
+                }
+            }
+        },
+        "heroVideo": {
+            "type": "media",
+            "multiple": false,
+            "allowedTypes": [
+                "videos"
+            ],
+            "pluginOptions": {
+                "i18n": {
+                    "localized": true
+                }
+            }
+        },
+        "mobileImage": {
+            "type": "media",
+            "multiple": false,
+            "allowedTypes": [
+                "images"
+            ],
+            "pluginOptions": {
+                "i18n": {
+                    "localized": true
+                }
+            }
+        },
+        "theme": {
+            "type": "enumeration",
+            "enum": [
+                "light",
+                "dark"
+            ],
+            "default": "light"
+        },
+        "backgroundColor": {
+            "type": "string",
+            "default": "#ffffff",
+            "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "textColor": {
+            "type": "string",
+            "default": "#000000",
+            "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+        },
+        "ctaButtons": {
+            "type": "component",
+            "repeatable": true,
+            "component": "homepage.cta-button",
+            "max": 3
+        },
+        "highlights": {
+            "type": "component",
+            "repeatable": true,
+            "component": "homepage.product-highlight",
+            "max": 5
+        },
+        "displaySize": {
+            "type": "enumeration",
+            "enum": [
+                "hero",
+                "secondary",
+                "tile"
+            ],
+            "required": true,
+            "default": "tile"
+        },
+        "slug": {
+            "type": "uid",
+            "targetField": "title"
+        },
+        "priority": {
+            "type": "integer",
+            "min": 0,
+            "max": 100,
+            "default": 50
+        },
+        "isActive": {
+            "type": "boolean",
+            "default": true
+        },
+        "startDate": {
+            "type": "datetime"
+        },
+        "endDate": {
+            "type": "datetime"
+        },
+        "abTestVariant": {
+            "type": "string",
+            "maxLength": 50
+        },
+        "seo": {
+            "type": "component",
+            "repeatable": false,
+            "component": "shared.seo"
+        }
+    }
+}

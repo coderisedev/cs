@@ -1,0 +1,26 @@
+{
+    "collectionName": "components_homepage_product_highlights",
+    "info": {
+        "displayName": "Product Highlight",
+        "description": "产品亮点信息组件",
+        "icon": "star"
+    },
+    "options": {},
+    "attributes": {
+        "title": {
+            "type": "string",
+            "maxLength": 100
+        },
+        "description": {
+            "type": "text",
+            "maxLength": 300
+        },
+        "icon": {
+            "type": "media",
+            "multiple": false,
+            "allowedTypes": [
+                "images"
+            ]
+        }
+    }
+}

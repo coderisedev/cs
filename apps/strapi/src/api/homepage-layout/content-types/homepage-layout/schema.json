@@ -1,0 +1,66 @@
+{
+    "kind": "singleType",
+    "collectionName": "homepage_layout",
+    "info": {
+        "singularName": "homepage-layout",
+        "pluralName": "homepage-layouts",
+        "displayName": "Homepage Layout",
+        "description": "管理首页的产品展示顺序和布局配置"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "pluginOptions": {
+        "i18n": {
+            "localized": true
+        }
+    },
+    "attributes": {
+        "primaryHero": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::featured-product.featured-product"
+        },
+        "secondaryHero": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::featured-product.featured-product"
+        },
+        "productGrid": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::featured-product.featured-product"
+        },
+        "gridColumns": {
+            "type": "enumeration",
+            "enum": [
+                "2",
+                "3",
+                "4"
+            ],
+            "default": "2"
+        },
+        "gridLayout": {
+            "type": "enumeration",
+            "enum": [
+                "grid",
+                "masonry",
+                "carousel"
+            ],
+            "default": "grid"
+        },
+        "isActive": {
+            "type": "boolean",
+            "default": true
+        },
+        "effectiveDate": {
+            "type": "datetime"
+        },
+        "expiryDate": {
+            "type": "datetime"
+        },
+        "metadata": {
+            "type": "json"
+        }
+    }
+}
