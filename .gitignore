@@ -24,7 +24,9 @@ out/
 # keep templates/examples
 !apps/**/.env*.example
 # Deployment service envs (sensitive)
-deploy/gce/*.env
+# Deployment service envs (sensitive)
+# deploy/gce/*.env
+!deploy/envs/.env.*
 
 # Logs
 npm-debug.log*
