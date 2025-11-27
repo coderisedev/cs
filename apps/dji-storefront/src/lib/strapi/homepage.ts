@@ -81,17 +81,7 @@ export async function getHomepageLayout(): Promise<HomepageLayout | null> {
     try {
         const response = await strapi.fetch<{ data: any }>('/api/homepage-layout', {
             query: {
-                populate: {
-                    primaryHero: {
-                        populate: ['heroImage', 'heroVideo', 'mobileImage', 'ctaButtons', 'highlights', 'seo'],
-                    },
-                    secondaryHero: {
-                        populate: ['heroImage', 'heroVideo', 'mobileImage', 'ctaButtons', 'highlights', 'seo'],
-                    },
-                    productGrid: {
-                        populate: ['heroImage', 'heroVideo', 'mobileImage', 'ctaButtons', 'highlights', 'seo'],
-                    },
-                } as any,
+                populate: '*',
             },
             tags: ['homepage-layout'],
             revalidate: 60,
@@ -120,12 +110,10 @@ export async function getFeaturedProduct(slug: string): Promise<FeaturedProduct 
     try {
         const response = await strapi.fetch<{ data: any[] }>('/api/featured-products', {
             query: {
-                filters: {
-                    slug: {
-                        $eq: slug,
-                    },
-                } as any,
-                populate: ['heroImage', 'heroVideo', 'mobileImage', 'ctaButtons', 'highlights', 'seo'],
+                'filters[slug][$eq]': slug,
+                populate: '*',
+                'pagination[page]': 1,
+                'pagination[pageSize]': 1,
             },
             tags: ['featured-product', slug],
             revalidate: 60,
@@ -157,16 +145,10 @@ export async function getFeaturedProductsBySize(
     try {
         const response = await strapi.fetch<{ data: any[] }>('/api/featured-products', {
             query: {
-                filters: {
-                    displaySize: {
-                        $eq: displaySize,
-                    },
-                    isActive: {
-                        $eq: true,
-                    },
-                } as any,
-                populate: ['heroImage', 'heroVideo', 'mobileImage', 'ctaButtons', 'highlights', 'seo'],
-                sort: ['priority:desc'],
+                'filters[displaySize][$eq]': displaySize,
+                'filters[isActive][$eq]': true,
+                populate: '*',
+                sort: 'priority:desc',
             },
             tags: ['featured-products', displaySize],
             revalidate: 60,
@@ -191,13 +173,9 @@ export async function getAllFeaturedProducts(): Promise<FeaturedProduct[]> {
     try {
         const response = await strapi.fetch<{ data: any[] }>('/api/featured-products', {
             query: {
-                filters: {
-                    isActive: {
-                        $eq: true,
-                    },
-                } as any,
-                populate: ['heroImage', 'heroVideo', 'mobileImage', 'ctaButtons', 'highlights', 'seo'],
-                sort: ['priority:desc'],
+                'filters[isActive][$eq]': true,
+                populate: '*',
+                sort: 'priority:desc',
             },
             tags: ['featured-products'],
             revalidate: 60,
