@@ -21,7 +21,6 @@ export default ({ env }) => ({
           signatureVersion: "v4",
           params: {
             Bucket: env("AWS_BUCKET_NAME"),
-            ACL: env("AWS_ACL", "public-read"),
           },
         },
       },

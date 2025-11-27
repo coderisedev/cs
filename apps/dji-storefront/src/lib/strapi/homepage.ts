@@ -95,7 +95,7 @@ export async function getHomepageLayout(): Promise<HomepageLayout | null> {
 
         return {
             id: response.data.id,
-            ...response.data,  // Changed from response.data.attributes since single types don't have attributes wrapper
+            ...response.data,
         };
     } catch (error) {
         console.error('Failed to fetch homepage layout:', error);
