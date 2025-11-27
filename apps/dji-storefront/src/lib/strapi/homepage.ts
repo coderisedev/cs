@@ -81,7 +81,17 @@ export async function getHomepageLayout(): Promise<HomepageLayout | null> {
     try {
         const response = await strapi.fetch<{ data: any }>('/api/homepage-layout', {
             query: {
-                populate: 'deep',
+                populate: {
+                    primaryHero: {
+                        populate: ['heroImage', 'heroVideo', 'mobileImage', 'ctaButtons', 'highlights', 'seo'],
+                    },
+                    secondaryHero: {
+                        populate: ['heroImage', 'heroVideo', 'mobileImage', 'ctaButtons', 'highlights', 'seo'],
+                    },
+                    productGrid: {
+                        populate: ['heroImage', 'heroVideo', 'mobileImage', 'ctaButtons', 'highlights', 'seo'],
+                    },
+                } as any,
             },
             tags: ['homepage-layout'],
             revalidate: 60,
@@ -114,8 +124,8 @@ export async function getFeaturedProduct(slug: string): Promise<FeaturedProduct 
                     slug: {
                         $eq: slug,
                     },
-                },
-                populate: 'deep',
+                } as any,
+                populate: ['heroImage', 'heroVideo', 'mobileImage', 'ctaButtons', 'highlights', 'seo'],
             },
             tags: ['featured-product', slug],
             revalidate: 60,
@@ -154,8 +164,8 @@ export async function getFeaturedProductsBySize(
                     isActive: {
                         $eq: true,
                     },
-                },
-                populate: 'deep',
+                } as any,
+                populate: ['heroImage', 'heroVideo', 'mobileImage', 'ctaButtons', 'highlights', 'seo'],
                 sort: ['priority:desc'],
             },
             tags: ['featured-products', displaySize],
@@ -185,8 +195,8 @@ export async function getAllFeaturedProducts(): Promise<FeaturedProduct[]> {
                     isActive: {
                         $eq: true,
                     },
-                },
-                populate: 'deep',
+                } as any,
+                populate: ['heroImage', 'heroVideo', 'mobileImage', 'ctaButtons', 'highlights', 'seo'],
                 sort: ['priority:desc'],
             },
             tags: ['featured-products'],
