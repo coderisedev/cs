@@ -4,6 +4,7 @@ import { SecondaryHero } from '@/components/homepage/secondary-hero';
 import { ProductGrid } from '@/components/homepage/product-grid';
 import { ServicesCarousel } from '@/components/homepage/services-carousel';
 import { TestimonialsCarousel } from "@/components/homepage/testimonials-carousel";
+import { ResellerRecruitment } from "@/components/homepage/reseller-recruitment";
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants";
 
 export const revalidate = 60; // Revalidate every 60 seconds
@@ -19,6 +20,7 @@ export default async function Homepage() {
                     <p className="text-gray-600 mb-12">
                         Please configure your homepage layout in Strapi CMS.
                     </p>
+                    <ResellerRecruitment />
                     <TestimonialsCarousel />
                     <ServicesCarousel />
                 </div>
@@ -46,6 +48,9 @@ export default async function Homepage() {
                     layout={layout.gridLayout}
                 />
             )}
+
+            {/* Reseller Recruitment */}
+            <ResellerRecruitment />
 
             {/* Testimonials Carousel */}
             <TestimonialsCarousel />
