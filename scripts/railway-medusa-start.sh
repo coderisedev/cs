@@ -21,11 +21,9 @@ fi
 echo "[railway-medusa-start] Installing Medusa workspace dependencies"
 pnpm install --no-frozen-lockfile --filter medusa
 
-echo "[railway-medusa-start] Running Medusa database migrations"
-pnpm exec medusa db:migrate
-
-echo "[railway-medusa-start] Syncing Medusa links"
-pnpm exec medusa db:sync-links
+echo "[railway-medusa-start] Skipping auto db:migrate/db:sync-links (dev DB managed manually)"
+echo "[railway-medusa-start] If you explicitly need migrations, run:"
+echo "  pnpm exec medusa db:migrate && pnpm exec medusa db:sync-links"
 
 echo "[railway-medusa-start] Starting Medusa server"
 exec pnpm exec medusa start
