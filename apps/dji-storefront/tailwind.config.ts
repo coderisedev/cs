@@ -107,9 +107,9 @@ const config: Config = {
         },
         brand: {
           blue: {
-            500: "hsl(var(--brand-blue-500))",
-            600: "hsl(var(--brand-blue-600))",
-            700: "hsl(var(--brand-blue-700))",
+            500: "hsl(var(--brand-blue-500) / <alpha-value>)",
+            600: "hsl(var(--brand-blue-600) / <alpha-value>)",
+            700: "hsl(var(--brand-blue-700) / <alpha-value>)",
           }
         },
         border: {
@@ -135,6 +135,20 @@ const config: Config = {
         "card-hover": "var(--shadow-card-hover)",
         modal: "var(--shadow-modal)",
         "glow-blue": "var(--shadow-glow-blue)",
+      },
+      keyframes: {
+        "pulse-slow": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.8" },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+      },
+      animation: {
+        "pulse-slow": "pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "float": "float 6s ease-in-out infinite",
       },
     },
   },
