@@ -137,8 +137,8 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
               </span>
             )}
           </div>
-          <Button size="sm" className="w-full justify-center touch-target bg-brand-blue-600 hover:bg-brand-blue-700 text-white rounded-pill" disabled={!product.inStock || isPending} onClick={handleAddToCart}>
-            {product.inStock && <ShoppingCart className="mr-2 h-4 w-4" />}
+          <Button className="w-full justify-center touch-target bg-brand-blue-600 hover:bg-brand-blue-700 text-white rounded-pill h-12 text-lg" disabled={!product.inStock || isPending} onClick={handleAddToCart}>
+            {product.inStock && <ShoppingCart className="mr-2 h-5 w-5" />}
             {isPending ? "Adding…" : getButtonLabel()}
           </Button>
         </div>

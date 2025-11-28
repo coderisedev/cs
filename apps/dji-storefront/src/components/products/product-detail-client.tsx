@@ -197,7 +197,7 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
               <ShoppingCart className="mr-2 h-5 w-5" />
               {variant?.inStock === false ? "Out of Stock" : isPending ? "Adding…" : "Add to Cart"}
             </Button>
-            <Button variant={isWishlisted ? "default" : "outline"} className="w-full" onClick={handleWishlistToggle}>
+            <Button variant={isWishlisted ? "default" : "outline"} className="w-full rounded-pill" onClick={handleWishlistToggle}>
               <Heart className={`mr-2 h-4 w-4 ${isWishlisted ? "fill-white" : ""}`} />
               {isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
             </Button>

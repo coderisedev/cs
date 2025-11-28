@@ -87,7 +87,7 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
   }
 
   return (
-    <div className="min-h-screen bg-background-primary">
+    <div className="min-h-screen bg-background-secondary">
       {/* Hero Section */}
       <div className="relative bg-gray-950 py-24 sm:py-32 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
