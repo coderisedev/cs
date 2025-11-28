@@ -30,7 +30,13 @@ export default ({ env }) => {
     'strapi::query',
     'strapi::body',
     'strapi::session',
-    'strapi::favicon',
+    {
+      name: 'strapi::favicon',
+      config: {
+        // Serve the shared favicon from the Strapi public folder
+        path: 'public/favicon.ico',
+      },
+    },
     'strapi::public',
   ]
 }
