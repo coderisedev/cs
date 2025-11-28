@@ -12,29 +12,41 @@ export function ProductTile({ product }: ProductTileProps) {
         ? resolveStrapiMedia(product.heroImage.url)
         : null;
 
+    // Determine if we should use the "Clean Card" layout (Apple style)
+    // This is triggered when the background is white or very light
+    const isLightBackground =
+        product.backgroundColor?.toLowerCase() === '#ffffff' ||
+        product.backgroundColor?.toLowerCase() === '#fff' ||
+        product.backgroundColor?.toLowerCase() === '#f5f5f7';
+
+    const textColor = isLightBackground ? '#1D1D1F' : product.textColor;
+
     return (
         <div
-            className="relative w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden group cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
+            className={`relative w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden group cursor-pointer transition-all duration-300 hover:scale-[1.02] ${isLightBackground ? 'shadow-sm hover:shadow-card border border-black/5' : ''
+                }`}
             style={{
                 backgroundColor: product.backgroundColor,
-                color: product.textColor,
+                color: textColor,
             }}
         >
             {/* Background Image */}
             {imageUrl && (
-                <div className="absolute inset-0 z-0">
+                <div className={`absolute inset-0 z-0 ${isLightBackground ? 'top-1/4 h-3/4' : 'h-full'}`}>
                     <Image
                         src={imageUrl}
                         alt={product.heroImage?.alternativeText || product.title}
                         fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className={`object-cover transition-transform duration-500 group-hover:scale-105 ${isLightBackground ? 'object-contain object-bottom p-8' : 'object-cover'
+                            }`}
                         quality={80}
                     />
                 </div>
             )}
 
             {/* Content */}
-            <div className="relative z-10 h-full flex flex-col justify-end p-8">
+            <div className={`relative z-10 h-full flex flex-col p-8 ${isLightBackground ? 'justify-start pt-10 text-center items-center' : 'justify-end'
+                }`}>
                 {/* Product Name */}
                 {product.productName && (
                     <p className="text-sm md:text-base font-semibold mb-1 opacity-90">
@@ -54,15 +66,15 @@ export function ProductTile({ product }: ProductTileProps) {
                     </p>
                 )}
 
-                {/* CTA Buttons - Text Style Only */}
+                {/* CTA Buttons */}
                 {product.ctaButtons && product.ctaButtons.length > 0 && (
-                    <div className="flex flex-wrap gap-4">
+                    <div className={`flex flex-wrap gap-4 ${isLightBackground ? 'justify-center' : ''}`}>
                         {product.ctaButtons.slice(0, 2).map((cta, index) => (
                             <CTAButton
                                 key={index}
                                 label={cta.label}
                                 url={cta.url}
-                                style="text"
+                                style={isLightBackground ? 'primary' : 'text'} // Use button style for clean cards
                                 openInNewTab={cta.openInNewTab}
                                 className="text-sm md:text-base"
                             />
@@ -71,8 +83,8 @@ export function ProductTile({ product }: ProductTileProps) {
                 )}
             </div>
 
-            {/* Gradient Overlay for Better Text Readability */}
-            {imageUrl && (
+            {/* Gradient Overlay - Only for dark cards */}
+            {!isLightBackground && imageUrl && (
                 <div
                     className="absolute inset-0 z-[1]"
                     style={{
