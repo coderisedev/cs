@@ -110,14 +110,25 @@ const config: Config = {
             500: "hsl(var(--brand-blue-500) / <alpha-value>)",
             600: "hsl(var(--brand-blue-600) / <alpha-value>)",
             700: "hsl(var(--brand-blue-700) / <alpha-value>)",
-          }
+          },
+        },
+        primary: {
+          500: "hsl(var(--brand-blue-500) / <alpha-value>)",
+          600: "hsl(var(--brand-blue-600) / <alpha-value>)",
+          700: "hsl(var(--brand-blue-700) / <alpha-value>)",
         },
         border: {
           DEFAULT: "hsl(var(--border-primary))",
           primary: "hsl(var(--border-primary))",
           secondary: "hsl(var(--border-secondary))",
         },
+        semantic: {
+          error: "hsl(0 84% 60%)", // Apple Red
+          success: "hsl(142 71% 45%)", // Apple Green
+          warning: "hsl(32 95% 44%)", // Apple Orange
+        },
       },
+
       borderRadius: {
         sm: "8px",
         md: "12px",
