@@ -76,7 +76,7 @@ const testimonials: Testimonial[] = [
 const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
     return (
         <div className="h-full p-1">
-            <Card className="h-full bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-colors duration-300">
+            <Card className="h-full bg-white border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
                 <CardContent className="flex flex-col justify-between h-full p-8 space-y-6">
                     <div>
                         <div className="flex gap-1 mb-4">
@@ -85,21 +85,21 @@ const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
                                     key={i}
                                     className={cn(
                                         "w-4 h-4",
-                                        i < testimonial.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-600"
+                                        i < testimonial.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
                                     )}
                                 />
                             ))}
                         </div>
                         <div className="relative">
-                            <Quote className="absolute -top-2 -left-2 w-8 h-8 text-white/10 rotate-180" />
-                            <p className="text-lg text-gray-200 leading-relaxed relative z-10 pl-4">
+                            <Quote className="absolute -top-2 -left-2 w-8 h-8 text-gray-100 rotate-180" />
+                            <p className="text-lg text-gray-700 leading-relaxed relative z-10 pl-4">
                                 "{testimonial.quote}"
                             </p>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-4 pt-4 border-t border-white/10">
-                        <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/20">
+                    <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
+                        <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-gray-100">
                             <Image
                                 src={testimonial.avatar}
                                 alt={testimonial.author}
@@ -109,8 +109,8 @@ const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
                             />
                         </div>
                         <div>
-                            <p className="font-semibold text-white">{testimonial.author}</p>
-                            <p className="text-sm text-gray-400">{testimonial.role}</p>
+                            <p className="font-semibold text-gray-900">{testimonial.author}</p>
+                            <p className="text-sm text-gray-500">{testimonial.role}</p>
                         </div>
                     </div>
                 </CardContent>
@@ -121,12 +121,12 @@ const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
 
 export function TestimonialsCarousel() {
     return (
-        <section className="py-20 bg-neutral-900 w-full overflow-hidden">
+        <section className="py-20 bg-gray-50 w-full overflow-hidden">
             <div className="container mx-auto px-4 mb-12 text-center">
-                <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight">
+                <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
                     What Pilots Say
                 </h2>
-                <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                     Trusted by professional pilots and flight simulation enthusiasts worldwide.
                 </p>
             </div>
