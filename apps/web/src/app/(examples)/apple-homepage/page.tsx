@@ -2,6 +2,7 @@ import { getHomepageLayout } from '@/lib/strapi/homepage';
 import { HeroSection } from '@/components/homepage/hero-section';
 import { SecondaryHero } from '@/components/homepage/secondary-hero';
 import { ProductGrid } from '@/components/homepage/product-grid';
+import { ServicesCarousel } from '@/components/homepage/services-carousel';
 
 export const revalidate = 60; // Revalidate every 60 seconds
 
@@ -12,9 +13,10 @@ export default async function AppleStyleHomepage() {
         return (
             <div className="container mx-auto px-4 py-16 text-center">
                 <h1 className="text-4xl font-bold mb-4">Homepage Not Configured</h1>
-                <p className="text-gray-600">
+                <p className="text-gray-600 mb-12">
                     Please configure your homepage layout in Strapi CMS.
                 </p>
+                <ServicesCarousel />
             </div>
         );
     }
@@ -39,6 +41,9 @@ export default async function AppleStyleHomepage() {
                     layout={layout.gridLayout}
                 />
             )}
+
+            {/* Services Carousel */}
+            <ServicesCarousel />
         </main>
     );
 }

@@ -253,7 +253,10 @@ export default async function HomePage() {
             </form>
           </div>
         </Reveal>
+
       </section>
-    </div>
+
+
+    </div >
   )
 }
