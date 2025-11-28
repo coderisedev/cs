@@ -48,7 +48,7 @@ export function SiteFooter() {
             <ul className="space-y-2 text-sm">
               <li><Link href="/support" className="text-foreground-secondary hover:text-primary-400">Support Center</Link></li>
               <li><Link href="/support/compatibility" className="text-foreground-secondary hover:text-primary-400">Compatibility</Link></li>
-              <li><Link href="/support/faq" className="text-foreground-secondary hover:text-primary-400">FAQ</Link></li>
+              <li><Link href="/us/faq" className="text-foreground-secondary hover:text-primary-400">FAQ</Link></li>
               <li><Link href="/blog" className="text-foreground-secondary hover:text-primary-400">Guides</Link></li>
             </ul>
           </div>
