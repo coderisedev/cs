@@ -39,7 +39,7 @@ export function LatestAnnouncements() {
                         <Link href="/us/announcements/latest">
                             <Button
                                 size="lg"
-                                className="rounded-full px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
+                                className="rounded-full px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 bg-brand-blue-500 text-white hover:bg-brand-blue-600 border-none"
                             >
                                 Read Announcement <ArrowRight className="ml-2 w-5 h-5" />
                             </Button>

@@ -203,7 +203,7 @@ importers:
         version: 2.10.3(@babel/runtime@7.28.4)(@emotion/is-prop-valid@1.2.2)(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(typescript@5.9.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0))
       '@medusajs/draft-order':
         specifier: 2.10.3
-        version: 2.10.3(bb2b39a8b888e6ca787b7002b321db31)
+        version: 2.10.3(aahz2n6boohhet3qxlglv7jyoe)
       '@medusajs/file':
         specifier: 2.10.3
         version: 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
@@ -215,7 +215,7 @@ importers:
         version: 2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0))
       '@medusajs/medusa':
         specifier: 2.10.3
-        version: 2.10.3(adfbd69eb49db1106827bd9fad955833)
+        version: 2.10.3(jafr4ej4j3no46d5kjb7nvrvly)
       '@medusajs/types':
         specifier: 2.10.3
         version: 2.10.3(awilix@8.0.1)(ioredis@5.8.1)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0))
@@ -352,10 +352,10 @@ importers:
     dependencies:
       '@strapi/plugin-cloud':
         specifier: 5.28.0
-        version: 5.28.0(4e6ef4b145941a107d5a070ba946c5fb)
+        version: 5.28.0(mwpkmhsuy32ncedhnyzaokwj5a)
       '@strapi/plugin-users-permissions':
         specifier: 5.28.0
-        version: 5.28.0(466139392838a368a1217599ee67f2fd)
+        version: 5.28.0(ujcu5emhfybzhfvhzzu6x3gfsm)
       '@strapi/provider-upload-aws-s3':
         specifier: ^5.30.1
         version: 5.30.1
@@ -1950,144 +1950,170 @@ packages:
     resolution: {integrity: sha512-9B+taZ8DlyyqzZQnoeIvDVR/2F4EbMepXMc/NdVbkzsJbzkUjhXv/70GQJ7tdLA4YJgNP25zukcxpX2/SueNrA==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-libvips-linux-arm64@1.2.3':
     resolution: {integrity: sha512-I4RxkXU90cpufazhGPyVujYwfIm9Nk1QDEmiIsaPwdnm013F7RIceaCc87kAH+oUB1ezqEvC6ga4m7MSlqsJvQ==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-libvips-linux-arm@1.0.5':
     resolution: {integrity: sha512-gvcC4ACAOPRNATg/ov8/MnbxFDJqf/pDePbBnuBDcjsI8PssmjoKMAz4LtLaVi+OnSb5FK/yIOamqDwGmXW32g==}
     cpu: [arm]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-libvips-linux-arm@1.2.3':
     resolution: {integrity: sha512-x1uE93lyP6wEwGvgAIV0gP6zmaL/a0tGzJs/BIDDG0zeBhMnuUPm7ptxGhUbcGs4okDJrk4nxgrmxpib9g6HpA==}
     cpu: [arm]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-libvips-linux-ppc64@1.2.3':
     resolution: {integrity: sha512-Y2T7IsQvJLMCBM+pmPbM3bKT/yYJvVtLJGfCs4Sp95SjvnFIjynbjzsa7dY1fRJX45FTSfDksbTp6AGWudiyCg==}
     cpu: [ppc64]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-libvips-linux-s390x@1.0.4':
     resolution: {integrity: sha512-u7Wz6ntiSSgGSGcjZ55im6uvTrOxSIS8/dgoVMoiGE9I6JAfU50yH5BoDlYA1tcuGS7g/QNtetJnxA6QEsCVTA==}
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-libvips-linux-s390x@1.2.3':
     resolution: {integrity: sha512-RgWrs/gVU7f+K7P+KeHFaBAJlNkD1nIZuVXdQv6S+fNA6syCcoboNjsV2Pou7zNlVdNQoQUpQTk8SWDHUA3y/w==}
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-libvips-linux-x64@1.0.4':
     resolution: {integrity: sha512-MmWmQ3iPFZr0Iev+BAgVMb3ZyC4KeFc3jFxnNbEPas60e1cIfevbtuyf9nDGIzOaW9PdnDciJm+wFFaTlj5xYw==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-libvips-linux-x64@1.2.3':
     resolution: {integrity: sha512-3JU7LmR85K6bBiRzSUc/Ff9JBVIFVvq6bomKE0e63UXGeRw2HPVEjoJke1Yx+iU4rL7/7kUjES4dZ/81Qjhyxg==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-libvips-linuxmusl-arm64@1.0.4':
     resolution: {integrity: sha512-9Ti+BbTYDcsbp4wfYib8Ctm1ilkugkA/uscUn6UXK1ldpC1JjiXbLfFZtRlBhjPZ5o1NCLiDbg8fhUPKStHoTA==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@img/sharp-libvips-linuxmusl-arm64@1.2.3':
     resolution: {integrity: sha512-F9q83RZ8yaCwENw1GieztSfj5msz7GGykG/BA+MOUefvER69K/ubgFHNeSyUu64amHIYKGDs4sRCMzXVj8sEyw==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@img/sharp-libvips-linuxmusl-x64@1.0.4':
     resolution: {integrity: sha512-viYN1KX9m+/hGkJtvYYp+CCLgnJXwiQB39damAO7WMdKWlIhmYTfHjwSbQeUK/20vY154mwezd9HflVFM1wVSw==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@img/sharp-libvips-linuxmusl-x64@1.2.3':
     resolution: {integrity: sha512-U5PUY5jbc45ANM6tSJpsgqmBF/VsL6LnxJmIf11kB7J5DctHgqm0SkuXzVWtIY90GnJxKnC/JT251TDnk1fu/g==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@img/sharp-linux-arm64@0.33.5':
     resolution: {integrity: sha512-JMVv+AMRyGOHtO1RFBiJy/MBsgz0x4AWrT6QoEVVTyh1E39TrCUpTRI7mx9VksGX4awWASxqCYLCV4wBZHAYxA==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-linux-arm64@0.34.4':
     resolution: {integrity: sha512-YXU1F/mN/Wu786tl72CyJjP/Ngl8mGHN1hST4BGl+hiW5jhCnV2uRVTNOcaYPs73NeT/H8Upm3y9582JVuZHrQ==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-linux-arm@0.33.5':
     resolution: {integrity: sha512-JTS1eldqZbJxjvKaAkxhZmBqPRGmxgu+qFKSInv8moZ2AmT5Yib3EQ1c6gp493HvrvV8QgdOXdyaIBrhvFhBMQ==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [arm]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-linux-arm@0.34.4':
     resolution: {integrity: sha512-Xyam4mlqM0KkTHYVSuc6wXRmM7LGN0P12li03jAnZ3EJWZqj83+hi8Y9UxZUbxsgsK1qOEwg7O0Bc0LjqQVtxA==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [arm]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-linux-ppc64@0.34.4':
     resolution: {integrity: sha512-F4PDtF4Cy8L8hXA2p3TO6s4aDt93v+LKmpcYFLAVdkkD3hSxZzee0rh6/+94FpAynsuMpLX5h+LRsSG3rIciUQ==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [ppc64]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-linux-s390x@0.33.5':
     resolution: {integrity: sha512-y/5PCd+mP4CA/sPDKl2961b+C9d+vPAveS33s6Z3zfASk2j5upL6fXVPZi7ztePZ5CuH+1kW8JtvxgbuXHRa4Q==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-linux-s390x@0.34.4':
     resolution: {integrity: sha512-qVrZKE9Bsnzy+myf7lFKvng6bQzhNUAYcVORq2P7bDlvmF6u2sCmK2KyEQEBdYk+u3T01pVsPrkj943T1aJAsw==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-linux-x64@0.33.5':
     resolution: {integrity: sha512-opC+Ok5pRNAzuvq1AG0ar+1owsu842/Ab+4qvU879ippJBHvyY5n2mxF1izXqkPYlGuP/M556uh53jRLJmzTWA==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-linux-x64@0.34.4':
     resolution: {integrity: sha512-ZfGtcp2xS51iG79c6Vhw9CWqQC8l2Ot8dygxoDoIQPTat/Ov3qAa8qpxSrtAEAJW+UjTXc4yxCjNfxm4h6Xm2A==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@img/sharp-linuxmusl-arm64@0.33.5':
     resolution: {integrity: sha512-XrHMZwGQGvJg2V/oRSUfSAfjfPxO+4DkiRh6p2AFjLQztWUuY/o8Mq0eMQVIY7HJ1CDQUJlxGGZRw1a5bqmd1g==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@img/sharp-linuxmusl-arm64@0.34.4':
     resolution: {integrity: sha512-8hDVvW9eu4yHWnjaOOR8kHVrew1iIX+MUgwxSuH2XyYeNRtLUe4VNioSqbNkB7ZYQJj9rUTT4PyRscyk2PXFKA==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@img/sharp-linuxmusl-x64@0.33.5':
     resolution: {integrity: sha512-WT+d/cgqKkkKySYmqoZ8y3pxx7lx9vVejxW/W4DOFMYVSkErR+w7mf2u8m/y4+xHe7yY9DAXQMWQhpnMuFfScw==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@img/sharp-linuxmusl-x64@0.34.4':
     resolution: {integrity: sha512-lU0aA5L8QTlfKjpDCEFOZsTYGn3AEiO6db8W5aQDxj0nQkVrZWmN3ZP9sYKWJdtq3PWPhUNlqehWyXpYDcI9Sg==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@img/sharp-wasm32@0.33.5':
     resolution: {integrity: sha512-ykUW4LVGaMcU9lu9thv85CbRMAwfeadCJHRsg2GmeRa/cJxsVY9Rbd57JcMxBkKHag5U/x7TSBpScF4U8ElVzg==}
@@ -3105,48 +3131,56 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@next/swc-linux-arm64-gnu@15.5.6':
     resolution: {integrity: sha512-qvz4SVKQ0P3/Im9zcS2RmfFL/UCQnsJKJwQSkissbngnB/12c6bZTCB0gHTexz1s6d/mD0+egPKXAIRFVS7hQg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@next/swc-linux-arm64-musl@15.0.4':
     resolution: {integrity: sha512-QARO88fR/a+wg+OFC3dGytJVVviiYFEyjc/Zzkjn/HevUuJ7qGUUAUYy5PGVWY1YgTzeRYz78akQrVQ8r+sMjw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@next/swc-linux-arm64-musl@15.5.6':
     resolution: {integrity: sha512-FsbGVw3SJz1hZlvnWD+T6GFgV9/NYDeLTNQB2MXoPN5u9VA9OEDy6fJEfePfsUKAhJufFbZLgp0cPxMuV6SV0w==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@next/swc-linux-x64-gnu@15.0.4':
     resolution: {integrity: sha512-Z50b0gvYiUU1vLzfAMiChV8Y+6u/T2mdfpXPHraqpypP7yIT2UV9YBBhcwYkxujmCvGEcRTVWOj3EP7XW/wUnw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@next/swc-linux-x64-gnu@15.5.6':
     resolution: {integrity: sha512-3QnHGFWlnvAgyxFxt2Ny8PTpXtQD7kVEeaFat5oPAHHI192WKYB+VIKZijtHLGdBBvc16tiAkPTDmQNOQ0dyrA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@next/swc-linux-x64-musl@15.0.4':
     resolution: {integrity: sha512-7H9C4FAsrTAbA/ENzvFWsVytqRYhaJYKa2B3fyQcv96TkOGVMcvyS6s+sj4jZlacxxTcn7ygaMXUPkEk7b78zw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@next/swc-linux-x64-musl@15.5.6':
     resolution: {integrity: sha512-OsGX148sL+TqMK9YFaPFPoIaJKbFJJxFzkXZljIgA9hjMjdruKht6xDCEv1HLtlLNfkx3c5w2GLKhj7veBQizQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@next/swc-win32-arm64-msvc@15.0.4':
     resolution: {integrity: sha512-Z/v3WV5xRaeWlgJzN9r4PydWD8sXV35ywc28W63i37G2jnUgScA4OOgS8hQdiXLxE3gqfSuHTicUhr7931OXPQ==}
@@ -5712,56 +5746,67 @@ packages:
     resolution: {integrity: sha512-PsNAbcyv9CcecAUagQefwX8fQn9LQ4nZkpDboBOttmyffnInRy8R8dSg6hxxl2Re5QhHBf6FYIDhIj5v982ATQ==}
     cpu: [arm]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm-musleabihf@4.52.5':
     resolution: {integrity: sha512-Fw4tysRutyQc/wwkmcyoqFtJhh0u31K+Q6jYjeicsGJJ7bbEq8LwPWV/w0cnzOqR2m694/Af6hpFayLJZkG2VQ==}
     cpu: [arm]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-arm64-gnu@4.52.5':
     resolution: {integrity: sha512-a+3wVnAYdQClOTlyapKmyI6BLPAFYs0JM8HRpgYZQO02rMR09ZcV9LbQB+NL6sljzG38869YqThrRnfPMCDtZg==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm64-musl@4.52.5':
     resolution: {integrity: sha512-AvttBOMwO9Pcuuf7m9PkC1PUIKsfaAJ4AYhy944qeTJgQOqJYJ9oVl2nYgY7Rk0mkbsuOpCAYSs6wLYB2Xiw0Q==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-loong64-gnu@4.52.5':
     resolution: {integrity: sha512-DkDk8pmXQV2wVrF6oq5tONK6UHLz/XcEVow4JTTerdeV1uqPeHxwcg7aFsfnSm9L+OO8WJsWotKM2JJPMWrQtA==}
     cpu: [loong64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-ppc64-gnu@4.52.5':
     resolution: {integrity: sha512-W/b9ZN/U9+hPQVvlGwjzi+Wy4xdoH2I8EjaCkMvzpI7wJUs8sWJ03Rq96jRnHkSrcHTpQe8h5Tg3ZzUPGauvAw==}
     cpu: [ppc64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-riscv64-gnu@4.52.5':
     resolution: {integrity: sha512-sjQLr9BW7R/ZiXnQiWPkErNfLMkkWIoCz7YMn27HldKsADEKa5WYdobaa1hmN6slu9oWQbB6/jFpJ+P2IkVrmw==}
     cpu: [riscv64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-riscv64-musl@4.52.5':
     resolution: {integrity: sha512-hq3jU/kGyjXWTvAh2awn8oHroCbrPm8JqM7RUpKjalIRWWXE01CQOf/tUNWNHjmbMHg/hmNCwc/Pz3k1T/j/Lg==}
     cpu: [riscv64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-s390x-gnu@4.52.5':
     resolution: {integrity: sha512-gn8kHOrku8D4NGHMK1Y7NA7INQTRdVOntt1OCYypZPRt6skGbddska44K8iocdpxHTMMNui5oH4elPH4QOLrFQ==}
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-gnu@4.52.5':
     resolution: {integrity: sha512-hXGLYpdhiNElzN770+H2nlx+jRog8TyynpTVzdlc6bndktjKWyZyiCsuDAlpd+j+W+WNqfcyAWz9HxxIGfZm1Q==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-musl@4.52.5':
     resolution: {integrity: sha512-arCGIcuNKjBoKAXD+y7XomR9gY6Mw7HnFBv5Rw7wQRvwYLR7gBAgV7Mb2QTyjXfTveBNFAtPt46/36vV9STLNg==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-openharmony-arm64@4.52.5':
     resolution: {integrity: sha512-QoFqB6+/9Rly/RiPjaomPLmR/13cgkIGfA40LHly9zcH1S0bN2HVFYk3a1eAyHQyjs3ZJYlXvIGtcCs5tko9Cw==}
@@ -6708,24 +6753,28 @@ packages:
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@swc/core-linux-arm64-musl@1.5.7':
     resolution: {integrity: sha512-+NDhK+IFTiVK1/o7EXdCeF2hEzCiaRSrb9zD7X2Z7inwWlxAntcSuzZW7Y6BRqGQH89KA91qYgwbnjgTQ22PiQ==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@swc/core-linux-x64-gnu@1.5.7':
     resolution: {integrity: sha512-25GXpJmeFxKB+7pbY7YQLhWWjkYlR+kHz5I3j9WRl3Lp4v4UD67OGXwPe+DIcHqcouA1fhLhsgHJWtsaNOMBNg==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@swc/core-linux-x64-musl@1.5.7':
     resolution: {integrity: sha512-0VN9Y5EAPBESmSPPsCJzplZHV26akC0sIgd3Hc/7S/1GkSMoeuVL+V9vt+F/cCuzr4VidzSkqftdP3qEIsXSpg==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@swc/core-win32-arm64-msvc@1.5.7':
     resolution: {integrity: sha512-RtoNnstBwy5VloNCvmvYNApkTmuCe4sNcoYWpmY7C1+bPR+6SOo8im1G6/FpNem8AR5fcZCmXHWQ+EUmRWJyuA==}
@@ -6817,24 +6866,28 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@tailwindcss/oxide-linux-arm64-musl@4.1.14':
     resolution: {integrity: sha512-ISZjT44s59O8xKsPEIesiIydMG/sCXoMBCqsphDm/WcbnuWLxxb+GcvSIIA5NjUw6F8Tex7s5/LM2yDy8RqYBQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@tailwindcss/oxide-linux-x64-gnu@4.1.14':
     resolution: {integrity: sha512-02c6JhLPJj10L2caH4U0zF8Hji4dOeahmuMl23stk0MU1wfd1OraE7rOloidSF8W5JTHkFdVo/O7uRUJJnUAJg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@tailwindcss/oxide-linux-x64-musl@4.1.14':
     resolution: {integrity: sha512-TNGeLiN1XS66kQhxHG/7wMeQDOoL0S33x9BgmydbrWAb9Qw0KYdd8o1ifx4HOGDWhVmJ+Ul+JQ7lyknQFilO3Q==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@tailwindcss/oxide-wasm32-wasi@4.1.14':
     resolution: {integrity: sha512-uZYAsaW/jS/IYkd6EWPJKW/NlPNSkWkBlaeVBi/WsFQNP05/bzkebUL8FH1pdsqx4f2fH/bWFcUABOM9nfiJkQ==}
@@ -7386,41 +7439,49 @@ packages:
     resolution: {integrity: sha512-34gw7PjDGB9JgePJEmhEqBhWvCiiWCuXsL9hYphDF7crW7UgI05gyBAi6MF58uGcMOiOqSJ2ybEeCvHcq0BCmQ==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@unrs/resolver-binding-linux-arm64-musl@1.11.1':
     resolution: {integrity: sha512-RyMIx6Uf53hhOtJDIamSbTskA99sPHS96wxVE/bJtePJJtpdKGXO1wY90oRdXuYOGOTuqjT8ACccMc4K6QmT3w==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@unrs/resolver-binding-linux-ppc64-gnu@1.11.1':
     resolution: {integrity: sha512-D8Vae74A4/a+mZH0FbOkFJL9DSK2R6TFPC9M+jCWYia/q2einCubX10pecpDiTmkJVUH+y8K3BZClycD8nCShA==}
     cpu: [ppc64]
     os: [linux]
+    libc: [glibc]
 
   '@unrs/resolver-binding-linux-riscv64-gnu@1.11.1':
     resolution: {integrity: sha512-frxL4OrzOWVVsOc96+V3aqTIQl1O2TjgExV4EKgRY09AJ9leZpEg8Ak9phadbuX0BA4k8U5qtvMSQQGGmaJqcQ==}
     cpu: [riscv64]
     os: [linux]
+    libc: [glibc]
 
   '@unrs/resolver-binding-linux-riscv64-musl@1.11.1':
     resolution: {integrity: sha512-mJ5vuDaIZ+l/acv01sHoXfpnyrNKOk/3aDoEdLO/Xtn9HuZlDD6jKxHlkN8ZhWyLJsRBxfv9GYM2utQ1SChKew==}
     cpu: [riscv64]
     os: [linux]
+    libc: [musl]
 
   '@unrs/resolver-binding-linux-s390x-gnu@1.11.1':
     resolution: {integrity: sha512-kELo8ebBVtb9sA7rMe1Cph4QHreByhaZ2QEADd9NzIQsYNQpt9UkM9iqr2lhGr5afh885d/cB5QeTXSbZHTYPg==}
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
   '@unrs/resolver-binding-linux-x64-gnu@1.11.1':
     resolution: {integrity: sha512-C3ZAHugKgovV5YvAMsxhq0gtXuwESUKc5MhEtjBpLoHPLYM+iuwSj3lflFwK3DPm68660rZ7G8BMcwSro7hD5w==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@unrs/resolver-binding-linux-x64-musl@1.11.1':
     resolution: {integrity: sha512-rV0YSoyhK2nZ4vEswT/QwqzqQXw5I6CjoaYMOX0TqBlWhojUf8P94mvI7nuJTeaCkkds3QE4+zS8Ko+GdXuZtA==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@unrs/resolver-binding-wasm32-wasi@1.11.1':
     resolution: {integrity: sha512-5u4RkfxJm+Ng7IWgkzi3qrFOvLvQYnPBmjmZQ8+szTK/b31fQCnleNl1GgEt7nIsZRIf5PLhPwT0WM+q45x/UQ==}
@@ -10781,6 +10842,7 @@ packages:
   keygrip@1.1.0:
     resolution: {integrity: sha512-iYSchDJ+liQ8iwbSI2QqsQOvqv58eJCEanyJPJi+Khyu8smkcKSFUCbPwzFcL7YVtZ6eONjqRX/38caJ7QjRAQ==}
     engines: {node: '>= 0.6'}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -10981,24 +11043,28 @@ packages:
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   lightningcss-linux-arm64-musl@1.30.1:
     resolution: {integrity: sha512-jmUQVx4331m6LIX+0wUhBbmMX7TCfjF5FoOH6SD1CttzuYlGNVpA7QnrmLxrsub43ClTINfGSYyHe2HWeLl5CQ==}
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   lightningcss-linux-x64-gnu@1.30.1:
     resolution: {integrity: sha512-piWx3z4wN8J8z3+O5kO74+yr6ze/dKmPnI7vLqfSqI8bccaTGY5xiSGVIJBDd5K5BHlvVLpUB3S2YCfelyJ1bw==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   lightningcss-linux-x64-musl@1.30.1:
     resolution: {integrity: sha512-rRomAK7eIkL+tHY0YPxbc5Dra2gXlI63HL+v1Pdi1a3sC+tJTcFrHX+E86sulgAXeI7rSzDYhPSeHHjqFhqfeQ==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   lightningcss-win32-arm64-msvc@1.30.1:
     resolution: {integrity: sha512-mSL4rqPi4iXq5YVqzSsJgMVFENoa4nGTT/GjO2c0Yl9OuQfPsIfncvLrEW6RbbB24WtZ3xP/2CCmI3tNkNV4oA==}
@@ -17837,42 +17903,7 @@ snapshots:
       - typescript
       - vite
 
-  '@medusajs/draft-order@2.10.3(0f97e673bbd231e1f0454f4e8b2a54fb)':
-    dependencies:
-      '@ariakit/react': 0.4.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@hookform/resolvers': 3.4.2(react-hook-form@7.49.1(react@19.1.0))
-      '@medusajs/admin-sdk': 2.10.3
-      '@medusajs/cli': 2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0))
-      '@medusajs/framework': 2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0))
-      '@medusajs/icons': 2.11.3(react@19.1.0)
-      '@medusajs/js-sdk': 2.10.3(awilix@8.0.1)(ioredis@5.8.1)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0))
-      '@medusajs/test-utils': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@medusajs/medusa@2.10.3)(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/ui': 4.0.27(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
-      '@mikro-orm/cli': 6.4.3(pg@8.16.3)
-      '@mikro-orm/core': 6.4.3
-      '@mikro-orm/knex': 6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3)
-      '@mikro-orm/migrations': 6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3)
-      '@mikro-orm/postgresql': 6.4.3(@mikro-orm/core@6.4.3)
-      '@tanstack/react-query': 5.64.2(react@19.1.0)
-      '@uiw/react-json-view': 2.0.0-alpha.39(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      awilix: 8.0.1
-      date-fns: 3.6.0
-      lodash: 4.17.21
-      match-sorter: 6.3.4
-      pg: 8.16.3
-      radix-ui: 1.1.2(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      react-hook-form: 7.49.1(react@19.1.0)
-      react-router-dom: 6.20.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-    transitivePeerDependencies:
-      - '@babel/runtime'
-      - '@types/react'
-      - '@types/react-dom'
-      - ioredis
-      - react
-      - react-dom
-      - vite
-
-  '@medusajs/draft-order@2.10.3(bb2b39a8b888e6ca787b7002b321db31)':
+  '@medusajs/draft-order@2.10.3(aahz2n6boohhet3qxlglv7jyoe)':
     dependencies:
       '@ariakit/react': 0.4.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@hookform/resolvers': 3.4.2(react-hook-form@7.49.1(react@18.3.1))
@@ -17898,6 +17929,41 @@ snapshots:
       radix-ui: 1.1.2(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-hook-form: 7.49.1(react@18.3.1)
       react-router-dom: 6.20.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    transitivePeerDependencies:
+      - '@babel/runtime'
+      - '@types/react'
+      - '@types/react-dom'
+      - ioredis
+      - react
+      - react-dom
+      - vite
+
+  '@medusajs/draft-order@2.10.3(r7kouyrdmnfxtvgfjvzxpl7g5a)':
+    dependencies:
+      '@ariakit/react': 0.4.19(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@hookform/resolvers': 3.4.2(react-hook-form@7.49.1(react@19.1.0))
+      '@medusajs/admin-sdk': 2.10.3
+      '@medusajs/cli': 2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0))
+      '@medusajs/framework': 2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0))
+      '@medusajs/icons': 2.11.3(react@19.1.0)
+      '@medusajs/js-sdk': 2.10.3(awilix@8.0.1)(ioredis@5.8.1)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0))
+      '@medusajs/test-utils': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@medusajs/medusa@2.10.3)(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/ui': 4.0.27(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
+      '@mikro-orm/cli': 6.4.3(pg@8.16.3)
+      '@mikro-orm/core': 6.4.3
+      '@mikro-orm/knex': 6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3)
+      '@mikro-orm/migrations': 6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3)
+      '@mikro-orm/postgresql': 6.4.3(@mikro-orm/core@6.4.3)
+      '@tanstack/react-query': 5.64.2(react@19.1.0)
+      '@uiw/react-json-view': 2.0.0-alpha.39(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      awilix: 8.0.1
+      date-fns: 3.6.0
+      lodash: 4.17.21
+      match-sorter: 6.3.4
+      pg: 8.16.3
+      radix-ui: 1.1.2(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react-hook-form: 7.49.1(react@19.1.0)
+      react-router-dom: 6.20.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     transitivePeerDependencies:
       - '@babel/runtime'
       - '@types/react'
@@ -18084,7 +18150,7 @@ snapshots:
 
   '@medusajs/medusa-js@6.1.10(@medusajs/medusa@2.10.3)':
     dependencies:
-      '@medusajs/medusa': 2.10.3(cfd0302d8139785410130492fb2b4e5e)
+      '@medusajs/medusa': 2.10.3(2ej5a4wu64giwpm2whgfbx5mya)
       axios: 0.24.0
       cross-env: 5.2.1
       qs: 6.14.0
@@ -18093,120 +18159,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@medusajs/medusa@2.10.3(adfbd69eb49db1106827bd9fad955833)':
-    dependencies:
-      '@inquirer/checkbox': 2.5.0
-      '@inquirer/input': 2.3.0
-      '@medusajs/admin-bundler': 2.10.3(@babel/runtime@7.28.4)(@emotion/is-prop-valid@1.2.2)(@types/node@20.19.22)(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(lightningcss@1.30.1)(picomatch@3.0.1)(terser@5.44.0)(tsx@4.20.6)(typescript@5.9.3)
-      '@medusajs/analytics': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
-      '@medusajs/analytics-local': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
-      '@medusajs/analytics-posthog': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(posthog-node@4.18.0)
-      '@medusajs/api-key': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/auth': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/auth-emailpass': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
-      '@medusajs/auth-github': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
-      '@medusajs/auth-google': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
-      '@medusajs/cache-inmemory': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
-      '@medusajs/cache-redis': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
-      '@medusajs/cart': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/core-flows': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
-      '@medusajs/currency': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/customer': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/draft-order': 2.10.3(bb2b39a8b888e6ca787b7002b321db31)
-      '@medusajs/event-bus-local': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
-      '@medusajs/event-bus-redis': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
-      '@medusajs/file': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
-      '@medusajs/file-local': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
-      '@medusajs/file-s3': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
-      '@medusajs/framework': 2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0))
-      '@medusajs/fulfillment': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/fulfillment-manual': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
-      '@medusajs/index': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/inventory': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/link-modules': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/locking': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/locking-postgres': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
-      '@medusajs/locking-redis': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
-      '@medusajs/notification': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/notification-local': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
-      '@medusajs/notification-sendgrid': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
-      '@medusajs/order': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/payment': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/payment-stripe': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
-      '@medusajs/pricing': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/product': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/promotion': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/region': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/sales-channel': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/settings': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/stock-location': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/store': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/tax': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/telemetry': 2.10.3
-      '@medusajs/user': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/workflow-engine-inmemory': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/workflow-engine-redis': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@mikro-orm/core': 6.4.3
-      '@mikro-orm/knex': 6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3)
-      '@mikro-orm/migrations': 6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3)
-      '@mikro-orm/postgresql': 6.4.3(@mikro-orm/core@6.4.3)
-      '@opentelemetry/api': 1.9.0
-      awilix: 8.0.1
-      boxen: 5.1.2
-      chalk: 4.1.2
-      chokidar: 3.6.0
-      compression: 1.8.1
-      express: 4.21.2
-      fs-exists-cached: 1.0.0
-      jsonwebtoken: 9.0.2
-      lodash: 4.17.21
-      multer: 1.4.5-lts.2
-      node-schedule: 2.1.1
-      qs: 6.14.0
-      request-ip: 3.3.0
-      slugify: 1.6.6
-      uuid: 9.0.1
-      zod: 3.25.76
-    optionalDependencies:
-      '@swc/core': 1.5.7(@swc/helpers@0.5.17)
-      posthog-node: 4.18.0
-      react-dom: 18.3.1(react@18.3.1)
-      yalc: 1.0.0-pre.53
-    transitivePeerDependencies:
-      - '@babel/runtime'
-      - '@emotion/is-prop-valid'
-      - '@medusajs/admin-sdk'
-      - '@medusajs/cli'
-      - '@medusajs/icons'
-      - '@medusajs/test-utils'
-      - '@medusajs/ui'
-      - '@mikro-orm/cli'
-      - '@types/node'
-      - '@types/react'
-      - '@types/react-dom'
-      - aws-crt
-      - debug
-      - encoding
-      - ioredis
-      - less
-      - lightningcss
-      - pg
-      - picomatch
-      - react
-      - react-native
-      - react-router-dom
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - tsx
-      - typescript
-      - vite
-      - yaml
-
-  '@medusajs/medusa@2.10.3(cfd0302d8139785410130492fb2b4e5e)':
+  '@medusajs/medusa@2.10.3(2ej5a4wu64giwpm2whgfbx5mya)':
     dependencies:
       '@inquirer/checkbox': 2.5.0
       '@inquirer/input': 2.3.0
@@ -18225,7 +18178,7 @@ snapshots:
       '@medusajs/core-flows': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
       '@medusajs/currency': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
       '@medusajs/customer': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
-      '@medusajs/draft-order': 2.10.3(0f97e673bbd231e1f0454f4e8b2a54fb)
+      '@medusajs/draft-order': 2.10.3(r7kouyrdmnfxtvgfjvzxpl7g5a)
       '@medusajs/event-bus-local': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
       '@medusajs/event-bus-redis': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
       '@medusajs/file': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
@@ -18284,6 +18237,119 @@ snapshots:
       '@swc/core': 1.5.7(@swc/helpers@0.5.17)
       posthog-node: 4.18.0
       react-dom: 19.1.0(react@19.1.0)
+      yalc: 1.0.0-pre.53
+    transitivePeerDependencies:
+      - '@babel/runtime'
+      - '@emotion/is-prop-valid'
+      - '@medusajs/admin-sdk'
+      - '@medusajs/cli'
+      - '@medusajs/icons'
+      - '@medusajs/test-utils'
+      - '@medusajs/ui'
+      - '@mikro-orm/cli'
+      - '@types/node'
+      - '@types/react'
+      - '@types/react-dom'
+      - aws-crt
+      - debug
+      - encoding
+      - ioredis
+      - less
+      - lightningcss
+      - pg
+      - picomatch
+      - react
+      - react-native
+      - react-router-dom
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - typescript
+      - vite
+      - yaml
+
+  '@medusajs/medusa@2.10.3(jafr4ej4j3no46d5kjb7nvrvly)':
+    dependencies:
+      '@inquirer/checkbox': 2.5.0
+      '@inquirer/input': 2.3.0
+      '@medusajs/admin-bundler': 2.10.3(@babel/runtime@7.28.4)(@emotion/is-prop-valid@1.2.2)(@types/node@20.19.22)(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(lightningcss@1.30.1)(picomatch@3.0.1)(terser@5.44.0)(tsx@4.20.6)(typescript@5.9.3)
+      '@medusajs/analytics': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
+      '@medusajs/analytics-local': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
+      '@medusajs/analytics-posthog': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(posthog-node@4.18.0)
+      '@medusajs/api-key': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/auth': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/auth-emailpass': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
+      '@medusajs/auth-github': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
+      '@medusajs/auth-google': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
+      '@medusajs/cache-inmemory': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
+      '@medusajs/cache-redis': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
+      '@medusajs/cart': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/core-flows': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
+      '@medusajs/currency': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/customer': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/draft-order': 2.10.3(aahz2n6boohhet3qxlglv7jyoe)
+      '@medusajs/event-bus-local': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
+      '@medusajs/event-bus-redis': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
+      '@medusajs/file': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
+      '@medusajs/file-local': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
+      '@medusajs/file-s3': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
+      '@medusajs/framework': 2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(encoding@0.1.13)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0))
+      '@medusajs/fulfillment': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/fulfillment-manual': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
+      '@medusajs/index': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/inventory': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/link-modules': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/locking': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/locking-postgres': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
+      '@medusajs/locking-redis': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
+      '@medusajs/notification': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/notification-local': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
+      '@medusajs/notification-sendgrid': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))
+      '@medusajs/order': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/payment': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/payment-stripe': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(awilix@8.0.1)
+      '@medusajs/pricing': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/product': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/promotion': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/region': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/sales-channel': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/settings': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/stock-location': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/store': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/tax': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/telemetry': 2.10.3
+      '@medusajs/user': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/workflow-engine-inmemory': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@medusajs/workflow-engine-redis': 2.10.3(@medusajs/framework@2.10.3(@medusajs/cli@2.10.3(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(@types/node@20.19.22)(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/cli@6.4.3(pg@8.16.3))(@mikro-orm/core@6.4.3)(@mikro-orm/knex@6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3))(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)(ioredis@5.8.1)(pg@8.16.3)(vite@5.4.20(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0)))(@mikro-orm/core@6.4.3)(@mikro-orm/migrations@6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3))(@mikro-orm/postgresql@6.4.3(@mikro-orm/core@6.4.3))(awilix@8.0.1)
+      '@mikro-orm/core': 6.4.3
+      '@mikro-orm/knex': 6.4.3(@mikro-orm/core@6.4.3)(pg@8.16.3)
+      '@mikro-orm/migrations': 6.4.3(@mikro-orm/core@6.4.3)(@types/node@20.19.22)(pg@8.16.3)
+      '@mikro-orm/postgresql': 6.4.3(@mikro-orm/core@6.4.3)
+      '@opentelemetry/api': 1.9.0
+      awilix: 8.0.1
+      boxen: 5.1.2
+      chalk: 4.1.2
+      chokidar: 3.6.0
+      compression: 1.8.1
+      express: 4.21.2
+      fs-exists-cached: 1.0.0
+      jsonwebtoken: 9.0.2
+      lodash: 4.17.21
+      multer: 1.4.5-lts.2
+      node-schedule: 2.1.1
+      qs: 6.14.0
+      request-ip: 3.3.0
+      slugify: 1.6.6
+      uuid: 9.0.1
+      zod: 3.25.76
+    optionalDependencies:
+      '@swc/core': 1.5.7(@swc/helpers@0.5.17)
+      posthog-node: 4.18.0
+      react-dom: 18.3.1(react@18.3.1)
       yalc: 1.0.0-pre.53
     transitivePeerDependencies:
       - '@babel/runtime'
@@ -18492,7 +18558,7 @@ snapshots:
       get-port: 5.1.1
       randomatic: 3.1.1
     optionalDependencies:
-      '@medusajs/medusa': 2.10.3(adfbd69eb49db1106827bd9fad955833)
+      '@medusajs/medusa': 2.10.3(jafr4ej4j3no46d5kjb7nvrvly)
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -18508,7 +18574,7 @@ snapshots:
       get-port: 5.1.1
       randomatic: 3.1.1
     optionalDependencies:
-      '@medusajs/medusa': 2.10.3(cfd0302d8139785410130492fb2b4e5e)
+      '@medusajs/medusa': 2.10.3(2ej5a4wu64giwpm2whgfbx5mya)
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -27686,7 +27752,7 @@ snapshots:
       '@strapi/design-system': 2.0.0-rc.30(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/icons@2.0.0-rc.30(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/icons': 2.0.0-rc.30(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/permissions': 5.28.0
-      '@strapi/types': 5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.9.3)
+      '@strapi/types': 5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.4.4)
       '@strapi/typescript-utils': 5.28.0
       '@strapi/utils': 5.28.0
       '@testing-library/dom': 10.1.0
@@ -27799,7 +27865,7 @@ snapshots:
       - debug
       - supports-color
 
-  '@strapi/content-manager@5.28.0(d03e0402b15e28d7e210d8bf010c853a)':
+  '@strapi/content-manager@5.28.0(6nkv567q7hl57kfgjl3arezb7m)':
     dependencies:
       '@dnd-kit/core': 6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@dnd-kit/sortable': 10.0.0(@dnd-kit/core@6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
@@ -27873,15 +27939,15 @@ snapshots:
       - tedious
       - typescript
 
-  '@strapi/content-releases@5.28.0(0bfef882d91542e26f1361492142e51f)':
+  '@strapi/content-releases@5.28.0(ygnrqpzu2sye6oz2dvjsoeejoy)':
     dependencies:
       '@reduxjs/toolkit': 1.9.7(react-redux@8.1.3(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(redux@4.2.1))(react@18.3.1)
       '@strapi/admin': 5.28.0(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/data-transfer@5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.4.4))(@types/hoist-non-react-statics@3.3.7(@types/react@18.3.26))(@types/node@20.19.22)(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(debug@4.3.4)(pg@8.8.0)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.20.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(redux@4.2.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      '@strapi/content-manager': 5.28.0(d03e0402b15e28d7e210d8bf010c853a)
+      '@strapi/content-manager': 5.28.0(6nkv567q7hl57kfgjl3arezb7m)
       '@strapi/database': 5.28.0(@types/node@20.19.22)(pg@8.8.0)
       '@strapi/design-system': 2.0.0-rc.30(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/icons@2.0.0-rc.30(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/icons': 2.0.0-rc.30(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      '@strapi/types': 5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.9.3)
+      '@strapi/types': 5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.4.4)
       '@strapi/utils': 5.28.0
       date-fns: 2.30.0
       date-fns-tz: 2.0.1(date-fns@2.30.0)
@@ -27920,7 +27986,7 @@ snapshots:
       - tedious
       - typescript
 
-  '@strapi/content-type-builder@5.28.0(c322333467e7dca75608e6e657406a73)':
+  '@strapi/content-type-builder@5.28.0(dcjxfvji6v7fkvzs55urzwzldy)':
     dependencies:
       '@ai-sdk/react': 2.0.26(react@18.3.1)(zod@3.25.67)
       '@dnd-kit/core': 6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -27981,7 +28047,7 @@ snapshots:
       '@strapi/generators': 5.28.0(@types/node@20.19.22)
       '@strapi/logger': 5.28.0
       '@strapi/permissions': 5.28.0
-      '@strapi/types': 5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.9.3)
+      '@strapi/types': 5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.4.4)
       '@strapi/typescript-utils': 5.28.0
       '@strapi/utils': 5.28.0
       '@vercel/stega': 0.1.2
@@ -28162,7 +28228,7 @@ snapshots:
       - '@types/react-dom'
       - codemirror
 
-  '@strapi/email@5.28.0(6b79ad333f708d2db160a4480b6c9ef3)':
+  '@strapi/email@5.28.0(jr7r2w6q3f7ophqmyi24uuuexa)':
     dependencies:
       '@strapi/admin': 5.28.0(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/data-transfer@5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.4.4))(@types/hoist-non-react-statics@3.3.7(@types/react@18.3.26))(@types/node@20.19.22)(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(debug@4.3.4)(pg@8.8.0)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.20.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(redux@4.2.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/design-system': 2.0.0-rc.30(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/icons@2.0.0-rc.30(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -28212,11 +28278,11 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@strapi/i18n@5.28.0(977b01d32d782d49c2b725b116f67f7b)':
+  '@strapi/i18n@5.28.0(5m56oiicbsjrlpi4xqf2w2dab4)':
     dependencies:
       '@reduxjs/toolkit': 1.9.7(react-redux@8.1.3(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(redux@4.2.1))(react@18.3.1)
       '@strapi/admin': 5.28.0(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/data-transfer@5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.4.4))(@types/hoist-non-react-statics@3.3.7(@types/react@18.3.26))(@types/node@20.19.22)(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(debug@4.3.4)(pg@8.8.0)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.20.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(redux@4.2.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      '@strapi/content-manager': 5.28.0(d03e0402b15e28d7e210d8bf010c853a)
+      '@strapi/content-manager': 5.28.0(6nkv567q7hl57kfgjl3arezb7m)
       '@strapi/design-system': 2.0.0-rc.30(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/icons@2.0.0-rc.30(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/icons': 2.0.0-rc.30(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/utils': 5.28.0
@@ -28273,7 +28339,7 @@ snapshots:
       qs: 6.11.1
       sift: 16.0.1
 
-  '@strapi/plugin-cloud@5.28.0(4e6ef4b145941a107d5a070ba946c5fb)':
+  '@strapi/plugin-cloud@5.28.0(mwpkmhsuy32ncedhnyzaokwj5a)':
     dependencies:
       '@strapi/admin': 5.28.0(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/data-transfer@5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.4.4))(@types/hoist-non-react-statics@3.3.7(@types/react@18.3.26))(@types/node@20.19.22)(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(debug@4.3.4)(pg@8.8.0)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.20.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(redux@4.2.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/design-system': 2.0.0-rc.30(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/icons@2.0.0-rc.30(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -28298,7 +28364,7 @@ snapshots:
       - codemirror
       - typescript
 
-  '@strapi/plugin-users-permissions@5.28.0(466139392838a368a1217599ee67f2fd)':
+  '@strapi/plugin-users-permissions@5.28.0(ujcu5emhfybzhfvhzzu6x3gfsm)':
     dependencies:
       '@strapi/design-system': 2.0.0-rc.30(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/icons@2.0.0-rc.30(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/icons': 2.0.0-rc.30(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -28365,11 +28431,11 @@ snapshots:
       '@strapi/utils': 5.28.0
       fs-extra: 11.2.0
 
-  '@strapi/review-workflows@5.28.0(6794b92b12528e6d5027cb0940ee125a)':
+  '@strapi/review-workflows@5.28.0(ut6xckbvxjrxpqqanuuuwldmxi)':
     dependencies:
       '@reduxjs/toolkit': 1.9.7(react-redux@8.1.3(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(redux@4.2.1))(react@18.3.1)
       '@strapi/admin': 5.28.0(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/data-transfer@5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.4.4))(@types/hoist-non-react-statics@3.3.7(@types/react@18.3.26))(@types/node@20.19.22)(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(debug@4.3.4)(pg@8.8.0)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.20.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(redux@4.2.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      '@strapi/content-manager': 5.28.0(d03e0402b15e28d7e210d8bf010c853a)
+      '@strapi/content-manager': 5.28.0(6nkv567q7hl57kfgjl3arezb7m)
       '@strapi/design-system': 2.0.0-rc.30(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/icons@2.0.0-rc.30(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/icons': 2.0.0-rc.30(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/utils': 5.28.0
@@ -28407,22 +28473,22 @@ snapshots:
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.15(react-refresh@0.14.0)(type-fest@4.41.0)(webpack-hot-middleware@2.26.1)(webpack@5.102.1(esbuild@0.25.11))
       '@strapi/admin': 5.28.0(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/data-transfer@5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.4.4))(@types/hoist-non-react-statics@3.3.7(@types/react@18.3.26))(@types/node@20.19.22)(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(debug@4.3.4)(pg@8.8.0)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.20.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(redux@4.2.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/cloud-cli': 5.28.0
-      '@strapi/content-manager': 5.28.0(d03e0402b15e28d7e210d8bf010c853a)
-      '@strapi/content-releases': 5.28.0(0bfef882d91542e26f1361492142e51f)
-      '@strapi/content-type-builder': 5.28.0(c322333467e7dca75608e6e657406a73)
+      '@strapi/content-manager': 5.28.0(6nkv567q7hl57kfgjl3arezb7m)
+      '@strapi/content-releases': 5.28.0(ygnrqpzu2sye6oz2dvjsoeejoy)
+      '@strapi/content-type-builder': 5.28.0(dcjxfvji6v7fkvzs55urzwzldy)
       '@strapi/core': 5.28.0(@babel/runtime@7.28.4)(@codemirror/autocomplete@6.19.0)(@codemirror/language@6.11.3)(@codemirror/lint@6.9.0)(@codemirror/search@6.5.11)(@codemirror/state@6.5.2)(@codemirror/theme-one-dark@6.1.3)(@codemirror/view@6.38.6)(@strapi/data-transfer@5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.4.4))(@types/hoist-non-react-statics@3.3.7(@types/react@18.3.26))(@types/node@20.19.22)(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(codemirror@5.65.20)(pg@8.8.0)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.20.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(redux@4.2.1)(styled-components@6.1.19(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@strapi/data-transfer': 5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.9.3)
       '@strapi/database': 5.28.0(@types/node@20.19.22)(pg@8.8.0)
-      '@strapi/email': 5.28.0(6b79ad333f708d2db160a4480b6c9ef3)
+      '@strapi/email': 5.28.0(jr7r2w6q3f7ophqmyi24uuuexa)
       '@strapi/generators': 5.28.0(@types/node@20.19.22)
-      '@strapi/i18n': 5.28.0(977b01d32d782d49c2b725b116f67f7b)
+      '@strapi/i18n': 5.28.0(5m56oiicbsjrlpi4xqf2w2dab4)
       '@strapi/logger': 5.28.0
       '@strapi/openapi': 5.28.0
       '@strapi/permissions': 5.28.0
-      '@strapi/review-workflows': 5.28.0(6794b92b12528e6d5027cb0940ee125a)
-      '@strapi/types': 5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.9.3)
+      '@strapi/review-workflows': 5.28.0(ut6xckbvxjrxpqqanuuuwldmxi)
+      '@strapi/types': 5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.4.4)
       '@strapi/typescript-utils': 5.28.0
-      '@strapi/upload': 5.28.0(bc0af6321ebf64fcaf31c8333178b567)
+      '@strapi/upload': 5.28.0(xfzztuar62lx2txyjdnrnj3xhm)
       '@strapi/utils': 5.28.0
       '@types/nodemon': 1.19.6
       '@vitejs/plugin-react-swc': 3.6.0(@swc/helpers@0.5.17)(vite@5.4.19(@types/node@20.19.22)(lightningcss@1.30.1)(terser@5.44.0))
@@ -28522,6 +28588,36 @@ snapshots:
       - webpack-dev-server
       - webpack-plugin-serve
 
+  '@strapi/types@5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.4.4)':
+    dependencies:
+      '@casl/ability': 6.5.0
+      '@koa/cors': 5.0.0
+      '@koa/router': 12.0.2
+      '@strapi/database': 5.28.0(@types/node@20.19.22)(pg@8.8.0)
+      '@strapi/logger': 5.28.0
+      '@strapi/permissions': 5.28.0
+      '@strapi/utils': 5.28.0
+      commander: 8.3.0
+      json-logic-js: 2.0.5
+      koa: 2.16.1
+      koa-body: 6.0.1
+      node-schedule: 2.1.1
+      typedoc: 0.25.10(typescript@5.4.4)
+      typedoc-github-wiki-theme: 1.1.0(typedoc-plugin-markdown@3.17.1(typedoc@0.25.10(typescript@5.9.3)))(typedoc@0.25.10(typescript@5.9.3))
+      typedoc-plugin-markdown: 3.17.1(typedoc@0.25.10(typescript@5.9.3))
+      zod: 3.25.67
+    transitivePeerDependencies:
+      - '@types/node'
+      - better-sqlite3
+      - mysql
+      - mysql2
+      - pg
+      - pg-native
+      - sqlite3
+      - supports-color
+      - tedious
+      - typescript
+
   '@strapi/types@5.28.0(@types/node@20.19.22)(pg@8.8.0)(typescript@5.9.3)':
     dependencies:
       '@casl/ability': 6.5.0
@@ -28589,7 +28685,7 @@ snapshots:
       - '@types/react'
       - '@types/react-dom'
 
-  '@strapi/upload@5.28.0(bc0af6321ebf64fcaf31c8333178b567)':
+  '@strapi/upload@5.28.0(xfzztuar62lx2txyjdnrnj3xhm)':
     dependencies:
       '@mux/mux-player-react': 3.1.0(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@reduxjs/toolkit': 1.9.7(react-redux@8.1.3(@types/react-dom@18.3.7(@types/react@18.3.26))(@types/react@18.3.26)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(redux@4.2.1))(react@18.3.1)
@@ -31465,7 +31561,7 @@ snapshots:
       '@typescript-eslint/parser': 8.46.1(eslint@8.57.1)(typescript@5.9.3)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.1(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.1(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-react: 7.37.5(eslint@8.57.1)
@@ -31485,7 +31581,7 @@ snapshots:
       '@typescript-eslint/parser': 8.46.1(eslint@8.57.1)(typescript@5.9.3)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.1(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.46.1(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-react: 7.37.5(eslint@8.57.1)
@@ -31505,7 +31601,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.1(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.3(supports-color@5.5.0)
@@ -31520,14 +31616,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.46.1(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.1(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.46.1(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.46.1(eslint@8.57.1)(typescript@5.9.3)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.1(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -31542,7 +31638,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.46.1(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.46.1(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.46.1(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -38071,6 +38167,14 @@ snapshots:
     dependencies:
       handlebars: 4.7.8
       typedoc: 0.25.10(typescript@5.9.3)
+
+  typedoc@0.25.10(typescript@5.4.4):
+    dependencies:
+      lunr: 2.3.9
+      marked: 4.3.0
+      minimatch: 9.0.5
+      shiki: 0.14.7
+      typescript: 5.4.4
 
   typedoc@0.25.10(typescript@5.9.3):
     dependencies:

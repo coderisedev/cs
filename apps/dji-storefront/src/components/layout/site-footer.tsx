@@ -25,8 +25,13 @@ export function SiteFooter() {
               Professional flight simulation hardware inspired by the Cockpit Simulator system.
             </p>
             <div className="flex gap-3 text-foreground-muted">
-              {[Facebook, Twitter, Instagram, Youtube].map((Icon) => (
-                <a key={Icon.name} href="#" className="hover:text-primary-400 transition-colors" aria-label={Icon.name}>
+              {[
+                { Icon: Facebook, name: "Facebook" },
+                { Icon: Twitter, name: "Twitter" },
+                { Icon: Instagram, name: "Instagram" },
+                { Icon: Youtube, name: "Youtube" },
+              ].map(({ Icon, name }) => (
+                <a key={name} href="#" className="hover:text-primary-400 transition-colors" aria-label={name}>
                   <Icon className="h-5 w-5" />
                 </a>
               ))}

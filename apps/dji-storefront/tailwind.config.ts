@@ -11,31 +11,27 @@ const config: Config = {
     container: {
       center: true,
       padding: {
-        DEFAULT: "1rem",
-        sm: "1.5rem",
-        lg: "2rem",
-        xl: "2.5rem",
-        "2xl": "3rem",
+        DEFAULT: "20px",
+        sm: "24px",
+        lg: "32px",
+        xl: "40px",
       },
       screens: {
-        sm: "640px",
-        md: "768px",
-        lg: "1024px",
-        xl: "1280px",
-        "2xl": "1400px",
-        xs: "475px",
+        sm: "734px",    // Apple Mobile Breakpoint
+        md: "1068px",   // Apple Tablet Breakpoint
+        lg: "1440px",   // Apple Desktop Breakpoint
+        xl: "1440px",   // Max Width
       },
     },
     screens: {
-      xs: "475px",
-      sm: "640px",
-      md: "768px",
-      lg: "1024px",
-      xl: "1280px",
-      "2xl": "1536px",
+      sm: "734px",
+      md: "1068px",
+      lg: "1440px",
+      xl: "1680px",
     },
     extend: {
       spacing: {
+        // Apple 8px Grid System
         1: "4px",
         2: "8px",
         3: "12px",
@@ -46,28 +42,44 @@ const config: Config = {
         10: "40px",
         12: "48px",
         16: "64px",
-        18: "4.5rem",
         20: "80px",
         24: "96px",
-        32: "128px",
-        88: "22rem",
+        30: "120px",
       },
       fontSize: {
-        "2xs": ["0.625rem", { lineHeight: "0.75rem" }],
+        // Apple Typography Scale
+        "2xs": ["10px", { lineHeight: "12px" }],
         xs: ["12px", { lineHeight: "16px" }],
         sm: ["14px", { lineHeight: "20px" }],
-        base: ["16px", { lineHeight: "24px" }],
-        lg: ["18px", { lineHeight: "28px" }],
-        xl: ["20px", { lineHeight: "28px" }],
-        "2xl": ["24px", { lineHeight: "32px" }],
-        "3xl": ["30px", { lineHeight: "36px" }],
-        "4xl": ["36px", { lineHeight: "40px" }],
-        "5xl": ["48px", { lineHeight: "52px" }],
-        "6xl": ["64px", { lineHeight: "68px" }],
+        base: ["17px", { lineHeight: "25px", letterSpacing: "-0.022em" }], // Apple Body
+        lg: ["19px", { lineHeight: "24px", letterSpacing: "0.012em" }],
+        xl: ["21px", { lineHeight: "28px", letterSpacing: "0.011em" }],
+        "2xl": ["24px", { lineHeight: "28px", letterSpacing: "0.009em" }],
+        "3xl": ["28px", { lineHeight: "32px", letterSpacing: "0.007em" }],
+        "4xl": ["34px", { lineHeight: "40px", letterSpacing: "0.004em" }], // H1
+        "5xl": ["40px", { lineHeight: "44px", letterSpacing: "0" }],       // H3
+        "6xl": ["48px", { lineHeight: "52px", letterSpacing: "-0.003em" }], // Hero
+        "7xl": ["56px", { lineHeight: "60px", letterSpacing: "-0.005em" }], // Large Hero
       },
       fontFamily: {
-        primary: ["Open Sans", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
-        mono: ["JetBrains Mono", "Courier New", "monospace"],
+        // Apple System Font Stack
+        primary: [
+          "SF Pro Text",
+          "SF Pro Icons",
+          "Helvetica Neue",
+          "Helvetica",
+          "Arial",
+          "sans-serif"
+        ],
+        display: [
+          "SF Pro Display",
+          "SF Pro Text",
+          "Helvetica Neue",
+          "Helvetica",
+          "Arial",
+          "sans-serif"
+        ],
+        mono: ["SF Mono", "Menlo", "Monaco", "Courier New", "monospace"],
       },
       fontWeight: {
         regular: "400",
@@ -76,44 +88,12 @@ const config: Config = {
         bold: "700",
       },
       letterSpacing: {
-        tight: "-0.02em",
+        tight: "-0.022em",
         normal: "0",
-        wide: "0.02em",
-        wider: "0.05em",
-      },
-      minHeight: {
-        touch: "44px",
-      },
-      minWidth: {
-        touch: "44px",
+        wide: "0.012em",
       },
       colors: {
-        primary: {
-          50: "#f0f8ff",
-          100: "#e0efff",
-          200: "#b8ddff",
-          300: "#90cbff",
-          400: "#68b9ff",
-          500: "#0070d5",
-          600: "#0056a3",
-          700: "#003d71",
-          800: "#00243f",
-          900: "#000b0f",
-          DEFAULT: "#0070d5",
-          foreground: "#ffffff",
-        },
-        neutral: {
-          50: "#ffffff",
-          100: "#fafafa",
-          200: "#f2f2f2",
-          300: "#eeeeed",
-          400: "#ededed",
-          500: "#919699",
-          600: "#6c7073",
-          700: "#616466",
-          800: "#3c3e40",
-          900: "#303233",
-        },
+        // Mapped to CSS Variables
         background: {
           primary: "hsl(var(--background-primary))",
           secondary: "hsl(var(--background-secondary))",
@@ -125,62 +105,25 @@ const config: Config = {
           secondary: "hsl(var(--foreground-secondary))",
           muted: "hsl(var(--foreground-muted))",
         },
-        semantic: {
-          success: "#10b981",
-          warning: "#f59e0b",
-          error: "#ef4444",
-          info: "#3b82f6",
+        brand: {
+          blue: {
+            500: "hsl(var(--brand-blue-500))",
+            600: "hsl(var(--brand-blue-600))",
+            700: "hsl(var(--brand-blue-700))",
+          }
         },
         border: {
           DEFAULT: "hsl(var(--border-primary))",
           primary: "hsl(var(--border-primary))",
           secondary: "hsl(var(--border-secondary))",
         },
-        input: "hsl(var(--border-secondary))",
-        ring: "hsl(var(--foreground-muted))",
-        accent: {
-          DEFAULT: "#3b63a9",
-          foreground: "#ffffff",
-        },
-        secondary: {
-          DEFAULT: "#232323",
-          foreground: "#ffffff",
-        },
-        success: "#10b981",
-        error: "#ef4444",
-        warning: "#f59e0b",
-        destructive: {
-          DEFAULT: "hsl(var(--foreground-muted))",
-          foreground: "#ffffff",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--foreground-muted) / 0.15)",
-          foreground: "hsl(var(--foreground-muted))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--background-elevated))",
-          foreground: "hsl(var(--foreground-primary))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--background-secondary))",
-          foreground: "hsl(var(--foreground-primary))",
-        },
       },
       borderRadius: {
-        xs: "2px",
-        sm: "4px",
-        base: "6px",
-        md: "8px",
-        lg: "var(--radius)",
+        sm: "8px",
+        md: "12px",
+        lg: "18px",   // Apple Card Radius
         xl: "24px",
-        pill: "60px",
-        "pill-md": "64px",
-        "pill-lg": "99px",
-        "pill-xl": "999px",
-        "pill-xxl": "1408px",
-        full: "9999px",
-        "legacy-md": "calc(var(--radius) - 2px)",
-        "legacy-sm": "calc(var(--radius) - 4px)",
+        pill: "980px", // Apple Button Radius
       },
       boxShadow: {
         xs: "var(--shadow-xs)",
@@ -188,8 +131,6 @@ const config: Config = {
         md: "var(--shadow-md)",
         lg: "var(--shadow-lg)",
         xl: "var(--shadow-xl)",
-        directional: "var(--shadow-directional)",
-        elevated: "var(--shadow-elevated)",
         card: "var(--shadow-card)",
         "card-hover": "var(--shadow-card-hover)",
         modal: "var(--shadow-modal)",

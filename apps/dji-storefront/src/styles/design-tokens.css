@@ -1,45 +1,56 @@
 :root {
-  --radius: 0.5rem;
+  --radius: 12px; /* Apple default radius */
 
-  /* DJI Design System - Light Theme */
-  --background-primary: 0 0% 100%;
-  --background-secondary: 0 0% 98%;
-  --background-elevated: 0 0% 95%;
-  --background-overlay: 0 0% 93%;
+  /* Apple Design System - Light Theme */
+  /* Colors converted to HSL for Tailwind compatibility */
+  
+  /* Backgrounds */
+  --background-primary: 0 0% 100%;      /* #FFFFFF */
+  --background-secondary: 240 5% 96%;   /* #F5F5F7 - Apple Light Grey */
+  --background-elevated: 0 0% 100%;     /* #FFFFFF */
+  --background-overlay: 0 0% 100%;
+  
+  /* Foregrounds */
+  --foreground-primary: 240 3% 12%;     /* #1D1D1F - Apple Near Black */
+  --foreground-secondary: 240 2% 55%;   /* #86868B - Apple Medium Grey */
+  --foreground-muted: 240 2% 43%;       /* #6E6E73 - Apple Tertiary */
 
-  --foreground-primary: 0 0% 19%;
-  --foreground-secondary: 0 0% 45%;
-  --foreground-muted: 0 0% 55%;
+  /* Brand Colors */
+  --brand-blue-500: 211 100% 50%;       /* #0071E3 - Apple Blue */
+  --brand-blue-600: 211 100% 46%;       /* #0077ED - Apple Blue Hover */
+  --brand-blue-700: 213 100% 40%;       /* #0066CC - Apple Blue Dark */
 
-  --brand-blue-500: 210 100% 42%;
-  --brand-blue-600: 210 100% 34%;
-  --brand-blue-700: 210 100% 28%;
-
+  /* Gradients */
   --gradient-brand: linear-gradient(135deg, hsl(var(--brand-blue-500)) 0%, hsl(var(--brand-blue-600)) 100%);
-  --gradient-hero: linear-gradient(135deg, hsla(0, 0%, 0%, 0.7) 0%, hsla(0, 0%, 0%, 0.5) 50%, hsla(0, 0%, 0%, 0.3) 100%);
-  --gradient-hero-accent: linear-gradient(135deg, hsl(var(--brand-blue-500)) 0%, hsl(var(--brand-blue-700)) 100%);
-
+  --gradient-hero: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 100%);
+  
+  /* Text Shadows */
   --text-shadow-hero-strong: 0 2px 4px rgba(0, 0, 0, 0.3);
-  --text-shadow-hero-subtle: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --text-shadow-hero-subtle: 0 1px 2px rgba(0, 0, 0, 0.15);
 
-  --border-primary: 0 0% 93%;
-  --border-secondary: 0 0% 94%;
+  /* Borders */
+  --border-primary: 240 5% 84%;         /* #D2D2D7 */
+  --border-secondary: 240 5% 90%;       /* #E5E5EA */
 
-  /* DJI 7-Level Shadow System */
-  --shadow-xs: rgba(0, 0, 0, 0.05) 0px 2px 4px 0px;
-  --shadow-sm: rgba(0, 0, 0, 0.1) 0px 2px 6px 0px;
-  --shadow-md: rgba(0, 0, 0, 0.1) 0px 8px 16px 0px;
-  --shadow-lg: rgba(0, 0, 0, 0.1) 0px 16px 16px 0px;
-  --shadow-xl: rgba(0, 0, 0, 0.1) 0px 16px 32px 0px;
-  --shadow-directional: rgba(0, 0, 0, 0.1) 4px 4px 8px 0px;
-  --shadow-elevated: rgba(0, 0, 0, 0.2) 0px 2px 8px 0px;
+  /* Apple Shadow System */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
+  
+  /* Special Shadows */
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --shadow-modal: 0 24px 48px rgba(0, 0, 0, 0.16);
+  --shadow-glow-blue: 0 0 20px rgba(0, 113, 227, 0.4);
 
-  /* Legacy support */
-  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 1px rgba(0, 112, 213, 0.1);
-  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.15), 0 0 2px rgba(0, 112, 213, 0.2);
-  --shadow-modal: 0 24px 48px rgba(0, 0, 0, 0.2), 0 0 4px rgba(0, 112, 213, 0.15);
-  --shadow-glow-blue: 0 0 20px rgba(0, 112, 213, 0.4);
+  /* Navigation */
+  --nav-height: 44px;
+  --nav-bg: rgba(255, 255, 255, 0.8);
+  --nav-backdrop: saturate(180%) blur(20px);
 
+  /* Sidebar (keeping for compatibility) */
   --sidebar-background: 0 0% 98%;
   --sidebar-foreground: 240 5.3% 26.1%;
   --sidebar-primary: 240 5.9% 10%;
@@ -52,38 +63,33 @@
 
 [data-theme="dark"],
 .dark {
-  --background-primary: 0 0% 10%;
-  --background-secondary: 0 0% 14%;
-  --background-elevated: 0 0% 18%;
-  --background-overlay: 0 0% 8%;
+  /* Apple Dark Mode */
+  --background-primary: 0 0% 0%;        /* #000000 */
+  --background-secondary: 240 3% 10%;   /* #161617 */
+  --background-elevated: 240 3% 12%;    /* #1C1C1E */
+  --background-overlay: 0 0% 0%;
 
-  --foreground-primary: 0 0% 100%;
-  --foreground-secondary: 0 0% 88%;
-  --foreground-muted: 0 0% 60%;
+  --foreground-primary: 0 0% 96%;       /* #F5F5F7 */
+  --foreground-secondary: 240 2% 55%;   /* #86868B */
+  --foreground-muted: 240 2% 43%;       /* #6E6E73 */
 
-  --gradient-brand: linear-gradient(135deg, hsl(var(--brand-blue-500)) 0%, hsl(var(--brand-blue-600)) 100%);
-  --gradient-hero: linear-gradient(135deg, hsla(0, 0%, 0%, 0.85) 0%, hsla(0, 0%, 0%, 0.65) 50%, hsla(0, 0%, 0%, 0.45) 100%);
-  --gradient-hero-accent: linear-gradient(135deg, hsl(var(--brand-blue-500)) 0%, hsl(var(--brand-blue-700)) 100%);
+  --border-primary: 240 3% 26%;         /* #424245 */
+  --border-secondary: 240 3% 20%;       /* #333336 */
 
-  --text-shadow-hero-strong: 0 2px 6px rgba(0, 0, 0, 0.6);
-  --text-shadow-hero-subtle: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --nav-bg: rgba(22, 22, 23, 0.8);
 
-  --border-primary: 0 0% 18%;
-  --border-secondary: 0 0% 22%;
-
-  --shadow-xs: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
-  --shadow-sm: rgba(0, 0, 0, 0.15) 0px 2px 6px 0px;
-  --shadow-md: rgba(0, 0, 0, 0.2) 0px 8px 16px 0px;
-  --shadow-lg: rgba(0, 0, 0, 0.25) 0px 16px 16px 0px;
-  --shadow-xl: rgba(0, 0, 0, 0.3) 0px 16px 32px 0px;
-  --shadow-directional: rgba(0, 0, 0, 0.2) 4px 4px 8px 0px;
-  --shadow-elevated: rgba(0, 0, 0, 0.35) 0px 2px 8px 0px;
-
-  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.6), 0 0 1px rgba(0, 112, 213, 0.1);
-  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 2px rgba(0, 112, 213, 0.2);
-  --shadow-modal: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 112, 213, 0.15);
-  --shadow-glow-blue: 0 0 20px rgba(0, 112, 213, 0.4);
-
+  /* Shadows adjusted for dark mode */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
+  
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-modal: 0 24px 48px rgba(0, 0, 0, 0.6);
+  
+  /* Sidebar Dark */
   --sidebar-background: 240 5.9% 10%;
   --sidebar-foreground: 240 4.8% 95.9%;
   --sidebar-primary: 224.3 76.3% 48%;
