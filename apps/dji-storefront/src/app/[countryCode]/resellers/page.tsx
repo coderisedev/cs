@@ -1,8 +1,6 @@
-import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, Globe2, Handshake } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function ResellersPage() {
     return (
@@ -24,7 +22,7 @@ export default function ResellersPage() {
                         Join Our Global Network
                     </h1>
                     <p className="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto">
-                        Partner with the world's leading flight simulation hardware manufacturer.
+                        Partner with the world&apos;s leading flight simulation hardware manufacturer.
                     </p>
                 </div>
             </section>
@@ -34,8 +32,8 @@ export default function ResellersPage() {
                 <div className="container">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold mb-4">Why Partner With Us?</h2>
-                        <p className="text-gray-600 max-w-2xl mx-auto">
-                            We provide our partners with everything they need to succeed in the growing flight simulation market.
+                        <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+                            Find an authorized Cockpit Simulator retailer near you. Our partners are trained to help you choose the right equipment for your setup.
                         </p>
                     </div>
 

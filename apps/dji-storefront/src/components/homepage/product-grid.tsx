@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { FeaturedProduct } from '@/lib/strapi/homepage';
 import { resolveStrapiMedia } from '@/lib/strapi/client';
 import { CTAButton } from './cta-button';

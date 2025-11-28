@@ -39,7 +39,7 @@ export function Carousel({
 
     // Auto-play functionality
     React.useEffect(() => {
-        let intervalId: NodeJS.Timeout;
+        let intervalId: ReturnType<typeof setTimeout>;
 
         if (isPlaying && itemCount > 0) {
             intervalId = setInterval(() => {
@@ -56,7 +56,7 @@ export function Carousel({
     const scrollToIndex = (index: number) => {
         if (!scrollContainerRef.current) return;
         const container = scrollContainerRef.current;
-        const itemWidth = container.clientWidth; // Assuming one item per view for now, or we can calculate based on child
+
 
         // Better approach: find the child element and scroll to it
         const child = container.children[index] as HTMLElement;

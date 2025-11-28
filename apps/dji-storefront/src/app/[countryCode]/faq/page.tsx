@@ -50,7 +50,7 @@ export default function FAQPage() {
                 },
                 {
                     q: "How do I initiate a return?",
-                    a: "To start a return, please log in to your account and visit the 'Orders' section, or contact our support team with your order number."
+                    a: "To start a return, please log in to your account and visit the &apos;Orders&apos; section, or contact our support team with your order number."
                 }
             ]
         }
@@ -105,7 +105,7 @@ export default function FAQPage() {
             <section className="container mx-auto px-4 py-20">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold text-gray-900 mb-4">Still have questions?</h2>
-                    <p className="text-gray-600">We're here to help. Contact our support team.</p>
+                    <p className="text-gray-600">We&apos;re here to help. Contact our support team.</p>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">

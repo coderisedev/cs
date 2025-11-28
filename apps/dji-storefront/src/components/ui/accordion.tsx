@@ -17,7 +17,7 @@ interface AccordionProps {
     defaultValue?: string;
 }
 
-export function Accordion({ children, className, type = "single", collapsible, defaultValue }: AccordionProps) {
+export function Accordion({ children, className, collapsible, defaultValue }: AccordionProps) {
     const [value, setValue] = React.useState<string>(defaultValue || "");
 
     const handleValueChange = (newValue: string) => {
@@ -39,7 +39,6 @@ export const AccordionTrigger = React.forwardRef<
     HTMLButtonElement,
     React.ButtonHTMLAttributes<HTMLButtonElement>
 >(({ className, children, ...props }, ref) => {
-    const { value, onValueChange } = React.useContext(AccordionContext);
     // Find the parent item value
     // This is a bit hacky without a proper context for Item, but for this simple implementation we can assume
     // the trigger is used correctly inside an Item. 
@@ -105,6 +104,7 @@ const AccordionTriggerInternal = React.forwardRef<
         </h3>
     );
 });
+AccordionTriggerInternal.displayName = "AccordionTriggerInternal";
 
 export const AccordionContent = React.forwardRef<
     HTMLDivElement,

@@ -93,7 +93,7 @@ const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
                         <div className="relative">
                             <Quote className="absolute -top-2 -left-2 w-8 h-8 text-gray-100 rotate-180" />
                             <p className="text-lg text-gray-700 leading-relaxed relative z-10 pl-4">
-                                "{testimonial.quote}"
+                                &quot;{testimonial.quote}&quot;
                             </p>
                         </div>
                     </div>
@@ -110,6 +110,7 @@ const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
                         </div>
                         <div>
                             <p className="font-semibold text-gray-900">{testimonial.author}</p>
+
                             <p className="text-sm text-gray-500">{testimonial.role}</p>
                         </div>
                     </div>

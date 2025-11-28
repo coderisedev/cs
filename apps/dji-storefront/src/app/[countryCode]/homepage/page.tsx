@@ -6,7 +6,7 @@ import { ServicesCarousel } from '@/components/homepage/services-carousel';
 import { TestimonialsCarousel } from "@/components/homepage/testimonials-carousel";
 import { ResellerRecruitment } from "@/components/homepage/reseller-recruitment";
 import { LatestAnnouncements } from "@/components/homepage/latest-announcements";
-import { DEFAULT_COUNTRY_CODE } from "@/lib/constants";
+
 
 export const revalidate = 60; // Revalidate every 60 seconds
 

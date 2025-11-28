@@ -50,11 +50,12 @@ export default function LatestAnnouncementPage() {
                     {/* Content */}
                     <div className="prose prose-lg max-w-none text-gray-600 space-y-6">
                         <p className="lead text-xl text-gray-900 font-medium">
-                            We are thrilled to announce the launch of our most advanced flight simulation hardware yet. The new Force Feedback Yoke System represents a quantum leap in home cockpit realism.
+                            We&apos;re excited to announce the release of our latest firmware update for the A320 series.
+                            This update brings significant improvements to system stability and new features requested by the community. realism.
                         </p>
 
                         <p>
-                            After two years of intensive R&D and collaboration with real-world pilots, we've cracked the code on authentic control loading. No more springs, no more rubber bands—just pure, dynamic force feedback driven by high-torque brushless motors.
+                            After two years of intensive R&D and collaboration with real-world pilots, we&apos;ve cracked the code on authentic control loading. No more springs, no more rubber bands—just pure, dynamic force feedback driven by high-torque brushless motors.
                         </p>
 
                         <h3 className="text-2xl font-bold text-gray-900 mt-8">Key Features</h3>

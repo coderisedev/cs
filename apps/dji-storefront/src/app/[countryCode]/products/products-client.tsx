@@ -230,7 +230,7 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
             </div>
             <h3 className="text-xl font-bold text-foreground-primary mb-2">No Products Found</h3>
             <p className="text-foreground-muted mb-8 max-w-md mx-auto">
-              We couldn't find any products matching your search. Try adjusting your filters or search terms.
+              We couldn&apos;t find any products matching your search. Try adjusting your filters or search terms.
             </p>
             <Button onClick={clearFilters} variant="outline" className="px-8">
               Clear All Filters

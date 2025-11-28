@@ -25,6 +25,7 @@ interface SEO {
     og_image?: {
         url: string;
     };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     schema_json?: any;
 }
 
@@ -69,6 +70,7 @@ export interface HomepageLayout {
     isActive: boolean;
     effectiveDate?: string;
     expiryDate?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     metadata?: any;
 }
 
@@ -79,6 +81,7 @@ export async function getHomepageLayout(): Promise<HomepageLayout | null> {
     const strapi = getStrapiClient();
 
     try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const response = await strapi.fetch<{ data: any }>('/api/homepage-layout', {
             query: {
                 'populate[primaryHero][populate]': '*',
@@ -110,6 +113,7 @@ export async function getFeaturedProduct(slug: string): Promise<FeaturedProduct 
     const strapi = getStrapiClient();
 
     try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const response = await strapi.fetch<{ data: any[] }>('/api/featured-products', {
             query: {
                 'filters[slug][$eq]': slug,
@@ -145,6 +149,7 @@ export async function getFeaturedProductsBySize(
     const strapi = getStrapiClient();
 
     try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const response = await strapi.fetch<{ data: any[] }>('/api/featured-products', {
             query: {
                 'filters[displaySize][$eq]': displaySize,
@@ -173,6 +178,7 @@ export async function getAllFeaturedProducts(): Promise<FeaturedProduct[]> {
     const strapi = getStrapiClient();
 
     try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const response = await strapi.fetch<{ data: any[] }>('/api/featured-products', {
             query: {
                 'filters[isActive][$eq]': true,

@@ -36,7 +36,7 @@ export default async function RootLayout({
 }>) {
   const cart = await retrieveCart()
   return (
-    <html lang="en" className="bg-background-primary">
+    <html lang="en" className="bg-background-primary" suppressHydrationWarning>
       <body className="antialiased bg-background-primary text-foreground-primary" suppressHydrationWarning>
         <SiteHeader cartItemCount={cart?.items?.length ?? 0} />
         <main>{children}</main>
