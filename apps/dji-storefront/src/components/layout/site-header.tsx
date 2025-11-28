@@ -13,11 +13,11 @@ import { BRAND_LOGO_URL, BRAND_NAME } from "@/lib/constants"
 const NAV_ITEMS = [
   { name: "Home", href: "/" },
   { name: "All Products", href: "/products" },
-  { name: "A320 Series", href: "/collections/a320-series" },
-  { name: "737 Series", href: "/collections/737-series" },
-  { name: "Accessories", href: "/collections/accessories" },
+  { name: "Post", href: "/announcements/latest" },
   { name: "Software", href: "/software" },
   { name: "Blog", href: "/blog" },
+  { name: "Community", href: "/community" },
+  { name: "FAQ", href: "/faq" },
 ]
 
 export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
@@ -73,11 +73,10 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`text-sm font-medium transition-colors duration-300 hover:text-primary-400 ${
-                  isActive(item.href)
+                className={`text-sm font-medium transition-colors duration-300 hover:text-primary-400 ${isActive(item.href)
                     ? "text-primary-500 border-b-2 border-primary-500 pb-1"
                     : "text-foreground-primary"
-                }`}
+                  }`}
               >
                 {item.name}
               </Link>
@@ -149,9 +148,8 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block rounded-base px-4 py-3 text-sm font-medium transition-colors duration-300 hover:bg-background-secondary ${
-                  isActive(item.href) ? "text-primary-500 bg-background-secondary" : "text-foreground-primary"
-                }`}
+                className={`block rounded-base px-4 py-3 text-sm font-medium transition-colors duration-300 hover:bg-background-secondary ${isActive(item.href) ? "text-primary-500 bg-background-secondary" : "text-foreground-primary"
+                  }`}
               >
                 {item.name}
               </Link>

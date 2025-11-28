@@ -9,7 +9,7 @@ export default function LatestAnnouncementPage() {
             {/* Hero Image */}
             <div className="relative h-[50vh] w-full">
                 <Image
-                    src="https://images.unsplash.com/photo-1436891624295-813ea87b9801?q=80&w=2670&auto=format&fit=crop"
+                    src="https://img.aidenlux.com/medusa-uploads/hero.jpg"
                     alt="Flight Deck"
                     fill
                     className="object-cover"
