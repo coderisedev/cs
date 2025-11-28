@@ -87,7 +87,7 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
                 </div>
                 <Button
                   size="sm"
-                  className="w-full justify-center touch-target"
+                  className="w-full justify-center touch-target bg-brand-blue-600 hover:bg-brand-blue-700 text-white rounded-pill"
                   disabled={!product.inStock || isPending}
                   onClick={handleAddToCart}
                 >
@@ -137,7 +137,7 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
               </span>
             )}
           </div>
-          <Button size="sm" className="w-full justify-center touch-target" disabled={!product.inStock || isPending} onClick={handleAddToCart}>
+          <Button size="sm" className="w-full justify-center touch-target bg-brand-blue-600 hover:bg-brand-blue-700 text-white rounded-pill" disabled={!product.inStock || isPending} onClick={handleAddToCart}>
             {product.inStock && <ShoppingCart className="mr-2 h-4 w-4" />}
             {isPending ? "Adding…" : getButtonLabel()}
           </Button>

@@ -109,9 +109,8 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
                 <button
                   key={image}
                   onClick={() => setSelectedImage(index)}
-                  className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${
-                    selectedImage === index ? "border-primary-500" : "border-border-primary hover:border-border-secondary"
-                  }`}
+                  className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${selectedImage === index ? "border-primary-500" : "border-border-primary hover:border-border-secondary"
+                    }`}
                 >
                   <Image src={image} alt={`${product.title}-${index + 1}`} width={80} height={80} className="object-contain" />
                 </button>
@@ -128,11 +127,10 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className={`h-5 w-5 ${
-                      i < Math.floor(product.rating)
-                        ? "fill-semantic-warning text-semantic-warning"
-                        : "text-foreground-muted"
-                    }`}
+                    className={`h-5 w-5 ${i < Math.floor(product.rating)
+                      ? "fill-semantic-warning text-semantic-warning"
+                      : "text-foreground-muted"
+                      }`}
                   />
                 ))}
               </div>
@@ -162,9 +160,8 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
                   <button
                     key={v.id}
                     onClick={() => setSelectedVariant(v.id)}
-                    className={`p-4 rounded-lg border-2 text-left transition-colors ${
-                      selectedVariant === v.id ? "border-primary-500 bg-background-elevated" : "border-border-primary"
-                    }`}
+                    className={`p-4 rounded-lg border-2 text-left transition-colors ${selectedVariant === v.id ? "border-primary-500 bg-background-elevated" : "border-border-primary"
+                      }`}
                   >
                     <div className="font-medium text-foreground-primary">{v.title}</div>
                     <div className="text-primary-400">{currencyFormatter(v.price)}</div>
@@ -196,7 +193,7 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
           </div>
 
           <div className="space-y-4">
-            <Button className="w-full h-12 text-lg" size="lg" disabled={variant?.inStock === false || isPending} onClick={handleAddToCart}>
+            <Button className="w-full h-12 text-lg bg-brand-blue-600 hover:bg-brand-blue-700 text-white rounded-pill" size="lg" disabled={variant?.inStock === false || isPending} onClick={handleAddToCart}>
               <ShoppingCart className="mr-2 h-5 w-5" />
               {variant?.inStock === false ? "Out of Stock" : isPending ? "Adding…" : "Add to Cart"}
             </Button>
@@ -287,11 +284,10 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`h-5 w-5 ${
-                        i < Math.floor(product.rating)
-                          ? "fill-semantic-warning text-semantic-warning"
-                          : "text-foreground-muted"
-                      }`}
+                      className={`h-5 w-5 ${i < Math.floor(product.rating)
+                        ? "fill-semantic-warning text-semantic-warning"
+                        : "text-foreground-muted"
+                        }`}
                     />
                   ))}
                 </div>
@@ -320,9 +316,8 @@ export function ProductDetailClient({ product, reviews, countryCode }: ProductDe
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`h-4 w-4 ${
-                          i < review.rating ? "fill-semantic-warning text-semantic-warning" : "text-foreground-muted"
-                        }`}
+                        className={`h-4 w-4 ${i < review.rating ? "fill-semantic-warning text-semantic-warning" : "text-foreground-muted"
+                          }`}
                       />
                     ))}
                   </div>
