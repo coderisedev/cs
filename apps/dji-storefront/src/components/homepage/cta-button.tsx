@@ -22,9 +22,9 @@ export function CTAButton({
 
     const styleVariants = {
         primary:
-            'bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full shadow-sm hover:shadow-md',
+            'bg-blue-600 hover:bg-blue-700 text-white px-5 py-1.5 rounded-full shadow-sm hover:shadow-md',
         secondary:
-            'bg-transparent hover:bg-white/10 text-blue-600 dark:text-blue-400 px-6 py-3 rounded-full border-2 border-blue-600 dark:border-blue-400',
+            'bg-transparent hover:bg-blue-50 text-blue-600 dark:text-blue-400 px-5 py-1.5 rounded-full border-2 border-blue-600 dark:border-blue-400',
         text: 'text-blue-600 dark:text-blue-400 hover:underline',
     };
 
