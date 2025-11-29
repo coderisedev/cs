@@ -43,19 +43,19 @@ export function MotorShowcase() {
             {/* Airport neon glow effects with breathing animation */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <motion.div
-                    animate={{ opacity: [0.12, 0.22, 0.12] }}
+                    animate={{ opacity: [0.2, 0.35, 0.2] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -top-1/4 left-1/4 w-1/2 h-1/2 bg-blue-500/20 rounded-full blur-[150px]"
+                    className="absolute -top-1/4 left-1/4 w-1/2 h-1/2 bg-blue-500/30 rounded-full blur-[150px]"
                 />
                 <motion.div
-                    animate={{ opacity: [0.1, 0.18, 0.1] }}
+                    animate={{ opacity: [0.18, 0.3, 0.18] }}
                     transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-                    className="absolute top-1/2 -right-1/4 w-1/3 h-1/2 bg-purple-500/15 rounded-full blur-[120px]"
+                    className="absolute top-1/2 -right-1/4 w-1/3 h-1/2 bg-purple-500/25 rounded-full blur-[120px]"
                 />
                 <motion.div
-                    animate={{ opacity: [0.08, 0.15, 0.08] }}
+                    animate={{ opacity: [0.15, 0.28, 0.15] }}
                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-                    className="absolute -bottom-1/4 -left-1/4 w-1/2 h-1/2 bg-cyan-500/12 rounded-full blur-[130px]"
+                    className="absolute -bottom-1/4 -left-1/4 w-1/2 h-1/2 bg-cyan-500/20 rounded-full blur-[130px]"
                 />
             </div>
             {/* Background Grid Effect */}

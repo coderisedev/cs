@@ -41,19 +41,19 @@ export function Hero() {
             {/* Airport neon glow effects - on top of image */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
                 <motion.div
-                    animate={{ opacity: [0.15, 0.25, 0.15] }}
+                    animate={{ opacity: [0.25, 0.4, 0.25] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-blue-500/20 rounded-full blur-[120px]"
+                    className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-blue-500/30 rounded-full blur-[120px]"
                 />
                 <motion.div
-                    animate={{ opacity: [0.1, 0.2, 0.1] }}
+                    animate={{ opacity: [0.18, 0.32, 0.18] }}
                     transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                    className="absolute top-1/3 -right-1/4 w-1/3 h-1/3 bg-cyan-500/15 rounded-full blur-[100px]"
+                    className="absolute top-1/3 -right-1/4 w-1/3 h-1/3 bg-cyan-500/25 rounded-full blur-[100px]"
                 />
                 <motion.div
-                    animate={{ opacity: [0.08, 0.15, 0.08] }}
+                    animate={{ opacity: [0.15, 0.28, 0.15] }}
                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                    className="absolute -bottom-1/4 left-1/3 w-1/2 h-1/2 bg-purple-500/10 rounded-full blur-[150px]"
+                    className="absolute -bottom-1/4 left-1/3 w-1/2 h-1/2 bg-purple-500/20 rounded-full blur-[150px]"
                 />
             </div>
 

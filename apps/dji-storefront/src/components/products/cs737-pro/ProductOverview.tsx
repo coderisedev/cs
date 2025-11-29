@@ -40,19 +40,19 @@ export function ProductOverview() {
             {/* Airport neon glow effects with breathing animation */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <motion.div
-                    animate={{ opacity: [0.08, 0.15, 0.08] }}
+                    animate={{ opacity: [0.15, 0.28, 0.15] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-0 right-0 w-1/3 h-1/2 bg-cyan-500/10 rounded-full blur-[120px]"
+                    className="absolute top-0 right-0 w-1/3 h-1/2 bg-cyan-500/18 rounded-full blur-[120px]"
                 />
                 <motion.div
-                    animate={{ opacity: [0.08, 0.15, 0.08] }}
+                    animate={{ opacity: [0.15, 0.28, 0.15] }}
                     transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-                    className="absolute bottom-0 left-0 w-1/2 h-1/3 bg-blue-600/10 rounded-full blur-[100px]"
+                    className="absolute bottom-0 left-0 w-1/2 h-1/3 bg-blue-600/18 rounded-full blur-[100px]"
                 />
                 <motion.div
-                    animate={{ opacity: [0.08, 0.12, 0.08] }}
+                    animate={{ opacity: [0.12, 0.22, 0.12] }}
                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/4 h-1/4 bg-indigo-500/10 rounded-full blur-[80px]"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/4 h-1/4 bg-indigo-500/18 rounded-full blur-[80px]"
                 />
             </div>
             <div className="relative container mx-auto px-4">

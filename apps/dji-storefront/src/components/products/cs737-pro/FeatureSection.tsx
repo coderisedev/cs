@@ -54,9 +54,9 @@ export function FeatureSection({
 
     // Neon glow colors based on section position (for variety)
     const glowVariants = [
-        { pos1: "top-0 left-0", color1: "bg-blue-500/10", pos2: "bottom-0 right-0", color2: "bg-cyan-500/8" },
-        { pos1: "top-0 right-0", color1: "bg-purple-500/10", pos2: "bottom-0 left-1/4", color2: "bg-blue-500/8" },
-        { pos1: "top-1/4 left-0", color1: "bg-cyan-500/10", pos2: "bottom-0 right-1/4", color2: "bg-indigo-500/8" },
+        { pos1: "top-0 left-0", color1: "bg-blue-500/18", pos2: "bottom-0 right-0", color2: "bg-cyan-500/15" },
+        { pos1: "top-0 right-0", color1: "bg-purple-500/18", pos2: "bottom-0 left-1/4", color2: "bg-blue-500/15" },
+        { pos1: "top-1/4 left-0", color1: "bg-cyan-500/18", pos2: "bottom-0 right-1/4", color2: "bg-indigo-500/15" },
     ]
     const glowIndex = id ? id.charCodeAt(0) % 3 : 0
     const glow = glowVariants[glowIndex]
@@ -75,12 +75,12 @@ export function FeatureSection({
             {isDarkTheme && (
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <motion.div
-                        animate={{ opacity: [0.1, 0.18, 0.1] }}
+                        animate={{ opacity: [0.18, 0.32, 0.18] }}
                         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                         className={cn("absolute w-1/3 h-1/2 rounded-full blur-[120px]", glow.pos1, glow.color1)}
                     />
                     <motion.div
-                        animate={{ opacity: [0.08, 0.15, 0.08] }}
+                        animate={{ opacity: [0.15, 0.28, 0.15] }}
                         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                         className={cn("absolute w-1/4 h-1/3 rounded-full blur-[100px]", glow.pos2, glow.color2)}
                     />
@@ -159,7 +159,7 @@ export function FeatureSection({
                     // Left/Right aligned layout
                     <div
                         className={cn(
-                            "flex flex-col gap-10 md:gap-12 lg:gap-16 items-center max-w-6xl mx-auto",
+                            "flex flex-col gap-10 md:gap-12 lg:gap-16 md:items-stretch max-w-6xl mx-auto",
                             "md:flex-row",
                             isRight && "md:flex-row-reverse"
                         )}
@@ -169,7 +169,7 @@ export function FeatureSection({
                             initial={{ opacity: 0, x: isRight ? 30 : -30 }}
                             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isRight ? 30 : -30 }}
                             transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-                            className="flex-1 max-w-xl"
+                            className="flex-1 max-w-xl flex flex-col justify-center"
                         >
                             <p className={cn("text-lg md:text-xl font-semibold mb-2", accentColor)}>
                                 {eyebrow}
@@ -181,7 +181,7 @@ export function FeatureSection({
                                 {description}
                             </p>
                             {features && features.length > 0 && (
-                                <ul className="space-y-3 mb-6">
+                                <ul className="space-y-4 mb-6">
                                     {features.map((feature, index) => (
                                         <motion.li
                                             key={feature}
@@ -190,17 +190,17 @@ export function FeatureSection({
                                             transition={{ duration: 0.4, delay: 0.3 + index * 0.05 }}
                                             className="flex items-start gap-3"
                                         >
-                                            <svg className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                            <svg className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                             </svg>
-                                            <span className={cn("text-sm md:text-base", textColor)}>{feature}</span>
+                                            <span className={cn("text-xl md:text-2xl lg:text-3xl font-medium", textColor)}>{feature}</span>
                                         </motion.li>
                                     ))}
                                 </ul>
                             )}
                             {quote && (
                                 <p className={cn(
-                                    "text-lg md:text-xl font-medium leading-relaxed pt-4 border-t italic",
+                                    "text-xl md:text-3xl lg:text-4xl font-medium leading-relaxed pt-6 border-t italic",
                                     isDarkTheme ? "border-white/10" : "border-gray-200",
                                     textColor
                                 )}>
@@ -214,7 +214,7 @@ export function FeatureSection({
                             initial={{ opacity: 0, x: isRight ? -30 : 30 }}
                             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isRight ? -30 : 30 }}
                             transition={{ duration: 1, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
-                            className="flex-[1.2] w-full"
+                            className="flex-1 w-full flex items-center"
                         >
                             <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl md:rounded-3xl">
                                 <motion.div style={{ y: imageY, scale: imageScale }} className="absolute inset-0 h-[110%]">

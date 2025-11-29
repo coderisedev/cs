@@ -24,24 +24,24 @@ export function WarrantyCTA() {
             {/* Airport neon glow effects with breathing animation */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <motion.div
-                    animate={{ opacity: [0.12, 0.2, 0.12] }}
+                    animate={{ opacity: [0.2, 0.35, 0.2] }}
                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/18 rounded-full blur-[120px]"
+                    className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/28 rounded-full blur-[120px]"
                 />
                 <motion.div
-                    animate={{ opacity: [0.1, 0.16, 0.1] }}
+                    animate={{ opacity: [0.18, 0.3, 0.18] }}
                     transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                    className="absolute top-1/3 right-0 w-80 h-80 bg-purple-500/15 rounded-full blur-[100px]"
+                    className="absolute top-1/3 right-0 w-80 h-80 bg-purple-500/25 rounded-full blur-[100px]"
                 />
                 <motion.div
-                    animate={{ opacity: [0.08, 0.14, 0.08] }}
+                    animate={{ opacity: [0.15, 0.26, 0.15] }}
                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                    className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/12 rounded-full blur-[130px]"
+                    className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[130px]"
                 />
                 <motion.div
-                    animate={{ opacity: [0.06, 0.1, 0.06] }}
+                    animate={{ opacity: [0.12, 0.2, 0.12] }}
                     transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-                    className="absolute bottom-1/4 left-0 w-72 h-72 bg-indigo-500/10 rounded-full blur-[90px]"
+                    className="absolute bottom-1/4 left-0 w-72 h-72 bg-indigo-500/18 rounded-full blur-[90px]"
                 />
             </div>
 
