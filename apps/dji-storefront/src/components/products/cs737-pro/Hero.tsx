@@ -63,76 +63,112 @@ export function Hero() {
                 className="relative z-10 flex h-full flex-col items-center justify-center text-center px-6"
             >
                 <div className="max-w-5xl mx-auto">
-                    {/* Product Label */}
-                    <motion.p
+                    {/* Product Label - animated with expanding lines */}
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        className="text-white/60 text-lg md:text-xl font-semibold mb-2"
+                        className="flex items-center justify-center gap-4 mb-4"
                     >
-                        CS737 Full-Function Throttle Quadrant
-                    </motion.p>
+                        <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: 60 }}
+                            transition={{ duration: 0.8, delay: 0.5 }}
+                            className="h-px bg-white/40"
+                        />
+                        <p className="text-white/70 text-base md:text-lg lg:text-xl font-semibold tracking-wide">
+                            CS737 Full-Function Throttle Quadrant
+                        </p>
+                        <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: 60 }}
+                            transition={{ duration: 0.8, delay: 0.5 }}
+                            className="h-px bg-white/40"
+                        />
+                    </motion.div>
 
-                    {/* Main Headline */}
+                    {/* Main Headline - 1.5x larger */}
                     <motion.h1
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.3 }}
-                        className="text-white text-4xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight"
+                        initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                        className="text-white text-4xl md:text-6xl lg:text-[5rem] font-bold mb-6 tracking-tight"
                     >
-                        Real feel.
-                        <br />
-                        Born for flight.
+                        <motion.span
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                            className="block py-2"
+                        >
+                            Real feel.
+                        </motion.span>
+                        <motion.span
+                            initial={{ opacity: 0, x: 30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8, delay: 0.55 }}
+                            className="block text-blue-100 py-2"
+                        >
+                            Born for flight.
+                        </motion.span>
                     </motion.h1>
 
-                    {/* Subheadline */}
+                    {/* Subheadline - 2x larger */}
                     <motion.p
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.5 }}
-                        className="text-white/80 text-xl md:text-3xl lg:text-4xl font-medium mb-6"
+                        transition={{ duration: 0.8, delay: 0.7 }}
+                        className="text-white/80 text-xl md:text-2xl lg:text-3xl font-medium mb-8"
                     >
                         All-metal construction. Real panel scales.
                     </motion.p>
 
-                    {/* Description */}
+                    {/* Description - larger */}
                     <motion.p
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6 }}
-                        className="text-white/70 text-base md:text-lg lg:text-xl mb-8 max-w-3xl mx-auto"
+                        transition={{ duration: 0.8, delay: 0.8 }}
+                        className="text-white/70 text-sm md:text-base lg:text-lg mb-10 max-w-4xl mx-auto"
                     >
                         Experience the familiar glow of the cockpit right at home with adjustable backlight.
                     </motion.p>
 
-                    {/* CTA Buttons */}
+                    {/* CTA Buttons - larger with better animations */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.7 }}
-                        className="flex flex-wrap gap-4 justify-center items-center"
+                        transition={{ duration: 0.8, delay: 0.95 }}
+                        className="flex flex-wrap gap-6 justify-center items-center"
                     >
-                        <Link
-                            href="#buy"
-                            className="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-2.5 rounded-full shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-200 font-medium text-base"
+                        <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.98 }}
                         >
-                            Buy
-                        </Link>
-                        <Link
-                            href="#overview"
-                            className="inline-flex items-center gap-1 text-blue-400 hover:underline transition-all duration-200 font-medium"
+                            <Link
+                                href="#buy"
+                                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-full shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 font-semibold text-base md:text-lg"
+                            >
+                                Buy Now
+                            </Link>
+                        </motion.div>
+                        <motion.div
+                            whileHover={{ x: 5 }}
                         >
-                            Learn more
-                            <ChevronRight className="w-4 h-4" />
-                        </Link>
+                            <Link
+                                href="#overview"
+                                className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-all duration-300 font-medium text-base md:text-lg group"
+                            >
+                                Learn more
+                                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                            </Link>
+                        </motion.div>
                     </motion.div>
 
-                    {/* Key Stats */}
+                    {/* Key Stats - larger with dividers */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 1, delay: 1 }}
-                        className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+                        transition={{ duration: 1, delay: 1.1 }}
+                        className="mt-16 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0 max-w-4xl mx-auto"
                     >
                         {[
                             { value: "9", label: "Motors" },
@@ -143,14 +179,25 @@ export function Hero() {
                                 key={stat.label}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: 1.2 + index * 0.1 }}
-                                className="text-center"
+                                transition={{ duration: 0.6, delay: 1.2 + index * 0.15 }}
+                                className="text-center flex items-center"
                             >
-                                <div className="text-white font-semibold text-lg mb-1">
-                                    {stat.value}
-                                </div>
-                                <div className="text-white/60 text-sm">
-                                    {stat.label}
+                                {/* Divider before (except first) */}
+                                {index > 0 && (
+                                    <motion.div
+                                        initial={{ height: 0 }}
+                                        animate={{ height: 40 }}
+                                        transition={{ duration: 0.5, delay: 1.3 + index * 0.15 }}
+                                        className="hidden md:block w-px bg-white/20 mx-10"
+                                    />
+                                )}
+                                <div>
+                                    <div className="text-white font-bold text-xl md:text-2xl lg:text-3xl mb-1">
+                                        {stat.value}
+                                    </div>
+                                    <div className="text-white/50 text-sm md:text-base font-medium uppercase tracking-wider">
+                                        {stat.label}
+                                    </div>
                                 </div>
                             </motion.div>
                         ))}

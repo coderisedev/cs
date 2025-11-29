@@ -45,13 +45,13 @@ const variants = [
         id: "ng",
         name: "737NG Configuration",
         description: "Classic 737NG-style fuel cutoff levers and control layout",
-        price: "$799",
+        price: "$2999",
     },
     {
         id: "max",
         name: "737MAX Configuration",
         description: "Next-generation 737MAX-style design",
-        price: "$899",
+        price: "$2999",
     },
     {
         id: "full",

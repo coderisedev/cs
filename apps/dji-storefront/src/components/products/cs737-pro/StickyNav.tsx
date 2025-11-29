@@ -82,7 +82,7 @@ export function StickyNav() {
                         {/* Right Side */}
                         <div className="flex items-center gap-4">
                             <span className="hidden sm:block text-white/60 text-sm">
-                                From $799
+                                From $2999
                             </span>
                             <Link
                                 href="#buy"
