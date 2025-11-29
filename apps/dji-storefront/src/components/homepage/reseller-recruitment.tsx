@@ -11,7 +11,7 @@ export function ResellerRecruitment() {
             {/* Background Image */}
             <div className="absolute inset-0">
                 <Image
-                    src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop"
+                    src="https://img.aidenlux.com/medusa-uploads/reseller.jpg"
                     alt="Global Network"
                     fill
                     className="object-cover transition-transform duration-1000 group-hover:scale-105"

@@ -91,8 +91,12 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
       {/* Hero Section */}
       <div className="relative bg-gray-950 py-24 sm:py-32 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-soft-light"></div>
-          <div className="absolute -top-1/2 left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] bg-brand-blue-500/20 rounded-full blur-[120px] opacity-50"></div>
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: "url('https://img.aidenlux.com/medusa-uploads/hero.jpg')" }}
+          >
+            <div className="absolute inset-0 bg-black/60" />
+          </div>
         </div>
         <div className="container relative z-10 text-center space-y-6">
           <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight">
