@@ -115,6 +115,13 @@ export default defineConfig({
       cookieSecret: COOKIE_SECRET,
     },
   },
+  admin: {
+    vite: () => ({
+      server: {
+        allowedHosts: [".aidenlux.com"],
+      },
+    }),
+  },
   modules: {
     [Modules.AUTH]: {
       resolve: "@medusajs/auth",

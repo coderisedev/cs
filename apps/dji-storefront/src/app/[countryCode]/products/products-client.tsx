@@ -213,7 +213,7 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
           <div
             className={
               viewMode === "grid"
-                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12"
+                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12"
                 : "space-y-6"
             }
           >
