@@ -99,17 +99,17 @@ export function MotorShowcase() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
                         transition={{ duration: 1, delay: 0.2 }}
-                        className="relative aspect-[16/9] max-w-4xl mx-auto"
+                        className="relative aspect-[3/2] max-w-4xl mx-auto"
                     >
                         {/* Glow Effect */}
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/30 via-blue-400/20 to-blue-600/30 rounded-3xl blur-3xl animate-pulse-slow" />
 
-                        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl md:rounded-3xl border border-blue-400/30">
+                        <div className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl md:rounded-3xl border border-blue-400/30">
                             <Image
-                                src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=2670&auto=format&fit=crop"
+                                src="https://img.aidenlux.com/cs737-pro/part3.png"
                                 alt="CS737 Motor System"
                                 fill
-                                className="object-cover"
+                                className="object-contain"
                                 sizes="(max-width: 768px) 100vw, 896px"
                             />
                             {/* Overlay with animated lines */}

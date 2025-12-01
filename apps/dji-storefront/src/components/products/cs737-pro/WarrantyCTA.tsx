@@ -95,12 +95,12 @@ export function WarrantyCTA() {
                         className="relative w-full max-w-3xl mx-auto"
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-blue-400/10 to-blue-600/20 rounded-3xl blur-3xl" />
-                        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl md:rounded-3xl border border-white/10">
+                        <div className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl md:rounded-3xl border border-white/10">
                             <Image
-                                src="https://images.unsplash.com/photo-1474302770737-173ee21bab63?q=80&w=2574&auto=format&fit=crop"
+                                src="https://img.aidenlux.com/cs737-pro/part9.png"
                                 alt="CS737 Throttle Quadrant"
                                 fill
-                                className="object-cover"
+                                className="object-contain"
                                 sizes="(max-width: 768px) 100vw, 768px"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

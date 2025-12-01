@@ -203,9 +203,9 @@ export function FeatureSection({
                             initial={{ opacity: 0, y: 50, scale: 0.95 }}
                             animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 50, scale: 0.95 }}
                             transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                            className="w-full max-w-5xl group cursor-pointer"
+                            className="w-full max-w-[1400px] group cursor-pointer"
                         >
-                            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl md:rounded-3xl">
+                            <div className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl md:rounded-3xl">
                                 <motion.div
                                     style={{ y: imageY, scale: imageScale }}
                                     className="absolute inset-0 h-[110%] transition-transform duration-700 ease-out group-hover:scale-105"
@@ -214,13 +214,11 @@ export function FeatureSection({
                                         src={imageSrc}
                                         alt={imageAlt}
                                         fill
-                                        className="object-cover"
+                                        className="object-contain"
                                         sizes="(max-width: 768px) 100vw, 1100px"
                                     />
                                 </motion.div>
-                                {/* Gradient overlay that fades on hover */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-60 group-hover:opacity-0 transition-opacity duration-500" />
-                                {/* Corner glow on hover */}
+                                                                {/* Corner glow on hover */}
                                 <div className={cn(
                                     "absolute bottom-6 right-6 w-40 h-40 rounded-full blur-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-700",
                                     isDarkTheme ? "bg-blue-500/50" : "bg-blue-400/40"
@@ -378,7 +376,7 @@ export function FeatureSection({
                                     src={imageSrc}
                                     alt={imageAlt}
                                     fill
-                                    className="object-cover"
+                                    className="object-contain"
                                     sizes="(max-width: 768px) 100vw, 50vw"
                                 />
                             </motion.div>
