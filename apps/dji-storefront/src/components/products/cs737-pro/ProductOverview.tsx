@@ -1,8 +1,8 @@
 "use client"
 
 import { motion, useInView } from "framer-motion"
-import { useRef } from "react"
-import Image from "next/image"
+import { useRef, useState } from "react"
+import { Play } from "lucide-react"
 
 const features = [
     {
@@ -29,7 +29,16 @@ const features = [
 
 export function ProductOverview() {
     const ref = useRef(null)
+    const videoRef = useRef<HTMLVideoElement>(null)
     const isInView = useInView(ref, { once: true, margin: "-10% 0px" })
+    const [isPlaying, setIsPlaying] = useState(false)
+
+    const handlePlayClick = () => {
+        if (videoRef.current) {
+            videoRef.current.play()
+            setIsPlaying(true)
+        }
+    }
 
     return (
         <section
@@ -88,17 +97,29 @@ export function ProductOverview() {
                     <motion.div
                         animate={{ y: [0, -10, 0] }}
                         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                        className="relative aspect-[16/9] w-full max-w-4xl mx-auto"
+                        className="relative w-full max-w-[1200px] mx-auto"
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-transparent to-blue-600/20 rounded-3xl blur-3xl" />
-                        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl md:rounded-3xl border border-white/10">
-                            <Image
-                                src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2574&auto=format&fit=crop"
-                                alt="CS737 Throttle Quadrant Full View"
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 768px) 100vw, 896px"
+                        <div className="relative w-full overflow-hidden rounded-2xl md:rounded-3xl border border-white/10">
+                            <video
+                                ref={videoRef}
+                                src="https://img.aidenlux.com/cs737-pro/pro.mp4"
+                                loop
+                                playsInline
+                                controls={isPlaying}
+                                className="w-full h-auto object-contain"
                             />
+                            {/* Play Button Overlay */}
+                            {!isPlaying && (
+                                <button
+                                    onClick={handlePlayClick}
+                                    className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors duration-300 cursor-pointer group"
+                                >
+                                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white/90 group-hover:bg-white group-hover:scale-110 transition-all duration-300 flex items-center justify-center shadow-2xl">
+                                        <Play className="w-8 h-8 md:w-10 md:h-10 text-gray-900 ml-1" fill="currentColor" />
+                                    </div>
+                                </button>
+                            )}
                         </div>
                     </motion.div>
                 </motion.div>

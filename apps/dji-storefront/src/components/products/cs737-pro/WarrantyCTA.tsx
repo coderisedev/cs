@@ -92,16 +92,16 @@ export function WarrantyCTA() {
                     <motion.div
                         animate={{ y: [0, -8, 0] }}
                         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                        className="relative w-full max-w-3xl mx-auto"
+                        className="relative w-full max-w-[1200px] mx-auto"
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-blue-400/10 to-blue-600/20 rounded-3xl blur-3xl" />
-                        <div className="relative aspect-[3/2] w-full overflow-hidden rounded-2xl md:rounded-3xl border border-white/10">
+                        <div className="relative w-full overflow-hidden rounded-2xl md:rounded-3xl border border-white/10">
                             <Image
                                 src="https://img.aidenlux.com/cs737-pro/part9.png"
                                 alt="CS737 Throttle Quadrant"
-                                fill
-                                className="object-contain"
-                                sizes="(max-width: 768px) 100vw, 768px"
+                                width={1200}
+                                height={800}
+                                className="w-full h-auto object-contain"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                         </div>
