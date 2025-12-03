@@ -8,7 +8,6 @@ import { Play, X } from "lucide-react";
 interface ServiceCardProps {
     title: string;
     subtitle?: string;
-    service: "Arcade" | "Fitness+" | "Music";
     bgClass: string;
     textColor?: string;
     image?: string;
@@ -16,7 +15,7 @@ interface ServiceCardProps {
     onPlay?: (videoId: string) => void;
 }
 
-const ServiceCard = ({ title, subtitle, service, bgClass, textColor = "text-white", image, videoId, onPlay }: ServiceCardProps) => {
+const ServiceCard = ({ title, subtitle, bgClass, textColor = "text-white", image, videoId, onPlay }: ServiceCardProps) => {
     return (
         <div
             className={cn("relative w-full aspect-video rounded-2xl overflow-hidden shadow-lg group cursor-pointer transition-transform hover:scale-[1.01]", bgClass)}
@@ -34,8 +33,8 @@ const ServiceCard = ({ title, subtitle, service, bgClass, textColor = "text-whit
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
             {/* Content */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex items-end justify-between">
-                <div className="max-w-[70%]">
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                <div>
                     {subtitle && (
                         <div className="text-xs md:text-sm font-semibold uppercase tracking-wider mb-1 opacity-90 text-white">
                             {subtitle}
@@ -44,12 +43,6 @@ const ServiceCard = ({ title, subtitle, service, bgClass, textColor = "text-whit
                     <h3 className={cn("text-xl md:text-3xl font-bold leading-tight", textColor)}>
                         {title}
                     </h3>
-                </div>
-
-                <div className="flex items-center gap-2">
-                    <span className="text-white font-semibold text-sm md:text-base">
-                         {service}
-                    </span>
                 </div>
             </div>
 
@@ -101,62 +94,53 @@ export function ServicesCarousel() {
 
     const slides: ServiceCardProps[] = [
         {
-            title: "A TOUR Pro Golf",
-            service: "Arcade",
+            title: "CS 737X MCP & EFIS Review",
+            subtitle: "Swiss001",
             bgClass: "bg-blue-600",
-            image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?q=80&w=2070&auto=format&fit=crop",
-            videoId: "dQw4w9WgXcQ", // Rick Roll for demo (replace with real IDs)
+            image: "https://img.youtube.com/vi/GZJbGZRfnAM/hqdefault.jpg",
+            videoId: "GZJbGZRfnAM",
         },
         {
-            title: "Strength with Gregg",
-            service: "Fitness+",
+            title: "CS 737X CDU & MCP Review",
+            subtitle: "LuxPlanes",
             bgClass: "bg-stone-800",
-            image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2070&auto=format&fit=crop",
-            videoId: "g_tea8ZNk5A", // Fitness video
+            image: "https://img.youtube.com/vi/9JLx2kXy5H8/hqdefault.jpg",
+            videoId: "9JLx2kXy5H8",
         },
         {
-            title: "A-List Pop",
-            subtitle: "Ed Sheeran",
-            service: "Music",
+            title: "CS 737X CDU, MCP & EFIS Review",
+            subtitle: "RyotaSim",
             bgClass: "bg-pink-500",
-            image: "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=2070&auto=format&fit=crop",
-            videoId: "2Vv-BfVoq4g", // Ed Sheeran
+            image: "https://img.youtube.com/vi/TPNXKbAKKaA/hqdefault.jpg",
+            videoId: "TPNXKbAKKaA",
         },
         {
-            title: "Balatro+",
-            service: "Arcade",
+            title: "CS A320 FCU & EFIS Review",
+            subtitle: "MuiMui",
             bgClass: "bg-red-600",
-            image: "https://images.unsplash.com/photo-1605218427368-35b0f996d916?q=80&w=2070&auto=format&fit=crop",
-            videoId: "u9N9G2F5E-U", // Balatro trailer
+            image: "https://img.youtube.com/vi/Wh0gU0xTvMw/hqdefault.jpg",
+            videoId: "Wh0gU0xTvMw",
         },
         {
-            title: "Meditation for Sleep",
-            service: "Fitness+",
+            title: "CS A320 MCDU Review & Comparison",
+            subtitle: "MuiMui",
             bgClass: "bg-indigo-900",
-            image: "https://images.unsplash.com/photo-1515023115689-589c33041697?q=80&w=2070&auto=format&fit=crop",
-            videoId: "inpok4MKVLM", // Meditation
+            image: "https://img.youtube.com/vi/vGZGx_ueQaQ/hqdefault.jpg",
+            videoId: "vGZGx_ueQaQ",
         },
         {
-            title: "NBA 2K24",
-            service: "Arcade",
+            title: "CS MCDU Unboxing & Review",
+            subtitle: "iFlySimX",
             bgClass: "bg-orange-600",
-            image: "https://images.unsplash.com/photo-1546519638-68e109498ad0?q=80&w=2070&auto=format&fit=crop",
-            videoId: "4i86Cq8g30c", // NBA 2K24
+            image: "https://img.youtube.com/vi/hS5eJ7vP3hM/hqdefault.jpg",
+            videoId: "hS5eJ7vP3hM",
         },
         {
-            title: "Today's Hits",
-            subtitle: "Apple Music",
-            service: "Music",
+            title: "CS A320 MCDU Live Test Review",
+            subtitle: "Flight Streamer",
             bgClass: "bg-purple-600",
-            image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070&auto=format&fit=crop",
-            videoId: "fHI8X4OXluQ", // Blinding Lights
-        },
-        {
-            title: "Hello Kitty Island",
-            service: "Arcade",
-            bgClass: "bg-pink-400",
-            image: "https://images.unsplash.com/photo-1566576912902-1d61f1262d0c?q=80&w=2070&auto=format&fit=crop",
-            videoId: "0p1896Qe4t0", // Hello Kitty
+            image: "https://img.youtube.com/vi/VIeyXEN1ask/hqdefault.jpg",
+            videoId: "VIeyXEN1ask",
         },
     ];
 

@@ -83,7 +83,7 @@ export default function LatestAnnouncementPage() {
 
                     {/* Footer */}
                     <div className="mt-12 pt-8 border-t border-gray-100 flex justify-between items-center">
-                        <Link href="/us/homepage">
+                        <Link href="/us">
                             <Button variant="ghost" className="gap-2 pl-0 hover:bg-transparent hover:text-blue-600">
                                 <ArrowLeft className="w-4 h-4" /> Back to Home
                             </Button>
