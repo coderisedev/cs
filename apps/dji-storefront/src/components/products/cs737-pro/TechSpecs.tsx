@@ -72,9 +72,7 @@ export function TechSpecs() {
                         Tech Specs
                     </p>
                     <h2 className="text-gray-900 text-4xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
-                        Precision engineered.
-                        <br />
-                        Down to every detail.
+                        The specs.
                     </h2>
                 </motion.div>
 

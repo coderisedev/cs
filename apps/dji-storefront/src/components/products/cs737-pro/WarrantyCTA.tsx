@@ -115,11 +115,8 @@ export function WarrantyCTA() {
                     transition={{ duration: 0.8, delay: 0.5 }}
                     className="text-center mb-16"
                 >
-                    <p className="text-white/60 text-xl md:text-2xl mb-2">
-                        Starting at
-                    </p>
                     <p className="text-white text-5xl md:text-7xl font-bold mb-8">
-                        <span className="bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">$2999</span>
+                        <span className="bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">From $2,999</span>
                     </p>
 
                     <div className="flex flex-wrap gap-4 justify-center items-center">
@@ -127,7 +124,7 @@ export function WarrantyCTA() {
                             href="#"
                             className="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-2.5 rounded-full shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-200 font-medium text-base"
                         >
-                            Buy
+                            Order
                         </Link>
                     </div>
                 </motion.div>

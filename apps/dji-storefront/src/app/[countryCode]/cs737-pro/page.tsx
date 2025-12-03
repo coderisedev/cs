@@ -28,18 +28,18 @@ export default function CS737ProPage() {
                 <FeatureSection
                     id="design"
                     eyebrow="Design & Materials"
-                    title="All-metal body. Backlit panels that breathe."
-                    description="The main structure is machined from all-metal, delivering weight, rigidity, and tactile feel close to the real aircraft. Panel scales feature backlighting that syncs with your simulation software — dim during night flights, bright for takeoff and landing. Every push and pull is clearly visible."
+                    title="Aircraft aluminum. Cockpit glow."
+                    description="Machined from aircraft aluminum. Pick it up — feel the weight of a real 737. Backlight dims automatically for night flights."
                     quote="Scales you can see. Aircraft you can feel."
                     imageSrc="https://img.aidenlux.com/cs737-pro/part2.png"
                     imageAlt="CS737 All-Metal Body"
                     align="left"
                     theme="darker"
                     features={[
-                        "Aviation-grade aluminum body",
-                        "Adjustable LED backlight",
+                        "Machined from aircraft aluminum",
+                        "Backlight that dims with the night sky",
                         "Software-synced brightness",
-                        "Real panel scales",
+                        "1:1 panel scales",
                     ]}
                 />
 
@@ -50,19 +50,19 @@ export default function CS737ProPage() {
                 <FeatureSection
                     id="throttle"
                     eyebrow="Throttle Levers"
-                    title="Auto-follow. Manual override anytime."
-                    description="Left and right thrust levers have fully independent signal channels for individual engine control — perfect for practicing single-engine takeoffs and approaches. The levers sync in real-time with autothrottle in your sim. When autothrottle engages, the physical levers follow automatically. Built-in mechanical clutch lets you override and take manual control at any moment."
-                    quote="Real aircraft logic. Right habits from the start."
+                    title="Autothrottle moves it. You take over when you want."
+                    description="Independent left and right engines. Real-time sync with your sim. Mechanical clutch for instant manual override."
+                    quote="Train like you fly. Fly like you trained."
                     imageSrc="https://img.aidenlux.com/cs737-pro/part4.png"
                     imageAlt="CS737 Throttle Levers"
                     align="right"
                     theme="dark"
                     features={[
-                        "Independent L/R signal channels",
+                        "Independent L/R engines",
                         "Real-time autothrottle sync",
                         "Mechanical clutch override",
                         "Reverse thrust interlock",
-                        "Dual A/T DISENGAGE buttons",
+                        "A/T DISENGAGE buttons",
                         "TO/GA buttons",
                     ]}
                 />
@@ -71,8 +71,8 @@ export default function CS737ProPage() {
                 <FeatureSection
                     id="speedbrake"
                     eyebrow="Speed Brake System"
-                    title="Auto-deploy. Auto-stow. Just like landing for real."
-                    description="The speed brake lever supports 'auto-deploy on arm' — when your simulator detects touchdown, the lever automatically pops up from the armed position, deploying the speed brakes in sync with reverse thrust. Push the thrust levers forward, and the speed brake auto-stows, replicating the real 'retract speed brake' procedure."
+                    title="Touchdown. Speed brake deploys."
+                    description="Auto-deploy on arm. Auto-stow when you advance thrust. Just like the real 737."
                     quote="You fly. The throttle handles the rest."
                     imageSrc="https://img.aidenlux.com/cs737-pro/part5.png"
                     imageAlt="CS737 Speed Brake System"
@@ -90,20 +90,19 @@ export default function CS737ProPage() {
                 <FeatureSection
                     id="trim"
                     eyebrow="Trim & Flaps"
-                    title="Motorized trim wheel. Every notch has weight."
-                    description="The trim wheel is motor-driven, fully synced with the trim state in your simulator. Customizable rotation speed and stop position lock let you fine-tune to your preferred rhythm. The foldable handle opens for manual trim — just like pulling out the real aircraft's trim wheel. The flap lever provides 9 clear detents with restriction gates at positions 1 and 15."
-                    quote="Trim and flaps aren't abstract numbers — they're mechanical clicks you can feel."
+                    title="Feel every click. From 0 to 40."
+                    description="Motor-driven trim wheel. 9-position flaps with restriction gates. Every detent you feel is one more step closer to the real thing."
+                    quote="40 degrees. You felt every one."
                     imageSrc="https://img.aidenlux.com/cs737-pro/part6.png"
                     imageAlt="CS737 Trim and Flaps"
                     align="center"
                     theme="light"
                     features={[
                         "Motor-driven trim wheel",
-                        "Customizable rotation speed",
                         "Foldable manual handle",
                         "Backlit trim indicators",
                         "9-position flap lever",
-                        "1/15 position restriction gates",
+                        "1/15 restriction gates",
                     ]}
                 />
 
@@ -111,15 +110,15 @@ export default function CS737ProPage() {
                 <FeatureSection
                     id="start"
                     eyebrow="Start & Parking Brake"
-                    title="Real procedures. From ignition to parking."
-                    description="CS737 offers two different fuel cutoff lever and parking brake configurations — NG and MAX styles — with identical functionality. Choose based on your preference. The parking brake features a mechanical locking mechanism: you can only lift the lever when brake input is detected, and it auto-unlocks when brake input is applied again. Complete replication of real aircraft parking logic."
-                    quote="From throttle up to parking brake set — every step teaches you to think like a pilot."
+                    title="From ignition to parking. Real procedures."
+                    description="NG or MAX configurations. Mechanical parking brake with real locking logic. Every step builds the right habits."
+                    quote="Think like a pilot. Because you're training like one."
                     imageSrc="https://img.aidenlux.com/cs737-pro/part7.png"
                     imageAlt="CS737 Start and Parking Brake"
                     align="right"
                     theme="dark"
                     features={[
-                        "737NG / 737MAX dual configs",
+                        "737NG / 737MAX configs",
                         "Mechanical parking brake lock",
                         "Engine start levers",
                         "Pull-then-move operation",
@@ -130,15 +129,15 @@ export default function CS737ProPage() {
                 <FeatureSection
                     id="base"
                     eyebrow="Sim Pedestal (Optional)"
-                    title="A complete center console. Your throttle's new home."
-                    description="For those building a full simulator cockpit, the optional sim pedestal adds left/right storage compartments, cup holders, and a complete overheat and fire panel — upgrading from a single device to a full center console system. The fire panel features full operational replication: overheat detector switches with detents, fire bell cutout, extinguisher test switches, and more."
-                    quote="Not just 'having a throttle' — bringing the entire 737 center console home."
+                    title="The complete center console. Home."
+                    description="Storage. Cup holders. Full overheat and fire panel. From a throttle to a cockpit."
+                    quote="The entire 737 center console. Now yours."
                     imageSrc="https://img.aidenlux.com/cs737-pro/part8.png"
                     imageAlt="CS737 Sim Pedestal"
                     align="center"
                     theme="darker"
                     features={[
-                        "Left/right storage compartments",
+                        "Storage compartments",
                         "Cup holders",
                         "Overheat & fire panel",
                         "Fire handle system",

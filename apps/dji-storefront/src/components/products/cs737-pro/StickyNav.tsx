@@ -82,13 +82,13 @@ export function StickyNav() {
                         {/* Right Side */}
                         <div className="flex items-center gap-4">
                             <span className="hidden sm:block text-white/60 text-sm">
-                                From $2999
+                                From $2,999
                             </span>
                             <Link
                                 href="#buy"
                                 className="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200 font-medium text-sm"
                             >
-                                Buy
+                                Order
                             </Link>
                         </div>
                     </div>

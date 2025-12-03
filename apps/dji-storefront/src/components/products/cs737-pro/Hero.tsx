@@ -118,7 +118,7 @@ export function Hero() {
                         transition={{ duration: 0.8, delay: 0.7 }}
                         className="text-white/80 text-xl md:text-2xl lg:text-3xl font-medium mb-8"
                     >
-                        All-metal construction. Real panel scales.
+                        The cockpit comes home.
                     </motion.p>
 
                     {/* Description - larger */}
@@ -128,7 +128,7 @@ export function Hero() {
                         transition={{ duration: 0.8, delay: 0.8 }}
                         className="text-white/70 text-sm md:text-base lg:text-lg mb-10 max-w-4xl mx-auto"
                     >
-                        Experience the familiar glow of the cockpit right at home with adjustable backlight.
+                        Every switch. Every lever. Exactly like the real 737.
                     </motion.p>
 
                     {/* CTA Button */}
@@ -146,7 +146,7 @@ export function Hero() {
                                 href="#buy"
                                 className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-full shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 font-semibold text-base md:text-lg"
                             >
-                                Buy Now
+                                Order Now
                             </Link>
                         </motion.div>
                     </motion.div>

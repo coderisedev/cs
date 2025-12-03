@@ -78,12 +78,14 @@ export function ProductOverview() {
                     <h2 className="text-white text-4xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
                         One throttle.
                         <br />
-                        The complete 737 experience.
+                        Every 737 control.
                     </h2>
                     <p className="text-white/70 text-base md:text-lg lg:text-xl max-w-3xl mx-auto">
-                        Powered by 4 high-efficiency brushless motors and 5 stepper motors, driving the throttle levers,
-                        speed brake, trim system, and more. Full motorized synchronization with your flight simulator.
-                        Supports both 737NG and 737MAX configurations.
+                        9 motors. Full synchronization.
+                        <br />
+                        Every movement matches your simulator in real-time.
+                        <br />
+                        NG or MAX — your choice.
                     </p>
                 </motion.div>
 
@@ -167,7 +169,7 @@ export function ProductOverview() {
                     className="mt-20 text-center"
                 >
                     <p className="text-white text-xl md:text-3xl lg:text-4xl font-medium leading-relaxed italic">
-                        "One throttle — the entire 737 engine and wing control feel in your hands."
+                        "Close your eyes. You're in the cockpit."
                     </p>
                 </motion.blockquote>
             </div>

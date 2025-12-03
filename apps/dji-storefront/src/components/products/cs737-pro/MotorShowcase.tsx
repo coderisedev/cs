@@ -84,9 +84,9 @@ export function MotorShowcase() {
                         Motor System
                     </p>
                     <h2 className="text-white text-4xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
-                        4 Brushless + 5 Stepper.
+                        9 motors.
                         <br />
-                        Fully motorized control.
+                        Zero lag.
                     </h2>
                 </motion.div>
 
@@ -203,9 +203,9 @@ export function MotorShowcase() {
                     className="mt-16 text-center max-w-3xl mx-auto"
                 >
                     <p className="text-white/60 text-base md:text-lg lg:text-xl mb-8">
-                        All movements sync in real-time with your simulation software: autothrottle engagement,
-                        speed brake deployment and retraction, trim adjustments — everything you see on screen
-                        is physically reflected in the throttle quadrant.
+                        Move the throttle. Feel the aircraft respond.
+                        <br />
+                        Autothrottle, speed brake, trim — every action syncs instantly.
                     </p>
                     <p className="text-white text-xl md:text-3xl lg:text-4xl font-medium italic">
                         "Not just seeing the change — holding it in your hands."
