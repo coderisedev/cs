@@ -129,12 +129,6 @@ export function WarrantyCTA() {
                         >
                             Buy
                         </Link>
-                        <Link
-                            href="#"
-                            className="inline-flex items-center gap-1 bg-transparent hover:bg-blue-50/10 text-blue-400 px-8 py-2.5 rounded-full border-2 border-blue-400 hover:scale-105 transition-all duration-200 font-medium text-base"
-                        >
-                            Compare models
-                        </Link>
                     </div>
                 </motion.div>
 

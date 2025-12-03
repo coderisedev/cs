@@ -4,7 +4,6 @@ import { motion, useScroll, useTransform } from "framer-motion"
 import Image from "next/image"
 import { useRef } from "react"
 import Link from "next/link"
-import { ChevronRight } from "lucide-react"
 
 export function Hero() {
     const ref = useRef(null)
@@ -132,12 +131,12 @@ export function Hero() {
                         Experience the familiar glow of the cockpit right at home with adjustable backlight.
                     </motion.p>
 
-                    {/* CTA Buttons - larger with better animations */}
+                    {/* CTA Button */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.95 }}
-                        className="flex flex-wrap gap-6 justify-center items-center"
+                        className="flex justify-center"
                     >
                         <motion.div
                             whileHover={{ scale: 1.05 }}
@@ -148,17 +147,6 @@ export function Hero() {
                                 className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-full shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 font-semibold text-base md:text-lg"
                             >
                                 Buy Now
-                            </Link>
-                        </motion.div>
-                        <motion.div
-                            whileHover={{ x: 5 }}
-                        >
-                            <Link
-                                href="#overview"
-                                className="inline-flex items-center gap-2 text-white/90 hover:text-white transition-all duration-300 font-medium text-base md:text-lg group"
-                            >
-                                Learn more
-                                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                             </Link>
                         </motion.div>
                     </motion.div>
