@@ -146,9 +146,12 @@ export default async function OrderConfirmedPage(props: Props) {
           </h2>
           <div className="text-foreground-secondary">
             <p className="font-medium text-foreground-primary">
-              {order.payment_collections?.[0]?.payments?.[0]?.provider_id === "pp_system_default" 
-                ? "Manual Payment (Test Mode)" 
-                : "Payment Processed"}
+              {(() => {
+                const providerId = order.payment_collections?.[0]?.payments?.[0]?.provider_id
+                if (providerId === "pp_system_default") return "Manual Payment (Test Mode)"
+                if (providerId?.includes("paypal")) return "PayPal"
+                return "Payment Processed"
+              })()}
             </p>
             <p className="text-sm text-foreground-muted mt-1">
               Status: <span className="capitalize">{order.payment_status}</span>

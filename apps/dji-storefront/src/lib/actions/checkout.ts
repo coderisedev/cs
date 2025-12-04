@@ -4,6 +4,9 @@ import { updateCart, retrieveCart, setShippingMethod, initiatePaymentSession, li
 import { placeOrder } from "@/lib/data/checkout"
 import { HttpTypes } from "@medusajs/types"
 
+// PayPal provider ID format: pp_{id}_{module_name}
+const PAYPAL_PROVIDER_ID = "pp_paypal_paypal"
+
 export async function updateCartEmailAction(email: string) {
   try {
     await updateCart({ email })
@@ -106,5 +109,108 @@ export async function placeOrderAction(_currentState: unknown, formData: FormDat
     const message = error instanceof Error ? error.message : null
     console.error("Error placing order:", error)
     return message || "Failed to place order. Please check your information and try again."
+  }
+}
+
+// PayPal-specific order placement
+interface PlaceOrderWithPayPalInput {
+  paypalOrderId: string
+  email: string
+  shippingAddress: {
+    first_name: string
+    last_name: string
+    address_1: string
+    city: string
+    province: string
+    postal_code: string
+    country_code: string
+    phone: string
+  }
+  sameAsBilling: boolean
+  countryCode: string
+}
+
+export async function placeOrderWithPayPalAction(
+  input: PlaceOrderWithPayPalInput
+): Promise<{ error?: string } | undefined> {
+  const { paypalOrderId, email, shippingAddress, sameAsBilling, countryCode } = input
+
+  // Validate required fields
+  if (!email || !shippingAddress.first_name || !shippingAddress.last_name ||
+      !shippingAddress.address_1 || !shippingAddress.city ||
+      !shippingAddress.postal_code || !shippingAddress.country_code) {
+    return { error: "Please fill in all required fields" }
+  }
+
+  if (!paypalOrderId) {
+    return { error: "PayPal order ID is required" }
+  }
+
+  try {
+    // Step 1: Retrieve cart
+    const cart = await retrieveCart()
+    if (!cart) {
+      return { error: "Failed to retrieve cart" }
+    }
+
+    // Step 2: Validate US-only for now
+    if (shippingAddress.country_code !== "us") {
+      return { error: "Currently, only US addresses are supported." }
+    }
+
+    // Step 3: Update cart with shipping information
+    const cartData: HttpTypes.StoreUpdateCart = {
+      email,
+      shipping_address: shippingAddress,
+    }
+
+    if (sameAsBilling) {
+      cartData.billing_address = shippingAddress
+    }
+
+    await updateCart(cartData)
+
+    // Step 4: Retrieve cart with address
+    const cartWithAddress = await retrieveCart()
+    if (!cartWithAddress || !cartWithAddress.shipping_address) {
+      return { error: "Failed to set shipping address. Please try again." }
+    }
+
+    // Step 5: Get and set shipping options
+    const shippingOptions = await listCartOptions()
+    if (!shippingOptions?.shipping_options || shippingOptions.shipping_options.length === 0) {
+      return { error: "No shipping options available for your address." }
+    }
+
+    const firstShippingOption = shippingOptions.shipping_options[0]
+    await setShippingMethod({
+      cartId: cartWithAddress.id,
+      shippingMethodId: firstShippingOption.id,
+    })
+
+    // Step 6: Retrieve cart with shipping method
+    const cartWithShipping = await retrieveCart()
+    if (!cartWithShipping) {
+      return { error: "Failed to retrieve cart" }
+    }
+
+    // Step 7: Initiate payment session with PayPal provider
+    // Pass the PayPal order ID as context data for the provider to capture
+    await initiatePaymentSession(cartWithShipping, {
+      provider_id: PAYPAL_PROVIDER_ID,
+      data: {
+        paypal_order_id: paypalOrderId,
+      },
+    })
+
+    // Step 8: Place the order
+    await placeOrder(countryCode)
+
+    // If we reach here, redirect failed - but placeOrder should redirect
+    return undefined
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : null
+    console.error("Error placing PayPal order:", error)
+    return { error: message || "Failed to process PayPal payment. Please try again." }
   }
 }

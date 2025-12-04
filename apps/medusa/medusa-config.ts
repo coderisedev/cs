@@ -68,6 +68,12 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
 const GOOGLE_OAUTH_CALLBACK_URL = process.env.GOOGLE_OAUTH_CALLBACK_URL
 
+// PayPal Configuration
+const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID
+const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET
+const PAYPAL_IS_SANDBOX =
+  (process.env.PAYPAL_IS_SANDBOX ?? "true").toLowerCase() === "true"
+
 const AUTH_PROVIDERS: NonNullable<AuthModuleOptions["providers"]> = []
 
 const EMAILPASS_DISABLED =
@@ -154,5 +160,25 @@ export default defineConfig({
         ],
       },
     },
+    ...(PAYPAL_CLIENT_ID && PAYPAL_CLIENT_SECRET
+      ? {
+          [Modules.PAYMENT]: {
+            resolve: "@medusajs/medusa/payment",
+            options: {
+              providers: [
+                {
+                  resolve: "@rd1988/medusa-payment-paypal",
+                  id: "paypal",
+                  options: {
+                    clientId: PAYPAL_CLIENT_ID,
+                    clientSecret: PAYPAL_CLIENT_SECRET,
+                    isSandbox: PAYPAL_IS_SANDBOX,
+                  },
+                },
+              ],
+            },
+          },
+        }
+      : {}),
   },
 })
