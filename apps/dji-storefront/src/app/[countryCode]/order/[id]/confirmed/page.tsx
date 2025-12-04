@@ -168,7 +168,7 @@ export default async function OrderConfirmedPage(props: Props) {
             Continue Shopping
           </Link>
           <Link
-            href={`/${params.countryCode}/account`}
+            href={`/${params.countryCode}/account?tab=orders`}
             className="flex-1 text-center px-6 py-3 bg-background-elevated text-foreground-primary rounded-pill-xxl hover:bg-background-secondary transition-colors font-medium border border-border-primary"
           >
             View Orders

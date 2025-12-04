@@ -4,51 +4,51 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js"
 import { useCallback, useState } from "react"
 
 interface PayPalButtonProps {
-  amount: number
+  // PayPal order ID created by Medusa backend (not created by frontend)
+  paypalOrderId?: string
   currency?: string
-  onApprove: (orderId: string) => Promise<void>
+  onApprove: () => Promise<void>
   onError?: (error: unknown) => void
+  onCreateOrder: () => Promise<string | null>
   disabled?: boolean
 }
 
 export function PayPalButton({
-  amount,
+  paypalOrderId,
   currency = "USD",
   onApprove,
   onError,
+  onCreateOrder,
   disabled = false,
 }: PayPalButtonProps) {
   const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || ""
   const [isProcessing, setIsProcessing] = useState(false)
+  const [currentOrderId, setCurrentOrderId] = useState<string | null>(paypalOrderId || null)
 
-  const handleCreateOrder = useCallback(
-    (_data: Record<string, unknown>, actions: { order: { create: (options: unknown) => Promise<string> } }) => {
-      // Convert cents to dollars for PayPal
-      const dollarAmount = (amount / 100).toFixed(2)
+  // Create order: Call backend to prepare checkout and get PayPal order ID
+  const handleCreateOrder = useCallback(async (): Promise<string> => {
+    // If we already have an order ID from props, use it
+    if (currentOrderId) {
+      return currentOrderId
+    }
 
-      return actions.order.create({
-        purchase_units: [
-          {
-            amount: {
-              value: dollarAmount,
-              currency_code: currency,
-            },
-          },
-        ],
-        intent: "CAPTURE",
-      })
-    },
-    [amount, currency]
-  )
+    // Otherwise, call the parent's onCreateOrder to get one from the backend
+    const orderId = await onCreateOrder()
+    if (!orderId) {
+      throw new Error("Failed to create PayPal order")
+    }
+    setCurrentOrderId(orderId)
+    return orderId
+  }, [currentOrderId, onCreateOrder])
 
+  // Handle approval: User authorized the payment in PayPal
   const handleApprove = useCallback(
-    async (data: { orderID: string }) => {
+    async () => {
       setIsProcessing(true)
       try {
-        await onApprove(data.orderID)
-      } catch (error) {
+        await onApprove()
+      } catch (error: unknown) {
         onError?.(error)
-      } finally {
         setIsProcessing(false)
       }
     },
@@ -58,10 +58,16 @@ export function PayPalButton({
   const handleError = useCallback(
     (error: Record<string, unknown>) => {
       console.error("PayPal error:", error)
+      setCurrentOrderId(null) // Reset order ID on error
       onError?.(error)
     },
     [onError]
   )
+
+  const handleCancel = useCallback(() => {
+    console.log("PayPal payment cancelled")
+    setCurrentOrderId(null) // Reset order ID on cancel
+  }, [])
 
   if (!clientId) {
     return (
@@ -91,9 +97,7 @@ export function PayPalButton({
           createOrder={handleCreateOrder}
           onApprove={handleApprove}
           onError={handleError}
-          onCancel={() => {
-            console.log("PayPal payment cancelled")
-          }}
+          onCancel={handleCancel}
         />
         {isProcessing && (
           <div className="mt-2 text-center text-sm text-foreground-secondary">

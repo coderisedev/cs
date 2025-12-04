@@ -31,6 +31,7 @@ type AccountClientProps = {
   orders: AccountOrder[]
   wishlist: AccountWishlistItem[]
   onSignOut: (formData: FormData) => Promise<void>
+  defaultTab?: string
 }
 
 const formatDate = (date: string | Date) =>
@@ -55,9 +56,12 @@ const resolveImageUrl = (image: unknown): string | null => {
   return null
 }
 
-export function AccountClient({ user, orders, wishlist, onSignOut }: AccountClientProps) {
+const VALID_TABS = ["profile", "orders", "addresses", "wishlist", "settings"]
+
+export function AccountClient({ user, orders, wishlist, onSignOut, defaultTab }: AccountClientProps) {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState("profile")
+  const initialTab = defaultTab && VALID_TABS.includes(defaultTab) ? defaultTab : "profile"
+  const [activeTab, setActiveTab] = useState(initialTab)
   const [mutableUser, setMutableUser] = useState(user)
   const [isEditing, setIsEditing] = useState(false)
   const [hydrated, setHydrated] = useState(false)
@@ -320,20 +324,34 @@ export function AccountClient({ user, orders, wishlist, onSignOut }: AccountClie
                     </div>
 
                     <div className="mt-6 space-y-4">
-                      {order.items?.map((item) => (
-                        <div key={item.id} className="flex items-center gap-4">
-                          <div className="flex h-16 w-16 items-center justify-center rounded-base bg-background-elevated text-xs text-foreground-muted">
-                            Product Image
+                      {order.items?.map((item) => {
+                        const itemThumbnail = resolveImageUrl(item.thumbnail)
+                        return (
+                          <div key={item.id} className="flex items-center gap-4">
+                            <div className="relative h-16 w-16 flex-shrink-0 rounded-base bg-background-elevated overflow-hidden">
+                              {itemThumbnail ? (
+                                <Image
+                                  src={itemThumbnail}
+                                  alt={item.title || "Product"}
+                                  fill
+                                  className="object-cover"
+                                />
+                              ) : (
+                                <div className="flex h-full w-full items-center justify-center text-xs text-foreground-muted">
+                                  No Image
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1">
+                              <p className="font-medium text-foreground-primary">{item.title}</p>
+                              <p className="text-sm text-foreground-secondary">
+                                {item.variant_title || "Default"} · Qty {item.quantity}
+                              </p>
+                            </div>
+                            <p className="text-sm font-semibold text-foreground-primary">{currencyFormatter(item.unit_price ?? 0)}</p>
                           </div>
-                          <div className="flex-1">
-                            <p className="font-medium text-foreground-primary">{item.title}</p>
-                            <p className="text-sm text-foreground-secondary">
-                              {item.variant_title || "Default"} · Qty {item.quantity}
-                            </p>
-                          </div>
-                          <p className="text-sm font-semibold text-foreground-primary">{currencyFormatter(item.unit_price ?? 0)}</p>
-                        </div>
-                      ))}
+                        )
+                      })}
                     </div>
 
                     <div className="mt-4 flex flex-wrap gap-2">
@@ -546,124 +564,62 @@ export function AccountClient({ user, orders, wishlist, onSignOut }: AccountClie
         </TabsContent>
 
         <TabsContent value="settings" className="mt-8">
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Preferences</CardTitle>
-                <CardDescription>Manage notifications, locale, and currency synced with your Medusa profile.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form action={preferencesAction} className="space-y-6">
-                  {preferencesState?.error && (
-                    <div className="rounded-base border border-red-200 bg-red-50 p-3 text-sm text-red-600">
-                      {preferencesState.error}
-                    </div>
-                  )}
-                  {preferencesState?.success && (
-                    <div className="rounded-base border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
-                      Preferences updated successfully
-                    </div>
-                  )}
-                  <div className="flex items-center justify-between border-b border-border-secondary pb-4">
-                    <div>
-                      <p className="font-medium text-foreground-primary">Email Notifications</p>
-                      <p className="text-sm text-foreground-secondary">Receive order updates and cockpit news</p>
-                    </div>
-                    <input
-                      type="checkbox"
-                      name="notifications"
-                      defaultChecked={mutableUser.preferences.notifications}
-                      className="h-5 w-5"
-                    />
+          <Card>
+            <CardHeader>
+              <CardTitle>Notification Preferences</CardTitle>
+              <CardDescription>Manage how you receive updates from us.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form action={preferencesAction} className="space-y-6">
+                {preferencesState?.error && (
+                  <div className="rounded-base border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+                    {preferencesState.error}
                   </div>
-                  <div className="flex items-center justify-between border-b border-border-secondary pb-4">
-                    <div>
-                      <p className="font-medium text-foreground-primary">Newsletter Subscription</p>
-                      <p className="text-sm text-foreground-secondary">Stay up to date with launch content</p>
-                    </div>
-                    <input
-                      type="checkbox"
-                      name="newsletter"
-                      defaultChecked={mutableUser.preferences.newsletter}
-                      className="h-5 w-5"
-                    />
+                )}
+                {preferencesState?.success && (
+                  <div className="rounded-base border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
+                    Preferences updated successfully
                   </div>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="language-select">Language</Label>
-                      <select
-                        id="language-select"
-                        name="language"
-                        defaultValue={mutableUser.preferences.language}
-                        className="w-full rounded-base border border-border-primary bg-background-secondary px-3 py-2"
-                      >
-                        <option value="English (US)">English (US)</option>
-                        <option value="English (UK)">English (UK)</option>
-                        <option value="中文 (简体)">中文 (简体)</option>
-                        <option value="日本語">日本語</option>
-                      </select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="currency-select">Currency</Label>
-                      <select
-                        id="currency-select"
-                        name="currency"
-                        defaultValue={mutableUser.preferences.currency}
-                        className="w-full rounded-base border border-border-primary bg-background-secondary px-3 py-2"
-                      >
-                        <option value="USD ($)">USD ($)</option>
-                        <option value="EUR (€)">EUR (€)</option>
-                        <option value="GBP (£)">GBP (£)</option>
-                        <option value="CNY (¥)">CNY (¥)</option>
-                      </select>
-                    </div>
+                )}
+                <div className="flex items-center justify-between border-b border-border-secondary pb-4">
+                  <div>
+                    <p className="font-medium text-foreground-primary">Email Notifications</p>
+                    <p className="text-sm text-foreground-secondary">Receive order updates and important announcements</p>
                   </div>
-                  <div className="flex justify-end">
-                    <Button type="submit" disabled={preferencesPending}>
-                      {preferencesPending ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Saving…
-                        </>
-                      ) : (
-                        "Save Preferences"
-                      )}
-                    </Button>
+                  <input
+                    type="checkbox"
+                    name="notifications"
+                    defaultChecked={mutableUser.preferences.notifications}
+                    className="h-5 w-5 rounded border-border-primary"
+                  />
+                </div>
+                <div className="flex items-center justify-between pb-4">
+                  <div>
+                    <p className="font-medium text-foreground-primary">Newsletter Subscription</p>
+                    <p className="text-sm text-foreground-secondary">Stay up to date with new products and promotions</p>
                   </div>
-                </form>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Security Settings</CardTitle>
-                <CardDescription>Manage authentication and audit preferences.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button variant="outline" className="justify-start">
-                  Change Password
-                </Button>
-                <Button variant="outline" className="justify-start">
-                  Enable Two-Factor Authentication
-                </Button>
-                <Button variant="outline" className="justify-start">
-                  Login Activity
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-red-200">
-              <CardHeader>
-                <CardTitle className="text-red-600">Danger Zone</CardTitle>
-                <CardDescription>Irreversible actions</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button variant="destructive" className="w-full">
-                  Delete Account
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+                  <input
+                    type="checkbox"
+                    name="newsletter"
+                    defaultChecked={mutableUser.preferences.newsletter}
+                    className="h-5 w-5 rounded border-border-primary"
+                  />
+                </div>
+                <div className="flex justify-end pt-2">
+                  <Button type="submit" disabled={preferencesPending}>
+                    {preferencesPending ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Saving…
+                      </>
+                    ) : (
+                      "Save Preferences"
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
