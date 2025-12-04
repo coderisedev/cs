@@ -119,6 +119,63 @@ export async function signoutAction(countryCode: string = "us") {
   redirect(`/${countryCode}`)
 }
 
+export async function requestPasswordResetAction(_currentState: unknown, formData: FormData) {
+  const email = formData.get("email") as string
+
+  if (!email) {
+    return { error: "Email is required" }
+  }
+
+  try {
+    // Request password reset token from Medusa
+    await sdk.auth.resetPassword("customer", "emailpass", {
+      identifier: email,
+    })
+
+    return { success: true, message: "If an account exists with this email, you will receive a password reset link." }
+  } catch (error: unknown) {
+    console.error("Password reset request error:", error)
+    // Always return success message to prevent email enumeration
+    return { success: true, message: "If an account exists with this email, you will receive a password reset link." }
+  }
+}
+
+export async function resetPasswordAction(_currentState: unknown, formData: FormData) {
+  const token = formData.get("token") as string
+  const email = formData.get("email") as string
+  const password = formData.get("password") as string
+  const confirmPassword = formData.get("confirmPassword") as string
+
+  if (!token || !email) {
+    return { error: "Invalid reset link. Please request a new password reset." }
+  }
+
+  if (!password || !confirmPassword) {
+    return { error: "Password and confirmation are required" }
+  }
+
+  if (password !== confirmPassword) {
+    return { error: "Passwords do not match" }
+  }
+
+  if (password.length < 8) {
+    return { error: "Password must be at least 8 characters long" }
+  }
+
+  try {
+    // Update password using the reset token
+    await sdk.auth.updateProvider("customer", "emailpass", {
+      password,
+    }, token)
+
+    return { success: true, message: "Your password has been reset successfully. You can now sign in with your new password." }
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Failed to reset password. The link may have expired."
+    console.error("Password reset error:", error)
+    return { error: message }
+  }
+}
+
 export async function transferCart(authToken?: string) {
   try {
     const cartId = await getCartId()

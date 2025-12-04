@@ -74,6 +74,11 @@ const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET
 const PAYPAL_IS_SANDBOX =
   (process.env.PAYPAL_IS_SANDBOX ?? "true").toLowerCase() === "true"
 
+// Resend Email Configuration
+const RESEND_API_KEY = process.env.RESEND_API_KEY
+const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "noreply@cockpitsimulator.com"
+const RESEND_FROM_NAME = process.env.RESEND_FROM_NAME ?? "Cockpit Simulator"
+
 const AUTH_PROVIDERS: NonNullable<AuthModuleOptions["providers"]> = []
 
 const EMAILPASS_DISABLED =
@@ -173,6 +178,28 @@ export default defineConfig({
                     clientId: PAYPAL_CLIENT_ID,
                     clientSecret: PAYPAL_CLIENT_SECRET,
                     isSandbox: PAYPAL_IS_SANDBOX,
+                  },
+                },
+              ],
+            },
+          },
+        }
+      : {}),
+    // Notification Module with Resend provider
+    ...(RESEND_API_KEY
+      ? {
+          [Modules.NOTIFICATION]: {
+            resolve: "@medusajs/medusa/notification",
+            options: {
+              providers: [
+                {
+                  resolve: "./src/modules/resend-notification",
+                  id: "resend",
+                  options: {
+                    channels: ["email"],
+                    apiKey: RESEND_API_KEY,
+                    fromEmail: RESEND_FROM_EMAIL,
+                    fromName: RESEND_FROM_NAME,
                   },
                 },
               ],
