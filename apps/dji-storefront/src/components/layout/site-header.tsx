@@ -51,7 +51,7 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
         condensed ? "shadow-lg" : "shadow-sm"
       )}
     >
-      <div className="container mx-auto px-4 lg:px-12">
+      <div className="mx-auto w-full max-w-[1440px] px-3 sm:px-4 lg:px-12">
         <div className={cn("flex items-center justify-between transition-all duration-300", condensed ? "h-14" : "h-16")}>
           <Link href="/" className="inline-flex items-center" aria-label={BRAND_NAME}>
             <Image

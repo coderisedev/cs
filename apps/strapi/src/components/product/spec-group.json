@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_product_spec_groups",
+  "info": {
+    "displayName": "Spec Group",
+    "description": "Grouped technical specifications with a category label",
+    "icon": "server"
+  },
+  "options": {},
+  "attributes": {
+    "group_name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.spec-item"
+    }
+  }
+}

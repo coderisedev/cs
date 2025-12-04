@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_product_feature_bullets",
+  "info": {
+    "displayName": "Feature Bullet",
+    "description": "Simple feature bullet point with optional icon",
+    "icon": "check"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true,
+      "maxLength": 200
+    },
+    "icon": {
+      "type": "string",
+      "maxLength": 50,
+      "default": "check"
+    }
+  }
+}

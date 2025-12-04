@@ -1,9 +1,36 @@
 :root {
   --radius: 12px; /* Apple default radius */
 
+  /* ========== Fluid Typography ========== */
+  --fluid-heading-xl: clamp(28px, 2.5vw + 1rem, 48px);   /* Product title */
+  --fluid-heading-lg: clamp(24px, 2vw + 0.75rem, 40px);  /* Section titles */
+  --fluid-heading-md: clamp(20px, 1.5vw + 0.5rem, 28px); /* Subsections */
+  --fluid-heading-sm: clamp(18px, 1vw + 0.5rem, 24px);   /* Small headings */
+
+  --fluid-body-lg: clamp(16px, 0.5vw + 0.875rem, 19px);  /* Lead paragraphs */
+  --fluid-body-md: clamp(14px, 0.3vw + 0.8rem, 17px);    /* Body text */
+  --fluid-body-sm: clamp(12px, 0.2vw + 0.7rem, 14px);    /* Secondary text */
+
+  --fluid-price: clamp(24px, 2.5vw + 0.5rem, 40px);      /* Price display */
+
+  /* ========== Fluid Spacing ========== */
+  --fluid-section-py: clamp(32px, 6vw, 96px);            /* Section padding */
+  --fluid-gap-xl: clamp(24px, 4vw, 64px);                /* Extra large gap */
+  --fluid-gap-lg: clamp(20px, 3vw, 48px);                /* Large gap */
+  --fluid-gap-md: clamp(16px, 2vw, 32px);                /* Medium gap */
+  --fluid-gap-sm: clamp(12px, 1.5vw, 20px);              /* Small gap */
+  --fluid-gap-xs: clamp(8px, 1vw, 12px);                 /* Extra small gap */
+
+  /* ========== Fluid Component Dimensions ========== */
+  --fluid-btn-height: clamp(44px, 4vw, 56px);            /* Button height */
+  --fluid-thumb-size: clamp(56px, 5vw, 80px);            /* Thumbnail size */
+  --fluid-icon-sm: clamp(16px, 1.2vw, 20px);             /* Small icons */
+  --fluid-icon-md: clamp(20px, 1.5vw, 24px);             /* Medium icons */
+  --fluid-radius: clamp(12px, 1.5vw, 24px);              /* Border radius */
+
   /* Apple Design System - Light Theme */
   /* Colors converted to HSL for Tailwind compatibility */
-  
+
   /* Backgrounds */
   --background-primary: 0 0% 100%;      /* #FFFFFF */
   --background-secondary: 240 5% 96%;   /* #F5F5F7 - Apple Light Grey */

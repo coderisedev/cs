@@ -21,50 +21,42 @@
       "targetField": "title",
       "required": true
     },
-    "hero_excerpt": {
-      "type": "text"
-    },
-    "hero_media": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": [
-        "images",
-        "videos"
-      ]
-    },
-    "gallery": {
-      "type": "media",
-      "multiple": true,
-      "allowedTypes": [
-        "images",
-        "videos"
-      ]
+    "tagline": {
+      "type": "string",
+      "maxLength": 200
     },
     "overview": {
       "type": "richtext"
     },
-    "specs": {
+    "feature_bullets": {
       "type": "component",
       "repeatable": true,
-      "component": "product.spec-item"
+      "component": "product.feature-bullet",
+      "max": 20
     },
-    "features": {
+    "content_sections": {
       "type": "component",
       "repeatable": true,
-      "component": "product.feature"
+      "component": "product.content-section",
+      "max": 10
     },
-    "faq": {
+    "spec_groups": {
       "type": "component",
       "repeatable": true,
-      "component": "product.qa"
+      "component": "product.spec-group",
+      "max": 10
     },
-    "downloads": {
+    "package_contents": {
       "type": "component",
       "repeatable": true,
-      "component": "product.download"
+      "component": "product.package-item",
+      "max": 20
     },
-    "shipping_note": {
+    "warranty_info": {
       "type": "richtext"
+    },
+    "os_requirements": {
+      "type": "text"
     },
     "seo": {
       "type": "component",
