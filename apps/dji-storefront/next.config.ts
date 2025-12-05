@@ -32,6 +32,8 @@ const nextConfig: NextConfig = {
     // Disable build-time lint to unblock deploys and rely on pnpm lint instead.
     ignoreDuringBuilds: true,
   },
+  // Allow cross-origin requests from development domains
+  allowedDevOrigins: ["dev.aidenlux.com"],
   images: {
     remotePatterns: [
       {
@@ -48,6 +50,8 @@ const nextConfig: NextConfig = {
       },
       ...(strapiRemotePattern ? [strapiRemotePattern] : []),
     ],
+    // Configure allowed image quality values (required in Next.js 16+)
+    qualities: [50, 75, 80, 85, 90, 95, 100],
   },
 }
 

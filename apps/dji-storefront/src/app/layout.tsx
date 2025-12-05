@@ -1,10 +1,12 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 
 // Temporarily disabled due to Turbopack font loading issues
 // import { JetBrains_Mono, Open_Sans } from "next/font/google"
 import "./globals.css"
 import { SiteHeader } from "@/components/layout/site-header"
 import { SiteFooter } from "@/components/layout/site-footer"
+import { PostHogProvider } from "@/components/providers/posthog-provider"
 import { retrieveCart } from "@/lib/data/cart"
 
 // Fallback to system fonts until Google Fonts issue is resolved
@@ -38,9 +40,13 @@ export default async function RootLayout({
   return (
     <html lang="en" className="bg-background-primary" suppressHydrationWarning>
       <body className="antialiased bg-background-primary text-foreground-primary" suppressHydrationWarning>
-        <SiteHeader cartItemCount={cart?.items?.length ?? 0} />
-        <main>{children}</main>
-        <SiteFooter />
+        <Suspense fallback={null}>
+          <PostHogProvider>
+            <SiteHeader cartItemCount={cart?.items?.length ?? 0} />
+            <main>{children}</main>
+            <SiteFooter />
+          </PostHogProvider>
+        </Suspense>
       </body>
     </html>
   )
