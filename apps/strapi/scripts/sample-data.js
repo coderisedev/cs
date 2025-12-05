@@ -7,9 +7,9 @@ module.exports = {
   featuredProducts: [
     // Primary Hero - iPhone 16 Pro
     {
-      title: "iPhone 16 Pro",
-      subtitle: "钛金属。强得很。Pro 得很。",
-      description: "全新 A18 Pro 芯片 | 焕然一新的摄像头控制 | 4K 120fps 杜比视界",
+      title: "CS737 全功能油门操作台",
+      subtitle: "CS737 Throttle Pro",
+      description: "全金属机身 | 4 无刷 + 5 步进电机随动联动 | 自动扰流板、电动配平与背光面板",
       productName: "iPhone 16 Pro",
       theme: "dark",
       backgroundColor: "#000000",
@@ -34,16 +34,16 @@ module.exports = {
       ],
       highlights: [
         {
-          title: "A18 Pro 芯片",
+          title: "全电动随动油门",
           description: "更快的处理器，更流畅的性能"
         },
         {
-          title: "钛金属设计",
-          description: "坚固耐用，轻盈舒适"
+          title: "737NG / MAX 双构型",
+          description: "可选 737NG 与 737MAX 两种构型"
         },
         {
-          title: "Pro 级摄像头系统",
-          description: "4K 120fps 杜比视界视频拍摄"
+          title: "专业配平与减速板系统",
+          description: "电动配平轮、自动扰流板与 9 档襟翼手柄联动工作"
         }
       ],
       seo: {
@@ -55,10 +55,10 @@ module.exports = {
 
     // Secondary Hero - Apple Watch Series 10
     {
-      title: "Apple Watch Series 10",
-      subtitle: "精彩时刻，一目了然",
-      description: "更大的显示屏 | 更纤薄的设计 | 全天候健康监测",
-      productName: "Apple Watch Series 10",
+      title: "Bring the Sky Home",
+      subtitle: "飞行之梦，一听即燃",
+      description: "原创品牌主题曲 | 专为飞行模拟创作 | 家用驾驶舱沉浸配乐",
+      productName: "Cockpit Simulator",
       theme: "light",
       backgroundColor: "#f5f5f7",
       textColor: "#1d1d1f",
@@ -99,8 +99,8 @@ module.exports = {
 
     // Product Grid Items
     {
-      title: "AirPods 4",
-      subtitle: "全新设计。降噪黑科技。",
+      title: "A320 Series",
+      subtitle: "空客原机手感，一触即真。",
       description: "主动降噪 | 个性化空间音频 | USB-C 充电",
       productName: "AirPods 4",
       theme: "light",
@@ -132,8 +132,8 @@ module.exports = {
     },
 
     {
-      title: "MacBook Air",
-      subtitle: "强大实力，轻装上阵",
+      title: "737 Series",
+      subtitle: "波音经典质感，一推到位。",
       description: "M3 芯片 | 最长 18 小时电池续航 | 液态视网膜显示屏",
       productName: "MacBook Air",
       theme: "dark",
@@ -165,8 +165,8 @@ module.exports = {
     },
 
     {
-      title: "iPad Pro",
-      subtitle: "史上最强大的 iPad",
+      title: "Accessories",
+      subtitle: "真机级配件，十年放心飞。",
       description: "M4 芯片 | Ultra Retina XDR 显示屏 | Apple Pencil Pro",
       productName: "iPad Pro",
       theme: "light",
@@ -198,8 +198,8 @@ module.exports = {
     },
 
     {
-      title: "Apple TV+",
-      subtitle: "精彩好剧，应有尽有",
+      title: "User Story+",
+      subtitle: "真实飞行故事，让每套硬件都有灵魂。",
       description: "Apple Original 原创剧集和电影 | 无广告 | 随时随地观看",
       productName: "Apple TV+",
       theme: "dark",
@@ -211,13 +211,13 @@ module.exports = {
       slug: "apple-tv-plus",
       ctaButtons: [
         {
-          label: "免费试用",
+          label: "观看故事",
           url: "/apple-tv-plus/trial",
           style: "text",
           openInNewTab: false
         },
         {
-          label: "进一步了解",
+          label: "我要分享",
           url: "/apple-tv-plus",
           style: "text",
           openInNewTab: false
