@@ -2,6 +2,10 @@ import path from "path"
 import { Modules, defineConfig, loadEnv } from "@medusajs/framework/utils"
 import type { AuthModuleOptions } from "@medusajs/auth/dist/types"
 
+// Initialize Sentry before other imports
+import { initSentry } from "./src/utils/sentry"
+initSentry()
+
 const projectRoot = path.resolve(__dirname, "..")
 
 loadEnv(process.env.NODE_ENV || "development", projectRoot)

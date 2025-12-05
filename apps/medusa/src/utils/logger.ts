@@ -1,7 +1,9 @@
 /**
  * Logger utility for Medusa backend
- * In production, errors should be sent to an error tracking service (e.g., Sentry)
+ * Integrates with Sentry for production error tracking
  */
+
+import { captureException, captureMessage, addBreadcrumb, Sentry } from "./sentry"
 
 type LogLevel = "debug" | "info" | "warn" | "error"
 
@@ -60,15 +62,24 @@ export const logger = {
 
   /**
    * Warning messages - shown in all environments (sanitized in production)
+   * Added as breadcrumbs to Sentry for error context
    */
   warn(message: string, context?: LogContext): void {
     const safeContext = isDev ? context : sanitizeContext(context)
     console.warn(formatMessage("warn", message, safeContext))
+
+    // Add as breadcrumb to Sentry for error context
+    addBreadcrumb({
+      category: "warning",
+      message,
+      level: "warning",
+      data: safeContext,
+    })
   },
 
   /**
    * Error messages - shown in all environments (sanitized in production)
-   * In production, these should be sent to an error tracking service
+   * Sent to Sentry for tracking
    */
   error(message: string, error?: unknown, context?: LogContext): void {
     const errorContext = {
@@ -79,11 +90,20 @@ export const logger = {
 
     console.error(formatMessage("error", message, safeContext))
 
-    // In production: send to error tracking service
-    // TODO: Integrate with Sentry or similar
-    // if (!isDev) {
-    //   Sentry.captureException(error, { extra: context })
-    // }
+    // Send to Sentry
+    if (error instanceof Error) {
+      captureException(error, {
+        message,
+        ...safeContext,
+      })
+    } else if (error) {
+      captureMessage(message, "error", {
+        error,
+        ...safeContext,
+      })
+    } else {
+      captureMessage(message, "error", safeContext)
+    }
   },
 }
 
@@ -107,3 +127,6 @@ export function getClientErrorMessage(error: unknown, fallback: string): string 
   }
   return fallback
 }
+
+// Re-export Sentry utilities for direct use when needed
+export { Sentry, captureException, captureMessage, addBreadcrumb }

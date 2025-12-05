@@ -44,6 +44,7 @@
     "@mikro-orm/postgresql": "6.4.3",
     "@rd1988/medusa-payment-paypal": "^2.0.3",
     "@react-email/components": "^1.0.1",
+    "@sentry/node": "^10.29.0",
     "awilix": "^8.0.1",
     "google-auth-library": "^10.5.0",
     "ioredis": "^5.8.2",

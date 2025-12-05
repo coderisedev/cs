@@ -1,7 +1,9 @@
 /**
  * Logger utility for consistent logging across the application
- * In production, errors should be sent to an error tracking service (e.g., Sentry)
+ * Integrates with Sentry for production error tracking
  */
+
+import * as Sentry from "@sentry/nextjs"
 
 type LogLevel = "debug" | "info" | "warn" | "error"
 
@@ -38,17 +40,25 @@ export const logger = {
 
   /**
    * Warning messages - shown in all environments
+   * Sent to Sentry as breadcrumbs
    */
   warn(message: string, context?: LogContext): void {
     if (isDev) {
       console.warn(formatMessage("warn", message, context))
     }
-    // In production, you might want to send warnings to a monitoring service
+
+    // Add breadcrumb to Sentry for context in case of errors
+    Sentry.addBreadcrumb({
+      category: "warning",
+      message,
+      level: "warning",
+      data: context,
+    })
   },
 
   /**
    * Error messages - shown in all environments
-   * In production, these should be sent to an error tracking service
+   * Sent to Sentry for tracking
    */
   error(message: string, error?: unknown, context?: LogContext): void {
     const errorContext = {
@@ -59,14 +69,34 @@ export const logger = {
     if (isDev) {
       console.error(formatMessage("error", message, errorContext))
     } else {
-      // In production:
-      // 1. Log minimal info to console
+      // In production, log minimal info to console
       console.error(`[ERROR] ${message}`)
+    }
 
-      // 2. Send to error tracking service (Sentry, DataDog, etc.)
-      // TODO: Integrate with error tracking service
-      // Example with Sentry:
-      // Sentry.captureException(error, { extra: context })
+    // Send to Sentry
+    if (error instanceof Error) {
+      Sentry.captureException(error, {
+        extra: context,
+        tags: {
+          source: "logger",
+        },
+      })
+    } else if (error) {
+      Sentry.captureMessage(message, {
+        level: "error",
+        extra: { error, ...context },
+        tags: {
+          source: "logger",
+        },
+      })
+    } else {
+      Sentry.captureMessage(message, {
+        level: "error",
+        extra: context,
+        tags: {
+          source: "logger",
+        },
+      })
     }
   },
 }
@@ -78,4 +108,23 @@ export function getErrorMessage(error: unknown): string {
   if (error instanceof Error) return error.message
   if (typeof error === "string") return error
   return "An unexpected error occurred"
+}
+
+/**
+ * Set user context for Sentry
+ * Call this after user authentication
+ */
+export function setUserContext(user: { id: string; email?: string }): void {
+  Sentry.setUser({
+    id: user.id,
+    email: user.email,
+  })
+}
+
+/**
+ * Clear user context from Sentry
+ * Call this after user logout
+ */
+export function clearUserContext(): void {
+  Sentry.setUser(null)
 }

@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
+import * as Sentry from "@sentry/nextjs"
 import { logger } from "@/lib/logger"
 
 interface ErrorProps {
@@ -10,7 +11,19 @@ interface ErrorProps {
 
 export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
+    // Log to console and local logger
     logger.error("Unhandled application error", error, { digest: error.digest })
+
+    // Capture error in Sentry with additional context
+    Sentry.captureException(error, {
+      tags: {
+        source: "error-boundary",
+        digest: error.digest,
+      },
+      extra: {
+        componentStack: error.stack,
+      },
+    })
   }, [error])
 
   return (

@@ -18,6 +18,11 @@ export default ({ env }) => {
 
   return [
     'strapi::logger',
+    // Sentry error handler - captures errors before strapi::errors handles them
+    {
+      name: 'global::sentry-error-handler',
+      config: {},
+    },
     'strapi::errors',
     {
       name: 'strapi::security',
