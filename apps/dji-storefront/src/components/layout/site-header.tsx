@@ -13,11 +13,11 @@ import { BRAND_LOGO_URL, BRAND_LOGO_URL_DARK, BRAND_NAME } from "@/lib/constants
 const NAV_ITEMS = [
   { name: "Home", href: "/" },
   { name: "All Products", href: "/products" },
-  { name: "A320 Series", href: "/collections/a320-series" },
-  { name: "737 Series", href: "/collections/737-series" },
-  { name: "Accessories", href: "/collections/accessories" },
+  { name: "Post", href: "/announcements/latest" },
   { name: "Software", href: "/software" },
   { name: "Blog", href: "/blog" },
+  { name: "Community", href: "/community" },
+  { name: "FAQ", href: "/faq" },
 ]
 
 export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
@@ -47,11 +47,11 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full border-b border-border-primary bg-background-primary/95 backdrop-blur-md transition-all duration-300",
+        "sticky top-0 z-50 w-full border-b border-border-primary bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md transition-all duration-300",
         condensed ? "shadow-lg" : "shadow-sm"
       )}
     >
-      <div className="container mx-auto px-4 lg:px-12">
+      <div className="mx-auto w-full max-w-[1440px] px-3 sm:px-4 lg:px-12">
         <div className={cn("flex items-center justify-between transition-all duration-300", condensed ? "h-14" : "h-16")}>
           <Link href="/" className="inline-flex items-center" aria-label={BRAND_NAME}>
             <div className="relative w-[144px]" style={{ height: condensed ? 48 : 56 }}>
@@ -79,11 +79,10 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`text-sm font-medium transition-colors duration-300 hover:text-primary-400 ${
-                  isActive(item.href)
-                    ? "text-primary-500 border-b-2 border-primary-500 pb-1"
-                    : "text-foreground-primary"
-                }`}
+                className={`text-sm font-medium transition-colors duration-300 hover:text-primary-400 ${isActive(item.href)
+                  ? "text-primary-500 border-b-2 border-primary-500 pb-1"
+                  : "text-foreground-primary"
+                  }`}
               >
                 {item.name}
               </Link>
@@ -95,29 +94,29 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
               variant="ghost"
               size="icon"
               aria-label="Toggle theme"
-              className="touch-target"
+              className="touch-target h-12 w-12 flex items-center justify-center p-0"
               onClick={toggleTheme}
             >
-              {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
             <Button
               variant="ghost"
               size="icon"
               aria-label="Search"
-              className="hidden md:flex touch-target"
+              className="hidden md:flex touch-target h-12 w-12 items-center justify-center p-0"
               onClick={() => setSearchOpen((prev) => !prev)}
             >
-              <Search className="h-5 w-5" />
+              <Search className="h-4 w-4" />
             </Button>
             <Link href="/account" aria-label="Account">
-              <Button variant="ghost" size="icon" className="touch-target">
-                <User className="h-5 w-5" />
+              <Button variant="ghost" size="icon" className="touch-target h-12 w-12 flex items-center justify-center p-0">
+                <User className="h-4 w-4" />
               </Button>
             </Link>
             <Link href="/cart" aria-label="Cart" className="relative">
-              <Button variant="ghost" size="icon" className="touch-target">
-                <ShoppingCart className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary-500 text-neutral-50 text-xs flex items-center justify-center font-bold">
+              <Button variant="ghost" size="icon" className="touch-target h-12 w-12 flex items-center justify-center p-0">
+                <ShoppingCart className="h-4 w-4" />
+                <span className="absolute top-0 right-0 h-5 w-5 rounded-full bg-primary-500 text-neutral-50 text-xs flex items-center justify-center font-bold">
                   {cartItemCount}
                 </span>
               </Button>
@@ -155,9 +154,8 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block rounded-base px-4 py-3 text-sm font-medium transition-colors duration-300 hover:bg-background-secondary ${
-                  isActive(item.href) ? "text-primary-500 bg-background-secondary" : "text-foreground-primary"
-                }`}
+                className={`block rounded-base px-4 py-3 text-sm font-medium transition-colors duration-300 hover:bg-background-secondary ${isActive(item.href) ? "text-primary-500 bg-background-secondary" : "text-foreground-primary"
+                  }`}
               >
                 {item.name}
               </Link>

@@ -1,0 +1,22 @@
+diff --git a/dist/service.js b/dist/service.js
+index 8a65b81b4902367f4f658e24d19e199e42ff3bf5..ab5a828c2407d2a7093d7ccd8c946bc200212bb0 100644
+--- a/dist/service.js
++++ b/dist/service.js
+@@ -52,7 +52,7 @@ class PayPalProviderService extends utils_1.AbstractPaymentProvider {
+                     purchaseUnits: [{
+                             amount: {
+                                 currencyCode: currency_code.toUpperCase(),
+-                                value: (amount / 100).toFixed(2) // cents to dollars
++                                value: amount.toFixed(2) // Medusa 2.x: amount is already in dollars
+                             },
+                             customId: data?.session_id || undefined
+                         }],
+@@ -178,7 +178,7 @@ class PayPalProviderService extends utils_1.AbstractPaymentProvider {
+                 const currencyCode = (data?.purchase_units?.[0]?.amount?.currency_code || 'USD');
+                 refundRequest.amount = {
+                     currencyCode: currencyCode.toUpperCase(),
+-                    value: (amount / 100).toFixed(2)
++                    value: amount.toFixed(2) // Medusa 2.x: amount is already in dollars
+                 };
+             }
+             const response = await paymentsController.refundCapturedPayment({

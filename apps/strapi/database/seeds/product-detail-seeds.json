@@ -1,0 +1,190 @@
+{
+  "data": [
+    {
+      "title": "CS-320A MCDU",
+      "handle": "cs-320a-mcdu",
+      "tagline": "Professional-grade Multipurpose Control Display Unit for flight simulation",
+      "overview": "The CS-320A MCDU brings airline-quality flight management to your home simulator. Built with the same attention to detail that professional pilots expect, this unit features a high-resolution LCD display, tactile keypads, and seamless integration with major flight simulation platforms.\n\nWhether you're practicing instrument approaches, planning cross-country flights, or simply enjoying the authenticity of airline procedures, the CS-320A delivers an uncompromising simulation experience.",
+      "feature_bullets": [
+        { "text": "5.7-inch high-resolution IPS LCD display with anti-glare coating", "icon": "monitor" },
+        { "text": "64 tactile backlit keys with adjustable brightness", "icon": "keyboard" },
+        { "text": "Aircraft-grade aluminum chassis with powder coating", "icon": "shield" },
+        { "text": "Native support for MSFS 2020, X-Plane 12, and Prepar3D", "icon": "plane" },
+        { "text": "USB-C connectivity with plug-and-play setup", "icon": "usb" },
+        { "text": "Fully programmable function keys via companion software", "icon": "settings" },
+        { "text": "Compatible with ProSim, PMDG, and Fenix aircraft", "icon": "check-circle" },
+        { "text": "Built-in test mode for hardware diagnostics", "icon": "tool" }
+      ],
+      "content_sections": [
+        {
+          "eyebrow": "Display Technology",
+          "heading": "Crystal Clear Visibility in Any Lighting",
+          "description": "The 5.7-inch IPS display delivers exceptional color accuracy and viewing angles, ensuring critical flight data remains visible from any cockpit position. With 800x480 resolution and 500 nits brightness, you'll never miss a waypoint or altitude constraint.\n\nThe anti-glare coating reduces reflections from ambient lighting, while the adjustable backlight lets you match the display to your cockpit environment.",
+          "media_position": "right",
+          "theme": "dark"
+        },
+        {
+          "eyebrow": "Build Quality",
+          "heading": "Engineered for Thousands of Hours",
+          "description": "Every CS-320A is precision-machined from aircraft-grade 6061-T6 aluminum, then finished with a durable powder coating that resists wear and fingerprints. The result is a unit that looks as good after 10,000 hours as it did on day one.\n\nThe mechanical keys are rated for 10 million actuations, with a satisfying tactile response that matches real MCDU hardware.",
+          "media_position": "left",
+          "theme": "light"
+        },
+        {
+          "eyebrow": "Software Integration",
+          "heading": "Seamless Setup, Endless Possibilities",
+          "description": "Our companion software handles aircraft profile management, key mapping, and firmware updates. Pre-configured profiles for popular aircraft get you flying in minutes, while the advanced editor lets power users customize every aspect of their MCDU behavior.",
+          "media_position": "right",
+          "theme": "dark"
+        }
+      ],
+      "spec_groups": [
+        {
+          "group_name": "Display",
+          "items": [
+            { "label": "Screen Size", "value": "5.7 inches (diagonal)" },
+            { "label": "Resolution", "value": "800 x 480 pixels" },
+            { "label": "Panel Type", "value": "IPS LCD" },
+            { "label": "Brightness", "value": "500 nits (adjustable)" },
+            { "label": "Contrast Ratio", "value": "1000:1" },
+            { "label": "Viewing Angle", "value": "178° (H) / 178° (V)" }
+          ]
+        },
+        {
+          "group_name": "Input",
+          "items": [
+            { "label": "Total Keys", "value": "64 keys" },
+            { "label": "Key Type", "value": "Mechanical tactile switches" },
+            { "label": "Key Lifespan", "value": "10 million actuations" },
+            { "label": "Backlighting", "value": "White LED, adjustable brightness" },
+            { "label": "Rotary Encoders", "value": "2x detented encoders (optional)" }
+          ]
+        },
+        {
+          "group_name": "Physical",
+          "items": [
+            { "label": "Dimensions", "value": "210 x 270 x 45 mm" },
+            { "label": "Weight", "value": "1.8 kg" },
+            { "label": "Material", "value": "6061-T6 Aluminum" },
+            { "label": "Finish", "value": "Matte black powder coating" },
+            { "label": "Mounting", "value": "4x M4 threaded inserts" }
+          ]
+        },
+        {
+          "group_name": "Connectivity",
+          "items": [
+            { "label": "Interface", "value": "USB-C (USB 2.0 HID)" },
+            { "label": "Cable Length", "value": "2m braided cable included" },
+            { "label": "Power", "value": "USB bus-powered (5V, 500mA max)" }
+          ]
+        },
+        {
+          "group_name": "Compatibility",
+          "items": [
+            { "label": "Operating Systems", "value": "Windows 10/11, macOS 12+, Linux" },
+            { "label": "Simulators", "value": "MSFS 2020/2024, X-Plane 11/12, Prepar3D v4/v5" },
+            { "label": "Aircraft Add-ons", "value": "PMDG, Fenix, ProSim, iFly, Maddog" }
+          ]
+        }
+      ],
+      "package_contents": [
+        { "name": "CS-320A MCDU Unit", "quantity": 1 },
+        { "name": "USB-C Cable (2m)", "quantity": 1 },
+        { "name": "Quick Start Guide", "quantity": 1 },
+        { "name": "Mounting Hardware Kit", "quantity": 1 },
+        { "name": "Microfiber Cleaning Cloth", "quantity": 1 }
+      ],
+      "warranty_info": "The CS-320A MCDU is covered by our comprehensive 2-year manufacturer warranty. This warranty covers defects in materials and workmanship under normal use conditions.\n\n**What's Covered:**\n- Display panel defects\n- Key switch failures\n- Electronic component failures\n- USB connectivity issues\n\n**What's Not Covered:**\n- Physical damage from mishandling\n- Water or liquid damage\n- Unauthorized modifications\n- Normal wear and tear\n\nFor warranty claims, contact support@coderise.io with your order number and a description of the issue.",
+      "os_requirements": "Windows 10 (64-bit) or later\nmacOS 12 Monterey or later\nLinux with USB HID support\n\nMinimum: USB 2.0 port\nRecommended: USB 3.0 port for fastest response\n\nCompanion Software: 50MB disk space, .NET 6.0 Runtime (Windows)",
+      "seo": {
+        "meta_title": "CS-320A MCDU | Professional Flight Sim Control Unit",
+        "meta_description": "Experience airline-quality flight management with the CS-320A MCDU. Features 5.7\" IPS display, 64 tactile keys, and seamless MSFS/X-Plane integration.",
+        "canonical_url": "/products/cs-320a-mcdu"
+      }
+    },
+    {
+      "title": "CS-737 Pro MCP",
+      "handle": "cs-737-pro",
+      "tagline": "The Ultimate 737 Mode Control Panel for Serious Sim Pilots",
+      "overview": "The CS-737 Pro MCP recreates every detail of the Boeing 737 NG/MAX Mode Control Panel. From the precision-machined knobs to the authentic 7-segment displays, this panel delivers the tactile feedback and visual accuracy that makes your home cockpit feel like the real flight deck.\n\nDesigned in collaboration with active airline pilots and certified flight instructors, the CS-737 Pro represents the pinnacle of home cockpit hardware.",
+      "feature_bullets": [
+        { "text": "1:1 scale replica of the Boeing 737 NG/MAX MCP", "icon": "maximize" },
+        { "text": "7-segment LED displays with authentic font and brightness", "icon": "monitor" },
+        { "text": "Precision CNC-machined aluminum knobs with realistic feel", "icon": "circle" },
+        { "text": "All switches, buttons, and annunciators fully functional", "icon": "toggle-left" },
+        { "text": "Korry-style backlit buttons with proper illumination", "icon": "sun" },
+        { "text": "Native PMDG 737, Zibo, and ProSim integration", "icon": "link" },
+        { "text": "Dual-encoder design for SPD and HDG with push functions", "icon": "rotate-cw" },
+        { "text": "Daisy-chain capability for multi-panel setups", "icon": "git-branch" }
+      ],
+      "content_sections": [
+        {
+          "eyebrow": "Authentic Design",
+          "heading": "Designed by Pilots, for Pilots",
+          "description": "Every switch placement, every knob rotation, every button press has been validated against the real 737 MCP. Our engineering team worked with current 737 captains to ensure the CS-737 Pro feels exactly right.\n\nThe result is a panel that lets you build muscle memory that transfers to the real aircraft.",
+          "media_position": "right",
+          "theme": "dark"
+        },
+        {
+          "eyebrow": "Premium Materials",
+          "heading": "Built to Last a Lifetime",
+          "description": "The faceplate is precision-machined from 3mm aircraft aluminum, with laser-engraved legends that will never fade or wear off. The knobs are individually machined and anodized, with the same knurling pattern found on the real 737.",
+          "media_position": "left",
+          "theme": "light"
+        }
+      ],
+      "spec_groups": [
+        {
+          "group_name": "Display",
+          "items": [
+            { "label": "Speed Display", "value": "3-digit 7-segment LED (green)" },
+            { "label": "Heading Display", "value": "3-digit 7-segment LED (green)" },
+            { "label": "Altitude Display", "value": "5-digit 7-segment LED (green)" },
+            { "label": "V/S Display", "value": "4-digit 7-segment LED (green)" },
+            { "label": "Brightness Control", "value": "Individual dimming per display" }
+          ]
+        },
+        {
+          "group_name": "Controls",
+          "items": [
+            { "label": "Rotary Encoders", "value": "6x dual-concentric encoders" },
+            { "label": "Toggle Switches", "value": "8x momentary/latching" },
+            { "label": "Push Buttons", "value": "12x illuminated Korry-style" },
+            { "label": "Course Knobs", "value": "2x (CRS L/R)" }
+          ]
+        },
+        {
+          "group_name": "Physical",
+          "items": [
+            { "label": "Dimensions", "value": "520 x 85 x 55 mm" },
+            { "label": "Weight", "value": "2.4 kg" },
+            { "label": "Panel Material", "value": "3mm 6061-T6 Aluminum" },
+            { "label": "Finish", "value": "Matte gray powder coating" }
+          ]
+        },
+        {
+          "group_name": "Connectivity",
+          "items": [
+            { "label": "Interface", "value": "USB-C (USB 2.0 HID)" },
+            { "label": "Daisy Chain", "value": "USB-C pass-through port" },
+            { "label": "Power", "value": "5V DC, 1A max" }
+          ]
+        }
+      ],
+      "package_contents": [
+        { "name": "CS-737 Pro MCP Unit", "quantity": 1 },
+        { "name": "USB-C Cable (3m)", "quantity": 1 },
+        { "name": "Mounting Brackets", "quantity": 2 },
+        { "name": "Installation Manual", "quantity": 1 },
+        { "name": "Configuration Software USB", "quantity": 1 }
+      ],
+      "warranty_info": "The CS-737 Pro is backed by our industry-leading 3-year warranty, reflecting our confidence in the build quality and longevity of this premium product.\n\n**Extended Coverage:**\n- Full replacement for LED display failures\n- Switch and encoder mechanism warranty\n- Free firmware updates for life\n\nRegister your product within 30 days of purchase to activate the extended warranty.",
+      "os_requirements": "Windows 10/11 (64-bit)\nmacOS 12+\nLinux (kernel 5.4+)\n\nSimulator Support:\n- MSFS 2020/2024\n- X-Plane 11/12\n- Prepar3D v4/v5\n\nConfiguration Software: Windows only",
+      "seo": {
+        "meta_title": "CS-737 Pro MCP | Boeing 737 Mode Control Panel Replica",
+        "meta_description": "Professional-grade Boeing 737 NG/MAX MCP replica with authentic 7-segment displays, precision encoders, and Korry-style buttons. Compatible with PMDG, Zibo, and ProSim.",
+        "canonical_url": "/products/cs-737-pro"
+      }
+    }
+  ]
+}

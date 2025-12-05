@@ -36,10 +36,10 @@ export const getStrapiClient = (): StrapiClient => {
       next:
         options.tags?.length || hasRevalidate
           ? {
-              revalidate: hasRevalidate ? revalidate : undefined,
-              tags: options.tags,
-              ...options.init?.next,
-            }
+            revalidate: hasRevalidate ? revalidate : undefined,
+            tags: options.tags,
+            ...options.init?.next,
+          }
           : options.init?.next,
     })
 

@@ -70,9 +70,10 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
                   </h3>
                 </Link>
                 <div className="flex items-center gap-1 mb-2">
-                  <Star className="h-4 w-4 fill-semantic-warning text-semantic-warning" />
-                  <span className="text-sm font-medium text-foreground-secondary">{product.rating}</span>
-                  <span className="text-sm text-foreground-muted">({product.reviewCount})</span>
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-semantic-warning text-semantic-warning" />
+                  ))}
+                  <span className="text-sm font-medium text-foreground-secondary ml-1">5.0</span>
                 </div>
               </div>
               <p className="text-sm text-foreground-secondary mb-4 flex-1 line-clamp-2">{product.description}</p>
@@ -87,7 +88,7 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
                 </div>
                 <Button
                   size="sm"
-                  className="w-full justify-center touch-target"
+                  className="w-full justify-center touch-target bg-brand-blue-600 hover:bg-brand-blue-700 text-white rounded-pill"
                   disabled={!product.inStock || isPending}
                   onClick={handleAddToCart}
                 >
@@ -123,9 +124,10 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
           </h3>
         </Link>
         <div className="flex items-center gap-1 mb-3">
-          <Star className="h-4 w-4 fill-semantic-warning text-semantic-warning" />
-          <span className="text-sm font-medium text-foreground-secondary">{product.rating}</span>
-          <span className="text-sm text-foreground-muted">({product.reviewCount})</span>
+          {[...Array(5)].map((_, i) => (
+            <Star key={i} className="h-4 w-4 fill-semantic-warning text-semantic-warning" />
+          ))}
+          <span className="text-sm font-medium text-foreground-secondary ml-1">5.0</span>
         </div>
         <p className="text-sm text-foreground-secondary line-clamp-2 mb-4">{product.description}</p>
         <div className="mt-6 border-t border-border-secondary pt-4 space-y-3">
@@ -137,8 +139,8 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
               </span>
             )}
           </div>
-          <Button size="sm" className="w-full justify-center touch-target" disabled={!product.inStock || isPending} onClick={handleAddToCart}>
-            {product.inStock && <ShoppingCart className="mr-2 h-4 w-4" />}
+          <Button className="w-full justify-center touch-target bg-brand-blue-600 hover:bg-brand-blue-700 text-white rounded-pill h-12 text-lg" disabled={!product.inStock || isPending} onClick={handleAddToCart}>
+            {product.inStock && <ShoppingCart className="mr-2 h-5 w-5" />}
             {isPending ? "Adding…" : getButtonLabel()}
           </Button>
         </div>

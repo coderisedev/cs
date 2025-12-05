@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* Force rebuild */
 @import "../styles/design-tokens.css";
 
 @tailwind base;
@@ -6,120 +7,158 @@
 @tailwind utilities;
 
 @layer components {
+
+  /* Apple Navigation Bar */
+  .nav-global {
+    background-color: var(--nav-bg);
+    backdrop-filter: var(--nav-backdrop);
+    -webkit-backdrop-filter: var(--nav-backdrop);
+    height: var(--nav-height);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    border-bottom: 1px solid rgba(0, 0, 0, 0);
+    /* Placeholder for scroll border */
+    transition: background-color 0.3s ease;
+  }
+
+  .nav-link {
+    font-size: 12px;
+    color: var(--foreground-secondary);
+    opacity: 0.8;
+    transition: color 0.3s ease, opacity 0.3s ease;
+  }
+
+  .nav-link:hover {
+    color: var(--foreground-primary);
+    opacity: 1;
+  }
+
+  /* Apple Typography */
+  .hero-headline {
+    font-size: 48px;
+    line-height: 1.08;
+    font-weight: 600;
+    letter-spacing: -0.003em;
+    color: var(--foreground-primary);
+  }
+
+  @media (min-width: 768px) {
+    .hero-headline {
+      font-size: 56px;
+      letter-spacing: -0.005em;
+    }
+  }
+
+  .section-headline {
+    font-size: 40px;
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--foreground-primary);
+  }
+
+  /* Apple Buttons */
+  .btn-apple {
+    background-color: hsl(var(--brand-blue-500));
+    color: white;
+    border-radius: 980px;
+    /* Pill shape */
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 400;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-apple:hover {
+    background-color: hsl(var(--brand-blue-600));
+  }
+
+  .btn-apple-large {
+    padding: 12px 24px;
+    font-size: 17px;
+  }
+
+  .btn-apple-link {
+    color: hsl(var(--brand-blue-500));
+    font-size: 17px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .btn-apple-link:hover {
+    text-decoration: underline;
+  }
+
+  .btn-apple-link::after {
+    content: '›';
+    font-size: 1.2em;
+    margin-top: -2px;
+  }
+
+  /* Apple Cards */
+  .card-apple {
+    background-color: var(--background-elevated);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card-apple:hover {
+    transform: scale(1.01);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  /* Animations */
   .animate-fade-in {
-    animation: fadeIn 0.5s ease-in-out;
+    animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
   .animate-slide-up {
-    animation: slideUp 0.4s ease-in-out;
-  }
-
-  .animate-scale-in {
-    animation: scaleIn 0.3s ease-in-out;
+    animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
 
   .mobile-container {
-    @apply w-full px-4 sm:px-6 lg:px-8;
+    @apply w-full px-5 sm:px-6 lg:px-8;
   }
 
-  .touch-target {
-    @apply min-h-[44px] min-w-[44px];
+  /* Apple-style Product Detail Transitions */
+  .apple-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .card-hover {
-    transition: all 0.3s ease;
-  }
-
-  .card-hover:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .btn-primary {
-    transition: all 0.3s ease;
-  }
-
-  .btn-primary:hover {
+  .apple-hover-lift:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 
-  .btn-primary:active {
-    transform: translateY(0);
+  .apple-hover-scale:hover {
+    transform: scale(1.02);
   }
 
-  .image-hover {
-    transition: transform 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  .apple-active-scale:active {
+    transform: scale(0.98);
   }
 
-  .image-hover:hover {
-    transform: scale(1.05);
+  /* Hide scrollbar but allow scroll */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
-  .text-gradient {
-    background: var(--gradient-brand);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .hero-background {
-    @apply relative overflow-hidden;
-  }
-
-  .hero-content {
-    @apply relative z-10 flex items-center justify-center min-h-screen;
-  }
-
-  .hero-title {
-    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight;
-    text-shadow: var(--text-shadow-hero-strong);
-  }
-
-  .hero-subtitle {
-    @apply text-lg sm:text-xl md:text-2xl leading-relaxed;
-    text-shadow: var(--text-shadow-hero-subtle);
-  }
-
-  .hero-button {
-    @apply transition-all duration-300 transform hover:scale-105 active:scale-95;
-  }
-
-  .hero-overlay {
-    background: var(--gradient-hero);
-  }
-
-  .list-view-card {
-    @apply flex flex-col sm:flex-row gap-4;
-  }
-
-  .list-view-image {
-    @apply w-full sm:w-48 h-48 sm:h-32 flex-shrink-0;
-  }
-
-  .list-view-content {
-    @apply flex-1 p-4 sm:p-6 flex flex-col justify-between;
-  }
-
-  .list-view-title {
-    @apply text-lg font-semibold mb-2 line-clamp-2;
-  }
-
-  .list-view-description {
-    @apply text-sm text-foreground-muted line-clamp-2 mb-4;
-  }
-
-  .list-view-price {
-    @apply text-xl font-bold text-primary-500;
-  }
-
-  .list-view-actions {
-    @apply flex items-center justify-between mt-auto;
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }
 
 @layer utilities {
   @media (prefers-reduced-motion: reduce) {
+
     .animate-fade-in,
     .animate-slide-up,
     .animate-scale-in,
@@ -131,17 +170,45 @@
     }
   }
 
-  .space-8px { gap: 8px; }
-  .space-16px { gap: 16px; }
-  .space-24px { gap: 24px; }
-  .space-32px { gap: 32px; }
-  .space-48px { gap: 48px; }
+  .space-8px {
+    gap: 8px;
+  }
 
-  .p-btn-small { padding: 8px 16px; }
-  .p-btn-medium { padding: 15px 32px; }
-  .p-btn-large { padding: 16px 32px; }
-  .p-btn-capsule { padding: 8px 16px 8px 34px; }
-  .p-btn-outlined { padding: 5px 16px; }
+  .space-16px {
+    gap: 16px;
+  }
+
+  .space-24px {
+    gap: 24px;
+  }
+
+  .space-32px {
+    gap: 32px;
+  }
+
+  .space-48px {
+    gap: 48px;
+  }
+
+  .p-btn-small {
+    padding: 8px 16px;
+  }
+
+  .p-btn-medium {
+    padding: 15px 32px;
+  }
+
+  .p-btn-large {
+    padding: 16px 32px;
+  }
+
+  .p-btn-capsule {
+    padding: 8px 16px 8px 34px;
+  }
+
+  .p-btn-outlined {
+    padding: 5px 16px;
+  }
 
   .animate-fade-in {
     animation: fadeIn 0.5s ease-out forwards;
@@ -189,6 +256,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -200,6 +268,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -211,6 +280,7 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -221,6 +291,7 @@
   from {
     transform: translateX(-100%);
   }
+
   to {
     transform: translateX(0);
   }
@@ -231,6 +302,7 @@
     transform: scale(0.95);
     opacity: 0;
   }
+
   to {
     transform: scale(1);
     opacity: 1;
@@ -238,10 +310,12 @@
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -252,6 +326,7 @@
     transform: translateY(50px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -263,10 +338,233 @@
     opacity: 0;
     transform: scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* Apple-style Hero Animations */
+@keyframes heroImageZoom {
+  from {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes heroFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes heroBtnFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero Animation Classes */
+.hero-image-animate {
+  animation: heroImageZoom 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.hero-content-animate {
+  opacity: 0;
+  animation: heroFadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.hero-overlay-animate {
+  opacity: 0;
+  animation: heroFadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.hero-title-animate {
+  opacity: 0;
+  animation: heroFadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
+}
+
+.hero-subtitle-animate {
+  opacity: 0;
+  animation: heroFadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s forwards;
+}
+
+.hero-description-animate {
+  opacity: 0;
+  animation: heroFadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s forwards;
+}
+
+.hero-cta-animate {
+  opacity: 0;
+  animation: heroBtnFadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s forwards;
+}
+
+.hero-highlights-animate {
+  opacity: 0;
+  animation: heroFadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards;
+}
+
+/* Scroll Indicator Animations */
+.hero-scroll-indicator {
+  opacity: 0;
+  animation: heroFadeIn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.5s forwards;
+}
+
+.scroll-wheel-animate {
+  animation: scrollWheel 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.scroll-arrow-animate {
+  animation: scrollArrow 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes scrollWheel {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes scrollArrow {
+  0%, 100% {
+    opacity: 0.6;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(4px);
+  }
+}
+
+/* Music MV Section Animations */
+@keyframes musicFloat1 {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-15px) rotate(5deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(-3deg);
+  }
+  75% {
+    transform: translateY(-20px) rotate(3deg);
+  }
+}
+
+@keyframes musicFloat2 {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-18px) rotate(-5deg);
+  }
+  66% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+}
+
+@keyframes musicFloat3 {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-12px) scale(1.1);
+  }
+}
+
+@keyframes musicSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes musicWave {
+  0%, 100% {
+    transform: scaleY(0.5);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+/* Music Animation Classes */
+.music-float-1 {
+  animation: musicFloat1 4s ease-in-out infinite;
+}
+
+.music-float-2 {
+  animation: musicFloat2 5s ease-in-out infinite;
+}
+
+.music-float-3 {
+  animation: musicFloat3 3.5s ease-in-out infinite;
+}
+
+.music-spin {
+  animation: musicSpin 8s linear infinite;
+}
+
+.music-spin-slow {
+  animation: musicSpin 12s linear infinite;
+}
+
+.music-wave-1 {
+  animation: musicWave 0.8s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.music-wave-2 {
+  animation: musicWave 0.8s ease-in-out infinite;
+  animation-delay: 0.1s;
+}
+
+.music-wave-3 {
+  animation: musicWave 0.8s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+.music-wave-4 {
+  animation: musicWave 0.8s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.music-wave-5 {
+  animation: musicWave 0.8s ease-in-out infinite;
+  animation-delay: 0.4s;
 }
 
 @layer base {

@@ -42,9 +42,16 @@
     "@mikro-orm/knex": "6.4.3",
     "@mikro-orm/migrations": "6.4.3",
     "@mikro-orm/postgresql": "6.4.3",
+    "@rd1988/medusa-payment-paypal": "^2.0.3",
+    "@react-email/components": "^1.0.1",
+    "@sentry/node": "^10.29.0",
     "awilix": "^8.0.1",
     "google-auth-library": "^10.5.0",
-    "pg": "^8.13.0"
+    "ioredis": "^5.8.2",
+    "pg": "^8.13.0",
+    "react-email": "^5.0.5",
+    "resend": "^6.5.2",
+    "scrypt-kdf": "^4.0.0"
   },
   "devDependencies": {
     "@medusajs/test-utils": "2.10.3",

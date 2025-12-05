@@ -7,7 +7,10 @@ import remarkBreaks from "remark-breaks"
 import { notFound } from "next/navigation"
 import { Calendar, Clock, User } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { getPost, listPosts } from "@/lib/data/blog"
+import { getPost, listPosts, type BlogPost } from "@/lib/data/blog"
+
+const BASE_URL = process.env.STOREFRONT_BASE_URL || "https://dev.aidenlux.com"
+const DEFAULT_COUNTRY = process.env.NEXT_PUBLIC_DEFAULT_REGION || "us"
 
 export const revalidate = 300
 
@@ -26,20 +29,102 @@ export async function generateStaticParams() {
   return allPosts.map((post) => ({ slug: post.slug }))
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params
+export async function generateMetadata({ params }: { params: Promise<{ slug: string; countryCode: string }> }): Promise<Metadata> {
+  const { slug, countryCode } = await params
   const post = await getPost(slug)
   if (!post) {
     return { title: "Blog", description: "Flight simulation stories" }
   }
+
+  const canonicalUrl = `${BASE_URL}/${countryCode || DEFAULT_COUNTRY}/blog/${slug}`
+  const title = post.seo.metaTitle ?? `${post.title} · Cockpit Simulator`
+  const description = post.seo.metaDescription ?? post.excerpt
+
   return {
-    title: post.seo.metaTitle ?? `${post.title} · Cockpit Simulator`,
-    description: post.seo.metaDescription ?? post.excerpt,
-    openGraph: {
-      title: post.seo.metaTitle ?? post.title,
-      description: post.seo.metaDescription ?? post.excerpt,
-      images: post.seo.ogImageUrl ? [{ url: post.seo.ogImageUrl, alt: post.title }] : undefined,
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
     },
+    openGraph: {
+      type: "article",
+      title: post.seo.metaTitle ?? post.title,
+      description,
+      url: canonicalUrl,
+      siteName: "Cockpit Simulator",
+      images: post.seo.ogImageUrl ? [{ url: post.seo.ogImageUrl, alt: post.title, width: 1200, height: 630 }] : undefined,
+      publishedTime: post.publishedAt ?? undefined,
+      authors: post.authorName ? [post.authorName] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.seo.metaTitle ?? post.title,
+      description,
+      images: post.seo.ogImageUrl ? [post.seo.ogImageUrl] : undefined,
+    },
+  }
+}
+
+function generateBlogPostJsonLd(post: BlogPost, countryCode: string) {
+  const url = `${BASE_URL}/${countryCode || DEFAULT_COUNTRY}/blog/${post.slug}`
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.seo.metaDescription ?? post.excerpt,
+    image: post.seo.ogImageUrl ?? post.coverImageUrl,
+    url,
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    author: post.authorName
+      ? {
+          "@type": "Person",
+          name: post.authorName,
+          jobTitle: post.authorTitle,
+        }
+      : {
+          "@type": "Organization",
+          name: "Cockpit Simulator",
+        },
+    publisher: {
+      "@type": "Organization",
+      name: "Cockpit Simulator",
+      url: BASE_URL,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": url,
+    },
+    wordCount: post.content.split(/\s+/).length,
+    timeRequired: `PT${post.estimatedReadingMinutes ?? 5}M`,
+  }
+}
+
+function generateBreadcrumbJsonLd(post: BlogPost, countryCode: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${BASE_URL}/${countryCode || DEFAULT_COUNTRY}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: `${BASE_URL}/${countryCode || DEFAULT_COUNTRY}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title,
+        item: `${BASE_URL}/${countryCode || DEFAULT_COUNTRY}/blog/${post.slug}`,
+      },
+    ],
   }
 }
 
@@ -83,11 +168,11 @@ const markdownComponents: Components = {
 }
 
 type BlogPostPageProps = {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string; countryCode: string }>
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const { slug } = await params
+  const { slug, countryCode } = await params
   const post = await getPost(slug)
 
   if (!post) {
@@ -102,8 +187,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       })
     : null
 
+  const blogPostJsonLd = generateBlogPostJsonLd(post, countryCode)
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd(post, countryCode)
+
   return (
-    <article className="container py-16 space-y-8 max-w-3xl">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <article className="container py-16 space-y-8 max-w-3xl">
       <div className="space-y-3">
         <p className="text-xs uppercase tracking-widest text-primary-500">DJI Blog</p>
         <h1 className="text-4xl font-semibold text-foreground-primary">{post.title}</h1>
@@ -141,7 +238,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} components={markdownComponents}>
           {post.content}
         </ReactMarkdown>
-     </div>
-    </article>
+      </div>
+      </article>
+    </>
   )
 }

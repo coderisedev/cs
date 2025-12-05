@@ -1,17 +1,19 @@
 "use client"
 
 import { useState, useActionState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { currencyFormatter } from "@/lib/number"
-import { placeOrderAction } from "@/lib/actions/checkout"
+import { placeOrderAction, preparePayPalCheckoutAction, completePayPalOrderAction } from "@/lib/actions/checkout"
 import { Loader2, ShoppingBag, ArrowLeft, Package, CreditCard, MapPin } from "lucide-react"
 import { HttpTypes } from "@medusajs/types"
 import type { AccountAddress } from "@/lib/data/account"
 import { cn } from "@/lib/utils"
+import { PayPalButton } from "./paypal-button"
 
 type CheckoutClientProps = {
   cart: HttpTypes.StoreCart
@@ -21,6 +23,7 @@ type CheckoutClientProps = {
 }
 
 export function CheckoutClient({ cart, customer, countryCode, customerAddresses }: CheckoutClientProps) {
+  const router = useRouter()
   const [email, setEmail] = useState(customer?.email || cart.email || "")
   const [shippingAddress, setShippingAddress] = useState({
     first_name: customer?.first_name || "",
@@ -34,7 +37,9 @@ export function CheckoutClient({ cart, customer, countryCode, customerAddresses 
   })
   const [sameAsBilling, setSameAsBilling] = useState(true)
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null)
-  
+  const [paypalError, setPaypalError] = useState<string | null>(null)
+  const [isPaypalProcessing, setIsPaypalProcessing] = useState(false)
+
   const [orderMessage, orderFormAction, orderPending] = useActionState(placeOrderAction, null)
 
   const itemCount = cart.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0
@@ -88,6 +93,83 @@ export function CheckoutClient({ cart, customer, countryCode, customerAddresses 
     applySavedAddress(address)
   }
 
+  // Validate shipping form before PayPal payment
+  const validateShippingForm = (): boolean => {
+    if (!email || !shippingAddress.first_name || !shippingAddress.last_name ||
+        !shippingAddress.address_1 || !shippingAddress.city ||
+        !shippingAddress.postal_code || !shippingAddress.country_code) {
+      setPaypalError("Please fill in all required shipping fields before proceeding with payment.")
+      return false
+    }
+    if (shippingAddress.country_code !== "us") {
+      setPaypalError("Currently, only US addresses are supported.")
+      return false
+    }
+    return true
+  }
+
+  // Create PayPal order via Medusa backend when user clicks PayPal button
+  const handleCreatePayPalOrder = async (): Promise<string | null> => {
+    if (!validateShippingForm()) {
+      return null
+    }
+
+    setPaypalError(null)
+    setIsPaypalProcessing(true)
+
+    try {
+      const result = await preparePayPalCheckoutAction({
+        email,
+        shippingAddress,
+        sameAsBilling,
+      })
+
+      if (result.error) {
+        setPaypalError(result.error)
+        setIsPaypalProcessing(false)
+        return null
+      }
+
+      // Return the PayPal order ID created by Medusa
+      return result.paypalOrderId || null
+    } catch (error) {
+      console.error("Error creating PayPal order:", error)
+      setPaypalError("Failed to create PayPal order. Please try again.")
+      setIsPaypalProcessing(false)
+      return null
+    }
+  }
+
+  // Handle PayPal payment approval - user has authorized the payment
+  const handlePayPalApprove = async () => {
+    setPaypalError(null)
+
+    try {
+      const result = await completePayPalOrderAction(countryCode)
+
+      if (result.error) {
+        setPaypalError(result.error)
+        setIsPaypalProcessing(false)
+        return
+      }
+
+      // Redirect to order confirmation page using client-side navigation
+      if (result.redirectUrl) {
+        router.push(result.redirectUrl)
+      }
+    } catch (error: unknown) {
+      console.error("PayPal order error:", error)
+      setPaypalError("Failed to complete order. Please try again.")
+      setIsPaypalProcessing(false)
+    }
+  }
+
+  const handlePayPalError = (error: unknown) => {
+    console.error("PayPal error:", error)
+    setPaypalError("PayPal payment failed. Please try again or use a different payment method.")
+    setIsPaypalProcessing(false)
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
@@ -122,7 +204,7 @@ export function CheckoutClient({ cart, customer, countryCode, customerAddresses 
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium text-foreground-primary">Saved addresses</p>
-                    <Link className="text-xs text-primary-500" href={`/${countryCode}/account`}>
+                    <Link className="text-xs text-primary-500" href={`/${countryCode}/account?tab=addresses`}>
                       Manage
                     </Link>
                   </div>
@@ -304,14 +386,30 @@ export function CheckoutClient({ cart, customer, countryCode, customerAddresses 
                 Payment Method
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="p-4 bg-background-elevated rounded-base border border-border-secondary">
-                <p className="text-sm text-foreground-secondary mb-2">
-                  💳 Manual Payment
+            <CardContent className="space-y-4">
+              {/* PayPal Button */}
+              <div className="paypal-payment-section">
+                <p className="text-sm text-foreground-secondary mb-3">
+                  Pay securely with PayPal
                 </p>
-                <p className="text-xs text-foreground-muted">
-                  This is a test checkout. Payment processing is handled manually.
-                </p>
+                <PayPalButton
+                  currency="USD"
+                  disabled={orderPending || isPaypalProcessing}
+                  onCreateOrder={handleCreatePayPalOrder}
+                  onApprove={handlePayPalApprove}
+                  onError={handlePayPalError}
+                />
+              </div>
+
+              {/* PayPal Error Message */}
+              {paypalError && (
+                <div className="p-3 rounded-base bg-red-50 border border-red-200 text-sm text-red-600">
+                  {paypalError}
+                </div>
+              )}
+
+              <div className="text-xs text-foreground-muted text-center pt-2 border-t border-border-secondary">
+                Your payment is processed securely through PayPal. We never store your payment details.
               </div>
             </CardContent>
           </Card>
@@ -388,17 +486,6 @@ export function CheckoutClient({ cart, customer, countryCode, customerAddresses 
                 <span className="text-lg font-semibold">Total</span>
                 <span className="text-2xl font-bold">{currencyFormatter(total)}</span>
               </div>
-
-              <Button type="submit" className="w-full" size="lg" disabled={orderPending}>
-                {orderPending ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Processing Order...
-                  </>
-                ) : (
-                  "Place Order"
-                )}
-              </Button>
 
               <p className="text-xs text-foreground-muted text-center">
                 By placing this order, you agree to our Terms of Service and Privacy Policy

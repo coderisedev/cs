@@ -4,3 +4,6 @@ packages:
   - infra/*
   - scripts
   - tests/*
+
+patchedDependencies:
+  '@rd1988/medusa-payment-paypal@2.0.3': patches/@rd1988__medusa-payment-paypal@2.0.3.patch

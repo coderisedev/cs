@@ -11,9 +11,10 @@ import {
   Zap,
   Wifi,
   Shield,
+  ChevronRight,
+  ArrowRight
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+
 import {
   softwareStats,
   softwareFeatures,
@@ -23,23 +24,21 @@ import {
   systemRequirements,
 } from "@/lib/data/software"
 
-const heroImage = "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1600&q=80"
-
 const featureIconMap: Record<string, ReactNode> = {
-  Zap: <Zap className="h-5 w-5" />,
-  Globe: <Globe className="h-5 w-5" />,
-  Settings: <Settings className="h-5 w-5" />,
-  Wifi: <Wifi className="h-5 w-5" />,
-  Monitor: <Monitor className="h-5 w-5" />,
-  Shield: <Shield className="h-5 w-5" />,
+  Zap: <Zap className="h-6 w-6" />,
+  Globe: <Globe className="h-6 w-6" />,
+  Settings: <Settings className="h-6 w-6" />,
+  Wifi: <Wifi className="h-6 w-6" />,
+  Monitor: <Monitor className="h-6 w-6" />,
+  Shield: <Shield className="h-6 w-6" />,
 }
 
 const tabs = [
-  { id: "features", label: "Features", icon: <Settings className="h-4 w-4" /> },
-  { id: "platforms", label: "Platforms", icon: <Monitor className="h-4 w-4" /> },
-  { id: "compatibility", label: "Compatibility", icon: <Check className="h-4 w-4" /> },
-  { id: "versions", label: "Version History", icon: <Globe className="h-4 w-4" /> },
-  { id: "download", label: "Download", icon: <Download className="h-4 w-4" /> },
+  { id: "features", label: "Features" },
+  { id: "platforms", label: "Platforms" },
+  { id: "compatibility", label: "Compatibility" },
+  { id: "versions", label: "History" },
+  { id: "download", label: "Download" },
 ]
 
 export default function SoftwarePage() {
@@ -47,238 +46,293 @@ export default function SoftwarePage() {
 
   return (
     <div className="min-h-screen bg-background-primary">
-      <section className="relative py-20 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="h-full w-full bg-cover bg-center" style={{ backgroundImage: `url(${heroImage})` }} />
-          <div className="absolute inset-0" style={{ background: "var(--gradient-hero-accent)" }} />
+      {/* Apple-style Hero Section */}
+      <section className="relative pt-16 pb-8 lg:pt-24 lg:pb-14 text-center px-6 overflow-hidden bg-brand-blue-600 selection:bg-white/30">
+        {/* Dynamic Background System */}
+        <div className="absolute inset-0 pointer-events-none select-none">
+          {/* Base Gradient - Rich Blue */}
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-blue-500 via-brand-blue-600 to-brand-blue-700" />
+
+          {/* Animated Glow Orbs - Lighter Blue/White for contrast */}
+          <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-brand-blue-400/30 rounded-full blur-[120px] animate-pulse-slow" />
+          <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-white/10 rounded-full blur-[100px] animate-float" />
+
+          {/* Conic Gradient for Subtle Light Play */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[800px] bg-[conic-gradient(from_90deg_at_50%_50%,#ffffff00_50%,#ffffff20_100%)] blur-[100px] opacity-40 mix-blend-overlay" />
+
+          {/* Noise Texture Overlay for Premium Feel */}
+          <div className="absolute inset-0 opacity-[0.05] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
         </div>
-        <div className="relative container space-y-10 text-center text-white">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-sm font-medium">
-            <Cpu className="h-4 w-4" /> Professional Flight Simulation Software
+
+        <div className="max-w-5xl mx-auto space-y-8 relative z-10">
+          {/* Pill Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm animate-fade-in-up">
+            <Cpu className="h-3.5 w-3.5 text-white" />
+            <span className="text-xs font-semibold tracking-wide uppercase text-white">Professional Flight Simulation</span>
           </div>
-          <div className="space-y-4">
-            <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-              CockpitSimulator Bridge <span className="block text-3xl lg:text-4xl text-primary-200 mt-2">CS Bridge v2025.2.3</span>
-            </h1>
-            <p className="text-xl lg:text-2xl text-white/85 max-w-4xl mx-auto">
-              The ultimate plug-and-play solution for connecting your cockpit hardware to flight simulation software. Seamlessly integrate with 25+ aircraft plugins across 6 major platforms.
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-primary-500 hover:bg-primary-600 text-white px-8 py-4 text-lg font-semibold">
-              <Download className="h-5 w-5 mr-2" /> Download Latest Version
-            </Button>
-            <Button variant="outline" size="lg" className="border-white/40 text-white hover:bg-white/10 px-8 py-4 text-lg font-semibold">
+
+          {/* Main Headline */}
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-2xl">
+            CockpitSimulator <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-blue-200 via-brand-blue-400 to-brand-blue-600">
+              Bridge
+            </span>
+          </h1>
+
+          {/* Subheadline */}
+          <p className="text-xl md:text-2xl lg:text-3xl font-medium text-gray-400 max-w-3xl mx-auto leading-relaxed tracking-wide">
+            The ultimate plug-and-play solution. <br className="hidden md:block" />
+            Seamlessly integrate hardware with <span className="text-white">25+ aircraft</span>.
+          </p>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center pt-10 items-center">
+            <button className="group relative px-8 py-4 rounded-full bg-white text-black font-semibold text-lg transition-all hover:scale-105 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+              <span className="relative flex items-center gap-2">
+                Download v2025.2.3 <ArrowRight className="w-4 h-4" />
+              </span>
+            </button>
+
+            <button className="px-8 py-4 rounded-full text-white font-medium text-lg transition-all hover:text-brand-blue-300 flex items-center gap-2 group">
               View Documentation
-            </Button>
+              <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </button>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-3xl mx-auto text-white">
+        </div>
+      </section>
+
+      {/* Stats Section - Minimalist */}
+      <section className="py-12 border-b border-border-secondary">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {softwareStats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-3xl font-bold">{stat.value}</div>
-                <div className="text-sm text-white/80">{stat.label}</div>
+              <div key={stat.label} className="space-y-1">
+                <div className="text-3xl lg:text-4xl font-semibold text-foreground-primary">{stat.value}</div>
+                <div className="text-sm font-medium text-foreground-secondary uppercase tracking-wide">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-8 border-b border-border-primary bg-background-elevated">
-        <div className="container flex flex-wrap justify-center gap-2">
-          {tabs.map((tab) => (
-            <Button
-              key={tab.id}
-              variant={activeTab === tab.id ? "default" : "ghost"}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-6 py-3 ${
-                activeTab === tab.id ? "bg-primary-500 text-white" : "text-foreground-primary hover:bg-background-primary"
-              }`}
-            >
-              {tab.icon}
-              {tab.label}
-            </Button>
-          ))}
+      {/* Sticky Navigation */}
+      <section className="sticky top-[44px] z-40 bg-background-primary/80 backdrop-blur-md border-b border-border-secondary">
+        <div className="container mx-auto px-6 overflow-x-auto no-scrollbar">
+          <div className="flex justify-center min-w-max">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-6 py-4 text-sm font-medium transition-colors border-b-2 ${activeTab === tab.id
+                  ? "border-foreground-primary text-foreground-primary"
+                  : "border-transparent text-foreground-secondary hover:text-foreground-primary"
+                  }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="py-12 md:py-16 lg:py-20">
-        <div className="container space-y-16">
+      <div className="bg-background-secondary py-20 lg:py-32">
+        <div className="container mx-auto px-6 max-w-6xl">
+
+          {/* Features Tab */}
           {activeTab === "features" && (
-            <div className="space-y-8">
-              <div className="text-center space-y-4 max-w-3xl mx-auto">
-                <h2 className="text-3xl lg:text-4xl font-bold">Powerful Features for Professional Simulation</h2>
+            <div className="space-y-16 animate-fade-in">
+              <div className="text-center max-w-3xl mx-auto space-y-4">
+                <h2 className="section-headline">Powerful Features.</h2>
                 <p className="text-xl text-foreground-secondary">
-                  CS Bridge provides everything you need for seamless hardware integration with your favorite flight simulation platforms.
+                  Everything you need for seamless hardware integration.
                 </p>
               </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {softwareFeatures.map((feature) => (
-                  <Card
-                    key={feature.title}
-                    className="bg-background-elevated border-border-primary hover:border-primary-500/50 transition-all duration-300"
-                  >
-                    <CardHeader>
-                      <div className="flex items-center gap-3">
-                        <span className="p-2 rounded-lg bg-primary-500/10 text-primary-500">
-                          {featureIconMap[feature.icon]}
-                        </span>
-                        <CardTitle className="text-lg text-foreground-primary">{feature.title}</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-foreground-secondary leading-relaxed">
-                        {feature.description}
-                      </CardDescription>
-                    </CardContent>
-                  </Card>
+                  <div key={feature.title} className="card-apple p-8 bg-background-primary">
+                    <div className="text-brand-blue-500 mb-6">
+                      {featureIconMap[feature.icon]}
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3 text-foreground-primary">{feature.title}</h3>
+                    <p className="text-foreground-secondary leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
                 ))}
               </div>
             </div>
           )}
 
+          {/* Platforms Tab */}
           {activeTab === "platforms" && (
-            <div className="space-y-8">
-              <div className="text-center space-y-4 max-w-3xl mx-auto">
-                <h2 className="text-3xl lg:text-4xl font-bold">Multi-Platform Compatibility</h2>
+            <div className="space-y-16 animate-fade-in">
+              <div className="text-center max-w-3xl mx-auto space-y-4">
+                <h2 className="section-headline">Works Everywhere.</h2>
                 <p className="text-xl text-foreground-secondary">
-                  Works seamlessly with every major simulator so you never worry about switching software mid-project.
+                  Compatible with every major simulator platform.
                 </p>
               </div>
+
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {softwarePlatforms.map((platform) => (
-                  <Card key={platform.name} className="bg-background-elevated border-border-primary">
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-lg">{platform.name}</CardTitle>
-                        <div className="flex items-center gap-1 text-semantic-success text-sm">
-                          <Check className="h-4 w-4" /> Supported
-                        </div>
+                  <div key={platform.name} className="card-apple p-8 bg-background-primary flex flex-col justify-between h-full">
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-xl font-semibold text-foreground-primary">{platform.name}</h3>
+                        <Check className="h-5 w-5 text-green-500" />
                       </div>
-                      <p className="text-sm text-primary-500 font-medium">{platform.version}</p>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-foreground-secondary">{platform.description}</CardDescription>
-                    </CardContent>
-                  </Card>
+                      <p className="text-foreground-secondary mb-6">{platform.description}</p>
+                    </div>
+                    <div className="pt-6 border-t border-border-secondary">
+                      <span className="text-sm font-medium text-brand-blue-500 bg-brand-blue-500/10 px-3 py-1 rounded-full">
+                        {platform.version}
+                      </span>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
           )}
 
+          {/* Compatibility Tab */}
           {activeTab === "compatibility" && (
-            <div className="space-y-12">
-              <div className="text-center space-y-2">
-                <h2 className="text-3xl font-bold">Aircraft Plugin Support</h2>
-                <p className="text-foreground-secondary">Pre-configured profiles for the most popular aircraft families.</p>
+            <div className="space-y-16 animate-fade-in">
+              <div className="text-center max-w-3xl mx-auto space-y-4">
+                <h2 className="section-headline">Plug & Play.</h2>
+                <p className="text-xl text-foreground-secondary">
+                  Pre-configured profiles for popular aircraft.
+                </p>
               </div>
+
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {aircraftPlugins.map((group) => (
-                  <Card key={group.category} className="border-border-primary">
-                    <CardHeader>
-                      <CardTitle>{group.category}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
+                  <div key={group.category} className="card-apple p-8 bg-background-primary">
+                    <h3 className="text-lg font-semibold mb-6 text-foreground-primary border-b border-border-secondary pb-4">
+                      {group.category}
+                    </h3>
+                    <div className="space-y-3">
                       {group.plugins.map((plugin) => (
-                        <div key={plugin.name} className="flex items-center justify-between text-sm text-foreground-secondary">
-                          <span>{plugin.name}</span>
+                        <div key={plugin.name} className="flex items-center justify-between text-sm">
+                          <span className="text-foreground-primary font-medium">{plugin.name}</span>
                           <span className="text-foreground-muted">{plugin.version}</span>
                         </div>
                       ))}
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 ))}
               </div>
-              <div className="grid md:grid-cols-2 gap-6">
-                <Card className="border-border-primary">
-                  <CardHeader>
-                    <CardTitle>System requirements</CardTitle>
-                  </CardHeader>
-                  <CardContent className="grid md:grid-cols-2 gap-6 text-sm text-foreground-secondary">
-                    <div>
-                      <p className="font-semibold text-foreground-primary mb-2">Minimum</p>
-                      {Object.entries(systemRequirements.minimum).map(([key, value]) => (
-                        <p key={key}>• {value}</p>
-                      ))}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-foreground-primary mb-2">Recommended</p>
-                      {Object.entries(systemRequirements.recommended).map(([key, value]) => (
-                        <p key={key}>• {value}</p>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card className="border-border-primary">
-                  <CardHeader>
-                    <CardTitle>Additional information</CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-sm text-foreground-secondary space-y-4">
-                    <div>
-                      <p className="font-semibold text-foreground-primary mb-2">Installation</p>
-                      <p>• Run installer as Administrator</p>
-                      <p>• Close all flight simulation software</p>
-                      <p>• Allow firewall exceptions when prompted</p>
-                      <p>• Restart computer after installation</p>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-foreground-primary mb-2">Support & updates</p>
-                      <p>• Automatic update notifications</p>
-                      <p>• Free updates for 1 year</p>
-                      <p>• Email support included</p>
-                      <p>• Community forum access</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          )}
 
-          {activeTab === "versions" && (
-            <div className="space-y-6">
-              <div className="text-center space-y-2">
-                <h2 className="text-3xl font-bold">Version history</h2>
-                <p className="text-foreground-secondary">Key releases for CS Bridge.</p>
-              </div>
-              <div className="space-y-4">
-                {versionHistory.map((version) => (
-                  <Card key={version.version} className="border-border-primary">
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <CardTitle>{version.version}</CardTitle>
-                        <p className="text-sm text-foreground-muted">{version.date}</p>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="list-disc pl-6 text-sm text-foreground-secondary space-y-1">
-                        {version.changes.map((change) => (
-                          <li key={change}>{change}</li>
+              <div className="grid md:grid-cols-2 gap-8 mt-12">
+                <div className="card-apple p-8 bg-background-primary">
+                  <h3 className="text-xl font-semibold mb-6">System Requirements</h3>
+                  <div className="grid sm:grid-cols-2 gap-8">
+                    <div>
+                      <h4 className="text-sm font-semibold text-foreground-muted uppercase tracking-wide mb-4">Minimum</h4>
+                      <div className="space-y-2 text-sm text-foreground-secondary">
+                        {Object.entries(systemRequirements.minimum).map(([key, value]) => (
+                          <p key={key} className="flex gap-2"><span className="text-foreground-muted">•</span> {value}</p>
                         ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold text-foreground-muted uppercase tracking-wide mb-4">Recommended</h4>
+                      <div className="space-y-2 text-sm text-foreground-secondary">
+                        {Object.entries(systemRequirements.recommended).map(([key, value]) => (
+                          <p key={key} className="flex gap-2"><span className="text-foreground-muted">•</span> {value}</p>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card-apple p-8 bg-background-primary">
+                  <h3 className="text-xl font-semibold mb-6">Installation Guide</h3>
+                  <div className="space-y-6">
+                    <div>
+                      <h4 className="text-sm font-semibold text-foreground-primary mb-2">Setup</h4>
+                      <ul className="space-y-2 text-sm text-foreground-secondary">
+                        <li className="flex gap-2"><Check className="w-4 h-4 text-brand-blue-500" /> Run installer as Administrator</li>
+                        <li className="flex gap-2"><Check className="w-4 h-4 text-brand-blue-500" /> Close simulators before install</li>
+                        <li className="flex gap-2"><Check className="w-4 h-4 text-brand-blue-500" /> Restart after completion</li>
                       </ul>
-                    </CardContent>
-                  </Card>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold text-foreground-primary mb-2">Support</h4>
+                      <p className="text-sm text-foreground-secondary">
+                        Includes automatic updates and 1 year of free technical support via email and community forums.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Versions Tab */}
+          {activeTab === "versions" && (
+            <div className="space-y-16 animate-fade-in">
+              <div className="text-center max-w-3xl mx-auto space-y-4">
+                <h2 className="section-headline">Evolving Platform.</h2>
+                <p className="text-xl text-foreground-secondary">
+                  Continuous improvements and new features.
+                </p>
+              </div>
+
+              <div className="max-w-3xl mx-auto space-y-6">
+                {versionHistory.map((version, index) => (
+                  <div key={version.version} className="card-apple p-8 bg-background-primary relative overflow-hidden">
+                    {index === 0 && (
+                      <div className="absolute top-0 right-0 bg-brand-blue-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                        LATEST
+                      </div>
+                    )}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2">
+                      <h3 className="text-2xl font-bold text-foreground-primary">{version.version}</h3>
+                      <span className="text-sm text-foreground-muted font-medium bg-background-secondary px-3 py-1 rounded-full">
+                        {version.date}
+                      </span>
+                    </div>
+                    <ul className="space-y-3">
+                      {version.changes.map((change) => (
+                        <li key={change} className="flex items-start gap-3 text-foreground-secondary">
+                          <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-blue-500 shrink-0" />
+                          <span>{change}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
               </div>
             </div>
           )}
 
+          {/* Download Tab */}
           {activeTab === "download" && (
-            <div className="space-y-6 text-center max-w-3xl mx-auto">
-              <h2 className="text-3xl font-bold">Ready to connect your hardware?</h2>
-              <p className="text-lg text-foreground-secondary">
-                Download CS Bridge today and experience seamless integration between your cockpit hardware and flight simulation software.
+            <div className="text-center max-w-2xl mx-auto py-12 animate-fade-in">
+              <div className="mb-8 inline-flex p-4 rounded-full bg-brand-blue-50 text-brand-blue-600">
+                <Download className="w-8 h-8" />
+              </div>
+              <h2 className="section-headline mb-6">Start Your Journey.</h2>
+              <p className="text-xl text-foreground-secondary mb-10">
+                Download CS Bridge today and experience the next level of flight simulation immersion.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-primary-500 hover:bg-primary-600 text-white px-8 py-4 text-lg font-semibold">
-                  <Download className="h-5 w-5 mr-2" /> Download Now
-                </Button>
-                <Button variant="outline" size="lg" className="px-8 py-4 text-lg font-semibold">
+                <button className="btn-apple btn-apple-large w-full sm:w-auto">
+                  Download for Windows
+                </button>
+                <button className="px-8 py-3 rounded-full border border-border-primary text-foreground-primary font-medium hover:bg-background-secondary transition-colors w-full sm:w-auto">
                   Contact Support
-                </Button>
+                </button>
               </div>
+              <p className="mt-8 text-sm text-foreground-muted">
+                Requires Windows 10/11 (64-bit) • v2025.2.3 • 145 MB
+              </p>
             </div>
           )}
         </div>
-      </section>
+      </div>
     </div>
   )
 }

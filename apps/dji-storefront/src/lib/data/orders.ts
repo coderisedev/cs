@@ -47,6 +47,7 @@ export const listOrders = async (
       query: {
         limit,
         offset,
+        order: "-created_at", // Sort by newest first
         fields: "*payment_collections,*items,*items.variant,*items.product",
       },
       headers,

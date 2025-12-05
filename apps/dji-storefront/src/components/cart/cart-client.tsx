@@ -56,7 +56,7 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
               Add some products to get started
             </p>
             <Link href={`/${countryCode}/products`}>
-              <Button>Continue Shopping</Button>
+              <Button className="rounded-full">Continue Shopping</Button>
             </Link>
           </CardContent>
         </Card>
@@ -90,7 +90,7 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
             const variant = item.variant
             const isUpdating = updatingLineId === item.id
             const thumbnail = item.thumbnail || product?.thumbnail
-            
+
             return (
               <Card key={item.id} className={isUpdating ? "opacity-60" : ""}>
                 <CardContent className="p-6">
@@ -139,7 +139,7 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="h-8 w-8 p-0"
+                            className="h-8 w-8 p-0 rounded-full"
                             onClick={() => handleUpdateQuantity(item.id, (item.quantity || 1) - 1)}
                             disabled={isPending || (item.quantity || 1) <= 1}
                           >
@@ -151,7 +151,7 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="h-8 w-8 p-0"
+                            className="h-8 w-8 p-0 rounded-full"
                             onClick={() => handleUpdateQuantity(item.id, (item.quantity || 1) + 1)}
                             disabled={isPending}
                           >
@@ -161,7 +161,7 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50 rounded-full"
                           onClick={() => handleRemoveItem(item.id)}
                           disabled={isPending}
                         >
@@ -186,7 +186,7 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
           <Card className="bg-background-secondary">
             <CardContent className="p-6 space-y-4">
               <h2 className="text-xl font-semibold text-foreground-primary">Order Summary</h2>
-              
+
               <div className="space-y-2 py-4 border-y border-border-primary">
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Subtotal</span>
@@ -210,7 +210,7 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
               </div>
 
               <Link href={`/${countryCode}/checkout`} className="block w-full">
-                <Button className="w-full" size="lg" disabled={isPending}>
+                <Button className="w-full rounded-full" size="lg" disabled={isPending}>
                   {isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -223,7 +223,7 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
               </Link>
 
               <Link href={`/${countryCode}/products`} className="block">
-                <Button variant="outline" className="w-full" disabled={isPending}>
+                <Button variant="outline" className="w-full rounded-full" disabled={isPending}>
                   Continue Shopping
                 </Button>
               </Link>

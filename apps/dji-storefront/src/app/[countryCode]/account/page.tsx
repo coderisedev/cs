@@ -14,11 +14,14 @@ export const revalidate = 0
 
 type AccountPageProps = {
   params: Promise<{ countryCode?: string }>
+  searchParams: Promise<{ tab?: string }>
 }
 
-export default async function AccountPage({ params }: AccountPageProps) {
+export default async function AccountPage({ params, searchParams }: AccountPageProps) {
   const resolvedParams = (await params) ?? {}
+  const resolvedSearchParams = (await searchParams) ?? {}
   const countryCode = resolvedParams.countryCode ?? DEFAULT_COUNTRY_CODE
+  const defaultTab = resolvedSearchParams.tab
   const data = await getAccountPageData()
 
   if (!data.user) {
@@ -34,6 +37,7 @@ export default async function AccountPage({ params }: AccountPageProps) {
       orders={data.orders}
       wishlist={data.wishlist}
       onSignOut={boundSignout}
+      defaultTab={defaultTab}
     />
   )
 }

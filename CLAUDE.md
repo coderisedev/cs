@@ -203,7 +203,81 @@ rg "{project-root}" bmad -g'*.*'
 
 - **Local**: docker-compose.local.yml with Postgres/Redis
 - **Preview**: Per PR via Vercel + ephemeral Railway DB
+- **GCE Dev/Prod**: Docker containers on GCE VM with host Postgres/Redis
 - **Staging/Production**: Managed services with Railway + Vercel
+
+### GCE Docker Deployment
+
+The `deploy/gce/` directory contains Docker deployment configurations for GCE VM:
+
+```
+deploy/gce/
+├── .env.dev          # Dev environment variables
+├── .env.prod         # Prod environment variables
+├── docker-compose.yml # Production compose (ports 9000, 1337)
+└── dev/
+    └── docker-compose.yml # Dev compose (ports 9001, 1338)
+```
+
+**Build and Deploy Medusa (from project root):**
+
+```bash
+# Build Medusa image (must run from project root due to monorepo structure)
+docker build -t cs-medusa:dev -f apps/medusa/Dockerfile .
+docker build -t cs-medusa:prod -f apps/medusa/Dockerfile .
+
+# Deploy dev environment
+cd deploy/gce/dev
+docker compose -p cs-dev --env-file ../.env.dev up -d medusa_dev
+
+# Deploy prod environment
+cd deploy/gce
+docker compose -p cs-prod up -d medusa
+```
+
+**Build and Deploy Strapi:**
+
+```bash
+docker build -t cs-strapi:dev -f apps/strapi/Dockerfile .
+docker build -t cs-strapi:prod -f apps/strapi/Dockerfile .
+
+# Deploy follows same pattern as Medusa
+```
+
+**Key Configuration Notes:**
+
+- Medusa Dockerfile removed hardcoded `NODE_ENV=production` to support both dev/prod modes
+- Dev containers use `NODE_ENV=development` for Vite hot-reload admin UI
+- Host networking uses `host.docker.internal` mapping (172.31.0.1 for dev network)
+- Redis must bind to Docker bridge IP (configure in `/etc/redis/redis.conf`)
+- Admin UI requires `admin.vite.server.allowedHosts` in `medusa-config.ts` for custom domains
+
+**Port Mapping:**
+
+| Service     | Dev Port | Prod Port |
+|-------------|----------|-----------|
+| Medusa      | 9001     | 9000      |
+| Strapi      | 1338     | 1337      |
+
+**Useful Commands:**
+
+```bash
+# Check container logs
+docker logs cs-dev-medusa_dev-1 --tail 50
+
+# Restart container
+docker restart cs-dev-medusa_dev-1
+
+# Force recreate with new image
+docker compose -p cs-dev --env-file ../.env.dev up -d medusa_dev --force-recreate
+
+# Reset Medusa admin password (via scrypt-kdf in container)
+docker exec cs-dev-medusa_dev-1 node -e "
+const scrypt = require('scrypt-kdf');
+scrypt.kdf('NewPassword123', { logN: 15, r: 8, p: 1 }).then(h => console.log(h.toString('base64')));
+"
+# Then update provider_identity table with the hash
+```
 
 ### Infrastructure
 

@@ -87,127 +87,167 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
   }
 
   return (
-    <div className="container py-6 space-y-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold text-foreground-primary">All Products</h1>
-        <p className="text-foreground-secondary">Discover our professional flight simulator hardware collection.</p>
-      </header>
-
-      <section className="bg-background-secondary rounded-2xl shadow-card p-6 space-y-4">
-        <div className="lg:hidden">
-          <Button variant="outline" className="w-full" onClick={() => setShowFilters((prev) => !prev)}>
-            <Filter className="mr-2 h-4 w-4" /> Filters & Sort
-            <ChevronDown className={`ml-2 h-4 w-4 transition-transform ${showFilters ? "rotate-180" : ""}`} />
-          </Button>
-        </div>
-
-        <div className={`grid grid-cols-1 gap-4 lg:grid-cols-12 ${showFilters ? "block" : "hidden lg:grid"}`}>
-          <div className="lg:col-span-4 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground-muted" />
-            <Input
-              type="text"
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-
-          <div className="lg:col-span-3">
-            <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
-                    {category.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="lg:col-span-3">
-            <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                {sortOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="lg:col-span-2 flex gap-2">
-            <div className="flex border border-border-primary rounded-base">
-              <Button
-                variant={viewMode === "grid" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setViewMode("grid")}
-                className="rounded-r-none"
-              >
-                <Grid className="h-4 w-4" />
-              </Button>
-              <Button
-                variant={viewMode === "list" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => setViewMode("list")}
-                className="rounded-l-none"
-              >
-                <List className="h-4 w-4" />
-              </Button>
-            </div>
-            <Button variant="outline" size="sm" onClick={clearFilters}>
-              Clear
-            </Button>
+    <div className="min-h-screen bg-background-secondary">
+      {/* Hero Section */}
+      <div className="relative bg-gray-950 py-24 sm:py-32 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: "url('https://img.aidenlux.com/medusa-uploads/hero.jpg')" }}
+          >
+            <div className="absolute inset-0 bg-black/60" />
           </div>
         </div>
-      </section>
-
-      <div className="flex justify-between items-center">
-        <p className="text-sm text-foreground-muted">
-          Showing {filteredProducts.length} products
-          {selectedCategory !== "all" && (
-            <span className="ml-1">· {categories.find((c) => c.id === selectedCategory)?.title}</span>
-          )}
-        </p>
+        <div className="container relative z-10 text-center space-y-6">
+          <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight">
+            All Products
+          </h1>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            Discover our professional flight simulator hardware collection. <br className="hidden sm:block" />
+            Engineered for precision, built for pilots.
+          </p>
+        </div>
       </div>
 
-      {filteredProducts.length > 0 ? (
-        <div
-          className={
-            viewMode === "grid"
-              ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-              : "space-y-4"
-          }
-        >
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} viewMode={viewMode} countryCode={countryCode} />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <div className="text-foreground-muted mb-4">
-            <Search className="h-12 w-12 mx-auto" />
-          </div>
-          <h3 className="text-lg font-semibold text-foreground-primary mb-2">No Products Found</h3>
-          <p className="text-foreground-muted mb-4">Try adjusting your search criteria or clear the filters</p>
-          <Button onClick={clearFilters} variant="outline">
-            Clear All Filters
-          </Button>
-        </div>
-      )}
+      {/* Sticky Filter Bar */}
+      <div className="sticky top-0 z-40 w-full border-b border-white/5 bg-background-primary/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background-primary/60">
+        <div className="container py-4">
+          <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+            {/* Mobile Filter Toggle */}
+            <div className="lg:hidden w-full">
+              <Button variant="outline" className="w-full justify-between" onClick={() => setShowFilters((prev) => !prev)}>
+                <span className="flex items-center gap-2">
+                  <Filter className="h-4 w-4" /> Filters & Sort
+                </span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${showFilters ? "rotate-180" : ""}`} />
+              </Button>
+            </div>
 
-      {filteredProducts.length >= 12 && (
-        <div className="text-center">
-          <Button variant="outline">Load More Products</Button>
+            {/* Filters Content */}
+            <div className={`w-full lg:flex lg:items-center lg:gap-4 ${showFilters ? "flex flex-col gap-4" : "hidden"}`}>
+
+              {/* Search */}
+              <div className="relative flex-1 min-w-[240px]">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground-muted" />
+                <Input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 bg-background-elevated border-transparent focus:border-brand-blue-500 transition-all"
+                />
+              </div>
+
+              {/* Category Select */}
+              <div className="w-full lg:w-[200px]">
+                <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value)}>
+                  <SelectTrigger className="bg-background-elevated border-transparent">
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Sort Select */}
+              <div className="w-full lg:w-[200px]">
+                <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
+                  <SelectTrigger className="bg-background-elevated border-transparent">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {sortOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* View Mode & Clear */}
+              <div className="flex items-center gap-2 ml-auto">
+                <div className="flex bg-background-elevated rounded-lg p-1">
+                  <button
+                    onClick={() => setViewMode("grid")}
+                    className={`p-2 rounded-md transition-all ${viewMode === "grid" ? "bg-white shadow-sm text-black" : "text-foreground-muted hover:text-foreground-primary"}`}
+                  >
+                    <Grid className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode("list")}
+                    className={`p-2 rounded-md transition-all ${viewMode === "list" ? "bg-white shadow-sm text-black" : "text-foreground-muted hover:text-foreground-primary"}`}
+                  >
+                    <List className="h-4 w-4" />
+                  </button>
+                </div>
+                {/* Clear Filters (Only show if filters are active) */}
+                {(searchQuery || selectedCategory !== "all" || sortBy !== "featured") && (
+                  <Button variant="ghost" size="sm" onClick={clearFilters} className="text-foreground-muted hover:text-semantic-error">
+                    Clear
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
+
+      {/* Product Grid */}
+      <div className="container py-12 lg:py-16">
+        <div className="flex justify-between items-center mb-8">
+          <p className="text-sm text-foreground-muted">
+            Showing <span className="font-medium text-foreground-primary">{filteredProducts.length}</span> products
+            {selectedCategory !== "all" && (
+              <span> in <span className="font-medium text-foreground-primary">{categories.find((c) => c.id === selectedCategory)?.title}</span></span>
+            )}
+          </p>
+        </div>
+
+        {filteredProducts.length > 0 ? (
+          <div
+            className={
+              viewMode === "grid"
+                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12"
+                : "space-y-6"
+            }
+          >
+            {filteredProducts.map((product, index) => (
+              <div
+                key={product.id}
+                className="animate-fade-in opacity-0 fill-mode-forwards"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <ProductCard product={product} viewMode={viewMode} countryCode={countryCode} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-24 bg-background-secondary/50 rounded-3xl border border-dashed border-border-primary">
+            <div className="text-foreground-muted mb-6">
+              <Search className="h-16 w-16 mx-auto opacity-20" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground-primary mb-2">No Products Found</h3>
+            <p className="text-foreground-muted mb-8 max-w-md mx-auto">
+              We couldn&apos;t find any products matching your search. Try adjusting your filters or search terms.
+            </p>
+            <Button onClick={clearFilters} variant="outline" className="px-8">
+              Clear All Filters
+            </Button>
+          </div>
+        )}
+
+        {filteredProducts.length >= 12 && (
+          <div className="text-center mt-16">
+            <Button variant="outline" size="lg" className="px-12">Load More Products</Button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

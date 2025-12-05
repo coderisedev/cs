@@ -1,0 +1,123 @@
+import Image from 'next/image';
+import { FeaturedProduct } from '@/lib/strapi/homepage';
+import { resolveStrapiMedia } from '@/lib/strapi/client';
+import { CTAButton } from './cta-button';
+
+interface ProductTileProps {
+    product: FeaturedProduct;
+}
+
+export function ProductTile({ product }: ProductTileProps) {
+    const imageUrl = product.heroImage?.url
+        ? resolveStrapiMedia(product.heroImage.url)
+        : null;
+
+    // Force light background for all cards
+    // Use product's background if it's explicitly white, otherwise default to #F5F5F7
+    const backgroundColor =
+        product.backgroundColor?.toLowerCase() === '#ffffff' ||
+            product.backgroundColor?.toLowerCase() === '#fff'
+            ? '#ffffff'
+            : '#F5F5F7';
+
+    const textColor = '#1D1D1F';
+
+    return (
+        <div
+            className="relative w-full h-[400px] md:h-[500px] overflow-hidden group cursor-pointer transition-all duration-300 shadow-sm hover:shadow-card border border-black/5"
+            style={{
+                backgroundColor: backgroundColor,
+                color: textColor,
+            }}
+        >
+            {/* Background Image */}
+            {imageUrl && (
+                <div className="absolute inset-0 z-0 h-full">
+                    <Image
+                        src={imageUrl}
+                        alt={product.heroImage?.alternativeText || product.title}
+                        fill
+                        className="object-cover object-center transition-transform duration-500"
+                        quality={80}
+                    />
+                </div>
+            )}
+
+            {/* Content */}
+            <div className="relative z-10 h-full flex flex-col p-8 justify-start pt-10 items-center text-center">
+
+
+                {/* Title */}
+                <h3 className="text-2xl md:text-3xl font-bold mb-2 leading-tight">
+                    {product.title}
+                </h3>
+
+                {/* Subtitle */}
+                {product.subtitle && (
+                    <p className="text-base md:text-lg font-medium mb-4 opacity-95">
+                        {product.subtitle}
+                    </p>
+                )}
+
+                {product.ctaButtons && product.ctaButtons.length > 0 && (
+                    <div className="flex flex-wrap gap-4 justify-center">
+                        {product.ctaButtons.slice(0, 2).map((cta, index) => (
+                            <CTAButton
+                                key={index}
+                                label={cta.label}
+                                url={cta.url}
+                                style={index === 0 ? 'primary' : 'secondary'}
+                                openInNewTab={cta.openInNewTab}
+                                className="text-sm md:text-base"
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
+
+
+        </div>
+    );
+}
+
+interface ProductGridProps {
+    products: FeaturedProduct[];
+    columns?: 'cols_2' | 'cols_3' | 'cols_4';
+    layout?: 'grid' | 'masonry' | 'carousel';
+}
+
+export function ProductGrid({
+    products,
+    columns = 'cols_2',
+    layout = 'grid',
+}: ProductGridProps) {
+    const gridColsClass = {
+        'cols_2': 'md:grid-cols-2',
+        'cols_3': 'md:grid-cols-3',
+        'cols_4': 'md:grid-cols-4',
+    };
+
+    if (layout === 'carousel') {
+        return (
+            <div className="overflow-x-auto pb-8">
+                <div className="flex gap-4 px-4 container mx-auto">
+                    {products.map((product) => (
+                        <div key={product.id} className="flex-shrink-0 w-[90vw] md:w-[45vw] lg:w-[30vw]">
+                            <ProductTile product={product} />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="w-full px-4 py-4">
+            <div className={`grid grid-cols-1 ${gridColsClass[columns]} gap-4`}>
+                {products.map((product) => (
+                    <ProductTile key={product.id} product={product} />
+                ))}
+            </div>
+        </div>
+    );
+}

@@ -2,7 +2,8 @@ services:
   medusa_dev:
     image: ${MEDUSA_DEV_IMAGE:-cs-medusa:dev}
     restart: unless-stopped
-    env_file: ../.env.dev
+    env_file:
+      - ../.env.dev
     extra_hosts:
       - "host.docker.internal:172.31.0.1"
     environment:
@@ -34,7 +35,8 @@ services:
   strapi_dev:
     image: ${STRAPI_DEV_IMAGE:-cs-strapi:dev}
     restart: unless-stopped
-    env_file: ../.env.dev
+    env_file:
+      - ../.env.dev
     extra_hosts:
       - "host.docker.internal:172.31.0.1"
     environment:
@@ -69,9 +71,6 @@ services:
     networks:
       - cs-dev-net
 
-volumes:
-  strapi_uploads_dev:
-
 networks:
   cs-dev-net:
     driver: bridge
@@ -79,3 +78,6 @@ networks:
       config:
         - subnet: 172.31.0.0/16
           gateway: 172.31.0.1
+
+volumes:
+  strapi_uploads_dev:

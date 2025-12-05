@@ -12,14 +12,18 @@
   "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "maxLength": 255
     },
     "slug": {
       "type": "uid",
-      "targetField": "title"
+      "targetField": "title",
+      "required": true
     },
     "excerpt": {
-      "type": "string"
+      "type": "string",
+      "maxLength": 500
     },
     "content": {
       "type": "richtext"
@@ -39,6 +43,11 @@
     },
     "category": {
       "type": "string"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
     }
   }
 }

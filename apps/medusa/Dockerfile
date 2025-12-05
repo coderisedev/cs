@@ -34,7 +34,6 @@ FROM node:20-bookworm-slim AS runner
 ENV PNPM_HOME=/root/.local/share/pnpm
 ENV PATH=${PNPM_HOME}:${PATH}
 ENV PNPM_NODE_LINKER=hoisted
-ENV NODE_ENV=production
 ENV NODE_PATH=/srv/app/apps/medusa/node_modules:/srv/app/node_modules/.pnpm/node_modules
 ENV CI=true
 
@@ -51,8 +50,6 @@ COPY --from=builder /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/apps ./apps
 COPY --from=builder /app/packages ./packages
-
-RUN pnpm install --filter medusa --prod --frozen-lockfile
 
 EXPOSE 9000
 

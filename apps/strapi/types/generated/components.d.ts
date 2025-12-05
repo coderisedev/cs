@@ -9,6 +9,50 @@ export interface BlogAuthor extends Struct.ComponentSchema {
   attributes: {};
 }
 
+export interface HomepageCtaButton extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_cta_buttons';
+  info: {
+    description: '\u53EF\u91CD\u7528\u7684\u884C\u52A8\u53F7\u53EC\u6309\u94AE\u7EC4\u4EF6';
+    displayName: 'CTA Button';
+    icon: 'cursor';
+  };
+  attributes: {
+    icon: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 50;
+      }>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 50;
+      }>;
+    openInNewTab: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    style: Schema.Attribute.Enumeration<['primary', 'secondary', 'text']> &
+      Schema.Attribute.DefaultTo<'primary'>;
+    url: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface HomepageProductHighlight extends Struct.ComponentSchema {
+  collectionName: 'components_homepage_product_highlights';
+  info: {
+    description: '\u4EA7\u54C1\u4EAE\u70B9\u4FE1\u606F\u7EC4\u4EF6';
+    displayName: 'Product Highlight';
+    icon: 'star';
+  };
+  attributes: {
+    description: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 300;
+      }>;
+    icon: Schema.Attribute.Media<'images'>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+  };
+}
+
 export interface MarketingEmbedMedia extends Struct.ComponentSchema {
   collectionName: 'components_marketing_embed_media';
   info: {
@@ -129,6 +173,8 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'blog.author': BlogAuthor;
+      'homepage.cta-button': HomepageCtaButton;
+      'homepage.product-highlight': HomepageProductHighlight;
       'marketing.embed-media': MarketingEmbedMedia;
       'marketing.feature': MarketingFeature;
       'marketing.stat': MarketingStat;

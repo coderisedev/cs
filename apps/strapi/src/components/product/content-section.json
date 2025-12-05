@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_product_content_sections",
+  "info": {
+    "displayName": "Content Section",
+    "description": "Mixed media section with title, description, and optional media",
+    "icon": "layout"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "maxLength": 50
+    },
+    "heading": {
+      "type": "string",
+      "required": true,
+      "maxLength": 150
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "media": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images", "videos"]
+    },
+    "media_position": {
+      "type": "enumeration",
+      "enum": ["left", "right", "top", "bottom", "content-bottom"],
+      "default": "right"
+    },
+    "theme": {
+      "type": "enumeration",
+      "enum": ["light", "gray"],
+      "default": "light"
+    }
+  }
+}
