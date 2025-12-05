@@ -3,6 +3,7 @@
 import { updateCart, retrieveCart, setShippingMethod, initiatePaymentSession, listCartOptions } from "@/lib/data/cart"
 import { placeOrder, placeOrderAndGetId } from "@/lib/data/checkout"
 import { HttpTypes } from "@medusajs/types"
+import { logger } from "@/lib/logger"
 
 // PayPal provider ID format: pp_{id}_{module_name}
 const PAYPAL_PROVIDER_ID = "pp_paypal_paypal"
@@ -71,6 +72,10 @@ export async function preparePayPalCheckoutAction(
     }
 
     const firstShippingOption = shippingOptions.shipping_options[0]
+    if (!firstShippingOption?.id) {
+      return { error: "Invalid shipping option. Please try again." }
+    }
+
     await setShippingMethod({
       cartId: cartWithAddress.id,
       shippingMethodId: firstShippingOption.id,
@@ -97,7 +102,7 @@ export async function preparePayPalCheckoutAction(
     return { paypalOrderId }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : null
-    console.error("Error preparing PayPal checkout:", error)
+    logger.error("Error preparing PayPal checkout", error)
     return { error: message || "Failed to prepare checkout. Please try again." }
   }
 }
@@ -113,7 +118,7 @@ export async function completePayPalOrderAction(
     return { redirectUrl: result.redirectUrl }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : null
-    console.error("Error completing PayPal order:", error)
+    logger.error("Error completing PayPal order", error)
     return { error: message || "Failed to complete order. Please try again." }
   }
 }
@@ -122,7 +127,7 @@ export async function updateCartEmailAction(email: string) {
   try {
     await updateCart({ email })
   } catch (error) {
-    console.error("Error updating cart email:", error)
+    logger.error("Error updating cart email", error)
     throw error
   }
 }
@@ -194,6 +199,10 @@ export async function placeOrderAction(_currentState: unknown, formData: FormDat
 
     // Step 4: Set the first available shipping method
     const firstShippingOption = shippingOptions.shipping_options[0]
+    if (!firstShippingOption?.id) {
+      return "Invalid shipping option. Please try again."
+    }
+
     await setShippingMethod({
       cartId: cartWithAddress.id,
       shippingMethodId: firstShippingOption.id,
@@ -218,7 +227,7 @@ export async function placeOrderAction(_currentState: unknown, formData: FormDat
     return "Order placement failed. Please try again."
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : null
-    console.error("Error placing order:", error)
+    logger.error("Error placing order", error)
     return message || "Failed to place order. Please check your information and try again."
   }
 }
@@ -294,6 +303,10 @@ export async function placeOrderWithPayPalAction(
     }
 
     const firstShippingOption = shippingOptions.shipping_options[0]
+    if (!firstShippingOption?.id) {
+      return { error: "Invalid shipping option. Please try again." }
+    }
+
     await setShippingMethod({
       cartId: cartWithAddress.id,
       shippingMethodId: firstShippingOption.id,
@@ -321,7 +334,7 @@ export async function placeOrderWithPayPalAction(
     return undefined
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : null
-    console.error("Error placing PayPal order:", error)
+    logger.error("Error placing PayPal order", error)
     return { error: message || "Failed to process PayPal payment. Please try again." }
   }
 }

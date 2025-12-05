@@ -6,6 +6,7 @@ import { setAuthToken, getCacheTag } from "@/lib/server/cookies"
 import { transferCart } from "@/lib/actions/auth"
 import { buildDefaultAccountPath, sanitizeRedirectPath } from "@/lib/util/redirect"
 import { getMedusaPublishableKey } from "@/lib/publishable-key"
+import { logger } from "@/lib/logger"
 
 const DEFAULT_REDIRECT = buildDefaultAccountPath()
 
@@ -20,6 +21,9 @@ type PopupPayload =
 type OAuthCallbackQuery = Record<string, string>
 
 const buildPopupResponse = (payload: PopupPayload) => {
+  // Get the target origin for postMessage security
+  const targetOrigin = process.env.STOREFRONT_BASE_URL || "http://localhost:3000"
+
   const responseBody = `<!doctype html>
   <html>
     <body style="font-family:sans-serif;padding:2rem;">
@@ -27,15 +31,19 @@ const buildPopupResponse = (payload: PopupPayload) => {
       <script>
         (function() {
           const message = ${JSON.stringify(payload)};
+          const targetOrigin = ${JSON.stringify(targetOrigin)};
           if (window.opener && !window.opener.closed) {
             try {
-              // Send to any origin; the opener validates event.origin.
-              window.opener.postMessage(message, "*");
+              // Send to specific origin for security; the opener also validates event.origin
+              window.opener.postMessage(message, targetOrigin);
             } catch (err) {
-              console.warn('Unable to postMessage to opener', err);
+              // Fallback: try current origin if targetOrigin doesn't match
+              try {
+                window.opener.postMessage(message, window.location.origin);
+              } catch (e) {
+                // Silent fail - opener will handle timeout
+              }
             }
-            // Do not navigate the opener here; let the opener handle
-            // session persistence first, then navigate.
           }
           setTimeout(() => window.close(), 250);
         })();
@@ -78,7 +86,7 @@ export async function GET(request: NextRequest) {
     const tokenCandidate = (await sdk.auth.callback("customer", "google", queryParams)) as unknown as string
 
     if (typeof tokenCandidate === "string" && tokenCandidate) {
-      console.log(`[auth] google callback exchanged token via sdk at`, new Date().toISOString())
+      logger.debug("[auth] google callback exchanged token via sdk")
       const token = tokenCandidate as string
       await setAuthToken(token)
       const customerCacheTag = await getCacheTag("customers")
@@ -115,16 +123,16 @@ export async function GET(request: NextRequest) {
                   headers: { ...headers, "Content-Type": "application/json" },
                   body: JSON.stringify({ email }),
                 }).catch((creationError) => {
-                  console.warn("Failed to bootstrap Medusa customer via Google fallback", creationError)
+                  logger.warn("Failed to bootstrap Medusa customer via Google fallback", { error: creationError })
                 })
               }
             } catch (decodeError) {
-              console.warn("Failed to decode Google token payload for Medusa bootstrap", decodeError)
+              logger.warn("Failed to decode Google token payload for Medusa bootstrap", { error: decodeError })
             }
           }
         }
       } catch (verificationError) {
-        console.warn("Unable to verify Google-authenticated customer", verificationError)
+        logger.warn("Unable to verify Google-authenticated customer", { error: verificationError })
       }
 
       const response = buildPopupResponse({
