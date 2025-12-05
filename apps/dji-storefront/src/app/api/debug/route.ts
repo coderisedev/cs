@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { getProductDetail } from "@/lib/data/products"
 import { getProductDetailContent } from "@/lib/strapi/product-detail"
+import { getReviewsByProduct } from "@/lib/data/reviews"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -27,11 +28,25 @@ export async function GET(request: Request) {
       success: true,
       productFound: !!product,
       productTitle: product?.title || null,
+      productPrice: product?.price,
+      productImages: product?.images?.length || 0,
+      productVariants: product?.variants?.length || 0,
+      productRating: product?.rating,
+      productReviewCount: product?.reviewCount,
+    }
+
+    // Test reviews
+    if (product) {
+      const reviews = getReviewsByProduct(product.id)
+      results.reviews = {
+        count: reviews.length,
+      }
     }
   } catch (error) {
     results.medusa = {
       success: false,
       error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
     }
   }
 
