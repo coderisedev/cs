@@ -10,6 +10,12 @@ export default ({ env }) => {
     return hosts.length ? [...directives, ...hosts] : directives
   }
 
+  // Parse CORS origins from environment variable (comma-separated)
+  const corsOrigins = env('CORS_ORIGINS', 'http://localhost:3000')
+    .split(',')
+    .map((origin: string) => origin.trim())
+    .filter(Boolean)
+
   return [
     'strapi::logger',
     'strapi::errors',
@@ -25,7 +31,16 @@ export default ({ env }) => {
         },
       },
     },
-    'strapi::cors',
+    {
+      name: 'strapi::cors',
+      config: {
+        enabled: true,
+        origin: corsOrigins,
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+        headers: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
+      },
+    },
     'strapi::poweredBy',
     'strapi::query',
     'strapi::body',

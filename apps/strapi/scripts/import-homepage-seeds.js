@@ -1,16 +1,23 @@
 /**
  * Import script for featured products sample data
  * Run with: npm run seed:homepage
+ *
+ * Environment variables:
+ * - STRAPI_URL: Base URL of Strapi server (default: http://localhost:1337)
  */
 
 const fs = require('fs');
 const path = require('path');
 
+// Use environment variable for Strapi URL with localhost fallback
+const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337';
+
 async function importData() {
     const sampleData = require('./sample-data');
 
     try {
-        console.log('🚀 Starting data import...\n');
+        console.log('🚀 Starting data import...');
+        console.log(`📡 Using Strapi URL: ${STRAPI_URL}\n`);
 
         // Import Featured Products
         console.log('📦 Importing featured products...');
@@ -19,7 +26,7 @@ async function importData() {
         for (const product of sampleData.featuredProducts) {
             console.log(`  - Creating: ${product.title} (${product.displaySize})`);
 
-            const response = await fetch('http://localhost:1337/api/featured-products', {
+            const response = await fetch(`${STRAPI_URL}/api/featured-products`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,7 +57,7 @@ async function importData() {
             productGrid: layout.productGridSlugs.map(slug => createdProducts[slug]),
         };
 
-        const layoutResponse = await fetch('http://localhost:1337/api/homepage-layout', {
+        const layoutResponse = await fetch(`${STRAPI_URL}/api/homepage-layout`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -69,7 +76,7 @@ async function importData() {
         console.log('\n📊 Summary:');
         console.log(`  - Featured Products: ${Object.keys(createdProducts).length}`);
         console.log(`  - Homepage Layout: Configured`);
-        console.log('\n🌐 View your homepage at: http://localhost:1337/api/homepage-layout?populate=deep');
+        console.log(`\n🌐 View your homepage at: ${STRAPI_URL}/api/homepage-layout?populate=deep`);
 
     } catch (error) {
         console.error('❌ Import failed:', error);

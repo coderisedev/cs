@@ -1,13 +1,13 @@
 /**
  * Migration script to add hero_media component to existing New Release records
- * 
+ *
  * Usage:
  * 1. Start Strapi in develop mode
  * 2. Run: pnpm --filter strapi strapi script scripts/migrate-new-releases.ts
  */
 
 export default async ({ strapi }) => {
-  console.log('Starting migration: Adding hero_media to existing New Release records...');
+  strapi.log.info('Starting migration: Adding hero_media to existing New Release records...');
 
   try {
     // Fetch all New Release entries
@@ -16,7 +16,7 @@ export default async ({ strapi }) => {
       populate: ['hero_media'],
     });
 
-    console.log(`Found ${entries.length} New Release entries`);
+    strapi.log.info(`Found ${entries.length} New Release entries`);
 
     let updated = 0;
     let skipped = 0;
@@ -24,7 +24,7 @@ export default async ({ strapi }) => {
     for (const entry of entries) {
       // Skip if hero_media already exists
       if (entry.hero_media) {
-        console.log(`Skipping entry "${entry.title}" - hero_media already exists`);
+        strapi.log.debug(`Skipping entry "${entry.title}" - hero_media already exists`);
         skipped++;
         continue;
       }
@@ -46,16 +46,16 @@ export default async ({ strapi }) => {
         },
       });
 
-      console.log(`Updated entry "${entry.title}" - added default hero_media`);
+      strapi.log.info(`Updated entry "${entry.title}" - added default hero_media`);
       updated++;
     }
 
-    console.log('\n=== Migration Complete ===');
-    console.log(`Total entries: ${entries.length}`);
-    console.log(`Updated: ${updated}`);
-    console.log(`Skipped: ${skipped}`);
+    strapi.log.info('=== Migration Complete ===');
+    strapi.log.info(`Total entries: ${entries.length}`);
+    strapi.log.info(`Updated: ${updated}`);
+    strapi.log.info(`Skipped: ${skipped}`);
   } catch (error) {
-    console.error('Migration failed:', error);
+    strapi.log.error('Migration failed:', error);
     throw error;
   }
 };

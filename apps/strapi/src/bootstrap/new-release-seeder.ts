@@ -139,13 +139,14 @@ const migrateLegacyHeroMedia = async (strapi: Core.Strapi) => {
       continue
     }
 
+    // Update with hero_media migration data
     await strapi.entityService.update('api::new-release.new-release', entry.id, {
       data: {
         hero_media: {
-          type: 'image',
+          type: 'image' as const,
           asset: entry.legacy_hero_media,
         },
-      } as any,
+      },
     })
 
     strapi.log.info(`Migrated hero media for new release entry ${entry.id}`)
