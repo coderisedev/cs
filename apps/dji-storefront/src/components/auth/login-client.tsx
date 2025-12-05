@@ -276,9 +276,18 @@ export function LoginClient({
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {googleLoginAvailable && (
+              {showSocialLogin && (
                 <div className="mb-6 space-y-4">
-                  {isGoogleOAuthPopupEnabled && <GoogleOAuthPopupButton returnTo={redirectTarget} />}
+                  {activePopupButtons.map((button) => (
+                    <OAuthPopupButton
+                      key={button.id}
+                      provider={button.id}
+                      label={button.label}
+                      icon={button.icon}
+                      returnTo={redirectTarget}
+                      enabled={button.enabled}
+                    />
+                  ))}
                   {isGoogleOneTapEnabled && <GoogleOneTapButton returnTo={redirectTarget} />}
                   <div className="text-center text-xs uppercase tracking-wide text-foreground-muted">
                     or continue with email
