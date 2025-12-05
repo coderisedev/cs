@@ -60,7 +60,7 @@ function formatPrice(amount: number | undefined, currencyCode: string = "USD"): 
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: currencyCode.toUpperCase(),
-  }).format(amount / 100)
+  }).format(amount)
 }
 
 function formatDate(dateString: string | undefined): string {
@@ -73,7 +73,7 @@ function formatDate(dateString: string | undefined): string {
 }
 
 function OrderConfirmationEmailComponent({ order }: OrderConfirmationEmailProps) {
-  const orderNumber = order?.display_id || order?.id?.slice(-8) || "N/A"
+  const orderNumber = String(order?.display_id || order?.id?.slice(-8) || "N/A")
   const currencyCode = order?.currency_code || "USD"
 
   return (
@@ -150,7 +150,7 @@ function OrderConfirmationEmailComponent({ order }: OrderConfirmationEmailProps)
                       </Text>
                     )}
                     <Text className="text-gray-500 text-sm m-0">
-                      Qty: {item.quantity}
+                      Qty: {String(item.quantity)}
                     </Text>
                   </Column>
                   <Column align="right">

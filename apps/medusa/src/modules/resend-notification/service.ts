@@ -14,11 +14,13 @@ import React from "react"
 import { orderConfirmationEmail } from "./emails/order-confirmation"
 import { passwordResetEmail } from "./emails/password-reset"
 import { welcomeEmail } from "./emails/welcome"
+import { otpVerificationEmail } from "./emails/otp-verification"
 
 export enum Templates {
   ORDER_PLACED = "order-placed",
   PASSWORD_RESET = "password-reset",
   CUSTOMER_CREATED = "customer-created",
+  OTP_VERIFICATION = "otp-verification",
 }
 
 type TemplateFunction = (props: unknown) => React.ReactNode
@@ -27,6 +29,7 @@ const templates: { [key in Templates]?: TemplateFunction } = {
   [Templates.ORDER_PLACED]: orderConfirmationEmail,
   [Templates.PASSWORD_RESET]: passwordResetEmail,
   [Templates.CUSTOMER_CREATED]: welcomeEmail,
+  [Templates.OTP_VERIFICATION]: otpVerificationEmail,
 }
 
 type ResendNotificationOptions = {
@@ -105,6 +108,8 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
         return "Reset Your Password"
       case Templates.CUSTOMER_CREATED:
         return "Welcome to Cockpit Simulator"
+      case Templates.OTP_VERIFICATION:
+        return "Your Verification Code"
       default:
         return "Notification from Cockpit Simulator"
     }
