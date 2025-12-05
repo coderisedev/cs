@@ -1,9 +1,12 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
 import type { ICustomerModuleService, IAuthModuleService } from "@medusajs/framework/types"
-import Redis from "ioredis"
 import crypto from "crypto"
 import { getOTPKey, type PendingVerification } from "../../../../../utils/otp"
+import { withDedicatedRedis, safeJsonParse } from "../../../../../utils/redis"
+import { logger, getClientErrorMessage } from "../../../../../utils/logger"
+import { getJwtSecret } from "../../../../../utils/env"
+import { validatePassword, getPasswordRequirements } from "../../../../../utils/password"
 
 interface CompleteBody {
   email: string
@@ -43,118 +46,132 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       })
     }
 
-    if (password.length < 8) {
+    // Validate password strength
+    const passwordValidation = validatePassword(password)
+    if (!passwordValidation.valid) {
       return res.status(400).json({
-        error: "Password must be at least 8 characters",
+        error: passwordValidation.errors[0] || getPasswordRequirements(),
       })
     }
 
     const normalizedEmail = email.toLowerCase().trim()
     const redisKey = getOTPKey(normalizedEmail)
 
-    // Check if email was verified
-    const redisUrl = process.env.REDIS_URL ?? "redis://127.0.0.1:6379"
-    const redis = new Redis(redisUrl)
-    const cachedData = await redis.get(redisKey)
+    // Check if email was verified and complete registration
+    const result = await withDedicatedRedis(async (redis) => {
+      const cachedData = await redis.get(redisKey)
 
-    if (!cachedData) {
-      await redis.quit()
-      return res.status(400).json({
-        error: "Email not verified or verification expired. Please start registration again.",
-      })
-    }
+      if (!cachedData) {
+        return {
+          status: 400,
+          body: { error: "Email not verified or verification expired. Please start registration again." }
+        }
+      }
 
-    const pendingData: PendingVerification = JSON.parse(cachedData)
+      const pendingData = safeJsonParse<PendingVerification>(cachedData)
+      if (!pendingData) {
+        await redis.del(redisKey)
+        return {
+          status: 400,
+          body: { error: "Verification data corrupted. Please start registration again." }
+        }
+      }
 
-    if (!pendingData.verified) {
-      await redis.quit()
-      return res.status(400).json({
-        error: "Email not verified. Please verify your email first.",
-      })
-    }
+      if (!pendingData.verified) {
+        return {
+          status: 400,
+          body: { error: "Email not verified. Please verify your email first." }
+        }
+      }
 
-    // Double-check email doesn't exist in customers
-    const customerService = req.scope.resolve<ICustomerModuleService>(Modules.CUSTOMER)
-    const [existingCustomer] = await customerService.listCustomers(
-      { email: normalizedEmail },
-      { take: 1 }
-    )
+      // Double-check email doesn't exist in customers
+      const customerService = req.scope.resolve<ICustomerModuleService>(Modules.CUSTOMER)
+      const [existingCustomer] = await customerService.listCustomers(
+        { email: normalizedEmail },
+        { take: 1 }
+      )
 
-    if (existingCustomer) {
-      await redis.del(redisKey)
-      await redis.quit()
-      return res.status(409).json({
-        error: "An account with this email already exists.",
-      })
-    }
+      if (existingCustomer) {
+        await redis.del(redisKey)
+        return {
+          status: 409,
+          body: { error: "An account with this email already exists." }
+        }
+      }
 
-    // Create customer profile
-    const customer = await customerService.createCustomers({
-      email: normalizedEmail,
-      first_name: first_name.trim(),
-      last_name: last_name.trim(),
-      phone: phone?.trim() || undefined,
-    })
-
-    // Create auth identity and provider identity for emailpass login
-    const authService = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
-
-    // Hash password in scrypt format
-    const hashedPassword = await hashPasswordScrypt(password)
-
-    // Create auth identity with customer_id in app_metadata
-    const authIdentity = await authService.createAuthIdentities({
-      app_metadata: {
-        customer_id: customer.id,
-      },
-      provider_identities: [
-        {
-          entity_id: normalizedEmail,
-          provider: "emailpass",
-          provider_metadata: {
-            password: hashedPassword,
-          },
-        },
-      ],
-    })
-
-    // Clean up Redis data
-    await redis.del(redisKey)
-    await redis.quit()
-
-    // Generate JWT token
-    const jwtSecret = process.env.JWT_SECRET || "supersecret"
-    const now = Math.floor(Date.now() / 1000)
-    const exp = now + 60 * 60 * 24 * 7 // 7 days
-
-    const token = await signJwtHS256(
-      {
-        actor_type: "customer",
-        actor_id: customer.id,
-        auth_identity_id: authIdentity.id,
-        iat: now,
-        exp,
-        provider: "emailpass",
+      // Create customer profile
+      const customer = await customerService.createCustomers({
         email: normalizedEmail,
-      },
-      jwtSecret
-    )
+        first_name: first_name.trim(),
+        last_name: last_name.trim(),
+        phone: phone?.trim() || undefined,
+      })
 
-    console.log(`Account created for ${normalizedEmail} with auth identity ${authIdentity.id}`)
+      // Create auth identity and provider identity for emailpass login
+      const authService = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
 
-    return res.status(200).json({
-      success: true,
-      token,
-      customer: {
-        id: customer.id,
-        email: customer.email,
-        first_name: customer.first_name,
-        last_name: customer.last_name,
-      },
+      // Hash password in scrypt format
+      const hashedPassword = await hashPasswordScrypt(password)
+
+      // Create auth identity with customer_id in app_metadata
+      const authIdentity = await authService.createAuthIdentities({
+        app_metadata: {
+          customer_id: customer.id,
+        },
+        provider_identities: [
+          {
+            entity_id: normalizedEmail,
+            provider: "emailpass",
+            provider_metadata: {
+              password: hashedPassword,
+            },
+          },
+        ],
+      })
+
+      // Clean up Redis data
+      await redis.del(redisKey)
+
+      // Generate JWT token
+      const jwtSecret = getJwtSecret()
+      const now = Math.floor(Date.now() / 1000)
+      const exp = now + 60 * 60 * 24 * 7 // 7 days
+
+      const token = await signJwtHS256(
+        {
+          actor_type: "customer",
+          actor_id: customer.id,
+          auth_identity_id: authIdentity.id,
+          iat: now,
+          exp,
+          provider: "emailpass",
+          email: normalizedEmail,
+        },
+        jwtSecret
+      )
+
+      logger.debug("Account created", { customerId: customer.id })
+
+      return {
+        status: 200,
+        body: {
+          success: true,
+          token,
+          customer: {
+            id: customer.id,
+            email: customer.email,
+            first_name: customer.first_name,
+            last_name: customer.last_name,
+          },
+        }
+      }
     })
+
+    return res.status(result.status).json(result.body)
   } catch (error: unknown) {
-    console.error("Registration complete error:", error)
-    const message = error instanceof Error ? error.message : "Failed to complete registration"
-    return res.status(500).json({ error: message })
+    logger.error("Registration complete error", error)
+    return res.status(500).json({
+      error: getClientErrorMessage(error, "Failed to complete registration")
+    })
   }
 }

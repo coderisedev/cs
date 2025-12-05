@@ -1,13 +1,14 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { Modules } from "@medusajs/framework/utils"
 import type { ICustomerModuleService, INotificationModuleService } from "@medusajs/framework/types"
-import Redis from "ioredis"
 import {
   generateOTP,
   getOTPKey,
   OTP_EXPIRY_SECONDS,
   type PendingVerification,
 } from "../../../../../utils/otp"
+import { withDedicatedRedis } from "../../../../../utils/redis"
+import { logger, getClientErrorMessage } from "../../../../../utils/logger"
 
 interface InitiateBody {
   email: string
@@ -53,10 +54,6 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     const otp = generateOTP()
     const redisKey = getOTPKey(normalizedEmail)
 
-    // Store pending verification in Redis
-    const redisUrl = process.env.REDIS_URL ?? "redis://127.0.0.1:6379"
-    const redis = new Redis(redisUrl)
-
     const pendingData: PendingVerification = {
       email: normalizedEmail,
       otp,
@@ -65,8 +62,10 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       createdAt: Date.now(),
     }
 
-    await redis.setex(redisKey, OTP_EXPIRY_SECONDS, JSON.stringify(pendingData))
-    await redis.quit()
+    // Store pending verification in Redis with proper connection management
+    await withDedicatedRedis(async (redis) => {
+      await redis.setex(redisKey, OTP_EXPIRY_SECONDS, JSON.stringify(pendingData))
+    })
 
     // Send OTP email
     const notificationService = req.scope.resolve<INotificationModuleService>(Modules.NOTIFICATION)
@@ -80,7 +79,7 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       },
     })
 
-    console.log(`OTP sent to ${normalizedEmail} for registration`)
+    logger.debug("OTP sent for registration", { email: normalizedEmail })
 
     return res.status(200).json({
       success: true,
@@ -88,8 +87,9 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       email: normalizedEmail,
     })
   } catch (error: unknown) {
-    console.error("Registration initiate error:", error)
-    const message = error instanceof Error ? error.message : "Failed to initiate registration"
-    return res.status(500).json({ error: message })
+    logger.error("Registration initiate error", error)
+    return res.status(500).json({
+      error: getClientErrorMessage(error, "Failed to initiate registration")
+    })
   }
 }

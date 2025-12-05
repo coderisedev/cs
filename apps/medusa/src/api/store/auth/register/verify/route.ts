@@ -1,11 +1,12 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import Redis from "ioredis"
 import {
   getOTPKey,
   MAX_OTP_ATTEMPTS,
   OTP_EXPIRY_SECONDS,
   type PendingVerification,
 } from "../../../../../utils/otp"
+import { withDedicatedRedis, safeJsonParse } from "../../../../../utils/redis"
+import { logger, getClientErrorMessage } from "../../../../../utils/logger"
 
 interface VerifyBody {
   email: string
@@ -34,72 +35,87 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
     const normalizedEmail = email.toLowerCase().trim()
     const redisKey = getOTPKey(normalizedEmail)
 
-    // Get pending verification from Redis
-    const redisUrl = process.env.REDIS_URL ?? "redis://127.0.0.1:6379"
-    const redis = new Redis(redisUrl)
-    const cachedData = await redis.get(redisKey)
+    // Get and verify OTP with proper Redis connection management
+    const result = await withDedicatedRedis(async (redis) => {
+      const cachedData = await redis.get(redisKey)
 
-    if (!cachedData) {
-      await redis.quit()
-      return res.status(400).json({
-        error: "Verification code expired or invalid. Please request a new code.",
-      })
-    }
+      if (!cachedData) {
+        return {
+          status: 400,
+          body: { error: "Verification code expired or invalid. Please request a new code." }
+        }
+      }
 
-    const pendingData: PendingVerification = JSON.parse(cachedData)
+      const pendingData = safeJsonParse<PendingVerification>(cachedData)
+      if (!pendingData) {
+        // Corrupted data, delete and ask for new code
+        await redis.del(redisKey)
+        return {
+          status: 400,
+          body: { error: "Verification data corrupted. Please request a new code." }
+        }
+      }
 
-    // Check if already verified
-    if (pendingData.verified) {
-      await redis.quit()
-      return res.status(200).json({
-        success: true,
-        verified: true,
-        message: "Email already verified. Please complete your registration.",
-      })
-    }
+      // Check if already verified
+      if (pendingData.verified) {
+        return {
+          status: 200,
+          body: {
+            success: true,
+            verified: true,
+            message: "Email already verified. Please complete your registration.",
+          }
+        }
+      }
 
-    // Check attempts
-    if (pendingData.attempts >= MAX_OTP_ATTEMPTS) {
-      await redis.del(redisKey)
-      await redis.quit()
-      return res.status(400).json({
-        error: "Too many failed attempts. Please request a new code.",
-      })
-    }
+      // Check attempts
+      if (pendingData.attempts >= MAX_OTP_ATTEMPTS) {
+        await redis.del(redisKey)
+        return {
+          status: 400,
+          body: { error: "Too many failed attempts. Please request a new code." }
+        }
+      }
 
-    // Verify OTP
-    if (pendingData.otp !== otp) {
-      // Increment attempts
-      pendingData.attempts += 1
+      // Verify OTP
+      if (pendingData.otp !== otp) {
+        // Increment attempts
+        pendingData.attempts += 1
 
-      // Calculate remaining TTL
-      const ttl = await redis.ttl(redisKey)
-      await redis.setex(redisKey, ttl > 0 ? ttl : OTP_EXPIRY_SECONDS, JSON.stringify(pendingData))
-      await redis.quit()
+        // Calculate remaining TTL
+        const ttl = await redis.ttl(redisKey)
+        await redis.setex(redisKey, ttl > 0 ? ttl : OTP_EXPIRY_SECONDS, JSON.stringify(pendingData))
 
-      const remaining = MAX_OTP_ATTEMPTS - pendingData.attempts
-      return res.status(400).json({
-        error: `Invalid verification code. ${remaining} attempt${remaining !== 1 ? "s" : ""} remaining.`,
-      })
-    }
+        const remaining = MAX_OTP_ATTEMPTS - pendingData.attempts
+        return {
+          status: 400,
+          body: { error: `Invalid verification code. ${remaining} attempt${remaining !== 1 ? "s" : ""} remaining.` }
+        }
+      }
 
-    // OTP verified - mark as verified and keep for completion step
-    pendingData.verified = true
+      // OTP verified - mark as verified and keep for completion step
+      pendingData.verified = true
 
-    // Keep data for 30 more minutes for profile completion
-    await redis.setex(redisKey, 1800, JSON.stringify(pendingData))
-    await redis.quit()
+      // Keep data for 30 more minutes for profile completion
+      await redis.setex(redisKey, 1800, JSON.stringify(pendingData))
 
-    console.log(`Email verified for ${normalizedEmail}`)
+      logger.debug("Email verified for registration", { email: normalizedEmail })
 
-    return res.status(200).json({
-      success: true,
-      verified: true,
-      message: "Email verified successfully. Please complete your registration.",
+      return {
+        status: 200,
+        body: {
+          success: true,
+          verified: true,
+          message: "Email verified successfully. Please complete your registration.",
+        }
+      }
     })
+
+    return res.status(result.status).json(result.body)
   } catch (error: unknown) {
-    console.error("Registration verify error:", error)
-    const message = error instanceof Error ? error.message : "Verification failed"
-    return res.status(500).json({ error: message })
+    logger.error("Registration verify error", error)
+    return res.status(500).json({
+      error: getClientErrorMessage(error, "Verification failed")
+    })
   }
 }
