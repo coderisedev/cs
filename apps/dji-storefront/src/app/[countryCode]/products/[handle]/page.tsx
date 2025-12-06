@@ -158,5 +158,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   )
 }
 
-// Enable ISR with 15-minute revalidation for marketing content
-export const revalidate = 900
+// Temporarily disable ISR for debugging
+export const dynamic = "force-dynamic"
+// export const revalidate = 900
