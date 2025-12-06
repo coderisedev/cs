@@ -3,7 +3,7 @@
 import { sdk } from "@/lib/medusa"
 import { getAuthHeaders, getCacheOptions } from "@/lib/server/cookies"
 import { getRegion, retrieveRegion } from "@/lib/data/regions"
-import { getCollectionByHandle } from "@/lib/data/collections"
+import { getCollectionByHandle, listCollections } from "@/lib/data/collections"
 import { HttpTypes } from "@medusajs/types"
 import { US_REGION_ID } from "@/lib/constants"
 
@@ -49,13 +49,16 @@ export type ProductCategory = {
   title: string
 }
 
-const categories: ProductCategory[] = [
-  { id: "all", title: "All Categories" },
-  { id: "a320-series", title: "Airbus A320 Series" },
-  { id: "737-series", title: "Boeing 737 Series" },
-  { id: "777-series", title: "Boeing 777 Series" },
-  { id: "accessories", title: "Accessories & Mounts" },
-]
+export const getProductCategories = async (): Promise<ProductCategory[]> => {
+  const { collections } = await listCollections()
+  return [
+    { id: "all", title: "All Products" },
+    ...collections.map((collection) => ({
+      id: collection.handle ?? collection.id,
+      title: collection.title ?? "Untitled",
+    })),
+  ]
+}
 
 const toCurrencyAmount = (value?: number | null) => {
   if (value === null || value === undefined) {
@@ -70,8 +73,6 @@ const toCurrencyAmount = (value?: number | null) => {
 
   return numericValue
 }
-
-export const getProductCategories = async () => categories
 
 export const getProductSummaries = async (options?: ProductListOptions) => {
   const { response } = await listProducts({ limit: 4, ...options })

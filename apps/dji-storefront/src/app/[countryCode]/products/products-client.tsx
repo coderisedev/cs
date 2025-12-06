@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { Search, Filter, Grid, List, ChevronDown } from "lucide-react"
+import { Search, Filter, Grid, List, ChevronDown, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -9,13 +9,14 @@ import type { StorefrontProduct, ProductCategory } from "@/lib/data/products"
 import { ProductCard } from "@/components/products/product-card"
 
 const sortOptions = [
-  { value: "featured", label: "Featured" },
+  { value: "name", label: "Name: A to Z" },
+  { value: "name-desc", label: "Name: Z to A" },
   { value: "price-low", label: "Price: Low to High" },
   { value: "price-high", label: "Price: High to Low" },
-  { value: "name", label: "Name" },
-  { value: "rating", label: "Rating" },
-  { value: "newest", label: "Newest" },
+  { value: "newest", label: "Newest First" },
 ] as const
+
+const PRODUCTS_PER_PAGE = 12
 
 type SortOption = (typeof sortOptions)[number]["value"]
 
@@ -30,9 +31,11 @@ interface ProductsPageClientProps {
 export function ProductsPageClient({ products, categories, countryCode }: ProductsPageClientProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
-  const [sortBy, setSortBy] = useState<SortOption>("featured")
+  const [sortBy, setSortBy] = useState<SortOption>("name")
   const [viewMode, setViewMode] = useState<ViewMode>("grid")
   const [showFilters, setShowFilters] = useState(false)
+  const [displayCount, setDisplayCount] = useState(PRODUCTS_PER_PAGE)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
 
   const filteredProducts = useMemo(() => {
     let filtered = products
@@ -46,21 +49,21 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
     }
 
     if (selectedCategory !== "all") {
-      filtered = filtered.filter((product) => product.category === selectedCategory)
+      filtered = filtered.filter((product) => product.collection === selectedCategory)
     }
 
     switch (sortBy) {
+      case "name":
+        filtered = [...filtered].sort((a, b) => a.title.localeCompare(b.title))
+        break
+      case "name-desc":
+        filtered = [...filtered].sort((a, b) => b.title.localeCompare(a.title))
+        break
       case "price-low":
         filtered = [...filtered].sort((a, b) => a.price - b.price)
         break
       case "price-high":
         filtered = [...filtered].sort((a, b) => b.price - a.price)
-        break
-      case "name":
-        filtered = [...filtered].sort((a, b) => a.title.localeCompare(b.title))
-        break
-      case "rating":
-        filtered = [...filtered].sort((a, b) => b.rating - a.rating)
         break
       case "newest":
         filtered = [...filtered].sort((a, b) => {
@@ -69,22 +72,36 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
           return 0
         })
         break
-      default:
-        filtered = [...filtered].sort((a, b) => {
-          if (a.collection === "featured" && b.collection !== "featured") return -1
-          if (a.collection !== "featured" && b.collection === "featured") return 1
-          return b.rating - a.rating
-        })
     }
 
     return filtered
   }, [products, searchQuery, selectedCategory, sortBy])
 
+  // Reset display count when filters change
+  const resetDisplayCount = () => {
+    setDisplayCount(PRODUCTS_PER_PAGE)
+  }
+
   const clearFilters = () => {
     setSearchQuery("")
     setSelectedCategory("all")
-    setSortBy("featured")
+    setSortBy("name")
+    resetDisplayCount()
   }
+
+  const handleLoadMore = () => {
+    setIsLoadingMore(true)
+    // Simulate loading delay for smooth UX
+    setTimeout(() => {
+      setDisplayCount((prev) => prev + PRODUCTS_PER_PAGE)
+      setIsLoadingMore(false)
+    }, 300)
+  }
+
+  // Products to display (limited by displayCount)
+  const displayedProducts = filteredProducts.slice(0, displayCount)
+  const hasMoreProducts = displayCount < filteredProducts.length
+  const remainingCount = filteredProducts.length - displayCount
 
   return (
     <div className="min-h-screen bg-background-secondary">
@@ -133,14 +150,20 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
                   type="text"
                   placeholder="Search products..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value)
+                    resetDisplayCount()
+                  }}
                   className="pl-10 bg-background-elevated border-transparent focus:border-brand-blue-500 transition-all"
                 />
               </div>
 
               {/* Category Select */}
               <div className="w-full lg:w-[200px]">
-                <Select value={selectedCategory} onValueChange={(value) => setSelectedCategory(value)}>
+                <Select value={selectedCategory} onValueChange={(value) => {
+                  setSelectedCategory(value)
+                  resetDisplayCount()
+                }}>
                   <SelectTrigger className="bg-background-elevated border-transparent">
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
@@ -156,7 +179,10 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
 
               {/* Sort Select */}
               <div className="w-full lg:w-[200px]">
-                <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
+                <Select value={sortBy} onValueChange={(value: SortOption) => {
+                  setSortBy(value)
+                  resetDisplayCount()
+                }}>
                   <SelectTrigger className="bg-background-elevated border-transparent">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
@@ -187,7 +213,7 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
                   </button>
                 </div>
                 {/* Clear Filters (Only show if filters are active) */}
-                {(searchQuery || selectedCategory !== "all" || sortBy !== "featured") && (
+                {(searchQuery || selectedCategory !== "all" || sortBy !== "name") && (
                   <Button variant="ghost" size="sm" onClick={clearFilters} className="text-foreground-muted hover:text-semantic-error">
                     Clear
                   </Button>
@@ -202,14 +228,15 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
       <div className="container py-12 lg:py-16">
         <div className="flex justify-between items-center mb-8">
           <p className="text-sm text-foreground-muted">
-            Showing <span className="font-medium text-foreground-primary">{filteredProducts.length}</span> products
+            Showing <span className="font-medium text-foreground-primary">{displayedProducts.length}</span> of{" "}
+            <span className="font-medium text-foreground-primary">{filteredProducts.length}</span> products
             {selectedCategory !== "all" && (
               <span> in <span className="font-medium text-foreground-primary">{categories.find((c) => c.id === selectedCategory)?.title}</span></span>
             )}
           </p>
         </div>
 
-        {filteredProducts.length > 0 ? (
+        {displayedProducts.length > 0 ? (
           <div
             className={
               viewMode === "grid"
@@ -217,11 +244,11 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
                 : "space-y-6"
             }
           >
-            {filteredProducts.map((product, index) => (
+            {displayedProducts.map((product, index) => (
               <div
                 key={product.id}
                 className="animate-fade-in opacity-0 fill-mode-forwards"
-                style={{ animationDelay: `${index * 100}ms` }}
+                style={{ animationDelay: `${Math.min(index, 11) * 100}ms` }}
               >
                 <ProductCard product={product} viewMode={viewMode} countryCode={countryCode} />
               </div>
@@ -242,9 +269,24 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
           </div>
         )}
 
-        {filteredProducts.length >= 12 && (
+        {hasMoreProducts && (
           <div className="text-center mt-16">
-            <Button variant="outline" size="lg" className="px-12">Load More Products</Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="px-12"
+              onClick={handleLoadMore}
+              disabled={isLoadingMore}
+            >
+              {isLoadingMore ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                <>Load More Products ({remainingCount} remaining)</>
+              )}
+            </Button>
           </div>
         )}
       </div>
