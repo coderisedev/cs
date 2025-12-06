@@ -24,14 +24,20 @@ const buildPopupResponse = (payload: PopupPayload) => {
   // Get the target origin for postMessage security
   const targetOrigin = process.env.STOREFRONT_BASE_URL || "http://localhost:3000"
 
+  // Determine the redirect URL for non-popup mode
+  const redirectUrl = payload.success ? payload.redirectUrl : DEFAULT_REDIRECT
+
   const responseBody = `<!doctype html>
   <html>
     <body style="font-family:sans-serif;padding:2rem;">
-      <p>${payload.success ? "Google sign-in successful. You can close this window." : "Google sign-in failed."}</p>
+      <p>${payload.success ? "Google sign-in successful. Redirecting..." : "Google sign-in failed."}</p>
       <script>
         (function() {
           const message = ${JSON.stringify(payload)};
           const targetOrigin = ${JSON.stringify(targetOrigin)};
+          const redirectUrl = ${JSON.stringify(redirectUrl)};
+
+          // Check if we're in a popup with an opener window
           if (window.opener && !window.opener.closed) {
             try {
               // Send to specific origin for security; the opener also validates event.origin
@@ -44,8 +50,11 @@ const buildPopupResponse = (payload: PopupPayload) => {
                 // Silent fail - opener will handle timeout
               }
             }
+            setTimeout(() => window.close(), 250);
+          } else {
+            // Not in a popup - redirect directly to the destination
+            window.location.href = redirectUrl;
           }
-          setTimeout(() => window.close(), 250);
         })();
       </script>
     </body>
