@@ -45,7 +45,7 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
   if (viewMode === "list") {
     return (
       <Card tone="elevated" className="group overflow-hidden">
-        <div className="flex flex-col sm:flex-row">
+        <div className="flex flex-col sm:flex-row sm:items-center">
           <Link
             href={`/products/${product.handle}`}
             className="relative block w-full sm:w-48 h-48 sm:h-32 overflow-hidden bg-background-elevated flex-shrink-0"
