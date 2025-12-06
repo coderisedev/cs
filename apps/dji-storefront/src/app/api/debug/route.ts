@@ -16,6 +16,8 @@ export async function GET(request: Request) {
       NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY ? `${process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY.slice(0, 10)}...` : "missing",
       STRAPI_API_URL: process.env.STRAPI_API_URL ? "set" : "missing",
       STRAPI_API_TOKEN: process.env.STRAPI_API_TOKEN ? "set" : "missing",
+      SENTRY_DSN: process.env.SENTRY_DSN ? "set" : "missing",
+      NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN ? "set" : "missing",
       NODE_ENV: process.env.NODE_ENV,
     },
     timestamp: new Date().toISOString(),
