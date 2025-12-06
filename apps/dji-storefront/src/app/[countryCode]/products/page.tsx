@@ -9,6 +9,9 @@ export const metadata: Metadata = {
 
 export default async function ProductsPage() {
   const countryCode = DEFAULT_COUNTRY_CODE
-  const [products, categories] = await Promise.all([getProducts({ countryCode }), getProductCategories()])
+  const [products, categories] = await Promise.all([
+    getProducts({ countryCode, limit: 100 }),
+    getProductCategories(),
+  ])
   return <ProductsPageClient products={products} categories={categories} countryCode={countryCode} />
 }

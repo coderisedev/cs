@@ -45,7 +45,7 @@ export default async function CollectionPage({
   }
 
   const resolvedCountryCode = countryCode || DEFAULT_COUNTRY_CODE
-  const { response } = await listProducts({ countryCode: resolvedCountryCode, collection_id: collection.id })
+  const { response } = await listProducts({ countryCode: resolvedCountryCode, collection_id: collection.id, limit: 100 })
   const products = response.products
 
   const description = (collection.metadata?.description as string) ?? ""
