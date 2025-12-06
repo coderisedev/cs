@@ -77,7 +77,7 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
                 </div>
               </div>
               <p className="text-sm text-foreground-secondary mb-4 flex-1 line-clamp-2">{product.description}</p>
-              <div className="mt-6 border-t border-border-secondary pt-4 space-y-3">
+              <div className="mt-6 border-t border-border-secondary pt-4 flex flex-wrap items-center justify-between gap-4">
                 <div className="flex flex-wrap items-baseline gap-2">
                   <span className="text-2xl font-bold text-primary-400">{currencyFormatter(product.price)}</span>
                   {product.compareAtPrice && (
@@ -88,7 +88,7 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
                 </div>
                 <Button
                   size="sm"
-                  className="w-full justify-center touch-target bg-brand-blue-600 hover:bg-brand-blue-700 text-white rounded-pill"
+                  className="justify-center touch-target bg-brand-blue-600 hover:bg-brand-blue-700 text-white rounded-pill px-6"
                   disabled={!product.inStock || isPending}
                   onClick={handleAddToCart}
                 >
