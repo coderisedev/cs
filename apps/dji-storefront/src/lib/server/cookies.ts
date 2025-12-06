@@ -111,11 +111,24 @@ export const setCartId = async (cartId: string) => {
 
 export const removeCartId = async () => {
   const cookies = await nextCookies()
+
+  // Delete cookie with domain (if set)
+  if (COOKIE_DOMAIN) {
+    cookies.set("_medusa_cart_id", "", {
+      maxAge: -1,
+      path: "/",
+      domain: COOKIE_DOMAIN,
+    })
+  }
+
+  // Also delete cookie without domain to handle cookies set without domain
   cookies.set("_medusa_cart_id", "", {
     maxAge: -1,
     path: "/",
-    ...(COOKIE_DOMAIN ? { domain: COOKIE_DOMAIN } : {}),
   })
+
+  // Use delete as well to ensure removal
+  cookies.delete("_medusa_cart_id")
 }
 
 export const setAuthToken = async (token: string) => {
@@ -132,9 +145,22 @@ export const setAuthToken = async (token: string) => {
 
 export const removeAuthToken = async () => {
   const cookies = await nextCookies()
+
+  // Delete cookie with domain (if set)
+  if (COOKIE_DOMAIN) {
+    cookies.set("_medusa_jwt", "", {
+      maxAge: -1,
+      path: "/",
+      domain: COOKIE_DOMAIN,
+    })
+  }
+
+  // Also delete cookie without domain to handle cookies set without domain
   cookies.set("_medusa_jwt", "", {
     maxAge: -1,
     path: "/",
-    ...(COOKIE_DOMAIN ? { domain: COOKIE_DOMAIN } : {}),
   })
+
+  // Use delete as well to ensure removal
+  cookies.delete("_medusa_jwt")
 }
