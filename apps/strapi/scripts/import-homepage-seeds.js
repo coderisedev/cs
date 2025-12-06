@@ -4,6 +4,7 @@
  *
  * Environment variables:
  * - STRAPI_URL: Base URL of Strapi server (default: http://localhost:1337)
+ * - STRAPI_API_TOKEN: API Token for authentication (required for remote servers)
  */
 
 const fs = require('fs');
@@ -11,13 +12,23 @@ const path = require('path');
 
 // Use environment variable for Strapi URL with localhost fallback
 const STRAPI_URL = process.env.STRAPI_URL || 'http://localhost:1337';
+const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN;
 
 async function importData() {
     const sampleData = require('./sample-data');
 
+    // Build headers with optional API token
+    const headers = {
+        'Content-Type': 'application/json',
+    };
+    if (STRAPI_API_TOKEN) {
+        headers['Authorization'] = `Bearer ${STRAPI_API_TOKEN}`;
+    }
+
     try {
         console.log('🚀 Starting data import...');
-        console.log(`📡 Using Strapi URL: ${STRAPI_URL}\n`);
+        console.log(`📡 Using Strapi URL: ${STRAPI_URL}`);
+        console.log(`🔑 API Token: ${STRAPI_API_TOKEN ? '✓ Configured' : '✗ Not set'}\n`);
 
         // Import Featured Products
         console.log('📦 Importing featured products...');
@@ -28,9 +39,7 @@ async function importData() {
 
             const response = await fetch(`${STRAPI_URL}/api/featured-products`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers,
                 body: JSON.stringify({ data: product }),
             });
 
@@ -59,9 +68,7 @@ async function importData() {
 
         const layoutResponse = await fetch(`${STRAPI_URL}/api/homepage-layout`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers,
             body: JSON.stringify({ data: homepageLayoutData }),
         });
 
