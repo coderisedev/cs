@@ -47,7 +47,7 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full border-b border-border-primary bg-white/95 dark:bg-neutral-950/95 backdrop-blur-md transition-all duration-300",
+        "sticky top-0 z-50 w-full border-b border-border-primary bg-background-primary/95 backdrop-blur-md transition-all duration-300",
         condensed ? "shadow-lg" : "shadow-sm"
       )}
     >
@@ -90,7 +90,8 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
           </nav>
 
           <div className="flex items-center space-x-3">
-            <Button
+            {/* Theme toggle - temporarily hidden */}
+            {/* <Button
               variant="ghost"
               size="icon"
               aria-label="Toggle theme"
@@ -98,8 +99,9 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
               onClick={toggleTheme}
             >
               {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
-            <Button
+            </Button> */}
+            {/* Search button - temporarily hidden */}
+            {/* <Button
               variant="ghost"
               size="icon"
               aria-label="Search"
@@ -107,7 +109,7 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
               onClick={() => setSearchOpen((prev) => !prev)}
             >
               <Search className="h-4 w-4" />
-            </Button>
+            </Button> */}
             <Link href="/account" aria-label="Account">
               <Button variant="ghost" size="icon" className="touch-target h-12 w-12 flex items-center justify-center p-0">
                 <User className="h-4 w-4" />

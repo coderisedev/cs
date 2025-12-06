@@ -97,7 +97,7 @@ export function WarrantyCTA() {
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-blue-400/10 to-blue-600/20 rounded-3xl blur-3xl" />
                         <div className="relative w-full overflow-hidden rounded-2xl md:rounded-3xl border border-white/10">
                             <Image
-                                src="https://img.aidenlux.com/cs737-pro/part9.png"
+                                src="https://img.aidenlux.com/cs737-pro/part9.jpg"
                                 alt="CS737 Throttle Quadrant"
                                 width={1200}
                                 height={800}
