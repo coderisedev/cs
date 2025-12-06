@@ -12,7 +12,9 @@ import { getPost, listPosts, type BlogPost } from "@/lib/data/blog"
 const BASE_URL = process.env.STOREFRONT_BASE_URL || "https://dev.aidenlux.com"
 const DEFAULT_COUNTRY = process.env.NEXT_PUBLIC_DEFAULT_REGION || "us"
 
-export const revalidate = 300
+// Temporarily disable ISR for debugging
+export const dynamic = "force-dynamic"
+// export const revalidate = 300
 
 export async function generateStaticParams() {
   const firstPage = await listPosts({ page: 1, pageSize: 50 })
