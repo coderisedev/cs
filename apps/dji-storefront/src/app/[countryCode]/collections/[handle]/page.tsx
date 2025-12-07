@@ -2,16 +2,14 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ChevronLeft } from "lucide-react"
-import { getCollectionDetail, getCollections } from "@/lib/data/collections"
+import { getCollectionDetail } from "@/lib/data/collections"
 import { listProducts } from "@/lib/data/products"
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 import { resolveCollectionHeroImage } from "@/lib/util/collections"
 import { CollectionProductsClient } from "./collection-products-client"
 
-export async function generateStaticParams() {
-  const collections = await getCollections()
-  return collections.map((collection) => ({ handle: collection.handle }))
-}
+// Force dynamic rendering to avoid ISR/SSG build-time errors
+export const dynamic = "force-dynamic"
 
 export async function generateMetadata({
   params,
