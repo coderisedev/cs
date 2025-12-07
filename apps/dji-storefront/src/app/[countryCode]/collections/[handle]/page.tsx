@@ -45,8 +45,15 @@ export default async function CollectionPage({
   }
 
   const resolvedCountryCode = countryCode || DEFAULT_COUNTRY_CODE
-  const { response } = await listProducts({ countryCode: resolvedCountryCode, collection_id: collection.id, limit: 100 })
-  const products = response.products
+
+  let products: Awaited<ReturnType<typeof listProducts>>["response"]["products"] = []
+  try {
+    const { response } = await listProducts({ countryCode: resolvedCountryCode, collection_id: collection.id, limit: 100 })
+    products = response.products
+  } catch (error) {
+    console.error("Failed to fetch products for collection:", error)
+    // Continue with empty products array - page will still render
+  }
 
   const description = (collection.metadata?.description as string) ?? ""
   const heroImage = resolveCollectionHeroImage(collection)

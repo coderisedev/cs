@@ -119,7 +119,8 @@ export const listProducts = async ({
   const region = await resolveRegion({ countryCode, regionId })
 
   if (!region) {
-    throw new Error("Unable to resolve region for product listing")
+    console.error("Unable to resolve region for product listing", { countryCode, regionId })
+    return { response: { products: [], count: 0 }, nextPage: null }
   }
 
   const headers = {
