@@ -59,15 +59,11 @@ export default async function CollectionPage({
   return (
     <div className="min-h-screen bg-background-secondary">
       {/* Hero Section */}
-      <div className="relative bg-gray-950 py-24 sm:py-32 overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url('${heroImage}')` }}
-          >
-            <div className="absolute inset-0 bg-black/60" />
-          </div>
-        </div>
+      <section className="bg-neutral-900 text-white py-20 md:py-32 relative overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-20"
+          style={{ backgroundImage: `url('${heroImage}')` }}
+        />
         <div className="container relative z-10 text-center space-y-6">
           {/* Breadcrumb */}
           <Link
@@ -87,7 +83,7 @@ export default async function CollectionPage({
             </p>
           )}
         </div>
-      </div>
+      </section>
 
       {/* Products */}
       <CollectionProductsClient
