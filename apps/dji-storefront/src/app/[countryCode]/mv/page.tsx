@@ -4,7 +4,7 @@ import { Play, Music2, Headphones, Plane } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Bring the Sky Home · Cockpit Simulator",
-  description: "原创品牌主题曲 - 专为飞行模拟创作，家用驾驶舱沉浸配乐",
+  description: "Official brand theme song - Original music created for flight simulation enthusiasts, immersive soundtrack for home cockpit setups",
 }
 
 // YouTube video ID extracted from the URL
@@ -28,10 +28,10 @@ export default function MVPage() {
               Bring the Sky Home
             </h1>
             <p className="text-xl md:text-2xl text-blue-400 font-medium mb-4">
-              飞行之梦，一听即燃
+              Your Flight Dreams, One Song Away
             </p>
             <p className="text-gray-400 max-w-2xl mx-auto">
-              原创品牌主题曲 | 专为飞行模拟创作 | 家用驾驶舱沉浸配乐
+              Official Brand Theme Song | Created for Flight Simulation | Immersive Home Cockpit Soundtrack
             </p>
           </div>
         </div>
@@ -73,9 +73,9 @@ export default function MVPage() {
                 <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Music2 className="w-6 h-6 text-blue-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">原创主题曲</h3>
+                <h3 className="text-lg font-semibold text-white mb-2">Original Theme Song</h3>
                 <p className="text-sm text-gray-400">
-                  专为 Cockpit Simulator 品牌创作的原创音乐作品
+                  An original musical composition created exclusively for Cockpit Simulator
                 </p>
               </div>
 
@@ -84,9 +84,9 @@ export default function MVPage() {
                 <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Plane className="w-6 h-6 text-purple-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">飞行灵感</h3>
+                <h3 className="text-lg font-semibold text-white mb-2">Flight Inspired</h3>
                 <p className="text-sm text-gray-400">
-                  将翱翔天际的梦想融入每一个音符
+                  Every note captures the dream of soaring through the skies
                 </p>
               </div>
 
@@ -95,28 +95,28 @@ export default function MVPage() {
                 <div className="w-12 h-12 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Headphones className="w-6 h-6 text-cyan-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">沉浸体验</h3>
+                <h3 className="text-lg font-semibold text-white mb-2">Immersive Experience</h3>
                 <p className="text-sm text-gray-400">
-                  家用驾驶舱沉浸配乐，提升飞行模拟体验
+                  The perfect soundtrack to elevate your home cockpit simulation
                 </p>
               </div>
             </div>
 
             {/* CTA */}
             <div className="text-center mt-16">
-              <p className="text-gray-400 mb-6">探索我们的专业飞行模拟硬件</p>
+              <p className="text-gray-400 mb-6">Explore our professional flight simulation hardware</p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link
                   href="/us/products"
                   className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-200 transition-colors"
                 >
-                  浏览产品
+                  Browse Products
                 </Link>
                 <Link
                   href="/us/collections"
                   className="inline-flex items-center gap-2 bg-white/10 text-white px-6 py-3 rounded-full font-medium hover:bg-white/20 transition-colors border border-white/20"
                 >
-                  查看系列
+                  View Collections
                 </Link>
               </div>
             </div>
