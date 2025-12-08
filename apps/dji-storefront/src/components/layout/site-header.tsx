@@ -74,7 +74,7 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
             </div>
           </Link>
 
-          <nav className="hidden lg:flex items-center space-x-6">
+          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.name}
@@ -126,7 +126,7 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden touch-target"
+              className="md:hidden touch-target"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label="Toggle navigation"
             >
@@ -137,18 +137,18 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
       </div>
       {searchOpen && (
         <div className="relative z-50">
-          <div className="container mx-auto px-4 lg:px-12 py-3 animate-scale-in origin-top">
+          <div className="container mx-auto px-4 md:px-12 py-3 animate-scale-in origin-top">
             <Input type="search" placeholder="Search products..." className="max-w-md" autoFocus />
           </div>
           <button
             aria-label="Close search overlay"
-            className="fixed inset-0 z-40 bg-background-overlay/60 lg:hidden"
+            className="fixed inset-0 z-40 bg-background-overlay/60 md:hidden"
             onClick={() => setSearchOpen(false)}
           />
         </div>
       )}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-border-primary bg-background-primary animate-slide-up">
+        <div className="md:hidden border-t border-border-primary bg-background-primary animate-slide-up">
           <nav className="container mx-auto px-4 py-4 space-y-2">
             {NAV_ITEMS.map((item) => (
               <Link
