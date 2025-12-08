@@ -24,7 +24,7 @@ export function ProductTile({ product }: ProductTileProps) {
 
     return (
         <div
-            className="relative w-full h-[280px] sm:h-[350px] md:h-[500px] overflow-hidden group cursor-pointer transition-all duration-300 shadow-sm hover:shadow-card border border-black/5 rounded-xl sm:rounded-none"
+            className="relative w-full h-[200px] sm:h-[350px] md:h-[500px] overflow-hidden group cursor-pointer transition-all duration-300 shadow-sm hover:shadow-card border-b border-black/5 sm:border sm:rounded-none"
             style={{
                 backgroundColor: backgroundColor,
                 color: textColor,
@@ -108,8 +108,8 @@ export function ProductGrid({
     }
 
     return (
-        <div className="w-full px-3 sm:px-4 py-3 sm:py-4">
-            <div className={`grid grid-cols-2 ${gridColsClass[columns]} gap-2 sm:gap-3 md:gap-4`}>
+        <div className="w-full sm:px-4 py-0 sm:py-4">
+            <div className={`grid grid-cols-1 sm:grid-cols-2 ${gridColsClass[columns]} gap-0 sm:gap-3 md:gap-4`}>
                 {products.map((product) => (
                     <ProductTile key={product.id} product={product} />
                 ))}
