@@ -121,7 +121,7 @@ export function WarrantyCTA() {
 
                     <div className="flex flex-wrap gap-4 justify-center items-center">
                         <Link
-                            href="#"
+                            href="/us/products/cs-737m-tq"
                             className="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-2.5 rounded-full shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-200 font-medium text-base"
                         >
                             Order
