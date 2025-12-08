@@ -106,7 +106,7 @@ export function ContentSection({
 
         {/* Media Top */}
         {isMediaTop && hasMedia && (
-          <div className="mb-[var(--fluid-gap-lg)] relative rounded-[var(--fluid-radius)] overflow-hidden shadow-lg">
+          <div className="mb-[var(--fluid-gap-lg)] relative overflow-hidden">
             <Image
               src={mediaUrl}
               alt={mediaAlt ?? heading}
@@ -129,7 +129,7 @@ export function ContentSection({
         >
           {/* Media Left */}
           {isMediaLeft && hasMedia && (
-            <div className="relative rounded-[var(--fluid-radius)] overflow-hidden shadow-lg transition-shadow hover:shadow-xl">
+            <div className="relative overflow-hidden">
               <Image
                 src={mediaUrl}
                 alt={mediaAlt ?? heading}
@@ -166,7 +166,7 @@ export function ContentSection({
 
           {/* Media Right (default) */}
           {!isMediaLeft && !isMediaTop && !isMediaBottom && !isMediaContentBottom && hasMedia && (
-            <div className="relative rounded-[var(--fluid-radius)] overflow-hidden shadow-lg transition-shadow hover:shadow-xl">
+            <div className="relative overflow-hidden">
               <Image
                 src={mediaUrl}
                 alt={mediaAlt ?? heading}
@@ -181,7 +181,7 @@ export function ContentSection({
 
         {/* Media Bottom */}
         {isMediaBottom && hasMedia && (
-          <div className="mt-[var(--fluid-gap-lg)] relative rounded-[var(--fluid-radius)] overflow-hidden shadow-lg">
+          <div className="mt-[var(--fluid-gap-lg)] relative overflow-hidden">
             <Image
               src={mediaUrl}
               alt={mediaAlt ?? heading}
@@ -195,7 +195,7 @@ export function ContentSection({
 
         {/* Media Content Bottom - media placed directly after content text */}
         {isMediaContentBottom && hasMedia && (
-          <div className="mt-[var(--fluid-gap-lg)] relative rounded-[var(--fluid-radius)] overflow-hidden shadow-lg">
+          <div className="mt-[var(--fluid-gap-lg)] relative overflow-hidden">
             <Image
               src={mediaUrl}
               alt={mediaAlt ?? heading}

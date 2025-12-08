@@ -91,10 +91,10 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
       </div>
 
       {/* Hero Product Section */}
-      <div className="sm:container py-[var(--fluid-section-py)] sm:px-6">
+      <div className="sm:container max-w-[1340px] mx-auto py-[var(--fluid-section-py)] sm:px-6">
         <div className="grid gap-[var(--fluid-gap-xl)] lg:grid-cols-2 items-start">
           {/* Image Gallery */}
-          <div className="space-y-4 min-w-0">
+          <div className="space-y-6 min-w-0">
             <div className="relative aspect-square w-full bg-[#F5F5F7] sm:rounded-2xl overflow-hidden">
               <Image src={heroImage} alt={product.title} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw" priority />
               {totalImages > 1 && (
@@ -268,7 +268,7 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
       </div>
 
       {/* Tabs Section */}
-      <div className="container py-[var(--fluid-section-py)] px-4 sm:px-6">
+      <div className="max-w-[882px] mx-auto py-[var(--fluid-section-py)] px-4 sm:px-6">
         <Tabs defaultValue="description">
           <TabsList>
             <TabsTrigger value="description">Description</TabsTrigger>
