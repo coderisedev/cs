@@ -9,7 +9,7 @@ export default function ResellersPage() {
             <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0">
                     <Image
-                        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2671&auto=format&fit=crop"
+                        src="https://img.aidenlux.com/collections/others.jpg"
                         alt="Global Business Meeting"
                         fill
                         className="object-cover"
@@ -68,10 +68,19 @@ export default function ResellersPage() {
             </section>
 
             {/* CTA Section */}
-            <section className="py-20 bg-neutral-900 text-white">
-                <div className="container text-center">
+            <section className="py-20 text-white relative overflow-hidden">
+                <div className="absolute inset-0">
+                    <Image
+                        src="https://img.aidenlux.com/collections/addon.jpg"
+                        alt="Flight Simulation Hardware"
+                        fill
+                        className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/60" />
+                </div>
+                <div className="container text-center relative z-10">
                     <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
-                    <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+                    <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
                         Apply now to become an authorized reseller. Our team will review your application and get back to you within 48 hours.
                     </p>
                     <Button size="lg" className="bg-white text-black hover:bg-gray-200 rounded-full px-8">
