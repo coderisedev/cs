@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState, useTransition } from "react"
+import { useMemo, useState, useTransition, useRef, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -46,6 +46,9 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
   const [quantity, setQuantity] = useState(1)
   const { toggleItem: toggleWishlistItem, isInWishlist } = useWishlist()
   const resolvedCountryCode = countryCode || DEFAULT_COUNTRY_CODE
+  const thumbnailContainerRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(false)
 
   const variant = useMemo(() => product.variants.find((v) => v.id === selectedVariant) ?? product.variants[0], [product, selectedVariant])
   const heroImage = product.images[selectedImage] ?? product.images[0]
@@ -55,6 +58,37 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
   const totalPrice = (variant?.price ?? product.price) * quantity
   const originalPrice = product.compareAtPrice ? product.compareAtPrice * quantity : undefined
   const discount = originalPrice ? Math.round(((originalPrice - totalPrice) / originalPrice) * 100) : 0
+
+  // Check if thumbnail container can scroll
+  const checkThumbnailScroll = () => {
+    const container = thumbnailContainerRef.current
+    if (!container) return
+    setCanScrollLeft(container.scrollLeft > 0)
+    setCanScrollRight(container.scrollLeft < container.scrollWidth - container.clientWidth - 1)
+  }
+
+  useEffect(() => {
+    checkThumbnailScroll()
+    const container = thumbnailContainerRef.current
+    if (container) {
+      container.addEventListener("scroll", checkThumbnailScroll)
+      window.addEventListener("resize", checkThumbnailScroll)
+      return () => {
+        container.removeEventListener("scroll", checkThumbnailScroll)
+        window.removeEventListener("resize", checkThumbnailScroll)
+      }
+    }
+  }, [product.images.length])
+
+  const scrollThumbnails = (direction: "left" | "right") => {
+    const container = thumbnailContainerRef.current
+    if (!container) return
+    const scrollAmount = 200
+    container.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth"
+    })
+  }
 
   const handleAddToCart = () => {
     if (!variant?.id) return
@@ -117,20 +151,45 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
               )}
             </div>
             {product.images.length > 1 && (
-              <div className="flex gap-[var(--fluid-gap-xs)] overflow-x-auto py-1 scrollbar-hide px-4 sm:px-1">
-                {product.images.map((image, index) => (
+              <div className="relative group/thumbnails">
+                {/* Left scroll button */}
+                {canScrollLeft && (
                   <button
-                    key={image}
-                    onClick={() => setSelectedImage(index)}
-                    className={`flex-shrink-0 w-[var(--fluid-thumb-size)] h-[var(--fluid-thumb-size)] rounded-lg overflow-hidden bg-[#F5F5F7] transition-all ${
-                      selectedImage === index
-                        ? "ring-2 ring-brand-blue-500 ring-offset-1 sm:ring-offset-2"
-                        : "hover:ring-2 hover:ring-border-secondary hover:ring-offset-1"
-                    }`}
+                    onClick={() => scrollThumbnails("left")}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm shadow-md rounded-full p-1.5 text-foreground-secondary hover:text-foreground-primary transition-all opacity-0 group-hover/thumbnails:opacity-100 sm:opacity-100"
+                    aria-label="Scroll thumbnails left"
                   >
-                    <Image src={image} alt={`${product.title}-${index + 1}`} width={80} height={80} className="object-cover w-full h-full" />
+                    <ChevronLeft className="h-4 w-4" />
                   </button>
-                ))}
+                )}
+                {/* Right scroll button */}
+                {canScrollRight && (
+                  <button
+                    onClick={() => scrollThumbnails("right")}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 backdrop-blur-sm shadow-md rounded-full p-1.5 text-foreground-secondary hover:text-foreground-primary transition-all opacity-0 group-hover/thumbnails:opacity-100 sm:opacity-100"
+                    aria-label="Scroll thumbnails right"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                )}
+                <div
+                  ref={thumbnailContainerRef}
+                  className="flex gap-[var(--fluid-gap-xs)] overflow-x-auto py-1 scrollbar-hide px-4 sm:px-1"
+                >
+                  {product.images.map((image, index) => (
+                    <button
+                      key={image}
+                      onClick={() => setSelectedImage(index)}
+                      className={`flex-shrink-0 w-[var(--fluid-thumb-size)] h-[var(--fluid-thumb-size)] rounded-lg overflow-hidden bg-[#F5F5F7] transition-all ${
+                        selectedImage === index
+                          ? "ring-2 ring-brand-blue-500 ring-offset-1 sm:ring-offset-2"
+                          : "hover:ring-2 hover:ring-border-secondary hover:ring-offset-1"
+                      }`}
+                    >
+                      <Image src={image} alt={`${product.title}-${index + 1}`} width={80} height={80} className="object-cover w-full h-full" />
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
           </div>
