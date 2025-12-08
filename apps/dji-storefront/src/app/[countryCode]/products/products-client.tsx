@@ -106,16 +106,9 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
   return (
     <div className="min-h-screen bg-background-secondary">
       {/* Hero Section */}
-      <div className="relative bg-gray-950 py-24 sm:py-32 overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: "url('https://img.aidenlux.com/medusa-uploads/hero.jpg')" }}
-          >
-            <div className="absolute inset-0 bg-black/60" />
-          </div>
-        </div>
-        <div className="container relative z-10 text-center space-y-6">
+      <section className="bg-neutral-900 text-white py-24 sm:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://img.aidenlux.com/medusa-uploads/hero.jpg')] bg-cover bg-center opacity-20" />
+        <div className="container mx-auto px-4 relative z-10 text-center space-y-6">
           <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight">
             All Products
           </h1>
@@ -124,7 +117,7 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
             Engineered for precision, built for pilots.
           </p>
         </div>
-      </div>
+      </section>
 
       {/* Sticky Filter Bar */}
       <div className="sticky top-0 z-40 w-full border-b border-white/5 bg-background-primary/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background-primary/60">

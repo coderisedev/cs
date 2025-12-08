@@ -20,16 +20,9 @@ export default async function CollectionsPage({
   return (
     <div className="min-h-screen bg-background-secondary">
       {/* Hero Section */}
-      <div className="relative bg-gray-950 py-24 sm:py-32 overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: "url('https://img.aidenlux.com/medusa-uploads/hero.jpg')" }}
-          >
-            <div className="absolute inset-0 bg-black/60" />
-          </div>
-        </div>
-        <div className="container relative z-10 text-center space-y-6">
+      <section className="bg-neutral-900 text-white py-24 sm:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://img.aidenlux.com/medusa-uploads/hero.jpg')] bg-cover bg-center opacity-20" />
+        <div className="container mx-auto px-4 relative z-10 text-center space-y-6">
           <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight">
             Collections
           </h1>
@@ -38,7 +31,7 @@ export default async function CollectionsPage({
             Find the perfect setup for your flight simulation needs.
           </p>
         </div>
-      </div>
+      </section>
 
       {/* Collections Grid */}
       <div className="container py-12 lg:py-16">
