@@ -24,7 +24,7 @@ export function ProductTile({ product }: ProductTileProps) {
 
     return (
         <div
-            className="relative w-full h-[200px] sm:h-[350px] md:h-[500px] overflow-hidden group cursor-pointer transition-all duration-300 shadow-sm hover:shadow-card border-b border-black/5 sm:border sm:rounded-none"
+            className="relative w-full h-[280px] sm:h-[350px] md:h-[500px] overflow-hidden group cursor-pointer transition-all duration-300 shadow-sm hover:shadow-card border-b border-black/5 sm:border sm:rounded-none"
             style={{
                 backgroundColor: backgroundColor,
                 color: textColor,
