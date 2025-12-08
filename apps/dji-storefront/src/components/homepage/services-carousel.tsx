@@ -18,7 +18,7 @@ interface ServiceCardProps {
 const ServiceCard = ({ title, subtitle, bgClass, textColor = "text-white", image, videoId, onPlay }: ServiceCardProps) => {
     return (
         <div
-            className={cn("relative w-full aspect-video rounded-2xl overflow-hidden shadow-lg group cursor-pointer transition-transform hover:scale-[1.01]", bgClass)}
+            className={cn("relative w-full aspect-video rounded-xl sm:rounded-2xl overflow-hidden shadow-lg group cursor-pointer transition-transform hover:scale-[1.01]", bgClass)}
             onClick={() => videoId && onPlay?.(videoId)}
         >
             {/* Background Image/Gradient */}
@@ -33,14 +33,14 @@ const ServiceCard = ({ title, subtitle, bgClass, textColor = "text-white", image
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
             {/* Content */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+            <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
                 <div>
                     {subtitle && (
-                        <div className="text-xs md:text-sm font-semibold uppercase tracking-wider mb-1 opacity-90 text-white">
+                        <div className="text-[10px] sm:text-xs md:text-sm font-semibold uppercase tracking-wider mb-0.5 sm:mb-1 opacity-90 text-white">
                             {subtitle}
                         </div>
                     )}
-                    <h3 className={cn("text-xl md:text-3xl font-bold leading-tight", textColor)}>
+                    <h3 className={cn("text-base sm:text-xl md:text-3xl font-bold leading-tight", textColor)}>
                         {title}
                     </h3>
                 </div>
@@ -48,9 +48,9 @@ const ServiceCard = ({ title, subtitle, bgClass, textColor = "text-white", image
 
             {/* Play Button Overlay */}
             {videoId && (
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="bg-white/20 backdrop-blur-md p-4 rounded-full hover:bg-white/30 transition-colors">
-                        <Play className="w-8 h-8 text-white fill-white" />
+                <div className="absolute inset-0 flex items-center justify-center opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="bg-white/20 backdrop-blur-md p-2 sm:p-4 rounded-full hover:bg-white/30 transition-colors">
+                        <Play className="w-5 h-5 sm:w-8 sm:h-8 text-white fill-white" />
                     </div>
                 </div>
             )}
@@ -92,7 +92,7 @@ const VideoModal = ({ videoId, onClose }: { videoId: string; onClose: () => void
 export function ServicesCarousel() {
     const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
-    const slides: ServiceCardProps[] = [
+    const slides: Omit<ServiceCardProps, 'onPlay'>[] = [
         {
             title: "CS 737X MCP & EFIS Review",
             subtitle: "Swiss001",
@@ -145,7 +145,7 @@ export function ServicesCarousel() {
     ];
 
     return (
-        <section className="py-12 bg-white w-full overflow-hidden">
+        <section className="py-8 sm:py-10 md:py-12 bg-white w-full overflow-hidden">
             <Carousel autoPlayInterval={5000} className="w-full">
                 {slides.map((slide, index) => (
                     <ServiceCard

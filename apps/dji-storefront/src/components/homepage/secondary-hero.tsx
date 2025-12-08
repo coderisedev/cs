@@ -59,7 +59,7 @@ export function SecondaryHero({ product }: SecondaryHeroProps) {
 
     return (
         <section
-            className="relative w-full min-h-[500px] md:min-h-[600px] flex items-center justify-center overflow-hidden"
+            className="relative w-full min-h-[400px] sm:min-h-[500px] md:min-h-[600px] flex items-center justify-center overflow-hidden"
             style={{
                 backgroundColor: product.backgroundColor,
                 color: product.textColor,
@@ -116,36 +116,36 @@ export function SecondaryHero({ product }: SecondaryHeroProps) {
             </div>
 
             {/* Content Overlay */}
-            <div className="relative z-10 container mx-auto px-4 py-12 text-center">
+            <div className="relative z-10 container mx-auto px-4 py-8 sm:py-12 text-center">
                 {/* Product Name */}
                 {product.productName && (
-                    <p className="text-base md:text-lg font-semibold mb-2 opacity-90">
+                    <p className="text-sm sm:text-base md:text-lg font-semibold mb-1 sm:mb-2 opacity-90">
                         {product.productName}
                     </p>
                 )}
 
                 {/* Title */}
-                <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-3 leading-tight">
+                <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-3 leading-tight">
                     {product.title}
                 </h2>
 
                 {/* Subtitle */}
                 {product.subtitle && (
-                    <p className="text-lg md:text-2xl lg:text-3xl font-medium mb-5 opacity-95">
+                    <p className="text-base sm:text-lg md:text-2xl lg:text-3xl font-medium mb-3 sm:mb-5 opacity-95">
                         {product.subtitle}
                     </p>
                 )}
 
                 {/* Description */}
                 {product.description && (
-                    <p className="text-sm md:text-base lg:text-lg mb-6 max-w-2xl mx-auto opacity-90">
+                    <p className="text-xs sm:text-sm md:text-base lg:text-lg mb-4 sm:mb-6 max-w-2xl mx-auto opacity-90 px-2">
                         {product.description}
                     </p>
                 )}
 
                 {/* CTA Buttons */}
                 {product.ctaButtons && product.ctaButtons.length > 0 && (
-                    <div className="flex flex-wrap gap-3 justify-center items-center">
+                    <div className="flex flex-wrap gap-2 sm:gap-3 justify-center items-center">
                         {product.ctaButtons.map((cta, index) => (
                             <CTAButton
                                 key={index}

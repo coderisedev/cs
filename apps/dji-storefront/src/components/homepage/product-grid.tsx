@@ -24,7 +24,7 @@ export function ProductTile({ product }: ProductTileProps) {
 
     return (
         <div
-            className="relative w-full h-[400px] md:h-[500px] overflow-hidden group cursor-pointer transition-all duration-300 shadow-sm hover:shadow-card border border-black/5"
+            className="relative w-full h-[280px] sm:h-[350px] md:h-[500px] overflow-hidden group cursor-pointer transition-all duration-300 shadow-sm hover:shadow-card border border-black/5 rounded-xl sm:rounded-none"
             style={{
                 backgroundColor: backgroundColor,
                 color: textColor,
@@ -44,23 +44,21 @@ export function ProductTile({ product }: ProductTileProps) {
             )}
 
             {/* Content */}
-            <div className="relative z-10 h-full flex flex-col p-8 justify-start pt-10 items-center text-center">
-
-
+            <div className="relative z-10 h-full flex flex-col p-4 sm:p-6 md:p-8 justify-start pt-6 sm:pt-8 md:pt-10 items-center text-center">
                 {/* Title */}
-                <h3 className="text-2xl md:text-3xl font-bold mb-2 leading-tight">
+                <h3 className="text-lg sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2 leading-tight">
                     {product.title}
                 </h3>
 
                 {/* Subtitle */}
                 {product.subtitle && (
-                    <p className="text-base md:text-lg font-medium mb-4 opacity-95">
+                    <p className="text-xs sm:text-base md:text-lg font-medium mb-2 sm:mb-4 opacity-95 line-clamp-2">
                         {product.subtitle}
                     </p>
                 )}
 
                 {product.ctaButtons && product.ctaButtons.length > 0 && (
-                    <div className="flex flex-wrap gap-4 justify-center">
+                    <div className="flex flex-wrap gap-2 sm:gap-4 justify-center">
                         {product.ctaButtons.slice(0, 2).map((cta, index) => (
                             <CTAButton
                                 key={index}
@@ -68,14 +66,12 @@ export function ProductTile({ product }: ProductTileProps) {
                                 url={cta.url}
                                 style={index === 0 ? 'primary' : 'secondary'}
                                 openInNewTab={cta.openInNewTab}
-                                className="text-sm md:text-base"
+                                className="text-xs sm:text-sm md:text-base px-3 sm:px-4 py-1.5 sm:py-2"
                             />
                         ))}
                     </div>
                 )}
             </div>
-
-
         </div>
     );
 }
@@ -112,8 +108,8 @@ export function ProductGrid({
     }
 
     return (
-        <div className="w-full px-4 py-4">
-            <div className={`grid grid-cols-1 ${gridColsClass[columns]} gap-4`}>
+        <div className="w-full px-3 sm:px-4 py-3 sm:py-4">
+            <div className={`grid grid-cols-2 ${gridColsClass[columns]} gap-2 sm:gap-3 md:gap-4`}>
                 {products.map((product) => (
                     <ProductTile key={product.id} product={product} />
                 ))}
