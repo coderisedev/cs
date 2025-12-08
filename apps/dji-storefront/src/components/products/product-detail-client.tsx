@@ -117,7 +117,7 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
               )}
             </div>
             {product.images.length > 1 && (
-              <div className="flex gap-[var(--fluid-gap-xs)] overflow-x-auto pb-2 scrollbar-hide px-4 sm:px-0">
+              <div className="flex gap-[var(--fluid-gap-xs)] overflow-x-auto py-1 scrollbar-hide px-4 sm:px-1">
                 {product.images.map((image, index) => (
                   <button
                     key={image}
