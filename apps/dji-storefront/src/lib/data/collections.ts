@@ -7,6 +7,7 @@ export const listCollections = async (queryParams: Record<string, string> = {}) 
   const query = {
     limit: queryParams.limit ?? "100",
     offset: queryParams.offset ?? "0",
+    fields: "+metadata",
     ...queryParams,
   }
 
@@ -30,6 +31,9 @@ export const retrieveCollection = async (id: string) => {
     return await sdk.client
       .fetch<{ collection: HttpTypes.StoreCollection }>(`/store/collections/${id}`, {
         method: "GET",
+        query: {
+          fields: "+metadata",
+        },
         next: { revalidate: 0 },
         cache: "no-store",
       })
@@ -45,7 +49,10 @@ export const getCollectionByHandle = async (handle: string) => {
     return await sdk.client
       .fetch<{ collections: HttpTypes.StoreCollection[] }>(`/store/collections`, {
         method: "GET",
-        query: { handle },
+        query: {
+          handle,
+          fields: "+metadata",
+        },
         next: { revalidate: 0 },
         cache: "no-store",
       })

@@ -1,4 +1,4 @@
-const COLLECTION_IMAGE_FALLBACK = "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1600&q=80"
+const COLLECTION_IMAGE_FALLBACK = "https://img.aidenlux.com/collections/737.jpg"
 
 type CollectionMetadata = Record<string, unknown> | null | undefined
 
