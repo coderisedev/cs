@@ -135,7 +135,6 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
           </div>
         </div>
       </div>
-      {condensed && <div className="h-0.5 bg-primary-500/80" />}
       {searchOpen && (
         <div className="relative z-50">
           <div className="container mx-auto px-4 lg:px-12 py-3 animate-scale-in origin-top">
