@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     description: 'Discover our featured DJI products',
 };
 
-export const revalidate = 60; // Revalidate every 60 seconds
+export const revalidate = 0; // Disable ISR during debugging - set back to 60 for production
 
 export default async function Homepage() {
     const layout = await getHomepageLayout();
