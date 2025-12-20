@@ -5,7 +5,6 @@ import { SecondaryHero } from '@/components/homepage/secondary-hero';
 import { ProductGrid } from '@/components/homepage/product-grid';
 import { ServicesCarousel } from '@/components/homepage/services-carousel';
 import { TestimonialsCarousel } from "@/components/homepage/testimonials-carousel";
-import { ResellerRecruitment } from "@/components/homepage/reseller-recruitment";
 import { LatestAnnouncements } from "@/components/homepage/latest-announcements";
 
 export const metadata: Metadata = {
@@ -27,7 +26,6 @@ export default async function Homepage() {
                         Please configure your homepage layout in Strapi CMS.
                     </p>
                     <LatestAnnouncements />
-                    <ResellerRecruitment />
                     <TestimonialsCarousel />
                     <ServicesCarousel />
                 </div>
@@ -58,9 +56,6 @@ export default async function Homepage() {
 
             {/* Latest Announcements */}
             <LatestAnnouncements />
-
-            {/* Reseller Recruitment */}
-            <ResellerRecruitment />
 
             {/* Testimonials Carousel */}
             <TestimonialsCarousel />
