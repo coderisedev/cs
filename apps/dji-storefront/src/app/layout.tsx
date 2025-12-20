@@ -6,7 +6,6 @@ import { Suspense } from "react"
 import "./globals.css"
 import { SiteHeader } from "@/components/layout/site-header"
 import { SiteFooter } from "@/components/layout/site-footer"
-import { ResellerRecruitment } from "@/components/homepage/reseller-recruitment"
 import { PostHogProvider } from "@/components/providers/posthog-provider"
 import { retrieveCart } from "@/lib/data/cart"
 
@@ -45,7 +44,6 @@ export default async function RootLayout({
           <PostHogProvider>
             <SiteHeader cartItemCount={cart?.items?.length ?? 0} />
             <main>{children}</main>
-            <ResellerRecruitment />
             <SiteFooter />
           </PostHogProvider>
         </Suspense>

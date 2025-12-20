@@ -5,6 +5,7 @@ import { SecondaryHero } from '@/components/homepage/secondary-hero';
 import { ProductGrid } from '@/components/homepage/product-grid';
 import { ServicesCarousel } from '@/components/homepage/services-carousel';
 import { TestimonialsCarousel } from "@/components/homepage/testimonials-carousel";
+import { ResellerRecruitment } from "@/components/homepage/reseller-recruitment";
 import { LatestAnnouncements } from "@/components/homepage/latest-announcements";
 
 export const metadata: Metadata = {
@@ -28,6 +29,7 @@ export default async function Homepage() {
                     <LatestAnnouncements />
                     <TestimonialsCarousel />
                     <ServicesCarousel />
+                    <ResellerRecruitment />
                 </div>
             </>
         );
@@ -62,6 +64,9 @@ export default async function Homepage() {
 
             {/* Services Carousel */}
             <ServicesCarousel />
+
+            {/* Reseller Recruitment */}
+            <ResellerRecruitment />
         </main>
     );
 }
