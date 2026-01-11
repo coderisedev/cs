@@ -36,12 +36,21 @@ export const retrieveCart = async (cartId?: string, fields?: string) => {
 
 export const getOrSetCart = async () => {
   // Plan A: Always use US region regardless of countryCode
-  let cart = await retrieveCart(undefined, "id,region_id")
+  const existingCart = await retrieveCart(undefined, "id,region_id,completed_at")
   const headers = {
     ...(await getAuthHeaders()),
   }
 
-  if (!cart) {
+  // Check if cart is completed (completed_at may not be in type but exists in API response)
+  const isCompleted = existingCart && (existingCart as { completed_at?: string | null }).completed_at
+
+  // If cart doesn't exist or is already completed, create a new one
+  let cart = existingCart
+  if (!cart || isCompleted) {
+    if (isCompleted) {
+      // Clear the old completed cart cookie
+      await removeCartId()
+    }
     const { cart: newCart } = await sdk.store.cart.create({ region_id: US_REGION_ID }, {}, headers)
     cart = newCart
     await setCartId(cart.id)
