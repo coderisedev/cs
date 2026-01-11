@@ -1,0 +1,24 @@
+Paypal
+
+Sandbox
+
+Display App Name：CSDTC
+Client ID：AYjf6N1hZ7-LJbUfAQ7ckjaGGjEwAGWnpMBC2mkTlmLe78eMEuUC-fTG4kUUNxGftFFUNQ4owaLlQv63
+Secret key 1：EHzdWyUuyQ0Zw1PMzc8yEZMcUoXXpVUaWNBzPpDb5unwNqZsvQcAEqWzJi_CATOT9r6WCRF3oHbHiE0f
+
+Sandbox URL：https://sandbox.paypal.com
+Email：sb-470m8134299574@business.example.com
+Password：N*=l;37M
+
+Sandbox URL：https://sandbox.paypal.com
+Email：sb-k4efm34294933@personal.example.com
+Password：Y"m0o}M#
+
+Live
+
+Display App Name：CSDTCProd
+Client ID：Adb44FjOiZLEJHqv-eO9L1dO8y0eLk-BryepQmofuyzO4UKwdzF8b0EcAYCFKBUME_K2z7MKWFhzlaLk
+Secret key 1：EGwwzDtq7eK1UAaYa6P_WGTFFEMRrLfRxZoX3Eg3V_dUnevNNN8i96q4dyxmAj1KMzxkh1eVqbUxN3Wg
+
+Live PayPal account
+Primary Email：alvin.he888@gmail.com

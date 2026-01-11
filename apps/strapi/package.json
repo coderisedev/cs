@@ -12,6 +12,8 @@
     "start": "strapi start",
     "seed:posts": "node scripts/import-post-seeds.js",
     "seed:homepage": "node scripts/import-homepage-seeds.js",
+    "import:md": "node scripts/import-md-posts.js",
+    "import:md:api": "node scripts/import-md-posts-api.js",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
     "upgrade:dry": "npx @strapi/upgrade latest --dry"

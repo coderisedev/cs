@@ -50,3 +50,5 @@ Sentry.init({
   // Don't send events in development unless explicitly enabled
   enabled: process.env.NODE_ENV === "production" || process.env.SENTRY_ENABLED === "true",
 })
+
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart

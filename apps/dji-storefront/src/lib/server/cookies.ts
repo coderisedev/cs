@@ -17,6 +17,11 @@ function decodeJwtPayload(token: string): Record<string, unknown> | null {
 }
 
 const resolveCookieDomain = () => {
+  // In development mode, don't set cookie domain to allow localhost access
+  if (process.env.NODE_ENV === "development") {
+    return undefined
+  }
+
   const rawDomain =
     process.env.AUTH_COOKIE_DOMAIN ??
     process.env.STOREFRONT_BASE_URL ??

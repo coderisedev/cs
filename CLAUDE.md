@@ -6,14 +6,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Turborepo monorepo using pnpm workspaces implementing a composable commerce platform. The architecture combines:
 
-- **`apps/storefront/`** - Next.js 15 App Router frontend with TypeScript, Tailwind CSS, and TanStack Query
+- **`apps/dji-storefront/`** - Primary Next.js 15 storefront with DJI design system, Storybook, and Vitest
 - **`apps/medusa/`** - Medusa 2.x commerce backend with PostgreSQL database
 - **`apps/strapi/`** - Strapi v5 headless CMS for content management
-- **`packages/`** - Shared libraries (ui, config, sdk) consumed by services
+- **`apps/storefront/`** - Legacy storefront (being superseded by dji-storefront)
+- **`packages/medusa-client/`** - Deterministic mock client for offline development
+- **`packages/config/`** - Shared TypeScript and linting configuration
 - **`bmad/`** - Core BMAD methodology assets, workflows, and agent personas
-- **`infra/`** - Infrastructure-as-code with Pulumi for Railway/Vercel deployments
-- **`scripts/`** - Build automation and CI helpers
-- **`docs/`** - Architecture docs, PRDs, and story drafts
+- **`deploy/gce/`** - Docker deployment configs with isolated prod/dev environments
+- **`docs/`** - Architecture docs, PRDs, runbooks, and story drafts
 
 ### Application Architecture
 
@@ -53,7 +54,7 @@ docker compose -f docker-compose.local.yml up -d
 
 ```bash
 # Start individual services
-pnpm --filter storefront dev      # Next.js storefront (http://localhost:3000)
+pnpm --filter dji-storefront dev  # Primary storefront (http://localhost:3000)
 pnpm --filter medusa dev          # Medusa backend (http://localhost:9000)
 pnpm --filter strapi develop      # Strapi CMS (http://localhost:1337)
 
@@ -63,11 +64,11 @@ pnpm build
 # Run linting via Turbo across all packages
 pnpm lint
 
-# Run type checking across all packages
-pnpm typecheck
-
 # Run unit tests across all packages
 pnpm test:unit
+
+# Validate mock Medusa client
+pnpm test:mock-medusa
 ```
 
 ### Service-Specific Commands
@@ -90,11 +91,29 @@ pnpm deploy                      # Deploy to production
 pnpm console                     # Open Strapi console
 pnpm upgrade                     # Upgrade Strapi to latest version
 
-# Storefront-specific (from apps/storefront directory)
+# DJI Storefront-specific (from apps/dji-storefront directory)
 pnpm dev                         # Start Next.js dev server with Turbopack
-pnpm build                       # Build for production with Turbopack
+pnpm build                       # Build for production
 pnpm start                       # Start production server
-pnpm lint                        # Run ESLint
+pnpm lint                        # Run ESLint with flat config
+pnpm storybook                   # Start Storybook dev server (http://localhost:6006)
+pnpm build-storybook             # Build static Storybook
+```
+
+### Makefile Commands (GCE Deployment)
+
+Use the root Makefile for Docker operations—never run ad-hoc `docker compose` commands:
+
+```bash
+# Production environment
+make prod-up                     # Start all prod containers
+make prod-down                   # Stop prod containers
+make prod-logs SERVICE=medusa    # Tail logs for a service
+
+# Development environment
+make dev-up                      # Start all dev containers
+make dev-down                    # Stop dev containers
+make dev-logs SERVICE=strapi     # Tail logs for a service
 ```
 
 ### BMAD Workflow Validation
@@ -114,13 +133,13 @@ rg "{project-root}" bmad -g'*.*'
 
 ## Technology Stack
 
-- **Frontend**: Next.js 15 (App Router), React 19, TypeScript 5, Tailwind CSS 4
-- **State Management**: TanStack Query 5, Zustand 5
+- **Frontend**: Next.js 15 (App Router), React 19, TypeScript 5, Tailwind CSS 3
+- **State Management**: Zustand for UI state, server state via React Server Components
 - **Backend**: Medusa 2.x (commerce), Strapi v5 (CMS)
-- **Database**: PostgreSQL 15 with Redis for caching/queues
-- **Styling**: Tailwind CSS with Shadcn UI components and Radix primitives
-- **Testing**: Vitest (unit), Playwright (E2E), Jest (Medusa integration and unit tests)
-- **Infrastructure**: Railway (services), Vercel (frontend), Pulumi (IaC)
+- **Database**: PostgreSQL with Redis for caching/queues
+- **Styling**: Tailwind CSS with Radix UI primitives
+- **Testing**: Vitest (unit/storefront), Playwright (E2E), Jest (Medusa backend)
+- **Infrastructure**: GCE Docker (services), Vercel (frontend)
 
 ## Coding Style & Conventions
 
@@ -212,9 +231,10 @@ The `deploy/gce/` directory contains Docker deployment configurations for GCE VM
 
 ```
 deploy/gce/
-├── .env.dev          # Dev environment variables
-├── .env.prod         # Prod environment variables
-├── docker-compose.yml # Production compose (ports 9000, 1337)
+├── .env.dev              # Dev environment variables
+├── .env.prod             # Prod environment variables
+├── prod/
+│   └── docker-compose.yml # Production compose (ports 9000, 1337)
 └── dev/
     └── docker-compose.yml # Dev compose (ports 9001, 1338)
 ```
@@ -226,13 +246,13 @@ deploy/gce/
 docker build -t cs-medusa:dev -f apps/medusa/Dockerfile .
 docker build -t cs-medusa:prod -f apps/medusa/Dockerfile .
 
-# Deploy dev environment
-cd deploy/gce/dev
-docker compose -p cs-dev --env-file ../.env.dev up -d medusa_dev
+# Deploy using Makefile (recommended)
+make dev-up                      # Dev environment
+make prod-up                     # Prod environment
 
-# Deploy prod environment
-cd deploy/gce
-docker compose -p cs-prod up -d medusa
+# Or manually (use Makefile whenever possible):
+cd deploy/gce/dev && docker compose -p cs-dev --env-file ../.env.dev up -d medusa_dev
+cd deploy/gce/prod && docker compose -p cs-prod --env-file ../.env.prod up -d medusa
 ```
 
 **Build and Deploy Strapi:**
@@ -248,9 +268,10 @@ docker build -t cs-strapi:prod -f apps/strapi/Dockerfile .
 
 - Medusa Dockerfile removed hardcoded `NODE_ENV=production` to support both dev/prod modes
 - Dev containers use `NODE_ENV=development` for Vite hot-reload admin UI
-- Host networking uses `host.docker.internal` mapping (172.31.0.1 for dev network)
+- **Containers cannot access host services via `localhost`**; use `host.docker.internal` or host gateway IP
 - Redis must bind to Docker bridge IP (configure in `/etc/redis/redis.conf`)
 - Admin UI requires `admin.vite.server.allowedHosts` in `medusa-config.ts` for custom domains
+- When connecting to host Postgres from CLI, replace `host.docker.internal` with `localhost`
 
 **Port Mapping:**
 
@@ -299,16 +320,9 @@ Key principles:
 - Weekly architecture reviews ensure cohesion
 - Accessibility (WCAG 2.1 AA) and performance as first-class concerns
 
-## Root-Level Commands
+## Key Documentation
 
-The root package.json includes additional deployment and validation commands:
-
-```bash
-# Deployment commands (from project root)
-pnpm deploy:staging             # Deploy to staging environment
-pnpm deploy:production          # Deploy to production environment
-pnpm deployment-status          # Check deployment status
-
-# Validation commands
-pnpm validate-preview           # Validate preview configuration
-```
+- **Docs Index**: `docs/index.md` - Entry point for all documentation topics
+- **Runbooks**: `docs/runbooks/` - Step-by-step guides for common operations
+- **Docker Best Practices**: `docs/done/docker-env-best-practices.md` - Prod/dev isolation rules
+- **DB Analysis**: `docs/runbooks/medusa-db-analysis.md` - Database query procedures
