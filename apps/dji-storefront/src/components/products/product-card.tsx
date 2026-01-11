@@ -28,11 +28,11 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
     const variantId = product.variants[0]?.id
     if (!variantId) return
     startTransition(async () => {
-      try {
-        // Plan A: Always use US countryCode
-        await addToCartAction({ variantId, quantity: 1, countryCode: resolvedCountryCode })
-      } catch (error) {
-        console.error("Add to cart failed", error)
+      // Plan A: Always use US countryCode
+      const result = await addToCartAction({ variantId, quantity: 1, countryCode: resolvedCountryCode })
+      if (!result.success) {
+        console.error("Add to cart failed:", result.error)
+        // Could add toast notification here in the future
       }
     })
   }

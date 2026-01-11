@@ -22,21 +22,14 @@ const resolveCookieDomain = () => {
     return undefined
   }
 
-  const rawDomain =
-    process.env.AUTH_COOKIE_DOMAIN ??
-    process.env.STOREFRONT_BASE_URL ??
-    process.env.NEXT_PUBLIC_STOREFRONT_BASE_URL
-
-  if (!rawDomain) {
-    return undefined
+  // If AUTH_COOKIE_DOMAIN is explicitly set, use it (e.g., ".aidenlux.com" for all subdomains)
+  if (process.env.AUTH_COOKIE_DOMAIN) {
+    return process.env.AUTH_COOKIE_DOMAIN
   }
 
-  try {
-    const parsed = new URL(rawDomain)
-    return parsed.hostname
-  } catch {
-    return rawDomain.replace(/https?:\/\//, "")
-  }
+  // Don't set cookie domain by default - let browser use current host
+  // This ensures cookies work on any deployment (dev.aidenlux.com, prd.aidenlux.com, etc.)
+  return undefined
 }
 
 const COOKIE_DOMAIN = resolveCookieDomain()

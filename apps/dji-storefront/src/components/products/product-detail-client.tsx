@@ -93,10 +93,10 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
   const handleAddToCart = () => {
     if (!variant?.id) return
     startTransition(async () => {
-      try {
-        await addToCartAction({ variantId: variant.id, quantity, countryCode: resolvedCountryCode })
-      } catch (error) {
-        console.error("Add to cart failed", error)
+      const result = await addToCartAction({ variantId: variant.id, quantity, countryCode: resolvedCountryCode })
+      if (!result.success) {
+        console.error("Add to cart failed:", result.error)
+        // Could add toast notification here in the future
       }
     })
   }
