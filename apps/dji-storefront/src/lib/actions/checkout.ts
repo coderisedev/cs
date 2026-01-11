@@ -92,10 +92,26 @@ export async function preparePayPalCheckoutAction(
       provider_id: PAYPAL_PROVIDER_ID,
     })
 
-    // The payment session should contain the PayPal order ID in its data
-    const paypalOrderId = paymentSession?.payment_collection?.payment_sessions?.[0]?.data?.id as string | undefined
+    // Debug: log the response to understand the structure
+    const allSessions = paymentSession?.payment_collection?.payment_sessions || []
+    logger.info("PayPal payment session response", {
+      hasPaymentCollection: !!paymentSession?.payment_collection,
+      paymentSessionsCount: allSessions.length,
+      sessionProviders: allSessions.map((s) => s.provider_id),
+      sessionDataKeys: allSessions.map((s) => Object.keys(s.data || {})),
+    })
+
+    // Find the PayPal session by provider_id (more reliable than assuming it's the first one)
+    const paypalSession = paymentSession?.payment_collection?.payment_sessions?.find(
+      (session) => session.provider_id === PAYPAL_PROVIDER_ID
+    )
+    const paypalOrderId = paypalSession?.data?.id as string | undefined
 
     if (!paypalOrderId) {
+      // Log more details about what we received
+      logger.error("PayPal order ID not found in response", {
+        payment_collection: paymentSession?.payment_collection,
+      })
       return { error: "Failed to create PayPal order. Please try again." }
     }
 
