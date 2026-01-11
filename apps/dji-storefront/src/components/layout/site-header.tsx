@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
-import { ShoppingCart, Search, Menu, User, X, Sun, Moon } from "lucide-react"
+import { ShoppingCart, Search, Menu, User, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -16,7 +16,7 @@ const NAV_ITEMS = [
   { name: "Post", href: "/announcements/latest" },
   { name: "Software", href: "/software" },
   { name: "Blog", href: "/blog" },
-  { name: "Community", href: "/community" },
+  { name: "Community", href: "https://community.cockpit-simulator.com/" },
   { name: "FAQ", href: "/faq" },
 ]
 
@@ -24,7 +24,7 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isDarkMode] = useState(false)
   const [condensed, setCondensed] = useState(false)
 
   useEffect(() => {
@@ -36,11 +36,6 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
-
-  const toggleTheme = () => {
-    setIsDarkMode((prev) => !prev)
-    document.documentElement.classList.toggle("dark")
-  }
 
   const isActive = (href: string) => pathname === href
 
