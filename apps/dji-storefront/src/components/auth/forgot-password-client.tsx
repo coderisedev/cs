@@ -35,7 +35,7 @@ export function ForgotPasswordClient({ countryCode }: ForgotPasswordClientProps)
           <CardHeader>
             <CardTitle className="text-2xl">Forgot Password</CardTitle>
             <CardDescription>
-              Enter your email address and we'll send you a link to reset your password.
+              Enter your email address and we&apos;ll send you a link to reset your password.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -56,7 +56,7 @@ export function ForgotPasswordClient({ countryCode }: ForgotPasswordClientProps)
                 </div>
                 <div className="pt-4 border-t border-border-primary">
                   <p className="text-xs text-foreground-muted text-center mb-4">
-                    Didn't receive the email? Check your spam folder or try again.
+                    Didn&apos;t receive the email? Check your spam folder or try again.
                   </p>
                   <Link href={`/${countryCode}/login`}>
                     <Button variant="outline" className="w-full">

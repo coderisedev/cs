@@ -211,8 +211,8 @@ export interface ResendOTPResult {
   retry_after?: number
 }
 
-function getOTPHeaders(): HeadersInit {
-  const headers: HeadersInit = {
+function getOTPHeaders(): Record<string, string> {
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
   }
   const publishableKey = getMedusaPublishableKey()

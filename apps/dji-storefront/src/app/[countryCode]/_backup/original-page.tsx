@@ -208,7 +208,7 @@ export default async function HomePage() {
             {testimonials.map((testimonial) => (
               <Card key={testimonial.author} tone="elevated" className="h-full bg-background-primary">
                 <CardContent className="space-y-4 p-6">
-                  <p className="text-lg text-foreground-secondary">"{testimonial.quote}"</p>
+                  <p className="text-lg text-foreground-secondary">&quot;{testimonial.quote}&quot;</p>
                   <div className="flex items-center gap-3">
                     <div className="relative h-12 w-12">
                       <Image

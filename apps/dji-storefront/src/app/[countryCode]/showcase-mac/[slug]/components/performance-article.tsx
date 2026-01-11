@@ -24,7 +24,6 @@ export function PerformanceArticle({
   sectionTitle,
   title,
   chipName,
-  chipImage,
   stats,
   description
 }: PerformanceArticleProps) {

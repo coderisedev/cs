@@ -13,7 +13,7 @@ const navLinks = [
 export function StickyNav() {
     const { scrollY } = useScroll()
     const [isVisible, setIsVisible] = useState(false)
-    const [activeSection, setActiveSection] = useState("overview")
+    const [activeSection] = useState("overview")
 
     useEffect(() => {
         return scrollY.on("change", (latest) => {

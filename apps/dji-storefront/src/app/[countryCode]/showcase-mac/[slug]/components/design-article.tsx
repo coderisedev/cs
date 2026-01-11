@@ -155,6 +155,7 @@ export function DesignArticle({
                 <div className="text-center">
                   <div className="mb-4 text-6xl">📸</div>
                   <p className="text-sm font-medium text-gray-700">{lifestyle.caption}</p>
+                  <p className="text-xs text-gray-400 mt-2">Image {currentLifestyleImage + 1} of {lifestyle.images.length}</p>
                 </div>
               </div>
             </div>

@@ -49,7 +49,7 @@ export function initPostHog(): void {
     respect_dnt: true,
 
     // Disable in development unless explicitly enabled
-    loaded: (posthog) => {
+    loaded: () => {
       if (process.env.NODE_ENV === "development") {
         // Uncomment to enable debug mode in development
         // posthog.debug()

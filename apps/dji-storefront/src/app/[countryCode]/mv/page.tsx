@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Play, Music2, Headphones, Plane } from "lucide-react"
+import { Music2, Headphones, Plane } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Bring the Sky Home · Cockpit Simulator",

@@ -15,7 +15,6 @@ export function HeroSection({
   tagline,
   price,
   priceMonthly,
-  heroImage,
 }: HeroSectionProps) {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20 overflow-hidden">

@@ -17,7 +17,6 @@ export function HeroSection({
   description,
   price,
   priceMonthly,
-  heroAnimation
 }: HeroSectionProps) {
   return (
     <section className="relative overflow-hidden bg-white">

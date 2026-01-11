@@ -2,11 +2,7 @@
 
 import { useState } from "react"
 
-interface ProductViewerProps {
-  productName: string
-}
-
-export function ProductViewer({ productName }: ProductViewerProps) {
+export function ProductViewer() {
   const [rotation, setRotation] = useState(0)
 
   return (

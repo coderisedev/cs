@@ -169,7 +169,7 @@ export function ProductOverview() {
                     className="mt-20 text-center"
                 >
                     <p className="text-white text-xl md:text-3xl lg:text-4xl font-medium leading-relaxed italic">
-                        "Close your eyes. You're in the cockpit."
+                        &quot;Close your eyes. You&apos;re in the cockpit.&quot;
                     </p>
                 </motion.blockquote>
             </div>

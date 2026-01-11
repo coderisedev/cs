@@ -171,7 +171,7 @@ export default async function ShowcasePage({
       />
 
       {/* Product Viewer */}
-      <ProductViewer productName={product.name} />
+      <ProductViewer />
 
       {/* Features Section */}
       <FeaturesSection features={product.features} />

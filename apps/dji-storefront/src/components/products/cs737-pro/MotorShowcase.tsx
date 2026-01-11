@@ -208,7 +208,7 @@ export function MotorShowcase() {
                         Autothrottle, speed brake, trim — every action syncs instantly.
                     </p>
                     <p className="text-white text-xl md:text-3xl lg:text-4xl font-medium italic">
-                        "Not just seeing the change — holding it in your hands."
+                        &quot;Not just seeing the change — holding it in your hands.&quot;
                     </p>
                 </motion.div>
             </div>

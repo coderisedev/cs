@@ -17,7 +17,7 @@ const baseRules = {
 }
 
 export default [{
-  ignores: ["node_modules", ".next", "dist"],
+  ignores: ["node_modules", ".next", "dist", "next-env.d.ts"],
 }, {
   files: ["**/*.{js,jsx,ts,tsx}", "**/*.cjs"],
   languageOptions: {

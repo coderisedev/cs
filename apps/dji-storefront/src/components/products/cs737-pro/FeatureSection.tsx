@@ -186,7 +186,7 @@ export function FeatureSection({
                                             isDarkTheme ? "text-blue-400" : "text-blue-600"
                                         )}
                                     >
-                                        "
+                                        &quot;
                                     </motion.span>
                                     <p className={cn(
                                         "text-xl md:text-3xl lg:text-4xl font-medium leading-relaxed italic relative z-10 pt-4",
@@ -348,7 +348,7 @@ export function FeatureSection({
                                             isDarkTheme ? "text-blue-400" : "text-blue-600"
                                         )}
                                     >
-                                        "
+                                        &quot;
                                     </motion.span>
                                     <p className={cn(
                                         "text-xl md:text-3xl lg:text-4xl font-medium leading-relaxed italic pl-6",

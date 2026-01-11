@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next"
 import { listPosts } from "@/lib/data/blog"
 import { listProducts } from "@/lib/data/products"
 
+export const dynamic = "force-dynamic"
+
 const BASE_URL = process.env.STOREFRONT_BASE_URL || "https://dev.aidenlux.com"
 const DEFAULT_COUNTRY = process.env.NEXT_PUBLIC_DEFAULT_REGION || "us"
 

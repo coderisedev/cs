@@ -78,7 +78,7 @@ export function WarrantyCTA() {
                         transition={{ duration: 0.6, delay: 0.4 }}
                         className="text-white text-xl md:text-3xl lg:text-4xl font-medium italic"
                     >
-                        "A throttle that flies with you for ten years — that's what full-function truly means."
+                        &quot;A throttle that flies with you for ten years — that&apos;s what full-function truly means.&quot;
                     </motion.p>
                 </motion.div>
 

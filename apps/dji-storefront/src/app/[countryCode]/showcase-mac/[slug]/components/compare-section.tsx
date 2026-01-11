@@ -64,7 +64,7 @@ export function CompareSection({
         <div className="mb-16">
           <div className="mx-auto max-w-3xl">
             <p className="mb-6 text-center text-lg text-gray-700">
-              Here's what you get with the new <strong>{currentProduct}</strong>:
+              Here&apos;s what you get with the new <strong>{currentProduct}</strong>:
             </p>
             <ul className="grid gap-4 sm:grid-cols-2">
               {models[selectedModel].improvements.map((improvement, index) => (
