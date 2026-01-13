@@ -4,6 +4,11 @@
   "version": "0.1.0",
   "type": "module",
   "packageManager": "pnpm@10.18.2",
+  "pnpm": {
+    "overrides": {
+      "tslib": "^2.6.0"
+    }
+  },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "start": "bash ./scripts/railway-medusa-start.sh",
@@ -20,7 +25,15 @@
     "deploy:staging": "tsx scripts/deploy.ts staging",
     "deploy:production": "tsx scripts/deploy.ts production",
     "deployment-status": "tsx scripts/deployment-status.ts",
-    "validate-preview": "tsx scripts/validate-preview-config.ts"
+    "validate-preview": "tsx scripts/validate-preview-config.ts",
+    "pm2:start": "pm2 start ecosystem.config.cjs",
+    "pm2:stop": "pm2 stop all",
+    "pm2:restart": "pm2 restart all",
+    "pm2:status": "pm2 status",
+    "pm2:logs": "pm2 logs",
+    "pm2:logs:medusa": "pm2 logs medusa-backend",
+    "pm2:logs:strapi": "pm2 logs strapi-cms",
+    "pm2:delete": "pm2 delete all"
   },
   "devDependencies": {
     "@eslint/js": "^8.57.1",
@@ -28,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^8.46.1",
     "@typescript-eslint/parser": "^8.46.1",
     "eslint": "^8.57.1",
+    "pm2": "^6.0.14",
     "tsx": "^4.7.0",
     "turbo": "^2.1.1"
   }

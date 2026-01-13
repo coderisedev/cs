@@ -1,14 +1,5 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
-export interface BlogAuthor extends Struct.ComponentSchema {
-  collectionName: 'components_blog_authors';
-  info: {
-    displayName: 'author';
-    icon: 'calendar';
-  };
-  attributes: {};
-}
-
 export interface HomepageCtaButton extends Struct.ComponentSchema {
   collectionName: 'components_homepage_cta_buttons';
   info: {
@@ -53,90 +44,93 @@ export interface HomepageProductHighlight extends Struct.ComponentSchema {
   };
 }
 
-export interface MarketingEmbedMedia extends Struct.ComponentSchema {
-  collectionName: 'components_marketing_embed_media';
+export interface ProductContentSection extends Struct.ComponentSchema {
+  collectionName: 'components_product_content_sections';
   info: {
-    description: 'Hero media supporting uploads or external embeds';
-    displayName: 'embed-media';
-    icon: 'play';
-  };
-  attributes: {
-    alt_text: Schema.Attribute.String;
-    asset: Schema.Attribute.Media<'images' | 'videos'>;
-    embed_url: Schema.Attribute.String;
-    thumbnail: Schema.Attribute.Media<'images'>;
-    type: Schema.Attribute.Enumeration<['image', 'video', 'embed']> &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'image'>;
-  };
-}
-
-export interface MarketingFeature extends Struct.ComponentSchema {
-  collectionName: 'components_marketing_features';
-  info: {
-    description: 'Homepage release feature highlight';
-    displayName: 'feature';
-    icon: 'star';
-  };
-  attributes: {
-    body: Schema.Attribute.RichText;
-    heading: Schema.Attribute.String & Schema.Attribute.Required;
-    media: Schema.Attribute.Media<'images' | 'videos'>;
-  };
-}
-
-export interface MarketingStat extends Struct.ComponentSchema {
-  collectionName: 'components_marketing_stats';
-  info: {
-    description: 'Key metric for release banner';
-    displayName: 'stat';
-    icon: 'chartBubble';
-  };
-  attributes: {
-    description: Schema.Attribute.String;
-    label: Schema.Attribute.String & Schema.Attribute.Required;
-    value: Schema.Attribute.String & Schema.Attribute.Required;
-  };
-}
-
-export interface ProductDownload extends Struct.ComponentSchema {
-  collectionName: 'components_product_downloads';
-  info: {
-    description: 'Support files or external resources';
-    displayName: 'download';
-    icon: 'attachment';
-  };
-  attributes: {
-    external_url: Schema.Attribute.String;
-    file: Schema.Attribute.Media<'files' | 'images'>;
-    label: Schema.Attribute.String & Schema.Attribute.Required;
-  };
-}
-
-export interface ProductFeature extends Struct.ComponentSchema {
-  collectionName: 'components_product_features';
-  info: {
-    description: 'Highlight block with heading, body, and optional media';
-    displayName: 'feature';
+    description: 'Mixed media section with title, description, and optional media';
+    displayName: 'Content Section';
     icon: 'layout';
   };
   attributes: {
-    body: Schema.Attribute.RichText;
-    heading: Schema.Attribute.String & Schema.Attribute.Required;
+    description: Schema.Attribute.RichText;
+    eyebrow: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 50;
+      }>;
+    heading: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 150;
+      }>;
     media: Schema.Attribute.Media<'images' | 'videos'>;
+    media_position: Schema.Attribute.Enumeration<
+      ['left', 'right', 'top', 'bottom', 'content-bottom']
+    > &
+      Schema.Attribute.DefaultTo<'right'>;
+    theme: Schema.Attribute.Enumeration<['light', 'gray']> &
+      Schema.Attribute.DefaultTo<'light'>;
   };
 }
 
-export interface ProductQa extends Struct.ComponentSchema {
-  collectionName: 'components_product_qas';
+export interface ProductFeatureBullet extends Struct.ComponentSchema {
+  collectionName: 'components_product_feature_bullets';
   info: {
-    description: 'FAQ entry';
-    displayName: 'qa';
-    icon: 'question';
+    description: 'Simple feature bullet point with optional icon';
+    displayName: 'Feature Bullet';
+    icon: 'check';
   };
   attributes: {
-    answer: Schema.Attribute.RichText;
-    question: Schema.Attribute.String & Schema.Attribute.Required;
+    icon: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 50;
+      }> &
+      Schema.Attribute.DefaultTo<'check'>;
+    text: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 200;
+      }>;
+  };
+}
+
+export interface ProductPackageItem extends Struct.ComponentSchema {
+  collectionName: 'components_product_package_items';
+  info: {
+    description: 'Single item included in the package';
+    displayName: 'Package Item';
+    icon: 'box';
+  };
+  attributes: {
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    quantity: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<1>;
+  };
+}
+
+export interface ProductSpecGroup extends Struct.ComponentSchema {
+  collectionName: 'components_product_spec_groups';
+  info: {
+    description: 'Grouped technical specifications with a category label';
+    displayName: 'Spec Group';
+    icon: 'server';
+  };
+  attributes: {
+    group_name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 100;
+      }>;
+    items: Schema.Attribute.Component<'product.spec-item', true>;
   };
 }
 
@@ -172,15 +166,12 @@ export interface SharedSeo extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
-      'blog.author': BlogAuthor;
       'homepage.cta-button': HomepageCtaButton;
       'homepage.product-highlight': HomepageProductHighlight;
-      'marketing.embed-media': MarketingEmbedMedia;
-      'marketing.feature': MarketingFeature;
-      'marketing.stat': MarketingStat;
-      'product.download': ProductDownload;
-      'product.feature': ProductFeature;
-      'product.qa': ProductQa;
+      'product.content-section': ProductContentSection;
+      'product.feature-bullet': ProductFeatureBullet;
+      'product.package-item': ProductPackageItem;
+      'product.spec-group': ProductSpecGroup;
       'product.spec-item': ProductSpecItem;
       'shared.seo': SharedSeo;
     }

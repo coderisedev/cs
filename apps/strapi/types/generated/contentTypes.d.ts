@@ -612,54 +612,6 @@ export interface ApiHomepageLayoutHomepageLayout
   };
 }
 
-export interface ApiNewReleaseNewRelease extends Struct.CollectionTypeSchema {
-  collectionName: 'new_releases';
-  info: {
-    description: 'Homepage launch announcements';
-    displayName: 'New Release';
-    pluralName: 'new-releases';
-    singularName: 'new-release';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    cta_label: Schema.Attribute.String;
-    cta_url: Schema.Attribute.String;
-    description: Schema.Attribute.RichText;
-    features: Schema.Attribute.Component<'marketing.feature', true>;
-    gallery: Schema.Attribute.Media<'images' | 'videos', true>;
-    hero_media: Schema.Attribute.Component<'marketing.embed-media', false>;
-    inventory_badge: Schema.Attribute.String;
-    is_featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    is_preorder: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    launch_date: Schema.Attribute.DateTime & Schema.Attribute.Required;
-    legacy_hero_media: Schema.Attribute.Media<'images' | 'videos'>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::new-release.new-release'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    regions: Schema.Attribute.JSON;
-    secondary_cta_label: Schema.Attribute.String;
-    secondary_cta_url: Schema.Attribute.String;
-    seo: Schema.Attribute.Component<'shared.seo', false>;
-    sku_reference: Schema.Attribute.String;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    stats: Schema.Attribute.Component<'marketing.stat', true>;
-    tagline: Schema.Attribute.String;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiPostPost extends Struct.CollectionTypeSchema {
   collectionName: 'posts';
   info: {
@@ -681,13 +633,21 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    excerpt: Schema.Attribute.String;
+    excerpt: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 500;
+      }>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::post.post'> &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'title'>;
-    title: Schema.Attribute.String;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 255;
+      }>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -707,31 +667,63 @@ export interface ApiProductDetailProductDetail
     draftAndPublish: true;
   };
   attributes: {
+    content_sections: Schema.Attribute.Component<
+      'product.content-section',
+      true
+    > &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 20;
+        },
+        number
+      >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    downloads: Schema.Attribute.Component<'product.download', true>;
-    faq: Schema.Attribute.Component<'product.qa', true>;
-    features: Schema.Attribute.Component<'product.feature', true>;
-    gallery: Schema.Attribute.Media<'images' | 'videos', true>;
+    feature_bullets: Schema.Attribute.Component<
+      'product.feature-bullet',
+      true
+    > &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 20;
+        },
+        number
+      >;
     handle: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    hero_excerpt: Schema.Attribute.Text;
-    hero_media: Schema.Attribute.Media<'images' | 'videos'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::product-detail.product-detail'
     > &
       Schema.Attribute.Private;
+    os_requirements: Schema.Attribute.Text;
     overview: Schema.Attribute.RichText;
+    package_contents: Schema.Attribute.Component<'product.package-item', true> &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 20;
+        },
+        number
+      >;
     publishedAt: Schema.Attribute.DateTime;
     seo: Schema.Attribute.Component<'shared.seo', false>;
-    shipping_note: Schema.Attribute.RichText;
-    specs: Schema.Attribute.Component<'product.spec-item', true>;
+    spec_groups: Schema.Attribute.Component<'product.spec-group', true> &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 10;
+        },
+        number
+      >;
+    tagline: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 200;
+      }>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    warranty_info: Schema.Attribute.RichText;
   };
 }
 
@@ -1247,7 +1239,6 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::featured-product.featured-product': ApiFeaturedProductFeaturedProduct;
       'api::homepage-layout.homepage-layout': ApiHomepageLayoutHomepageLayout;
-      'api::new-release.new-release': ApiNewReleaseNewRelease;
       'api::post.post': ApiPostPost;
       'api::product-detail.product-detail': ApiProductDetailProductDetail;
       'plugin::content-releases.release': PluginContentReleasesRelease;

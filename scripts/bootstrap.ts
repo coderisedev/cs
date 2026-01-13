@@ -276,9 +276,9 @@ function generateEnvironmentFile(targetEnv: string): void {
   console.log(`🚀 Bootstrapping ${config.name}...`);
 
   // Generate storefront environment file
-  const storefrontTemplate = readFileSync(join(projectRoot, 'apps/storefront/.env.local.example'), 'utf8');
+  const storefrontTemplate = readFileSync(join(projectRoot, 'apps/dji-storefront/.env.local.example'), 'utf8');
   const storefrontContent = replaceEnvironmentVariables(storefrontTemplate, config);
-  const storefrontOutput = join(projectRoot, 'apps/storefront', `.env.${targetEnv === 'local' ? 'local' : targetEnv}`);
+  const storefrontOutput = join(projectRoot, 'apps/dji-storefront', `.env.${targetEnv === 'local' ? 'local' : targetEnv}`);
   writeFileSync(storefrontOutput, storefrontContent);
   console.log(`✅ Created: ${storefrontOutput}`);
 
@@ -316,7 +316,7 @@ function main(): void {
 
     // Validate template files exist
     const requiredTemplates = [
-      'apps/storefront/.env.local.example',
+      'apps/dji-storefront/.env.local.example',
       'apps/medusa/.env.template',
       'apps/strapi/.env.example',
     ];

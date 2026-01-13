@@ -90,6 +90,14 @@ export async function preparePayPalCheckoutAction(
     // Step 6: Initialize PayPal payment session - this creates the PayPal order on the backend
     const paymentSession = await initiatePaymentSession(cartWithShipping, {
       provider_id: PAYPAL_PROVIDER_ID,
+    }).catch(err => {
+      logger.error("Failed to initiate PayPal payment session", {
+        error: err,
+        message: err.message,
+        stack: err.stack,
+        cartId: cartWithShipping.id
+      })
+      throw err
     })
 
     // Debug: log the response to understand the structure

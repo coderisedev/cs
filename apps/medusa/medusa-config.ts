@@ -84,7 +84,9 @@ const FACEBOOK_FIELDS = process.env.FACEBOOK_FIELDS
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET
 const PAYPAL_IS_SANDBOX =
-  (process.env.PAYPAL_IS_SANDBOX ?? "true").toLowerCase() === "true"
+  process.env.PAYPAL_IS_SANDBOX
+    ? (process.env.PAYPAL_IS_SANDBOX ?? "true").toLowerCase() === "true"
+    : (process.env.PAYPAL_ENVIRONMENT ?? "sandbox").toLowerCase() !== "live"
 
 // Resend Email Configuration
 const RESEND_API_KEY = process.env.RESEND_API_KEY
@@ -216,6 +218,8 @@ export default defineConfig({
                     clientId: PAYPAL_CLIENT_ID,
                     clientSecret: PAYPAL_CLIENT_SECRET,
                     isSandbox: PAYPAL_IS_SANDBOX,
+                    is_sandbox: PAYPAL_IS_SANDBOX, // Add snake_case variant for compatibility
+                    auth_mode: PAYPAL_IS_SANDBOX ? "sandbox" : "live", // Explicitly set auth mode
                   },
                 },
               ],
