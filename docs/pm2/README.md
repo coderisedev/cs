@@ -50,14 +50,16 @@ pnpm pm2:delete
 
 ### Medusa 构建
 
-构建后需要复制 admin 文件:
+构建后需要同步 admin 生产文件:
 
 ```bash
 cd apps/medusa
 pnpm build
-mkdir -p public
-cp -r .medusa/client public/admin
+rm -rf public/admin
+cp -r .medusa/server/public/admin public/
 ```
+
+> **注意**: 如遇 Admin 白屏问题，参见 [medusa-admin-white-screen-fix.md](./medusa-admin-white-screen-fix.md)
 
 ### Strapi 构建
 

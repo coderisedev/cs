@@ -168,6 +168,7 @@ export default defineConfig({
   },
   admin: {
     vite: () => ({
+      base: "/app/",
       server: {
         allowedHosts: [".aidenlux.com"],
       },

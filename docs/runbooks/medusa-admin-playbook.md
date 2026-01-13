@@ -1,141 +1,162 @@
-# Medusa Admin Playbook
+# Medusa Admin 后台配置实战指南
 
-This playbook walks a first-time operator through the Medusa Admin (v2) console we deploy on GCE. Follow it end-to-end whenever you need to add or audit catalog items, sales channels, or stock routing. Each section includes a case-driven example using our **CS 320A MCDU** product so you can mirror the same pattern for new hardware.
-
----
-
-## 0. Prerequisites
-| Item | Notes |
-| --- | --- |
-| Admin URL | `https://medusa-preview.cs.com` (or the Cloudflare hostname wired to port 9000). |
-| Credentials | Request a Medusa admin invite from platform ops. Admins can invite others under **Settings → Users**. |
-| Publishable Key | `apk_01K8J5TBSMAFAGWEV1M6KP650C` (“Webshop”) is the key wired to the storefront. |
-| Regions | `reg_01K9KE3SV4Q4J745N8T19YTCMH (US / USD)` and `reg_01K8J5TBMV1EKV404ZG3SZGXEQ (Europe / EUR)` must stay enabled. |
-| Stock Locations | “European Warehouse” (`sloc_01K8J5TBP753MHXX90PTNACTR6`) and “中国东莞” (`sloc_01K9KE82F5JHEACPWXF8P39QAV`). |
-
-> ☑️ **Before you start:** confirm Redis, Postgres, and the Medusa API are healthy (`curl https://api.aidenlux.com/store/health`). If the API is down, fix infra first (see `docs/runbooks/gce-backend-playbook.md`).
+**最后更新**: 2026-01-13
+**适用版本**: Medusa v1/v2
+**目标**: 帮助管理员从零开始配置一个具备跨境销售能力的电商后台。
 
 ---
 
-## 1. Sign In & Verify Permissions
-1. Open the Admin URL and log in with your email + password (or create a password using the invite link).
-2. In the left rail, expand **Settings**:
-   - **Users**: verify your account shows `Role: Admin`.
-   - **API Keys**: ensure “Webshop” (publishable) and deployment keys exist; do not rotate them without updating the storefront envs.
-3. Bookmark **Settings → Publishable API Keys**. Any new storefront or integration must share a sales channel with the key it uses.
+## 1. 核心概念解析 (Mental Model)
+
+在使用 Medusa Admin 之前，必须理解它与 Shopify 等传统电商的区别。Medusa 的设计哲学是 **“区域优先 (Region-First)”**。
+
+*   **Store (店铺)**: 全局配置容器。
+*   **Regions (区域)**: 交易的核心单元。**所有商品价格、支付方式、物流方式、税率都绑定在 Region 上**。
+    *   *例子*: 你可以卖同一个商品，在美国卖 $100 (免邮)，在欧洲卖 €95 (收 €10 运费)。
+*   **Sales Channels (销售渠道)**: 商品的过滤器。
+    *   *例子*: 渠道 A (官网) 卖全量商品；渠道 B (TikTok) 只卖爆款。
+*   **Product Variants (变体)**: 真正的 SKU。库存是挂在 Variant 上的，不是 Product。
 
 ---
 
-## 2. Understand Regions & Currencies
-1. Go to **Settings → Regions**.
-2. Review each region:
-   - `US Region` → currency `USD`.
-   - `Europe Region` → currency `EUR`.
-   - Inspect **Countries** tab to keep permitted shipping countries in sync with legal/commercial decisions.
-3. Case: For CS 320A MCDU we sell in both regions, so confirm both appear under the product’s price set (Step 5).
+## 2. 初始化设置 (Settings)
 
-> 🧠 Tip: Storefront API calls pass `region_id`. If you forget to price a region, the product will respond without `calculated_price` and show as `0` on the frontend.
+登录 Admin 后 (默认 `localhost:9000/app` 或 `api.your-domain.com/app`)，按顺序操作：
 
----
+### 2.1 货币设置 (Currencies)
+*路径: Settings -> Currencies*
 
-## 3. Sales Channels & Stock Locations
-Sales channels gate what the storefront can query. Each channel must be connected to at least one stock location so Medusa can surface inventory.
+*   **操作**: 添加你需要支持的所有货币。
+*   **建议**: 至少添加 `USD` (美元), `EUR` (欧元), `CNY` (人民币)。
+*   *注意*: 添加货币不代表用户能用它支付，必须在 Region 中启用。
 
-1. Navigate to **Catalog → Sales Channels**.
-2. Open **Default Sales Channel** (`sc_01K8FGPPGMEQKS6DSP9J59FM2S`).
-   - Confirm the **Linked products** list includes your target SKU (e.g., CS 320A MCDU).
-   - Under **Stock Locations**, add any warehouse that should fulfill storefront orders.
-3. Case: CS 320A MCDU initially only had stock in “中国东莞,” but that warehouse was not linked to the default channel. Result: the storefront saw `inventory_quantity = 0`. To fix it:
-   - Click **Add Stock Location** → select “中国东莞” → Save.
-   - Alternatively, move inventory into “European Warehouse,” which was already attached.
+### 2.2 区域设置 (Regions) —— **最关键一步**
+*路径: Settings -> Regions*
 
-| Checklist | Why it matters |
-| --- | --- |
-| ✅ Product assigned to sales channel | Controls which publishable keys can fetch it |
-| ✅ Stock location linked to channel | Enables sellable inventory calculations |
-| ✅ Publishable key linked to channel | Already true for “Webshop”; keep in sync |
+创建 Region 是卖货的第一步。
 
----
+**实战案例：设置“北美区 (North America)”**
+1.  **Title**: North America
+2.  **Currency**: USD
+3.  **Tax Rate**: 0% (跨境通常填0，由 Avalara 插件算税) 或 10% (固定税率)。
+4.  **Countries**: 勾选 United States, Canada。
+5.  **Payment Providers**: 勾选 `stripe`, `paypal` (前提是已安装插件)。
+6.  **Fulfillment Providers**: 勾选 `manual` 或自定义物流插件 (如 `yunexpress`)。
 
-## 4. Create or Audit Catalog Entries
-1. **Products → New Product**
-   - Fill **General Info**: Title, Handle, Description, Metadata (e.g., `is_new=true`, `features=[...]`).
-   - Assign **Collection** (“featured”) and **Categories** (e.g., `merch` or `a320-series`).
-   - Upload gallery images (stored in Cloudflare R2).
-2. Save as `Draft` first; add variants and prices before publishing.
-3. Case: CS 320A MCDU uses:
-   - Handle `cs-320a-mcdu` (mirrors storefront slug).
-   - Collection `featured` so it shows on the homepage hero grid.
-   - Metadata left empty (frontend falls back to defaults).
+**实战案例：设置“欧洲区 (Europe)”**
+1.  **Title**: Europe
+2.  **Currency**: EUR
+3.  **Countries**: Germany, France, Italy...
+4.  *注意*: 这里的价格和支付方式独立于北美区。
 
-> 🧠 Tip: Use lower-kebab-case handles; storefront routes (`/products/[handle]`) depend on them.
+### 2.3 团队成员 (The Team)
+*路径: Settings -> The Team*
+
+*   邀请运营人员或客服。
+*   权限控制: Member (普通成员), Admin (管理员), Developer (开发者)。
 
 ---
 
-## 5. Variants, Pricing & Regions
-1. Inside the product editor, go to **Variants → Add Variant**.
-2. Provide SKU (`CS320A-MCDU`), title (“Standard”), and physical dimensions if available.
-3. Click the variant → **Prices** tab:
-   - Add one price per region currency (USD 799, EUR 699 for CS 320A MCDU).
-   - Enable `Manage inventory` unless it is a made-to-order item.
-4. For complex promos, use **Price Lists**; otherwise, raw variant prices are enough.
+## 3. 商品上架流程 (Products)
 
-> ✅ Always match price coverage with Step 2 regions to avoid missing `calculated_price` in API responses.
+*路径: Products*
 
----
+Medusa 的商品结构：`Product` -> `Options` -> `Variants`。
 
-## 6. Inventory & Stock Location Routing
-1. Still inside the variant drawer, open **Inventory**.
-2. Click **Add Inventory Item** (or select an existing one) to bind the variant to `inventory_item`.
-3. For each warehouse:
-   - Assign stocked quantity (e.g., 100 units in “中国东莞”).
-   - If you add a brand-new warehouse, remember to:
-     1. Create it under **Fulfillment → Stock Locations**.
-     2. Link it to the sales channel (Step 3).
-4. Case workflow:
-   - Inventory item `iitem_01K9Y8D8AV6F9ATTMH2P71GPNE` holds the CS 320A stock.
-   - `inventory_level` rows show quantities per location; we keep them in sync via the Medusa UI or direct Postgres updates (documented separately in `docs/runbooks/medusa-db-analysis.md`).
+### 步骤 1: 创建基础信息
+*   **Title**: DJI Mini 4 Pro
+*   **Handle**: `dji-mini-4-pro` (URL 路径，很重要，Strapi 内容关联全靠它)
+*   **Sales Channels**: 默认勾选 Default Channel。
 
----
+### 步骤 2: 定义规格 (Options)
+如果商品有多个版本，先定义维度。
+*   Option 1: `Color` (Gray, White)
+*   Option 2: `Bundle` (Standard, Fly More Combo)
 
-## 7. Publish & Validate
-1. Switch product status from `Draft` → `Published`.
-2. Hit **Save**. Medusa now surfaces it to any publishable key tied to the same sales channel.
-3. Validation steps:
-   - **Admin**: Re-open product detail → confirm “Published” badge.
-   - **API**: `curl -s https://api.aidenlux.com/store/products?handle=cs-320a-mcdu | jq '.'`
-   - **Frontend**: Visit `/products/cs-320a-mcdu` and ensure price, gallery, and stock badge align with the admin data.
-4. If the storefront still hides the product, run through the DB checklist:
-   - Product status, sales channel, publishable key
-   - Collection handle (needed for featured sections)
-   - Inventory channel linkage
+### 步骤 3: 生成变体 (Variants) & 定价
+Medusa 会自动生成 SKU 矩阵（如 Gray + Standard）。
+
+*   **SKU**: 必填！这是库存和物流对接的唯一 ID (如 `DJI-MINI4-STD`)。
+*   **Pricing**: 点击每个变体，**必须为每个 Region 设置价格**。
+    *   *NA Region*: $759
+    *   *EU Region*: €799 (含税价)
+    *   *Missing Price*: 如果某个 Region 没填价格，该 Region 的用户将无法购买此商品。
+
+### 步骤 4: 补充元数据 (Metadata)
+在右侧栏底部的 JSON Metadata 编辑器中：
+*   添加物流所需字段（如果我们开发了物流插件）：
+    ```json
+    {
+      "hs_code": "880220",
+      "origin_country": "CN",
+      "weight_g": 249
+    }
+    ```
 
 ---
 
-## 8. Routine Operations
-| Task | Where | Notes |
-| --- | --- | --- |
-| Rotate API keys | Settings → API Keys | Update `apps/dji-storefront` env vars after rotation. |
-| Manage discounts/promotions | Marketing → Price Lists / Promotions | Promotions can target tags, collections, or customer groups. |
-| Sync with Strapi content | N/A | Product descriptions are authored in Medusa; long-form marketing pages stay in Strapi. |
-| Monitor orders | Orders module | Ensure fulfillment providers (DHL, manual) remain configured if we resume shipping flows. |
+## 4. 物流与运费配置 (Shipping)
+
+*路径: Settings -> Regions -> [选择区域] -> Shipping Options*
+
+运费是绑定在 Region 上的。
+
+### 场景 A: 满 $99 包邮
+1.  **Name**: Free Shipping
+2.  **Price Type**: Calculated (实时) 或 Flat Rate (固定)。选 Flat Rate。
+3.  **Amount**: 0
+4.  **Requirements**: Min. subtotal: 99
+
+### 场景 B: 标准运费 $10
+1.  **Name**: Standard Shipping
+2.  **Price Type**: Flat Rate
+3.  **Amount**: 10
+4.  **Requirements**: Max. subtotal: 98.99
 
 ---
 
-## 9. Troubleshooting Cheat Sheet
-| Symptom | Checks | Fix |
-| --- | --- | --- |
-| Product missing from storefront list | `status`, `deleted_at`, sales channel, publishable key | Publish product, ensure channel alignment. |
-| “Out of Stock” badge despite warehouse units | Inventory location not linked to channel | Attach warehouse to channel or move stock. |
-| Price shows 0 | Region missing price | Add currency entry under variant Prices. |
-| API returns 401 | Publishable key revoked or not authorized for channel | Recreate key + reassign channel via Settings → API Keys. |
+## 5. 库存管理 (Inventory)
+
+*路径: Inventory (Medusa v2)*
+
+Medusa v2 引入了多仓概念。
+
+1.  **Locations**: 创建 `Shenzhen Warehouse` 和 `Los Angeles Warehouse`。
+2.  **Stock Levels**: 为每个 SKU 在不同仓库设置库存数。
+    *   SKU: `DJI-MINI4-STD` -> SZ: 1000, LA: 50.
+3.  **Reservations**: 当用户下单未发货时，库存会变为 Reserved。发货后变为 Fulfilled。
 
 ---
 
-## 10. References
-- Deployment & health checks: `docs/runbooks/gce-backend-playbook.md`
-- Direct database inspection: `docs/runbooks/medusa-db-analysis.md`
-- Frontend data flow: `apps/dji-storefront/src/lib/data/products.ts`
-- Inventory troubleshooting cases: `docs/fix/2025-11-13-cs-320a-mcdu-product-visibility.md`
+## 6. 订单处理 (Orders)
 
-Keep this playbook updated whenever Medusa gains new plugins (payments, fulfillment) or when we extend to new sales channels. Tag documentation updates with `docs: medusa-admin-playbook` in commit messages for easy traceability.
+*路径: Orders*
+
+运营人员的日常工作台。
+
+### 标准处理流程
+1.  **查看订单**: 状态为 `Pending` (已付款，未发货)。
+2.  **审核**: 检查是否有欺诈风险 (Stripe Radar 提示)。
+3.  **创建发货 (Fulfillment)**:
+    *   点击 "Create Fulfillment"。
+    *   选择发货仓库。
+    *   输入 `Tracking Number` (如果有物流插件则自动生成)。
+    *   点击确认 -> 状态变为 `Fulfilled` -> 触发邮件通知用户。
+4.  **退款/退货 (Swap/Claim)**:
+    *   Medusa 支持极其复杂的换货逻辑（如：退 A 买 B，补差价）。
+
+---
+
+## 7. 常见问题 (FAQ)
+
+**Q: 为什么前端看不到商品？**
+A: 检查三点：
+1.  商品状态是否为 `Published`？
+2.  商品是否关联了当前的 `Sales Channel`？
+3.  商品是否设置了当前 Region 的**价格**？(最常见原因)
+
+**Q: 如何修改首页的商品排序？**
+A: Medusa 核心只负责卖货。首页排序通常在 **Collection** (集合) 中管理，或者在 Strapi 的 Homepage 模块中配置 Handle 列表。
+
+**Q: 我改了配置，前端没变？**
+A: Next.js 有缓存。尝试重新发布或等待 ISR 重新验证 (默认 5 分钟)。
