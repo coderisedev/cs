@@ -22,9 +22,10 @@ type CheckoutClientProps = {
   customerAddresses: AccountAddress[]
 }
 
-export function CheckoutClient({ cart, customer, countryCode, customerAddresses }: CheckoutClientProps) {
+export function CheckoutClient({ cart: initialCart, customer, countryCode, customerAddresses }: CheckoutClientProps) {
   const router = useRouter()
-  const [email, setEmail] = useState(customer?.email || cart.email || "")
+  const [cart, setCart] = useState(initialCart)
+  const [email, setEmail] = useState(customer?.email || initialCart.email || "")
   const [shippingAddress, setShippingAddress] = useState({
     first_name: customer?.first_name || "",
     last_name: customer?.last_name || "",
@@ -128,6 +129,11 @@ export function CheckoutClient({ cart, customer, countryCode, customerAddresses 
         setPaypalError(result.error)
         setIsPaypalProcessing(false)
         return null
+      }
+
+      // Update cart state with refreshed data (includes calculated tax)
+      if (result.cart) {
+        setCart(result.cart)
       }
 
       // Return the PayPal order ID created by Medusa

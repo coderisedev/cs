@@ -26,7 +26,7 @@ interface PreparePayPalCheckoutInput {
 
 export async function preparePayPalCheckoutAction(
   input: PreparePayPalCheckoutInput
-): Promise<{ paypalOrderId?: string; error?: string }> {
+): Promise<{ paypalOrderId?: string; cart?: HttpTypes.StoreCart; error?: string }> {
   const { email, shippingAddress, sameAsBilling } = input
 
   // Validate required fields
@@ -123,7 +123,10 @@ export async function preparePayPalCheckoutAction(
       return { error: "Failed to create PayPal order. Please try again." }
     }
 
-    return { paypalOrderId }
+    // Retrieve the final cart with all totals calculated (including tax)
+    const finalCart = await retrieveCart()
+
+    return { paypalOrderId, cart: finalCart ?? undefined }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : null
     logger.error("Error preparing PayPal checkout", error)

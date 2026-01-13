@@ -65,7 +65,10 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
   }
 
   const subtotal = cart.subtotal || 0
-  const total = cart.total || 0
+  const shippingTotal = cart.shipping_total || 0
+  const taxTotal = cart.tax_total || 0
+  // Use subtotal for display since shipping/tax are shown separately or as "calculated at checkout"
+  const total = subtotal + shippingTotal + taxTotal
   const itemCount = cart.items.reduce((sum, item) => sum + (item.quantity || 0), 0)
 
   return (
@@ -194,11 +197,15 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Shipping</span>
-                  <span className="font-medium">Calculated at checkout</span>
+                  <span className="font-medium">
+                    {shippingTotal > 0 ? currencyFormatter(shippingTotal) : "Calculated at checkout"}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Tax</span>
-                  <span className="font-medium">Calculated at checkout</span>
+                  <span className="font-medium">
+                    {taxTotal > 0 ? currencyFormatter(taxTotal) : "Calculated at checkout"}
+                  </span>
                 </div>
               </div>
 
