@@ -250,5 +250,25 @@ export default defineConfig({
           },
         }
       : {}),
+    [Modules.FULFILLMENT]: {
+      resolve: "@medusajs/medusa/fulfillment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/fulfillment-manual",
+            id: "manual",
+            options: {},
+          },
+          {
+            resolve: "./src/modules/dynamic-shipping",
+            id: "dynamic-shipping",
+            options: {
+              base_price: 1000,
+              weight_multiplier: 50,
+            },
+          },
+        ],
+      },
+    },
   },
 })
