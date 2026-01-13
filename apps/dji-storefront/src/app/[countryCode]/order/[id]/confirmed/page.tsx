@@ -17,7 +17,7 @@ function formatPrice(amount: number, currencyCode: string = "usd") {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: currencyCode.toUpperCase(),
-  }).format(amount ?? 0)
+  }).format((amount ?? 0) / 100)
 }
 
 export default async function OrderConfirmedPage(props: Props) {

@@ -3,4 +3,4 @@ const formatter = new Intl.NumberFormat("en-US", {
   currency: "USD",
 })
 
-export const currencyFormatter = (value: number) => formatter.format(value)
+export const currencyFormatter = (value: number) => formatter.format(value / 100)

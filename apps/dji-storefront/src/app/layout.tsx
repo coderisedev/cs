@@ -1,6 +1,10 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
 
+// Force dynamic rendering - disable all caching for testing
+export const dynamic = "force-dynamic"
+export const fetchCache = "force-no-store"
+
 // Temporarily disabled due to Turbopack font loading issues
 // import { JetBrains_Mono, Open_Sans } from "next/font/google"
 import "./globals.css"
