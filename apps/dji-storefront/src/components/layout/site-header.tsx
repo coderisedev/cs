@@ -13,7 +13,7 @@ import { BRAND_LOGO_URL, BRAND_LOGO_URL_DARK, BRAND_NAME } from "@/lib/constants
 const NAV_ITEMS = [
   { name: "Home", href: "/" },
   { name: "All Products", href: "/products" },
-  { name: "Post", href: "/announcements/latest" },
+  { name: "News", href: "/news" },
   { name: "Software", href: "/software" },
   { name: "Blog", href: "/blog" },
   { name: "Community", href: "https://community.cockpit-simulator.com/" },

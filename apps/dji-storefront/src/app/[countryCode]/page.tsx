@@ -6,7 +6,7 @@ import { ProductGrid } from '@/components/homepage/product-grid';
 import { ServicesCarousel } from '@/components/homepage/services-carousel';
 import { TestimonialsCarousel } from "@/components/homepage/testimonials-carousel";
 import { ResellerRecruitment } from "@/components/homepage/reseller-recruitment";
-import { LatestAnnouncements } from "@/components/homepage/latest-announcements";
+import { LatestNews } from "@/components/homepage/latest-news";
 
 export const metadata: Metadata = {
     title: 'Featured Products - DJI Storefront',
@@ -15,7 +15,12 @@ export const metadata: Metadata = {
 
 export const revalidate = 0; // Disable ISR during debugging - set back to 60 for production
 
-export default async function Homepage() {
+type HomepageProps = {
+    params: Promise<{ countryCode: string }>
+}
+
+export default async function Homepage({ params }: HomepageProps) {
+    const { countryCode } = await params
     const layout = await getHomepageLayout();
 
     if (!layout || !layout.isActive) {
@@ -26,7 +31,7 @@ export default async function Homepage() {
                     <p className="text-gray-600 mb-12">
                         Please configure your homepage layout in Strapi CMS.
                     </p>
-                    <LatestAnnouncements />
+                    <LatestNews countryCode={countryCode} />
                     <TestimonialsCarousel />
                     <ServicesCarousel />
                     <ResellerRecruitment />
@@ -57,7 +62,7 @@ export default async function Homepage() {
             )}
 
             {/* Latest Announcements */}
-            <LatestAnnouncements />
+            <LatestNews countryCode={countryCode} />
 
             {/* Testimonials Carousel */}
             <TestimonialsCarousel />

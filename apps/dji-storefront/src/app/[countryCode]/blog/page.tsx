@@ -20,10 +20,17 @@ export default async function BlogPage(props: BlogPageProps) {
   const page = pageParam ? Math.max(1, Number(pageParam) || 1) : 1
   const categoryParam = Array.isArray(searchParams.category) ? searchParams.category[0] : searchParams.category
 
-  const categories = await getBlogCategories()
+  const allCategories = await getBlogCategories()
+  // Filter out News category - it has its own /news page
+  const categories = allCategories.filter((cat) => cat.slug !== "news")
   const activeCategory = categories.find((category) => category.slug === categoryParam)
 
-  const { posts, pagination, error } = await listPosts({ page, category: activeCategory?.name })
+  // Exclude News category from blog - News has its own /news page
+  const { posts, pagination, error } = await listPosts({
+    page,
+    category: activeCategory?.name,
+    excludeCategory: activeCategory ? undefined : "News",
+  })
 
   return (
     <BlogPageClient

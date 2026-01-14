@@ -104,6 +104,7 @@ export type BlogListOptions = {
   pageSize?: number
   locale?: string
   category?: string
+  excludeCategory?: string
 }
 
 export type BlogListResult = {
@@ -133,6 +134,7 @@ export const listPosts = async (options: BlogListOptions = {}): Promise<BlogList
         "pagination[pageSize]": pageSize,
         ...(options.locale ? { locale: options.locale } : {}),
         ...(options.category ? { "filters[category][$eq]": options.category } : {}),
+        ...(options.excludeCategory ? { "filters[category][$ne]": options.excludeCategory } : {}),
       },
       tags: [BLOG_CACHE_TAG],
       revalidate: BLOG_REVALIDATE_SECONDS,
