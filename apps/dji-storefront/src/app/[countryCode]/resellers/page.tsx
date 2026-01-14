@@ -83,9 +83,11 @@ export default function ResellersPage() {
                     <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
                         Apply now to become an authorized reseller. Our team will review your application and get back to you within 48 hours.
                     </p>
-                    <Button size="lg" className="bg-white text-black hover:bg-gray-200 rounded-full px-8">
-                        Apply Now <ArrowRight className="ml-2 w-4 h-4" />
-                    </Button>
+                    <a href="mailto:info@cockpit-simulator.com">
+                        <Button size="lg" className="bg-white text-black hover:bg-gray-200 rounded-full px-8">
+                            Apply Now <ArrowRight className="ml-2 w-4 h-4" />
+                        </Button>
+                    </a>
                 </div>
             </section>
         </div>
