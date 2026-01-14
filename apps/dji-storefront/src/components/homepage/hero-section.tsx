@@ -56,13 +56,6 @@ export function HeroSection({ product, priority = true }: HeroSectionProps) {
                     </p>
                 )}
 
-                {/* Description */}
-                {product.description && (
-                    <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-8 max-w-3xl mx-auto hero-description-animate px-2">
-                        {product.description}
-                    </p>
-                )}
-
                 {/* CTA Buttons */}
                 {product.ctaButtons && product.ctaButtons.length > 0 && (
                     <div className="flex flex-wrap gap-4 justify-center items-center hero-cta-animate">
@@ -106,29 +99,17 @@ export function HeroSection({ product, priority = true }: HeroSectionProps) {
                 <div className="absolute inset-0 z-[1] bg-black/40 hero-overlay-animate" />
             )}
 
-            {/* Scroll Indicator */}
-            <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-10 hero-scroll-indicator hidden sm:block">
-                <div className="flex flex-col items-center gap-2 text-white/80 hover:text-white transition-colors cursor-pointer">
-                    {/* Mouse Icon */}
-                    <div className="w-6 h-10 border-2 border-current rounded-full flex justify-center pt-2">
-                        <div className="w-1 h-2 bg-current rounded-full scroll-wheel-animate" />
-                    </div>
-                    {/* Arrow */}
-                    <svg
-                        className="w-4 h-4 scroll-arrow-animate"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
+            {/* Bottom Description */}
+            {product.description && (
+                <div className="absolute bottom-4 sm:bottom-8 left-0 right-0 z-10 text-center px-4">
+                    <p
+                        className="text-sm sm:text-base md:text-lg whitespace-nowrap overflow-hidden text-ellipsis hero-description-animate"
+                        style={{ color: product.textColor }}
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                        />
-                    </svg>
+                        {product.description}
+                    </p>
                 </div>
-            </div>
+            )}
         </section>
     );
 }
