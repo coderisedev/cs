@@ -44,7 +44,8 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
   const [orderMessage, orderFormAction, orderPending] = useActionState(placeOrderAction, null)
 
   const itemCount = cart.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0
-  const subtotal = cart.subtotal || 0
+  // Use item_subtotal for products only (subtotal includes shipping in Medusa)
+  const subtotal = cart.item_subtotal || 0
   const shipping = cart.shipping_total || 0
   const tax = cart.tax_total || 0
   const total = cart.total || 0

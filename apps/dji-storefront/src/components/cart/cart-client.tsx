@@ -64,11 +64,11 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
     )
   }
 
-  const subtotal = cart.subtotal || 0
+  // Use item_subtotal for products only (subtotal includes shipping in Medusa)
+  const itemSubtotal = cart.item_subtotal || 0
   const shippingTotal = cart.shipping_total || 0
   const taxTotal = cart.tax_total || 0
-  // Use subtotal for display since shipping/tax are shown separately or as "calculated at checkout"
-  const total = subtotal + shippingTotal + taxTotal
+  const total = itemSubtotal + shippingTotal + taxTotal
   const itemCount = cart.items.reduce((sum, item) => sum + (item.quantity || 0), 0)
 
   return (
@@ -193,7 +193,7 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
               <div className="space-y-2 py-4 border-y border-border-primary">
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Subtotal</span>
-                  <span className="font-medium">{currencyFormatter(subtotal)}</span>
+                  <span className="font-medium">{currencyFormatter(itemSubtotal)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Shipping</span>
