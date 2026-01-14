@@ -131,12 +131,56 @@ ORDER BY so.name;
 | `tax_total` | Total tax amount |
 | `total` | Final total (items + shipping + tax - discounts) |
 
+## Problem 4: Tax Shows "Calculated" When Price Is Tax Inclusive
+
+### Symptoms
+- Checkout page shows "Tax: Calculated at next step" even after selecting address
+- Tax never shows a calculated value because prices are already tax inclusive
+
+### Root Cause
+Products have `is_tax_inclusive: true`, meaning tax is already included in the price. In this case, `tax_total = 0` because there's no additional tax to add.
+
+```sql
+-- Database shows is_tax_inclusive = true
+SELECT title, unit_price, is_tax_inclusive FROM cart_line_item;
+-- CS 320A MCDU | 79900 | t
+```
+
+```json
+// API response
+{
+  "tax_total": 0,
+  "items": [{ "is_tax_inclusive": true }]
+}
+```
+
+### Solution
+Check if items are tax inclusive and display "Included" instead of "Calculated at next step":
+
+**Files Modified**:
+- `src/components/cart/cart-client.tsx`
+- `src/components/checkout/checkout-client.tsx`
+
+```typescript
+// Check if prices are tax inclusive
+const isTaxInclusive = cart.items?.some(item => item.is_tax_inclusive) ?? false
+
+// In JSX
+{tax > 0
+  ? currencyFormatter(tax)
+  : isTaxInclusive
+    ? "Included"
+    : "Calculated at next step"}
+```
+
 ## Testing Checklist
 
 - [ ] Cart page shows correct Subtotal (products only, not including shipping)
 - [ ] Cart page shows Shipping amount when set, otherwise "Calculated at checkout"
-- [ ] Cart page shows Tax amount when set, otherwise "Calculated at checkout"
+- [ ] Cart page shows "Tax: Included" when prices are tax inclusive
+- [ ] Cart page shows "Tax: Calculated at checkout" when prices are not tax inclusive
 - [ ] Cart page Total = Subtotal + Shipping + Tax
 - [ ] Checkout page shows correct Subtotal
-- [ ] Checkout page updates Tax display after clicking PayPal button
+- [ ] Checkout page shows "Tax: Included" when prices are tax inclusive
+- [ ] Checkout page updates Tax display after clicking PayPal button (for non-inclusive prices)
 - [ ] PayPal popup shows correct total amount

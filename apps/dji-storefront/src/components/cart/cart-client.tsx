@@ -70,6 +70,8 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
   const taxTotal = cart.tax_total || 0
   const total = itemSubtotal + shippingTotal + taxTotal
   const itemCount = cart.items.reduce((sum, item) => sum + (item.quantity || 0), 0)
+  // Check if prices are tax inclusive
+  const isTaxInclusive = cart.items?.some(item => item.is_tax_inclusive) ?? false
 
   return (
     <div className="container mx-auto px-4 py-16 space-y-8">
@@ -204,7 +206,11 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Tax</span>
                   <span className="font-medium">
-                    {taxTotal > 0 ? currencyFormatter(taxTotal) : "Calculated at checkout"}
+                    {taxTotal > 0
+                      ? currencyFormatter(taxTotal)
+                      : isTaxInclusive
+                        ? "Included"
+                        : "Calculated at checkout"}
                   </span>
                 </div>
               </div>

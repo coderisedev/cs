@@ -49,6 +49,8 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
   const shipping = cart.shipping_total || 0
   const tax = cart.tax_total || 0
   const total = cart.total || 0
+  // Check if prices are tax inclusive
+  const isTaxInclusive = cart.items?.some(item => item.is_tax_inclusive) ?? false
 
   const handleSubmit = async (formData: FormData) => {
     // Add shipping address to form data
@@ -484,7 +486,11 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Tax</span>
                   <span className="font-medium">
-                    {tax > 0 ? currencyFormatter(tax) : "Calculated at next step"}
+                    {tax > 0
+                      ? currencyFormatter(tax)
+                      : isTaxInclusive
+                        ? "Included"
+                        : "Calculated at next step"}
                   </span>
                 </div>
               </div>
