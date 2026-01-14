@@ -3,7 +3,7 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Mail, Phone, MessageCircle } from "lucide-react";
+import { Search, Mail } from "lucide-react";
 
 export default function FAQPage() {
     const faqCategories = [
@@ -37,7 +37,7 @@ export default function FAQPage() {
                 },
                 {
                     q: "Do you offer technical support?",
-                    a: "Absolutely. Our dedicated support team is available 24/7 via email and live chat to assist with setup, configuration, and troubleshooting."
+                    a: "Absolutely. Our dedicated support team is available via email to assist with setup, configuration, and troubleshooting."
                 }
             ]
         },
@@ -108,32 +108,16 @@ export default function FAQPage() {
                     <p className="text-gray-600">We&apos;re here to help. Contact our support team.</p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                    <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all text-center group">
-                        <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                            <MessageCircle className="w-6 h-6" />
-                        </div>
-                        <h3 className="font-bold text-gray-900 mb-2">Live Chat</h3>
-                        <p className="text-sm text-gray-500 mb-4">Available 24/7</p>
-                        <Button variant="outline" className="rounded-full w-full">Start Chat</Button>
-                    </div>
-
-                    <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all text-center group">
+                <div className="flex justify-center max-w-4xl mx-auto">
+                    <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all text-center group w-full max-w-sm">
                         <div className="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                             <Mail className="w-6 h-6" />
                         </div>
                         <h3 className="font-bold text-gray-900 mb-2">Email Support</h3>
                         <p className="text-sm text-gray-500 mb-4">Response within 24h</p>
-                        <Button variant="outline" className="rounded-full w-full">Send Email</Button>
-                    </div>
-
-                    <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-all text-center group">
-                        <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                            <Phone className="w-6 h-6" />
-                        </div>
-                        <h3 className="font-bold text-gray-900 mb-2">Phone Support</h3>
-                        <p className="text-sm text-gray-500 mb-4">Mon-Fri, 9am-5pm EST</p>
-                        <Button variant="outline" className="rounded-full w-full">Call Us</Button>
+                        <Button variant="outline" className="rounded-full w-full" asChild>
+                            <a href="mailto:info@cockpit-simulator.com">Send Email</a>
+                        </Button>
                     </div>
                 </div>
             </section>
