@@ -31,6 +31,9 @@ import {
   SpecGroups,
   PackageContents,
 } from "@/components/product-detail"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
+import remarkBreaks from "remark-breaks"
 
 interface ProductDetailClientProps {
   product: StorefrontProduct
@@ -473,18 +476,21 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
               {strapiContent.warrantyInfo && (
                 <div>
                   <h3 className="text-[length:var(--fluid-heading-sm)] font-semibold text-foreground-primary mb-[var(--fluid-gap-sm)]">Warranty</h3>
-                  <div
-                    className="prose prose-sm sm:prose-base max-w-none text-foreground-secondary"
-                    dangerouslySetInnerHTML={{ __html: strapiContent.warrantyInfo }}
-                  />
+                  <div className="prose prose-sm sm:prose-base max-w-none text-foreground-secondary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3 [&_p:last-child]:mb-0 [&_strong]:text-foreground-primary [&_a]:text-primary-500 [&_a:hover]:underline">
+                    <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                      {strapiContent.warrantyInfo}
+                    </ReactMarkdown>
+                  </div>
                 </div>
               )}
               {strapiContent.osRequirements && (
                 <div>
                   <h3 className="text-[length:var(--fluid-heading-sm)] font-semibold text-foreground-primary mb-[var(--fluid-gap-sm)]">System Requirements</h3>
-                  <p className="text-[length:var(--fluid-body-md)] text-foreground-secondary whitespace-pre-line leading-relaxed">
-                    {strapiContent.osRequirements}
-                  </p>
+                  <div className="prose prose-sm sm:prose-base max-w-none text-foreground-secondary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3 [&_p:last-child]:mb-0 [&_strong]:text-foreground-primary [&_a]:text-primary-500 [&_a:hover]:underline">
+                    <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                      {strapiContent.osRequirements}
+                    </ReactMarkdown>
+                  </div>
                 </div>
               )}
             </div>

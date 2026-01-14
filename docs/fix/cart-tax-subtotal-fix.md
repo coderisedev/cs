@@ -173,6 +173,41 @@ const isTaxInclusive = cart.items?.some(item => item.is_tax_inclusive) ?? false
     : "Calculated at next step"}
 ```
 
+## Problem 5: Warranty Markdown Not Rendering
+
+### Symptoms
+- Product detail page `/us/products/cs-320a-mcdu` shows raw Markdown text in Warranty section
+- Markdown lists, bold text, and links not rendered properly
+
+### Root Cause
+The `warrantyInfo` field from Strapi contains Markdown, but the code was using `dangerouslySetInnerHTML` expecting HTML:
+
+```tsx
+// Before - expected HTML but received Markdown
+<div dangerouslySetInnerHTML={{ __html: strapiContent.warrantyInfo }} />
+```
+
+### Solution
+Use `react-markdown` with `remark-gfm` and `remark-breaks` plugins to properly render Markdown content:
+
+**File Modified**: `src/components/products/product-detail-client.tsx`
+
+```tsx
+// Added imports
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
+import remarkBreaks from "remark-breaks"
+
+// Changed rendering
+<div className="prose prose-sm sm:prose-base max-w-none text-foreground-secondary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1 [&_p]:mb-3 [&_p:last-child]:mb-0 [&_strong]:text-foreground-primary [&_a]:text-primary-500 [&_a:hover]:underline">
+  <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+    {strapiContent.warrantyInfo}
+  </ReactMarkdown>
+</div>
+```
+
+Also applied same fix to `osRequirements` field.
+
 ## Testing Checklist
 
 - [ ] Cart page shows correct Subtotal (products only, not including shipping)
@@ -184,3 +219,5 @@ const isTaxInclusive = cart.items?.some(item => item.is_tax_inclusive) ?? false
 - [ ] Checkout page shows "Tax: Included" when prices are tax inclusive
 - [ ] Checkout page updates Tax display after clicking PayPal button (for non-inclusive prices)
 - [ ] PayPal popup shows correct total amount
+- [ ] Product detail Warranty section renders Markdown properly (lists, bold, links)
+- [ ] Product detail System Requirements section renders Markdown properly
