@@ -89,7 +89,8 @@ export async function getHomepageLayout(): Promise<HomepageLayout | null> {
                 'populate[productGrid][populate]': '*',
             },
             tags: ['homepage-layout'],
-            revalidate: 60,
+            revalidate: 0, // Disabled caching for testing - set back to 60 for production
+            cache: 'no-store',
         });
 
         if (!response.data) {
