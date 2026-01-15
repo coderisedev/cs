@@ -12,12 +12,14 @@ import React from "react"
 
 // Import email templates
 import { orderConfirmationEmail } from "./emails/order-confirmation"
+import { orderShippedEmail } from "./emails/order-shipped"
 import { passwordResetEmail } from "./emails/password-reset"
 import { welcomeEmail } from "./emails/welcome"
 import { otpVerificationEmail } from "./emails/otp-verification"
 
 export enum Templates {
   ORDER_PLACED = "order-placed",
+  ORDER_SHIPPED = "order-shipped",
   PASSWORD_RESET = "password-reset",
   CUSTOMER_CREATED = "customer-created",
   OTP_VERIFICATION = "otp-verification",
@@ -27,6 +29,7 @@ type TemplateFunction = (props: unknown) => React.ReactNode
 
 const templates: { [key in Templates]?: TemplateFunction } = {
   [Templates.ORDER_PLACED]: orderConfirmationEmail,
+  [Templates.ORDER_SHIPPED]: orderShippedEmail,
   [Templates.PASSWORD_RESET]: passwordResetEmail,
   [Templates.CUSTOMER_CREATED]: welcomeEmail,
   [Templates.OTP_VERIFICATION]: otpVerificationEmail,
@@ -104,6 +107,8 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
     switch (template) {
       case Templates.ORDER_PLACED:
         return "Your Order Has Been Confirmed"
+      case Templates.ORDER_SHIPPED:
+        return "Your Order Has Shipped!"
       case Templates.PASSWORD_RESET:
         return "Reset Your Password"
       case Templates.CUSTOMER_CREATED:

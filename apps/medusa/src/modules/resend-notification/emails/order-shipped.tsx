@@ -39,7 +39,7 @@ interface ShippingAddress {
   country_code?: string
 }
 
-interface OrderConfirmationEmailProps {
+interface OrderShippedEmailProps {
   order?: {
     id: string
     display_id?: number
@@ -72,14 +72,14 @@ function formatDate(dateString: string | undefined): string {
   })
 }
 
-function OrderConfirmationEmailComponent({ order }: OrderConfirmationEmailProps) {
+function OrderShippedEmailComponent({ order }: OrderShippedEmailProps) {
   const orderNumber = String(order?.display_id || order?.id?.slice(-8) || "N/A")
   const currencyCode = order?.currency_code || "USD"
 
   return (
     <Html>
       <Head />
-      <Preview>Your order #{orderNumber} has been confirmed</Preview>
+      <Preview>Your order #{orderNumber} has been shipped</Preview>
       <Tailwind>
         <Body className="bg-gray-100 my-auto mx-auto font-sans">
           <Container className="bg-white border border-solid border-gray-200 rounded-lg my-10 mx-auto p-8 max-w-xl">
@@ -90,14 +90,13 @@ function OrderConfirmationEmailComponent({ order }: OrderConfirmationEmailProps)
               </Heading>
             </Section>
 
-            {/* Order Confirmation */}
+            {/* Shipment Notification */}
             <Section className="mb-8">
               <Heading className="text-gray-900 text-xl font-semibold mb-4">
-                Thank you for your order!
+                Your order is on its way!
               </Heading>
               <Text className="text-gray-600 text-base leading-6 m-0">
-                We've received your order and we're getting it ready. A confirmation
-                email has been sent to {order?.email || "your email address"}.
+                Great news! Your order #{orderNumber} has been shipped.
               </Text>
             </Section>
 
@@ -122,7 +121,7 @@ function OrderConfirmationEmailComponent({ order }: OrderConfirmationEmailProps)
             {/* Order Items */}
             <Section className="mb-8">
               <Heading className="text-gray-900 text-lg font-semibold mb-4">
-                Order Summary
+                Items in Shipment
               </Heading>
 
               {order?.items?.map((item) => (
@@ -160,53 +159,6 @@ function OrderConfirmationEmailComponent({ order }: OrderConfirmationEmailProps)
                   </Column>
                 </Row>
               ))}
-
-              <Hr className="border-gray-200 my-4" />
-
-              {/* Totals */}
-              <Row className="mb-2">
-                <Column>
-                  <Text className="text-gray-600 text-sm m-0">Subtotal</Text>
-                </Column>
-                <Column align="right">
-                  <Text className="text-gray-900 text-sm m-0">
-                    {formatPrice(order?.subtotal, currencyCode)}
-                  </Text>
-                </Column>
-              </Row>
-              <Row className="mb-2">
-                <Column>
-                  <Text className="text-gray-600 text-sm m-0">Shipping</Text>
-                </Column>
-                <Column align="right">
-                  <Text className="text-gray-900 text-sm m-0">
-                    {formatPrice(order?.shipping_total, currencyCode)}
-                  </Text>
-                </Column>
-              </Row>
-              <Row className="mb-2">
-                <Column>
-                  <Text className="text-gray-600 text-sm m-0">Tax</Text>
-                </Column>
-                <Column align="right">
-                  <Text className="text-gray-900 text-sm m-0">
-                    {formatPrice(order?.tax_total, currencyCode)}
-                  </Text>
-                </Column>
-              </Row>
-              <Hr className="border-gray-200 my-4" />
-              <Row>
-                <Column>
-                  <Text className="text-gray-900 text-base font-semibold m-0">
-                    Total
-                  </Text>
-                </Column>
-                <Column align="right">
-                  <Text className="text-gray-900 text-base font-semibold m-0">
-                    {formatPrice(order?.total, currencyCode)}
-                  </Text>
-                </Column>
-              </Row>
             </Section>
 
             {/* Shipping Address */}
@@ -257,12 +209,12 @@ function OrderConfirmationEmailComponent({ order }: OrderConfirmationEmailProps)
   )
 }
 
-export const orderConfirmationEmail = (props: OrderConfirmationEmailProps) => (
-  <OrderConfirmationEmailComponent {...props} />
+export const orderShippedEmail = (props: OrderShippedEmailProps) => (
+  <OrderShippedEmailComponent {...props} />
 )
 
 // Mock data for preview/development
-const mockOrder: OrderConfirmationEmailProps = {
+const mockOrder: OrderShippedEmailProps = {
   order: {
     id: "order_123456789",
     display_id: 1001,
@@ -297,4 +249,4 @@ const mockOrder: OrderConfirmationEmailProps = {
   },
 }
 
-export default () => <OrderConfirmationEmailComponent {...mockOrder} />
+export default () => <OrderShippedEmailComponent {...mockOrder} />
