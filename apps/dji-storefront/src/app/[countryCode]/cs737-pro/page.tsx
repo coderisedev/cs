@@ -9,7 +9,7 @@ import { Metadata } from "next"
 
 export const metadata: Metadata = {
     title: "CS737 Full-Function Throttle Quadrant | Cockpit Simulator",
-    description: "Real feel. Born for flight. All-metal construction, 9-motor system, 10-year warranty. Experience the most authentic 737 throttle control.",
+    description: "Real feel. Born for flight. All-metal construction, 9-motor system, 2-year warranty. Experience the most authentic 737 throttle control.",
 }
 
 export default function CS737ProPage() {

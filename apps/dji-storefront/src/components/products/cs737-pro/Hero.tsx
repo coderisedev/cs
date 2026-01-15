@@ -143,7 +143,7 @@ export function Hero() {
                             whileTap={{ scale: 0.98 }}
                         >
                             <Link
-                                href="#buy"
+                                href="https://prd.aidenlux.com/us/products/cs-737x-tq"
                                 className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-full shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 font-semibold text-base md:text-lg"
                             >
                                 Order Now
@@ -161,7 +161,7 @@ export function Hero() {
                         {[
                             { value: "9", label: "Motors" },
                             { value: "All-Metal", label: "Construction" },
-                            { value: "10-Year", label: "Warranty" },
+                            { value: "2-Year", label: "Warranty" },
                         ].map((stat, index) => (
                             <motion.div
                                 key={stat.label}
