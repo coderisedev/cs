@@ -8,7 +8,35 @@ export default async function orderShippedHandler({
   const query = container.resolve("query")
   const notificationModuleService = container.resolve(Modules.NOTIFICATION)
 
-  // Retrieve order data associated with the fulfillment
+  // First, retrieve the fulfillment to get tracking info and order reference
+  const {
+    data: [fulfillment],
+  } = await query.graph({
+    entity: "fulfillment",
+    fields: [
+      "id",
+      "data",
+      "tracking_links.*",
+      "labels.*",
+      "shipped_at",
+      "order.id",
+    ],
+    filters: {
+      id: data.id,
+    },
+  })
+
+  if (!fulfillment) {
+    console.warn(`Fulfillment ${data.id} not found`)
+    return
+  }
+
+  // Extract tracking information from fulfillment
+  const trackingNumber = fulfillment.data?.tracking_number as string | undefined
+  const trackingLinks = fulfillment.tracking_links || []
+  const trackingUrl = trackingLinks[0]?.url || null
+
+  // Retrieve order data
   const {
     data: [order],
   } = await query.graph({
@@ -72,10 +100,14 @@ export default async function orderShippedHandler({
         tax_total: order.tax_total,
         total: order.total,
       },
+      tracking: {
+        tracking_number: trackingNumber,
+        tracking_url: trackingUrl,
+      },
     },
   })
 
-  console.log(`Order shipped email sent to ${order.email} for order ${order.id}`)
+  console.log(`Order shipped email sent to ${order.email} for order ${order.id}${trackingNumber ? ` (tracking: ${trackingNumber})` : ''}`)
 }
 
 export const config: SubscriberConfig = {

@@ -1,5 +1,5 @@
 import { AbstractFulfillmentProviderService } from "@medusajs/framework/utils"
-import { 
+import {
   Logger,
   CreateShippingOptionDTO
 } from "@medusajs/framework/types"
@@ -13,6 +13,29 @@ type InjectedDependencies = {
   logger: Logger
 }
 
+// Product-specific shipping rates configuration
+// Key: product handle, Value: { region_code: price_in_cents }
+const PRODUCT_SHIPPING_RATES: Record<string, Record<string, number>> = {
+  "cs-737x-tq": {
+    us: 100,      // $1.00 for US
+    eu: 200,      // $2.00 for Europe
+    default: 200, // Default for other regions
+  },
+  // Add more products here as needed
+}
+
+// Map country codes to region keys
+const COUNTRY_TO_REGION: Record<string, string> = {
+  // US
+  us: "us",
+  // Europe
+  at: "eu", be: "eu", bg: "eu", hr: "eu", cy: "eu", cz: "eu", dk: "eu",
+  ee: "eu", fi: "eu", fr: "eu", de: "eu", gr: "eu", hu: "eu", ie: "eu",
+  it: "eu", lv: "eu", lt: "eu", lu: "eu", mt: "eu", nl: "eu", pl: "eu",
+  pt: "eu", ro: "eu", sk: "eu", si: "eu", es: "eu", se: "eu", gb: "eu",
+  ch: "eu", no: "eu",
+}
+
 class DynamicShippingProviderService extends AbstractFulfillmentProviderService {
   static identifier = "dynamic-shipping"
   static DISPLAY_NAME = "Dynamic Shipping Provider"
@@ -24,6 +47,34 @@ class DynamicShippingProviderService extends AbstractFulfillmentProviderService 
     super()
     this.logger = logger
     this.options = options
+  }
+
+  /**
+   * Get product-specific shipping rate if configured
+   */
+  private getProductShippingRate(
+    items: any[],
+    countryCode: string | undefined
+  ): number | null {
+    if (!countryCode) return null
+
+    const regionKey = COUNTRY_TO_REGION[countryCode.toLowerCase()] || "default"
+
+    for (const item of items) {
+      const handle = item.variant?.product?.handle
+      if (handle && PRODUCT_SHIPPING_RATES[handle]) {
+        const rates = PRODUCT_SHIPPING_RATES[handle]
+        const rate = rates[regionKey] ?? rates.default
+        if (rate !== undefined) {
+          this.logger.info(
+            `Product-specific shipping rate for ${handle}: ${rate} cents (region: ${regionKey})`
+          )
+          return rate
+        }
+      }
+    }
+
+    return null
   }
 
   async getFulfillmentOptions(): Promise<any[]> {
@@ -58,59 +109,27 @@ class DynamicShippingProviderService extends AbstractFulfillmentProviderService 
   async calculatePrice(
     optionData: Record<string, unknown>,
     data: Record<string, unknown>,
-    context: any 
+    context: any
   ): Promise<any> {
     this.logger.info("Calculating dynamic shipping price...")
 
     const items = (context?.items || []) as any[]
-    
-    let totalWeight = 0
-    let totalQuantity = 0
-    
-    for (const item of items) {
-      const quantity = Number(item.quantity)
-      const weight = Number(item.variant?.weight || 0)
-      
-      totalWeight += weight * quantity
-      totalQuantity += quantity
-    }
-
-    const basePrice = this.options.base_price || 1000 
-    const weightMult = this.options.weight_multiplier || 100 
-
     const address = context.shipping_address
-    let zoneMultiplier = 1
+    const countryCode = address?.country_code
 
-    if (address?.country_code) {
-      const code = address.country_code.toLowerCase()
-      if (code === 'us') {
-        zoneMultiplier = 1
-      } else if (code === 'ca') {
-        zoneMultiplier = 1.2
-      } else {
-        zoneMultiplier = 1.5 
+    // Check for product-specific shipping rate
+    const productRate = this.getProductShippingRate(items, countryCode)
+    if (productRate !== null) {
+      return {
+        calculated_amount: productRate,
+        is_calculated_price_tax_inclusive: false
       }
     }
 
-    let calcPrice = basePrice
-    
-    if (totalWeight > 0) {
-      calcPrice += totalWeight * weightMult
-    } else {
-      calcPrice += (totalQuantity - 1) * 200
-    }
-
-    const isExpress = (optionData?.id as string)?.includes('express')
-    if (isExpress) {
-      calcPrice *= 2
-    }
-
-    calcPrice = Math.ceil(calcPrice * zoneMultiplier)
-    
-    this.logger.info(`Calculated Price: ${calcPrice} (Weight: ${totalWeight}, Zone: ${zoneMultiplier})`)
-
+    // Free shipping for all other products
+    this.logger.info("Free shipping applied (no product-specific rate configured)")
     return {
-      calculated_amount: calcPrice,
+      calculated_amount: 0,
       is_calculated_price_tax_inclusive: false
     }
   }

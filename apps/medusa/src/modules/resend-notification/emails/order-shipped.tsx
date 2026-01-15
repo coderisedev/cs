@@ -39,6 +39,11 @@ interface ShippingAddress {
   country_code?: string
 }
 
+interface TrackingInfo {
+  tracking_number?: string
+  tracking_url?: string
+}
+
 interface OrderShippedEmailProps {
   order?: {
     id: string
@@ -53,6 +58,7 @@ interface OrderShippedEmailProps {
     total?: number
     currency_code?: string
   }
+  tracking?: TrackingInfo
 }
 
 function formatPrice(amount: number | undefined, currencyCode: string = "USD"): string {
@@ -72,14 +78,15 @@ function formatDate(dateString: string | undefined): string {
   })
 }
 
-function OrderShippedEmailComponent({ order }: OrderShippedEmailProps) {
+function OrderShippedEmailComponent({ order, tracking }: OrderShippedEmailProps) {
   const orderNumber = String(order?.display_id || order?.id?.slice(-8) || "N/A")
   const currencyCode = order?.currency_code || "USD"
+  const hasTracking = tracking?.tracking_number || tracking?.tracking_url
 
   return (
     <Html>
       <Head />
-      <Preview>Your order #{orderNumber} has been shipped</Preview>
+      <Preview>Your order #{orderNumber} has been shipped{tracking?.tracking_number ? ` - Tracking: ${tracking.tracking_number}` : ''}</Preview>
       <Tailwind>
         <Body className="bg-gray-100 my-auto mx-auto font-sans">
           <Container className="bg-white border border-solid border-gray-200 rounded-lg my-10 mx-auto p-8 max-w-xl">
@@ -99,6 +106,28 @@ function OrderShippedEmailComponent({ order }: OrderShippedEmailProps) {
                 Great news! Your order #{orderNumber} has been shipped.
               </Text>
             </Section>
+
+            {/* Tracking Information */}
+            {hasTracking && (
+              <Section className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+                <Heading className="text-blue-900 text-lg font-semibold mb-3 mt-0">
+                  📦 Tracking Information
+                </Heading>
+                {tracking?.tracking_number && (
+                  <Text className="text-blue-800 text-base m-0 mb-2">
+                    <strong>Tracking Number:</strong> {tracking.tracking_number}
+                  </Text>
+                )}
+                {tracking?.tracking_url && (
+                  <Link
+                    href={tracking.tracking_url}
+                    className="inline-block bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded no-underline mt-2"
+                  >
+                    Track Your Package →
+                  </Link>
+                )}
+              </Section>
+            )}
 
             {/* Order Details */}
             <Section className="bg-gray-50 rounded-lg p-4 mb-8">
@@ -246,6 +275,10 @@ const mockOrder: OrderShippedEmailProps = {
     shipping_total: 0,
     tax_total: 27000,
     total: 326900,
+  },
+  tracking: {
+    tracking_number: "DYN-1736956800000",
+    tracking_url: "https://www.fedex.com/fedextrack/?trknbr=DYN-1736956800000",
   },
 }
 
