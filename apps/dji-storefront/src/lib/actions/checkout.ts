@@ -8,6 +8,74 @@ import { logger } from "@/lib/logger"
 // PayPal provider ID format: pp_{id}_{module_name}
 const PAYPAL_PROVIDER_ID = "pp_paypal_paypal"
 
+// Calculate shipping for address (used for real-time shipping cost preview)
+interface CalculateShippingInput {
+  email?: string
+  shippingAddress: {
+    first_name: string
+    last_name: string
+    address_1: string
+    city: string
+    province: string
+    postal_code: string
+    country_code: string
+    phone: string
+  }
+}
+
+export async function calculateShippingAction(
+  input: CalculateShippingInput
+): Promise<{ cart?: HttpTypes.StoreCart; error?: string }> {
+  const { email, shippingAddress } = input
+
+  // Validate required address fields
+  if (!shippingAddress.first_name || !shippingAddress.last_name ||
+      !shippingAddress.address_1 || !shippingAddress.city ||
+      !shippingAddress.postal_code || !shippingAddress.country_code) {
+    return { error: "Incomplete address" }
+  }
+
+  try {
+    // Step 1: Retrieve cart
+    const cart = await retrieveCart()
+    if (!cart) {
+      return { error: "No cart found" }
+    }
+
+    // Step 2: Update cart with shipping address
+    const cartData: HttpTypes.StoreUpdateCart = {
+      shipping_address: shippingAddress,
+    }
+    if (email) {
+      cartData.email = email
+    }
+
+    await updateCart(cartData)
+
+    // Step 3: Get shipping options
+    const shippingOptions = await listCartOptions()
+    if (!shippingOptions?.shipping_options || shippingOptions.shipping_options.length === 0) {
+      return { error: "No shipping options available" }
+    }
+
+    // Step 4: Set first shipping method to calculate price
+    const firstShippingOption = shippingOptions.shipping_options[0]
+    if (firstShippingOption?.id) {
+      await setShippingMethod({
+        cartId: cart.id,
+        shippingMethodId: firstShippingOption.id,
+      })
+    }
+
+    // Step 5: Return updated cart with shipping total
+    const updatedCart = await retrieveCart()
+    return { cart: updatedCart ?? undefined }
+  } catch (error: unknown) {
+    logger.error("Error calculating shipping", error)
+    return { error: "Failed to calculate shipping" }
+  }
+}
+
 // Prepare cart for PayPal checkout (set address and shipping)
 interface PreparePayPalCheckoutInput {
   email: string

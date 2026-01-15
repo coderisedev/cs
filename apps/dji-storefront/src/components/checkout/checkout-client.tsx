@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { currencyFormatter } from "@/lib/number"
-import { placeOrderAction, preparePayPalCheckoutAction, completePayPalOrderAction } from "@/lib/actions/checkout"
+import { placeOrderAction, preparePayPalCheckoutAction, completePayPalOrderAction, calculateShippingAction } from "@/lib/actions/checkout"
 import { ShoppingBag, ArrowLeft, Package, CreditCard, MapPin } from "lucide-react"
 import { HttpTypes } from "@medusajs/types"
 import type { AccountAddress } from "@/lib/data/account"
@@ -40,6 +40,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null)
   const [paypalError, setPaypalError] = useState<string | null>(null)
   const [isPaypalProcessing, setIsPaypalProcessing] = useState(false)
+  const [isCalculatingShipping, setIsCalculatingShipping] = useState(false)
 
   const [orderMessage, orderFormAction, orderPending] = useActionState(placeOrderAction, null)
 
@@ -96,6 +97,51 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
     setSelectedAddressId(address.id)
     applySavedAddress(address)
   }
+
+  // Check if address is complete for shipping calculation
+  const isAddressComplete = Boolean(
+    shippingAddress.first_name &&
+    shippingAddress.last_name &&
+    shippingAddress.address_1 &&
+    shippingAddress.city &&
+    shippingAddress.postal_code &&
+    shippingAddress.country_code
+  )
+
+  // Calculate shipping when address changes
+  useEffect(() => {
+    if (!isAddressComplete || shippingAddress.country_code !== "us") {
+      return
+    }
+
+    const calculateShipping = async () => {
+      setIsCalculatingShipping(true)
+      try {
+        const result = await calculateShippingAction({
+          email: email || undefined,
+          shippingAddress,
+        })
+        if (result.cart) {
+          setCart(result.cart)
+        }
+      } finally {
+        setIsCalculatingShipping(false)
+      }
+    }
+
+    // Debounce the calculation to avoid too many API calls
+    const timeoutId = setTimeout(calculateShipping, 500)
+    return () => clearTimeout(timeoutId)
+  }, [
+    isAddressComplete,
+    shippingAddress.first_name,
+    shippingAddress.last_name,
+    shippingAddress.address_1,
+    shippingAddress.city,
+    shippingAddress.postal_code,
+    shippingAddress.country_code,
+    email,
+  ])
 
   // Validate shipping form before PayPal payment
   const validateShippingForm = (): boolean => {
@@ -480,7 +526,13 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Shipping</span>
                   <span className="font-medium">
-                    {shipping > 0 ? currencyFormatter(shipping) : "Calculated at next step"}
+                    {isCalculatingShipping
+                      ? "Calculating..."
+                      : shipping > 0
+                        ? currencyFormatter(shipping)
+                        : isAddressComplete && shippingAddress.country_code === "us"
+                          ? "Free"
+                          : "Calculated at next step"}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
