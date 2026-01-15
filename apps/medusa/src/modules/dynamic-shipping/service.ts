@@ -13,18 +13,31 @@ type InjectedDependencies = {
   logger: Logger
 }
 
-// Product-specific shipping rates configuration
-// Key: product handle, Value: { region_code: price_in_cents }
+/**
+ * Product-specific shipping rates configuration
+ * Key: product handle, Value: { region_code: price_in_cents }
+ *
+ * To add shipping for a product:
+ * 1. Find the product handle in Medusa Admin (e.g., "cs-737x-tq")
+ * 2. Add an entry here with regional prices in cents
+ *
+ * Products NOT listed here get FREE shipping.
+ */
 const PRODUCT_SHIPPING_RATES: Record<string, Record<string, number>> = {
   "cs-737x-tq": {
     us: 100,      // $1.00 for US
     eu: 200,      // $2.00 for Europe
     default: 200, // Default for other regions
   },
-  // Add more products here as needed
+  // Add more products here as needed:
+  // "another-product-handle": {
+  //   us: 500,      // $5.00 for US
+  //   eu: 800,      // $8.00 for Europe
+  //   default: 800,
+  // },
 }
 
-// Map country codes to region keys
+// Map country codes to region keys for shipping rate lookup
 const COUNTRY_TO_REGION: Record<string, string> = {
   // US
   us: "us",
@@ -50,7 +63,7 @@ class DynamicShippingProviderService extends AbstractFulfillmentProviderService 
   }
 
   /**
-   * Get product-specific shipping rate if configured
+   * Get product-specific shipping rate from PRODUCT_SHIPPING_RATES config
    */
   private getProductShippingRate(
     items: any[],
@@ -60,15 +73,20 @@ class DynamicShippingProviderService extends AbstractFulfillmentProviderService 
 
     const regionKey = COUNTRY_TO_REGION[countryCode.toLowerCase()] || "default"
 
+    this.logger.info(`Shipping calculation - items: ${items.length}, country: ${countryCode}, region: ${regionKey}`)
+
     for (const item of items) {
-      const handle = item.variant?.product?.handle
+      // Get product handle from various possible paths
+      const handle = item.variant?.product?.handle || item.product?.handle || item.product_handle
+
+      this.logger.info(`Checking item - handle: ${handle || 'NOT FOUND'}`)
+
       if (handle && PRODUCT_SHIPPING_RATES[handle]) {
         const rates = PRODUCT_SHIPPING_RATES[handle]
         const rate = rates[regionKey] ?? rates.default
+
         if (rate !== undefined) {
-          this.logger.info(
-            `Product-specific shipping rate for ${handle}: ${rate} cents (region: ${regionKey})`
-          )
+          this.logger.info(`Found shipping rate for "${handle}": ${rate} cents (region: ${regionKey})`)
           return rate
         }
       }
