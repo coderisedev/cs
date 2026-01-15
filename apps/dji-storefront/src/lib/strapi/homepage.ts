@@ -97,14 +97,38 @@ export async function getHomepageLayout(): Promise<HomepageLayout | null> {
             return null;
         }
 
+        const { id, attributes } = response.data;
+        
         return {
-            id: response.data.id,
-            ...response.data,
+            id,
+            ...attributes,
+            primaryHero: mapRelation(attributes.primaryHero),
+            secondaryHero: mapRelation(attributes.secondaryHero),
+            productGrid: mapRelationList(attributes.productGrid),
         };
     } catch (error) {
         console.error('Failed to fetch homepage layout:', error);
         return null;
     }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapRelation(relation: any): FeaturedProduct | undefined {
+    if (!relation?.data) return undefined;
+    return {
+        id: relation.data.id,
+        ...relation.data.attributes,
+    };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapRelationList(relation: any): FeaturedProduct[] {
+    if (!relation?.data) return [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return relation.data.map((item: any) => ({
+        id: item.id,
+        ...item.attributes,
+    }));
 }
 
 /**
