@@ -3,9 +3,18 @@
 import { sdk } from "@/lib/medusa"
 import medusaError from "@/lib/util/medusa-error"
 import { getAuthHeaders, getCacheOptions, getCartId, setCartId, removeCartId, getCacheTag } from "@/lib/server/cookies"
-import { US_REGION_ID } from "@/lib/constants"
+import { getRegionConfig } from "@/lib/config/regions"
 import { HttpTypes } from "@medusajs/types"
 import { revalidateTag } from "next/cache"
+import { cookies } from "next/headers"
+
+/**
+ * Get current country from cookie, defaults to 'us'
+ */
+async function getCurrentCountry(): Promise<string> {
+  const cookieStore = await cookies()
+  return cookieStore.get('_medusa_country_code')?.value?.toLowerCase() || 'us'
+}
 
 export const retrieveCart = async (cartId?: string, fields?: string) => {
   const id = cartId || (await getCartId())
@@ -34,8 +43,15 @@ export const retrieveCart = async (cartId?: string, fields?: string) => {
   }
 }
 
-export const getOrSetCart = async () => {
-  // Plan A: Always use US region regardless of countryCode
+/**
+ * Get or create a cart with the correct region based on user's country
+ * @param countryCode - Optional country code to use for region selection
+ */
+export const getOrSetCart = async (countryCode?: string) => {
+  // Get country from parameter or cookie
+  const country = countryCode || await getCurrentCountry()
+  const regionConfig = getRegionConfig(country)
+
   const existingCart = await retrieveCart(undefined, "id,region_id,completed_at")
   const headers = {
     ...(await getAuthHeaders()),
@@ -51,18 +67,18 @@ export const getOrSetCart = async () => {
       // Clear the old completed cart cookie
       await removeCartId()
     }
-    const { cart: newCart } = await sdk.store.cart.create({ region_id: US_REGION_ID }, {}, headers)
+    const { cart: newCart } = await sdk.store.cart.create({ region_id: regionConfig.id }, {}, headers)
     cart = newCart
     await setCartId(cart.id)
     await revalidateCart()
   }
 
-  // Ensure cart is using US region
-  if (cart.region_id !== US_REGION_ID) {
+  // Ensure cart is using the correct region for the current country
+  if (cart.region_id !== regionConfig.id) {
     cart = (
       await sdk.store.cart.update(
         cart.id,
-        { region_id: US_REGION_ID },
+        { region_id: regionConfig.id },
         {},
         headers
       )
@@ -73,9 +89,36 @@ export const getOrSetCart = async () => {
   return cart
 }
 
+/**
+ * Update cart region when user switches country
+ * @param newCountryCode - New country code to switch to
+ */
+export const updateCartRegion = async (newCountryCode: string) => {
+  const cartId = await getCartId()
+  if (!cartId) return null
+
+  const regionConfig = getRegionConfig(newCountryCode)
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  try {
+    const { cart } = await sdk.store.cart.update(
+      cartId,
+      { region_id: regionConfig.id },
+      {},
+      headers
+    )
+    await revalidateCart()
+    return cart
+  } catch (error) {
+    console.error('Failed to update cart region:', error)
+    return null
+  }
+}
+
 export const addToCart = async ({ variantId, quantity, countryCode }: { variantId: string; quantity: number; countryCode: string }) => {
-  void countryCode
-  const cart = await getOrSetCart()
+  const cart = await getOrSetCart(countryCode)
   const headers = {
     ...(await getAuthHeaders()),
   }

@@ -24,6 +24,7 @@ import type { ProductDetailContent } from "@/lib/strapi/product-detail"
 import { currencyFormatter } from "@/lib/number"
 import { addToCartAction } from "@/app/actions/cart"
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
+import { getRegionConfig } from "@/lib/config/regions"
 import { buildWishlistInput, useWishlist } from "@/lib/context/wishlist-context"
 import {
   FeatureBullets,
@@ -49,6 +50,8 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
   const [quantity, setQuantity] = useState(1)
   const { toggleItem: toggleWishlistItem, isInWishlist } = useWishlist()
   const resolvedCountryCode = countryCode || DEFAULT_COUNTRY_CODE
+  const regionConfig = getRegionConfig(resolvedCountryCode)
+  const currency = regionConfig.currency
   const thumbnailContainerRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
@@ -221,12 +224,12 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
             <div className="space-y-[var(--fluid-gap-sm)]">
               <div className="flex items-baseline gap-[var(--fluid-gap-xs)] flex-wrap">
                 <span className="text-[length:var(--fluid-price)] font-semibold text-foreground-primary">
-                  {currencyFormatter(variant?.price ?? product.price)}
+                  {currencyFormatter(variant?.price ?? product.price, currency)}
                 </span>
                 {originalPrice && (
                   <>
                     <span className="text-[length:var(--fluid-body-lg)] text-foreground-muted line-through">
-                      {currencyFormatter(originalPrice)}
+                      {currencyFormatter(originalPrice, currency)}
                     </span>
                     <span className="text-[length:var(--fluid-body-sm)] font-medium text-semantic-error">Save {discount}%</span>
                   </>
@@ -281,7 +284,7 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
                   </button>
                 </div>
                 <span className="text-foreground-secondary">
-                  Total: <span className="font-semibold text-foreground-primary">{currencyFormatter(totalPrice)}</span>
+                  Total: <span className="font-semibold text-foreground-primary">{currencyFormatter(totalPrice, currency)}</span>
                 </span>
               </div>
             </div>

@@ -12,6 +12,7 @@ import { SiteHeader } from "@/components/layout/site-header"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { PostHogProvider } from "@/components/providers/posthog-provider"
 import { retrieveCart } from "@/lib/data/cart"
+import { getCurrentCountry } from "@/lib/actions/region"
 
 // Fallback to system fonts until Google Fonts issue is resolved
 // const openSans = Open_Sans({
@@ -40,13 +41,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const cart = await retrieveCart()
+  const [cart, countryCode] = await Promise.all([
+    retrieveCart(),
+    getCurrentCountry(),
+  ])
   return (
     <html lang="en" className="bg-background-primary" suppressHydrationWarning>
       <body className="antialiased bg-background-primary text-foreground-primary" suppressHydrationWarning>
         <Suspense fallback={null}>
           <PostHogProvider>
-            <SiteHeader cartItemCount={cart?.items?.length ?? 0} />
+            <SiteHeader cartItemCount={cart?.items?.length ?? 0} countryCode={countryCode} />
             <main>{children}</main>
             <SiteFooter />
           </PostHogProvider>

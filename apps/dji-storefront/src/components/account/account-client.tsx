@@ -11,8 +11,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { currencyFormatter } from "@/lib/number"
+import { currencyFormatter, formatPrice } from "@/lib/number"
 import type { AccountOrder, AccountUser, WishlistItem as AccountWishlistItem } from "@/lib/data/account"
+import { REGIONS, getCountryName } from "@/lib/config/regions"
 import {
   addCustomerAddress,
   deleteCustomerAddress,
@@ -781,9 +782,21 @@ function AddressForm({
             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             required
           >
-            <option value="us">United States</option>
+            <optgroup label={`${REGIONS.us.name} (${REGIONS.us.currency})`}>
+              {REGIONS.us.countries.map((code) => (
+                <option key={code} value={code}>
+                  {getCountryName(code)}
+                </option>
+              ))}
+            </optgroup>
+            <optgroup label={`${REGIONS.eu.name} (${REGIONS.eu.currency})`}>
+              {REGIONS.eu.countries.map((code) => (
+                <option key={code} value={code}>
+                  {getCountryName(code)}
+                </option>
+              ))}
+            </optgroup>
           </select>
-          <p className="text-xs text-foreground-muted">Currently, only US addresses are supported.</p>
         </div>
       </div>
 

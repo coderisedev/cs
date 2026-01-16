@@ -9,14 +9,16 @@ import { Button } from "@/components/ui/button"
 import { currencyFormatter } from "@/lib/number"
 import type { StorefrontProduct } from "@/lib/data/products"
 import { addToCartAction } from "@/app/actions/cart"
+import { getRegionConfig } from "@/lib/config/regions"
+import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 type ViewMode = "grid" | "list"
-
-import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 export function ProductCard({ product, viewMode = "grid", countryCode }: { product: StorefrontProduct; viewMode?: ViewMode; countryCode: string }) {
   const [isPending, startTransition] = useTransition()
   const resolvedCountryCode = countryCode || DEFAULT_COUNTRY_CODE
+  const regionConfig = getRegionConfig(resolvedCountryCode)
+  const currency = regionConfig.currency
   const image = product.images[0]
   const discount = product.compareAtPrice
     ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
@@ -79,10 +81,10 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
               <p className="text-sm text-foreground-secondary mb-4 flex-1 line-clamp-2">{product.description}</p>
               <div className="mt-6 border-t border-border-secondary pt-4 flex flex-wrap items-center justify-between gap-4">
                 <div className="flex flex-wrap items-baseline gap-2">
-                  <span className="text-2xl font-bold text-primary-400">{currencyFormatter(product.price)}</span>
+                  <span className="text-2xl font-bold text-primary-400">{currencyFormatter(product.price, currency)}</span>
                   {product.compareAtPrice && (
                     <span className="text-lg text-foreground-muted line-through">
-                      {currencyFormatter(product.compareAtPrice)}
+                      {currencyFormatter(product.compareAtPrice, currency)}
                     </span>
                   )}
                 </div>
@@ -132,10 +134,10 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
         <p className="text-sm text-foreground-secondary line-clamp-2 mb-4">{product.description}</p>
         <div className="mt-6 border-t border-border-secondary pt-4 space-y-3">
           <div className="flex flex-wrap items-baseline gap-2">
-            <span className="text-2xl font-bold text-primary-400">{currencyFormatter(product.price)}</span>
+            <span className="text-2xl font-bold text-primary-400">{currencyFormatter(product.price, currency)}</span>
             {product.compareAtPrice && (
               <span className="text-lg text-foreground-muted line-through">
-                {currencyFormatter(product.compareAtPrice)}
+                {currencyFormatter(product.compareAtPrice, currency)}
               </span>
             )}
           </div>

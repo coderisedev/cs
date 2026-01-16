@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { BRAND_LOGO_URL, BRAND_LOGO_URL_DARK, BRAND_NAME } from "@/lib/constants"
+import { CountrySelector } from "@/components/region/country-selector"
 
 const NAV_ITEMS = [
   { name: "Home", href: "/" },
@@ -21,7 +22,12 @@ const NAV_ITEMS = [
   { name: "FAQ", href: "/faq" },
 ]
 
-export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
+interface SiteHeaderProps {
+  cartItemCount?: number
+  countryCode?: string
+}
+
+export function SiteHeader({ cartItemCount = 0, countryCode = 'us' }: SiteHeaderProps) {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -106,6 +112,7 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
             >
               <Search className="h-4 w-4" />
             </Button> */}
+            <CountrySelector currentCountry={countryCode} />
             <Link href="/account" aria-label="Account">
               <Button variant="ghost" size="icon" className="touch-target h-12 w-12 flex items-center justify-center p-0">
                 <User className="h-4 w-4" />
@@ -157,6 +164,14 @@ export function SiteHeader({ cartItemCount = 0 }: { cartItemCount?: number }) {
                 {item.name}
               </Link>
             ))}
+            <div className="pt-4 border-t border-border-primary">
+              <div className="px-4 pb-3">
+                <span className="text-xs text-foreground-secondary uppercase tracking-wider">Region</span>
+                <div className="mt-2">
+                  <CountrySelector currentCountry={countryCode} />
+                </div>
+              </div>
+            </div>
             <div className="flex gap-3 pt-4 border-t border-border-primary">
               <Button
                 variant="ghost"

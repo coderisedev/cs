@@ -4,10 +4,48 @@ const SKIP_REGION_MIDDLEWARE =
   process.env.NEXT_SKIP_REGION_MIDDLEWARE === "true" ||
   process.env.NEXT_PUBLIC_SKIP_REGION_MIDDLEWARE === "true"
 
-// Removed region fetching logic - using fixed US region only
+// Supported countries per region (must match lib/config/regions.ts)
+const US_COUNTRIES = ['us', 'ca']
+const EU_COUNTRIES = [
+  'de', 'fr', 'it', 'es', 'nl', 'se', 'dk', 'fi', 'no',
+  'ch', 'pt', 'pl', 'gr', 'ie', 'hu', 'lu', 'is', 'lt', 'mc',
+]
+const SUPPORTED_COUNTRIES = [...US_COUNTRIES, ...EU_COUNTRIES]
+
+const DEFAULT_COUNTRY = 'us'
 
 /**
- * Middleware to force all traffic to /us route for global USD site (Plan A)
+ * Detect country from request headers or cookies
+ * Priority: 1. User preference cookie, 2. Vercel geolocation, 3. Cloudflare header, 4. Default
+ */
+function getCountryFromRequest(request: NextRequest): string {
+  // 1. Check user preference cookie (previous selection)
+  const countryCookie = request.cookies.get('_medusa_country_code')?.value?.toLowerCase()
+  if (countryCookie && SUPPORTED_COUNTRIES.includes(countryCookie)) {
+    return countryCookie
+  }
+
+  // 2. Vercel IP geolocation header (free, zero latency on Vercel)
+  const vercelCountry = request.headers.get('x-vercel-ip-country')?.toLowerCase()
+  if (vercelCountry && SUPPORTED_COUNTRIES.includes(vercelCountry)) {
+    return vercelCountry
+  }
+
+  // 3. Cloudflare header (if using Cloudflare)
+  const cfCountry = request.headers.get('cf-ipcountry')?.toLowerCase()
+  if (cfCountry && SUPPORTED_COUNTRIES.includes(cfCountry)) {
+    return cfCountry
+  }
+
+  // 4. Default to US
+  return DEFAULT_COUNTRY
+}
+
+/**
+ * Multi-region middleware with IP geolocation
+ * - Detects user's country from IP or cookie preference
+ * - Routes to appropriate country path (/us, /de, /fr, etc.)
+ * - Sets country preference cookie for returning visitors
  */
 export async function middleware(request: NextRequest) {
   if (SKIP_REGION_MIDDLEWARE) {
@@ -21,38 +59,63 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Allow auth popup routes (e.g., /auth/google) without forcing /us prefix
+  // Allow auth popup routes without country prefix
   if (pathname === "/auth" || pathname.startsWith("/auth/")) {
     return NextResponse.next()
   }
 
-  // Already on /us path - allow through
-  if (pathname === "/us" || pathname.startsWith("/us/")) {
-    // Set cache ID cookie if not present
-    const cacheIdCookie = request.cookies.get("_medusa_cache_id")
-    if (!cacheIdCookie) {
+  // Check if path already has a country code prefix
+  const countryCodePattern = /^\/([a-z]{2})(\/|$)/i
+  const match = pathname.match(countryCodePattern)
+
+  if (match) {
+    const pathCountry = match[1].toLowerCase()
+
+    // Valid supported country - allow through
+    if (SUPPORTED_COUNTRIES.includes(pathCountry)) {
       const response = NextResponse.next()
-      response.cookies.set("_medusa_cache_id", crypto.randomUUID(), {
-        maxAge: 60 * 60 * 24,
-      })
+
+      // Set cache ID cookie if not present
+      if (!request.cookies.get("_medusa_cache_id")) {
+        response.cookies.set("_medusa_cache_id", crypto.randomUUID(), {
+          maxAge: 60 * 60 * 24, // 1 day
+          path: "/",
+        })
+      }
+
+      // Set country preference cookie if not present (first visit to this country)
+      if (!request.cookies.get("_medusa_country_code")) {
+        response.cookies.set("_medusa_country_code", pathCountry, {
+          maxAge: 60 * 60 * 24 * 365, // 1 year
+          path: "/",
+        })
+      }
+
       return response
     }
-    return NextResponse.next()
-  }
 
-  // Redirect any other country code to /us (e.g., /cn -> /us, /de -> /us)
-  const countryCodePattern = /^\/[a-z]{2}(\/|$)/i
-  if (countryCodePattern.test(pathname)) {
-    const newPathname = pathname.replace(countryCodePattern, "/us$1")
+    // Unsupported country code in URL - redirect to detected country
+    const detectedCountry = getCountryFromRequest(request)
+    const newPathname = pathname.replace(countryCodePattern, `/${detectedCountry}$2`)
     const url = request.nextUrl.clone()
     url.pathname = newPathname
-    return NextResponse.redirect(url, 301)
+    return NextResponse.redirect(url, 307) // Temporary redirect for unsupported countries
   }
 
-  // Root or any path without country code - redirect to /us
+  // No country code in path - redirect to detected country
+  const detectedCountry = getCountryFromRequest(request)
   const url = request.nextUrl.clone()
-  url.pathname = `/us${pathname === "/" ? "" : pathname}`
-  return NextResponse.redirect(url, 301)
+  url.pathname = `/${detectedCountry}${pathname === "/" ? "" : pathname}`
+
+  const response = NextResponse.redirect(url, 307) // Temporary redirect
+
+  // Set country preference cookie
+  response.cookies.set("_medusa_country_code", detectedCountry, {
+    maxAge: 60 * 60 * 24 * 365, // 1 year
+    path: "/",
+  })
+
+  return response
 }
 
 export const config = {

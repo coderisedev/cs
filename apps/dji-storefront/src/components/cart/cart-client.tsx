@@ -4,7 +4,7 @@ import { useState, useTransition } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { currencyFormatter } from "@/lib/number"
+import { formatPrice } from "@/lib/number"
 import { updateLineItemAction, deleteLineItemAction } from "@/lib/actions/cart"
 import { Trash2, Minus, Plus, Loader2, ShoppingBag } from "lucide-react"
 import { HttpTypes } from "@medusajs/types"
@@ -130,10 +130,10 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
                         </div>
                         <div className="text-right">
                           <p className="text-lg font-semibold text-foreground-primary">
-                            {currencyFormatter((item.unit_price || 0) * (item.quantity || 1))}
+                            {formatPrice((item.unit_price || 0) * (item.quantity || 1), cart)}
                           </p>
                           <p className="text-xs text-foreground-muted">
-                            {currencyFormatter(item.unit_price || 0)} each
+                            {formatPrice(item.unit_price || 0, cart)} each
                           </p>
                         </div>
                       </div>
@@ -195,19 +195,19 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
               <div className="space-y-2 py-4 border-y border-border-primary">
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Subtotal</span>
-                  <span className="font-medium">{currencyFormatter(itemSubtotal)}</span>
+                  <span className="font-medium">{formatPrice(itemSubtotal, cart)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Shipping</span>
                   <span className="font-medium">
-                    {shippingTotal > 0 ? currencyFormatter(shippingTotal) : "Calculated at checkout"}
+                    {shippingTotal > 0 ? formatPrice(shippingTotal, cart) : "Calculated at checkout"}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Tax</span>
                   <span className="font-medium">
                     {taxTotal > 0
-                      ? currencyFormatter(taxTotal)
+                      ? formatPrice(taxTotal, cart)
                       : isTaxInclusive
                         ? "Included"
                         : "Calculated at checkout"}
@@ -218,7 +218,7 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
               <div className="flex justify-between items-center pt-2">
                 <span className="text-lg font-semibold text-foreground-primary">Total</span>
                 <span className="text-2xl font-bold text-foreground-primary">
-                  {currencyFormatter(total)}
+                  {formatPrice(total, cart)}
                 </span>
               </div>
 

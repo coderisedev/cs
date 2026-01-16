@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { currencyFormatter } from "@/lib/number"
+import { formatPrice } from "@/lib/number"
 import { placeOrderAction, preparePayPalCheckoutAction, completePayPalOrderAction, calculateShippingAction } from "@/lib/actions/checkout"
+import { getRegionConfigById, COUNTRY_NAMES, isCountryInRegion } from "@/lib/config/regions"
 import { ShoppingBag, ArrowLeft, Package, CreditCard, MapPin } from "lucide-react"
 import { HttpTypes } from "@medusajs/types"
 import type { AccountAddress } from "@/lib/data/account"
@@ -26,6 +27,10 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
   const router = useRouter()
   const [cart, setCart] = useState(initialCart)
   const [email, setEmail] = useState(customer?.email || initialCart.email || "")
+
+  // Get region config based on cart's region
+  const regionConfig = getRegionConfigById(cart.region_id)
+
   const [shippingAddress, setShippingAddress] = useState({
     first_name: customer?.first_name || "",
     last_name: customer?.last_name || "",
@@ -33,7 +38,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
     city: "",
     province: "",
     postal_code: "",
-    country_code: "us",
+    country_code: countryCode || "us",
     phone: customer?.phone || "",
   })
   const [sameAsBilling, setSameAsBilling] = useState(true)
@@ -110,7 +115,8 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
 
   // Calculate shipping when address changes
   useEffect(() => {
-    if (!isAddressComplete || shippingAddress.country_code !== "us") {
+    // Only calculate if address is complete and country is supported in region
+    if (!isAddressComplete || !isCountryInRegion(regionConfig, shippingAddress.country_code)) {
       return
     }
 
@@ -151,8 +157,9 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
       setPaypalError("Please fill in all required shipping fields before proceeding with payment.")
       return false
     }
-    if (shippingAddress.country_code !== "us") {
-      setPaypalError("Currently, only US addresses are supported.")
+    if (!isCountryInRegion(regionConfig, shippingAddress.country_code)) {
+      const countryName = COUNTRY_NAMES[shippingAddress.country_code.toLowerCase()] || shippingAddress.country_code.toUpperCase()
+      setPaypalError(`Shipping to ${countryName} is not available for your region. Please select a different country.`)
       return false
     }
     return true
@@ -374,10 +381,14 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                     required
                     disabled={orderPending}
                   >
-                    <option value="us">United States</option>
+                    {regionConfig.countries.map((code) => (
+                      <option key={code} value={code}>
+                        {COUNTRY_NAMES[code] || code.toUpperCase()}
+                      </option>
+                    ))}
                   </select>
                   <p className="text-xs text-foreground-muted">
-                    Currently, only US shipping is supported
+                    Shipping available to {regionConfig.name} ({regionConfig.currency})
                   </p>
                 </div>
               </div>
@@ -448,7 +459,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                   Pay securely with PayPal
                 </p>
                 <PayPalButton
-                  currency="USD"
+                  currency={regionConfig.currency}
                   disabled={orderPending || isPaypalProcessing}
                   onCreateOrder={handleCreatePayPalOrder}
                   onApprove={handlePayPalApprove}
@@ -509,7 +520,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                       </div>
                       <div className="text-right">
                         <p className="text-sm font-medium">
-                          {currencyFormatter((item.unit_price || 0) * (item.quantity || 1))}
+                          {formatPrice((item.unit_price || 0) * (item.quantity || 1), cart)}
                         </p>
                       </div>
                     </div>
@@ -521,7 +532,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
               <div className="space-y-2 pt-4 border-t border-border-primary">
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Subtotal</span>
-                  <span className="font-medium">{currencyFormatter(subtotal)}</span>
+                  <span className="font-medium">{formatPrice(subtotal, cart)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Shipping</span>
@@ -529,8 +540,8 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                     {isCalculatingShipping
                       ? "Calculating..."
                       : shipping > 0
-                        ? currencyFormatter(shipping)
-                        : isAddressComplete && shippingAddress.country_code === "us"
+                        ? formatPrice(shipping, cart)
+                        : isAddressComplete && isCountryInRegion(regionConfig, shippingAddress.country_code)
                           ? "Free"
                           : "Calculated at next step"}
                   </span>
@@ -539,7 +550,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                   <span className="text-foreground-secondary">Tax</span>
                   <span className="font-medium">
                     {tax > 0
-                      ? currencyFormatter(tax)
+                      ? formatPrice(tax, cart)
                       : isTaxInclusive
                         ? "Included"
                         : "Calculated at next step"}
@@ -549,7 +560,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
 
               <div className="flex justify-between items-center pt-4 border-t border-border-primary">
                 <span className="text-lg font-semibold">Total</span>
-                <span className="text-2xl font-bold">{currencyFormatter(total)}</span>
+                <span className="text-2xl font-bold">{formatPrice(total, cart)}</span>
               </div>
 
               <p className="text-xs text-foreground-muted text-center">

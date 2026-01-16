@@ -4,6 +4,7 @@ import { updateCart, retrieveCart, setShippingMethod, initiatePaymentSession, li
 import { placeOrder, placeOrderAndGetId } from "@/lib/data/checkout"
 import { HttpTypes } from "@medusajs/types"
 import { logger } from "@/lib/logger"
+import { getRegionConfigById, isCountryInRegion, getCountryName } from "@/lib/config/regions"
 
 // PayPal provider ID format: pp_{id}_{module_name}
 const PAYPAL_PROVIDER_ID = "pp_paypal_paypal"
@@ -104,15 +105,17 @@ export async function preparePayPalCheckoutAction(
     return { error: "Please fill in all required fields" }
   }
 
-  if (shippingAddress.country_code !== "us") {
-    return { error: "Currently, only US addresses are supported." }
-  }
-
   try {
-    // Step 1: Retrieve cart
+    // Step 1: Retrieve cart and validate country is in region
     const cart = await retrieveCart()
     if (!cart) {
       return { error: "Failed to retrieve cart" }
+    }
+
+    const regionConfig = getRegionConfigById(cart.region_id)
+    if (!isCountryInRegion(regionConfig, shippingAddress.country_code)) {
+      const countryName = getCountryName(shippingAddress.country_code)
+      return { error: `Shipping to ${countryName} is not available for your region. Please select a different country.` }
     }
 
     // Step 2: Update cart with shipping information
@@ -252,17 +255,16 @@ export async function placeOrderAction(_currentState: unknown, formData: FormDat
   }
 
   try {
-    // Step 1: First, update the cart region if needed based on the country
-    // Medusa requires the cart region to match the shipping address country
+    // Step 1: Retrieve cart and validate country is in region
     const cart = await retrieveCart()
     if (!cart) {
       return "Failed to retrieve cart"
     }
 
-    // For now, let's use US addresses only since our cart is configured for US region
-    // In the future, you may want to change the cart region based on the country selected
-    if (shippingAddress.country_code !== "us") {
-      return "Currently, only US addresses are supported. Please select United States as your country."
+    const regionConfig = getRegionConfigById(cart.region_id)
+    if (!isCountryInRegion(regionConfig, shippingAddress.country_code)) {
+      const countryName = getCountryName(shippingAddress.country_code)
+      return `Shipping to ${countryName} is not available for your region. Please select a different country.`
     }
 
     // Step 2: Update cart with shipping information
@@ -362,18 +364,19 @@ export async function placeOrderWithPayPalAction(
   }
 
   try {
-    // Step 1: Retrieve cart
+    // Step 1: Retrieve cart and validate country is in region
     const cart = await retrieveCart()
     if (!cart) {
       return { error: "Failed to retrieve cart" }
     }
 
-    // Step 2: Validate US-only for now
-    if (shippingAddress.country_code !== "us") {
-      return { error: "Currently, only US addresses are supported." }
+    const regionConfig = getRegionConfigById(cart.region_id)
+    if (!isCountryInRegion(regionConfig, shippingAddress.country_code)) {
+      const countryName = getCountryName(shippingAddress.country_code)
+      return { error: `Shipping to ${countryName} is not available for your region. Please select a different country.` }
     }
 
-    // Step 3: Update cart with shipping information
+    // Step 2: Update cart with shipping information
     const cartData: HttpTypes.StoreUpdateCart = {
       email,
       shipping_address: shippingAddress,
