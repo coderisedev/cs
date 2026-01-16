@@ -115,6 +115,29 @@ export function getCountryName(countryCode: string): string {
 }
 
 /**
+ * Get flag emoji for a country code
+ * Uses Unicode Regional Indicator Symbols to generate flag emojis
+ * @param countryCode - ISO 3166-1 alpha-2 country code (e.g., 'us', 'de')
+ * @returns Flag emoji (e.g., '🇺🇸', '🇩🇪')
+ */
+export function getCountryFlag(countryCode: string): string {
+  const code = countryCode.toUpperCase()
+  if (code.length !== 2) return '🏳️'
+
+  // Regional Indicator Symbol offset: 'A' (65) maps to U+1F1E6 (127462)
+  const offset = 127397
+  const firstChar = code.charCodeAt(0)
+  const secondChar = code.charCodeAt(1)
+
+  // Validate characters are A-Z
+  if (firstChar < 65 || firstChar > 90 || secondChar < 65 || secondChar > 90) {
+    return '🏳️'
+  }
+
+  return String.fromCodePoint(firstChar + offset, secondChar + offset)
+}
+
+/**
  * Check if a country code is in a region's country list
  * This is a type-safe helper to avoid TypeScript issues with readonly arrays
  * @param region - Region configuration object
@@ -139,6 +162,7 @@ export function getCountriesByRegion() {
     countries: region.countries.map(countryCode => ({
       code: countryCode,
       name: COUNTRY_NAMES[countryCode] || countryCode.toUpperCase(),
+      flag: getCountryFlag(countryCode),
     })),
   }))
 }

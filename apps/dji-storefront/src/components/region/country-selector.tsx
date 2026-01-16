@@ -2,9 +2,9 @@
 
 import { useState, useTransition } from "react"
 import { useRouter, usePathname } from "next/navigation"
-import { Globe, ChevronDown, Check } from "lucide-react"
+import { ChevronDown, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { getCountriesByRegion, getRegionForCountry, COUNTRY_NAMES } from "@/lib/config/regions"
+import { getCountriesByRegion, getRegionForCountry, COUNTRY_NAMES, getCountryFlag } from "@/lib/config/regions"
 import { switchCountry } from "@/lib/actions/region"
 
 type CountrySelectorProps = {
@@ -37,6 +37,7 @@ export function CountrySelector({ currentCountry }: CountrySelectorProps) {
   }
 
   const currentCountryName = COUNTRY_NAMES[currentCountry] || currentCountry.toUpperCase()
+  const currentCountryFlag = getCountryFlag(currentCountry)
   const currentRegion = regionsByGroup.find(r => r.code === currentRegionCode)
 
   return (
@@ -48,7 +49,7 @@ export function CountrySelector({ currentCountry }: CountrySelectorProps) {
         disabled={isPending}
         className="flex items-center gap-1.5 text-foreground-secondary hover:text-foreground-primary"
       >
-        <Globe className="h-4 w-4" />
+        <span className="text-base">{currentCountryFlag}</span>
         <span className="hidden sm:inline">{currentCountryName}</span>
         <span className="sm:hidden">{currentCountry.toUpperCase()}</span>
         <span className="text-xs text-foreground-muted">({currentRegion?.currency})</span>
@@ -82,7 +83,10 @@ export function CountrySelector({ currentCountry }: CountrySelectorProps) {
                           : 'hover:bg-background-secondary text-foreground-primary'
                       } ${isPending ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                      <span>{country.name}</span>
+                      <span className="flex items-center gap-2">
+                        <span className="text-base">{country.flag}</span>
+                        <span>{country.name}</span>
+                      </span>
                       {country.code === currentCountry && (
                         <Check className="h-4 w-4 text-primary-500" />
                       )}
