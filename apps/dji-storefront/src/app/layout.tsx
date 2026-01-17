@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
+import { headers } from "next/headers"
 
 // Force dynamic rendering - disable all caching for testing
 export const dynamic = "force-dynamic"
@@ -12,7 +13,8 @@ import { SiteHeader } from "@/components/layout/site-header"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { PostHogProvider } from "@/components/providers/posthog-provider"
 import { retrieveCart } from "@/lib/data/cart"
-import { getCurrentCountry } from "@/lib/actions/region"
+import { isCountrySupported } from "@/lib/config/regions"
+import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 // Fallback to system fonts until Google Fonts issue is resolved
 // const openSans = Open_Sans({
@@ -36,6 +38,27 @@ export const metadata: Metadata = {
   },
 }
 
+/**
+ * Extract country code from URL path
+ * URL format: /{countryCode}/... (e.g., /sg/products, /us/checkout)
+ */
+async function getCountryCodeFromPath(): Promise<string> {
+  const headersList = await headers()
+  // x-pathname is set by Next.js middleware or we can use x-url
+  const pathname = headersList.get('x-pathname') || headersList.get('x-url') || ''
+
+  // Extract country code from path (e.g., "/sg/products" -> "sg")
+  const match = pathname.match(/^\/([a-z]{2})(\/|$)/i)
+  if (match) {
+    const countryCode = match[1].toLowerCase()
+    if (isCountrySupported(countryCode)) {
+      return countryCode
+    }
+  }
+
+  return DEFAULT_COUNTRY_CODE
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -43,7 +66,7 @@ export default async function RootLayout({
 }>) {
   const [cart, countryCode] = await Promise.all([
     retrieveCart(),
-    getCurrentCountry(),
+    getCountryCodeFromPath(),
   ])
   return (
     <html lang="en" className="bg-background-primary" suppressHydrationWarning>

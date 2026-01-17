@@ -311,7 +311,15 @@ export async function middleware(request: NextRequest) {
 
     // Valid supported country - allow through
     if (SUPPORTED_COUNTRIES.includes(pathCountry)) {
-      const response = NextResponse.next()
+      // Create request headers with pathname for server components to read
+      const requestHeaders = new Headers(request.headers)
+      requestHeaders.set('x-pathname', pathname)
+
+      const response = NextResponse.next({
+        request: {
+          headers: requestHeaders,
+        },
+      })
 
       // Set cache ID cookie if not present
       if (!request.cookies.get("_medusa_cache_id")) {
