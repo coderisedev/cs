@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { formatPrice } from "@/lib/number"
 import { placeOrderAction, preparePayPalCheckoutAction, completePayPalOrderAction, calculateShippingAction } from "@/lib/actions/checkout"
-import { getRegionConfigById, COUNTRY_NAMES, isCountryInRegion, REGIONS, getCountryFlag } from "@/lib/config/regions"
+import { getRegionConfigById, COUNTRY_NAMES, isCountryInRegion, REGIONS, getCountryFlag, getSortedCountriesForRegion } from "@/lib/config/regions"
 import { ShoppingBag, ArrowLeft, Package, CreditCard, MapPin } from "lucide-react"
 import { HttpTypes } from "@medusajs/types"
 import type { AccountAddress } from "@/lib/data/account"
@@ -382,16 +382,16 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                     disabled={orderPending}
                   >
                     <optgroup label={`${REGIONS.us.name} (${REGIONS.us.currency})`}>
-                      {REGIONS.us.countries.map((code) => (
-                        <option key={code} value={code}>
-                          {getCountryFlag(code)} {COUNTRY_NAMES[code] || code.toUpperCase()}
+                      {getSortedCountriesForRegion('us').map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {country.flag} {country.name}
                         </option>
                       ))}
                     </optgroup>
                     <optgroup label={`${REGIONS.eu.name} (${REGIONS.eu.currency})`}>
-                      {REGIONS.eu.countries.map((code) => (
-                        <option key={code} value={code}>
-                          {getCountryFlag(code)} {COUNTRY_NAMES[code] || code.toUpperCase()}
+                      {getSortedCountriesForRegion('eu').map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {country.flag} {country.name}
                         </option>
                       ))}
                     </optgroup>

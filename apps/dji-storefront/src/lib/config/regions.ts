@@ -258,6 +258,21 @@ export function isCountryInRegion(
 }
 
 /**
+ * Get sorted countries for a specific region
+ * Returns array of { code, name, flag } sorted alphabetically by name
+ */
+export function getSortedCountriesForRegion(regionCode: RegionCode) {
+  const region = REGIONS[regionCode]
+  return region.countries
+    .map(countryCode => ({
+      code: countryCode,
+      name: COUNTRY_NAMES[countryCode] || countryCode.toUpperCase(),
+      flag: getCountryFlag(countryCode),
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name))
+}
+
+/**
  * Get all countries grouped by region for display
  * Countries are sorted alphabetically by name within each region
  */
@@ -266,12 +281,6 @@ export function getCountriesByRegion() {
     code,
     name: region.name,
     currency: region.currency,
-    countries: region.countries
-      .map(countryCode => ({
-        code: countryCode,
-        name: COUNTRY_NAMES[countryCode] || countryCode.toUpperCase(),
-        flag: getCountryFlag(countryCode),
-      }))
-      .sort((a, b) => a.name.localeCompare(b.name)),
+    countries: getSortedCountriesForRegion(code as RegionCode),
   }))
 }
