@@ -7,7 +7,11 @@ import { updateCartRegion } from "@/lib/data/cart"
 
 /**
  * Switch the user's country/region
- * Updates the country preference cookie and cart region
+ *
+ * Sets a SESSION cookie (no maxAge = expires when browser closes)
+ * This allows user to override IP detection for the current session,
+ * but on next visit (new session), IP detection takes over again.
+ *
  * @param newCountryCode - The new country code to switch to
  * @returns Object with success status and new region config
  */
@@ -24,9 +28,11 @@ export async function switchCountry(newCountryCode: string) {
   const regionConfig = getRegionConfig(normalizedCountry)
   const cookieStore = await cookies()
 
-  // Update country preference cookie
-  cookieStore.set('_medusa_country_code', normalizedCountry, {
-    maxAge: 60 * 60 * 24 * 365, // 1 year
+  // Set SESSION cookie (no maxAge = expires when browser closes)
+  // This overrides IP detection for the current session only
+  // On next visit (new browser session), IP detection will take over again
+  cookieStore.set('_medusa_session_country', normalizedCountry, {
+    // No maxAge = session cookie (expires when browser closes)
     path: '/',
     sameSite: 'lax',
   })
@@ -53,10 +59,13 @@ export async function switchCountry(newCountryCode: string) {
 }
 
 /**
- * Get the current country from cookie
+ * Get the current country from session cookie
+ * Note: This only returns the user's manual selection.
+ * For IP-based detection, the middleware handles it.
  * @returns The current country code or 'us' as default
  */
 export async function getCurrentCountry(): Promise<string> {
   const cookieStore = await cookies()
-  return cookieStore.get('_medusa_country_code')?.value?.toLowerCase() || 'us'
+  // Check session cookie (user's manual selection)
+  return cookieStore.get('_medusa_session_country')?.value?.toLowerCase() || 'us'
 }

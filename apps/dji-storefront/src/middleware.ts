@@ -221,36 +221,61 @@ function getCountryFromAcceptLanguage(acceptLanguage: string | null): string | n
 }
 
 /**
- * Detect country from request headers or cookies
- * Priority: 1. User preference cookie, 2. Vercel geolocation, 3. Cloudflare header, 4. Accept-Language, 5. Default
+ * Get country from IP geolocation headers
+ * Returns null if no valid IP-based country detected
  */
-function getCountryFromRequest(request: NextRequest): string {
-  // 1. Check user preference cookie (previous selection)
-  const countryCookie = request.cookies.get('_medusa_country_code')?.value?.toLowerCase()
-  if (countryCookie && SUPPORTED_COUNTRIES.includes(countryCookie)) {
-    return countryCookie
-  }
-
-  // 2. Vercel IP geolocation header (free, zero latency on Vercel)
+function getCountryFromIP(request: NextRequest): string | null {
+  // Vercel IP geolocation header (free, zero latency on Vercel)
   const vercelCountry = request.headers.get('x-vercel-ip-country')?.toLowerCase()
   if (vercelCountry && SUPPORTED_COUNTRIES.includes(vercelCountry)) {
     return vercelCountry
   }
 
-  // 3. Cloudflare header (if using Cloudflare)
+  // Cloudflare header (if using Cloudflare)
   const cfCountry = request.headers.get('cf-ipcountry')?.toLowerCase()
   if (cfCountry && SUPPORTED_COUNTRIES.includes(cfCountry)) {
     return cfCountry
   }
 
-  // 4. Accept-Language header fallback (useful for local dev and self-hosted)
+  return null
+}
+
+/**
+ * Detect country from request
+ *
+ * Priority (IP-first strategy):
+ * 1. Session cookie (user's manual selection for current browser session)
+ * 2. IP geolocation (Vercel/Cloudflare headers) - PRIMARY for new sessions
+ * 3. Accept-Language header (fallback for local dev)
+ * 4. Default to US
+ *
+ * This ensures:
+ * - New visits always use IP-based detection
+ * - User can override for current session by selecting a country
+ * - Next visit (new session) returns to IP-based detection
+ */
+function getCountryFromRequest(request: NextRequest): string {
+  // 1. Check session cookie (user's manual selection for THIS session only)
+  // This cookie has no maxAge, so it expires when browser closes
+  const sessionCountry = request.cookies.get('_medusa_session_country')?.value?.toLowerCase()
+  if (sessionCountry && SUPPORTED_COUNTRIES.includes(sessionCountry)) {
+    return sessionCountry
+  }
+
+  // 2. IP geolocation - PRIMARY method for automatic detection
+  const ipCountry = getCountryFromIP(request)
+  if (ipCountry) {
+    return ipCountry
+  }
+
+  // 3. Accept-Language header fallback (useful for local dev without IP headers)
   const acceptLanguage = request.headers.get('accept-language')
   const langCountry = getCountryFromAcceptLanguage(acceptLanguage)
   if (langCountry) {
     return langCountry
   }
 
-  // 5. Default to US
+  // 4. Default to US
   return DEFAULT_COUNTRY
 }
 
@@ -296,13 +321,9 @@ export async function middleware(request: NextRequest) {
         })
       }
 
-      // Set country preference cookie if not present (first visit to this country)
-      if (!request.cookies.get("_medusa_country_code")) {
-        response.cookies.set("_medusa_country_code", pathCountry, {
-          maxAge: 60 * 60 * 24 * 365, // 1 year
-          path: "/",
-        })
-      }
+      // Note: We do NOT set a persistent country cookie here.
+      // Country detection is IP-based by default.
+      // Only manual user selection sets a session cookie (via switchCountry action).
 
       return response
     }
@@ -320,15 +341,9 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone()
   url.pathname = `/${detectedCountry}${pathname === "/" ? "" : pathname}`
 
-  const response = NextResponse.redirect(url, 307) // Temporary redirect
-
-  // Set country preference cookie
-  response.cookies.set("_medusa_country_code", detectedCountry, {
-    maxAge: 60 * 60 * 24 * 365, // 1 year
-    path: "/",
-  })
-
-  return response
+  // Use 307 (Temporary Redirect) so each visit re-evaluates IP
+  // No persistent cookie is set - IP detection happens fresh on each new session
+  return NextResponse.redirect(url, 307)
 }
 
 export const config = {
