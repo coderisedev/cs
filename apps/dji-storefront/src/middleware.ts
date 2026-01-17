@@ -5,10 +5,33 @@ const SKIP_REGION_MIDDLEWARE =
   process.env.NEXT_PUBLIC_SKIP_REGION_MIDDLEWARE === "true"
 
 // Supported countries per region (must match lib/config/regions.ts)
-const US_COUNTRIES = ['us', 'ca']
+const US_COUNTRIES = [
+  // North America
+  'us', 'ca', 'mx',
+  // Central America
+  'gt', 'hn', 'sv', 'ni', 'cr', 'pa',
+  // Caribbean
+  'do', 'jm', 'tt', 'bs', 'bb',
+  // South America (excluding Brazil)
+  'ar', 'cl', 'co', 'pe', 'ec', 've', 'uy', 'py', 'bo',
+]
 const EU_COUNTRIES = [
-  'de', 'fr', 'it', 'es', 'nl', 'se', 'dk', 'fi', 'no',
-  'ch', 'pt', 'pl', 'gr', 'ie', 'hu', 'lu', 'is', 'lt', 'mc',
+  // Western Europe
+  'de', 'fr', 'it', 'es', 'nl', 'be', 'at', 'ch', 'lu', 'mc', 'li',
+  // Northern Europe
+  'gb', 'ie', 'se', 'dk', 'fi', 'no', 'is',
+  // Southern Europe
+  'pt', 'gr', 'mt', 'cy',
+  // Central & Eastern Europe
+  'pl', 'cz', 'sk', 'hu', 'ro', 'bg', 'hr', 'si', 'ee', 'lv', 'lt',
+  // Balkans
+  'rs', 'me', 'mk', 'al', 'ba', 'md', 'ua',
+  // Middle East
+  'ae', 'sa', 'qa', 'kw', 'bh', 'om', 'jo', 'lb', 'il', 'tr', 'eg',
+  // Africa
+  'za', 'ng', 'ke', 'ma', 'tn', 'gh',
+  // Asia-Pacific
+  'jp', 'kr', 'au', 'nz', 'sg', 'hk', 'tw', 'my', 'th', 'vn', 'ph', 'id', 'cn',
 ]
 const SUPPORTED_COUNTRIES = [...US_COUNTRIES, ...EU_COUNTRIES]
 
@@ -16,46 +39,150 @@ const DEFAULT_COUNTRY = 'us'
 
 // Map of language/locale codes to country codes
 const LANGUAGE_TO_COUNTRY: Record<string, string> = {
+  // English variants
   'en-us': 'us',
   'en-ca': 'ca',
-  'en-gb': 'gb', // Not supported, will fallback
+  'en-gb': 'gb',
+  'en-au': 'au',
+  'en-nz': 'nz',
+  'en-ie': 'ie',
+  'en-sg': 'sg',
+  'en-za': 'za',
+  'en-hk': 'hk',
+  'en-ph': 'ph',
+  'en': 'us',
+  // German
   'de': 'de',
   'de-de': 'de',
-  'de-at': 'de',
+  'de-at': 'at',
   'de-ch': 'ch',
+  'de-li': 'li',
+  // French
   'fr': 'fr',
   'fr-fr': 'fr',
   'fr-ca': 'ca',
   'fr-ch': 'ch',
+  'fr-be': 'be',
+  'fr-lu': 'lu',
+  'fr-mc': 'mc',
+  // Italian
   'it': 'it',
   'it-it': 'it',
   'it-ch': 'ch',
+  // Spanish
   'es': 'es',
   'es-es': 'es',
+  'es-mx': 'mx',
+  'es-ar': 'ar',
+  'es-cl': 'cl',
+  'es-co': 'co',
+  'es-pe': 'pe',
+  'es-ec': 'ec',
+  'es-ve': 've',
+  'es-uy': 'uy',
+  'es-py': 'py',
+  'es-bo': 'bo',
+  'es-gt': 'gt',
+  'es-hn': 'hn',
+  'es-sv': 'sv',
+  'es-ni': 'ni',
+  'es-cr': 'cr',
+  'es-pa': 'pa',
+  'es-do': 'do',
+  // Dutch
   'nl': 'nl',
   'nl-nl': 'nl',
-  'nl-be': 'nl',
+  'nl-be': 'be',
+  // Portuguese
+  'pt': 'pt',
+  'pt-pt': 'pt',
+  // Scandinavian
   'sv': 'se',
   'sv-se': 'se',
   'da': 'dk',
   'da-dk': 'dk',
-  'fi': 'fi',
-  'fi-fi': 'fi',
   'nb': 'no',
   'no': 'no',
   'nn': 'no',
-  'pt': 'pt',
-  'pt-pt': 'pt',
-  'pl': 'pl',
-  'pl-pl': 'pl',
-  'el': 'gr',
-  'el-gr': 'gr',
-  'hu': 'hu',
-  'hu-hu': 'hu',
+  'fi': 'fi',
+  'fi-fi': 'fi',
   'is': 'is',
   'is-is': 'is',
+  // Eastern European
+  'pl': 'pl',
+  'pl-pl': 'pl',
+  'cs': 'cz',
+  'cs-cz': 'cz',
+  'sk': 'sk',
+  'sk-sk': 'sk',
+  'hu': 'hu',
+  'hu-hu': 'hu',
+  'ro': 'ro',
+  'ro-ro': 'ro',
+  'bg': 'bg',
+  'bg-bg': 'bg',
+  'hr': 'hr',
+  'hr-hr': 'hr',
+  'sl': 'si',
+  'sl-si': 'si',
+  'et': 'ee',
+  'et-ee': 'ee',
+  'lv': 'lv',
+  'lv-lv': 'lv',
   'lt': 'lt',
   'lt-lt': 'lt',
+  // Balkans
+  'sr': 'rs',
+  'sr-rs': 'rs',
+  'mk': 'mk',
+  'mk-mk': 'mk',
+  'sq': 'al',
+  'sq-al': 'al',
+  'bs': 'ba',
+  'bs-ba': 'ba',
+  'uk': 'ua',
+  'uk-ua': 'ua',
+  // Greek
+  'el': 'gr',
+  'el-gr': 'gr',
+  // Middle East
+  'ar': 'ae',
+  'ar-ae': 'ae',
+  'ar-sa': 'sa',
+  'ar-qa': 'qa',
+  'ar-kw': 'kw',
+  'ar-bh': 'bh',
+  'ar-om': 'om',
+  'ar-jo': 'jo',
+  'ar-lb': 'lb',
+  'ar-eg': 'eg',
+  'ar-ma': 'ma',
+  'ar-tn': 'tn',
+  'he': 'il',
+  'he-il': 'il',
+  'tr': 'tr',
+  'tr-tr': 'tr',
+  // Asia-Pacific
+  'ja': 'jp',
+  'ja-jp': 'jp',
+  'ko': 'kr',
+  'ko-kr': 'kr',
+  'zh': 'cn',
+  'zh-cn': 'cn',
+  'zh-hans': 'cn',
+  'zh-tw': 'tw',
+  'zh-hant': 'tw',
+  'zh-hk': 'hk',
+  'ms': 'my',
+  'ms-my': 'my',
+  'th': 'th',
+  'th-th': 'th',
+  'vi': 'vn',
+  'vi-vn': 'vn',
+  'id': 'id',
+  'id-id': 'id',
+  'tl': 'ph',
+  'tl-ph': 'ph',
 }
 
 /**

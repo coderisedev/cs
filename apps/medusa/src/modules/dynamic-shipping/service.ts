@@ -38,15 +38,29 @@ const PRODUCT_SHIPPING_RATES: Record<string, Record<string, number>> = {
 }
 
 // Map country codes to region keys for shipping rate lookup
+// Americas = USD, International = EUR
 const COUNTRY_TO_REGION: Record<string, string> = {
-  // US
-  us: "us",
-  // Europe
-  at: "eu", be: "eu", bg: "eu", hr: "eu", cy: "eu", cz: "eu", dk: "eu",
-  ee: "eu", fi: "eu", fr: "eu", de: "eu", gr: "eu", hu: "eu", ie: "eu",
-  it: "eu", lv: "eu", lt: "eu", lu: "eu", mt: "eu", nl: "eu", pl: "eu",
-  pt: "eu", ro: "eu", sk: "eu", si: "eu", es: "eu", se: "eu", gb: "eu",
-  ch: "eu", no: "eu",
+  // Americas (USD)
+  us: "us", ca: "us", mx: "us",
+  gt: "us", hn: "us", sv: "us", ni: "us", cr: "us", pa: "us",
+  do: "us", jm: "us", tt: "us", bs: "us", bb: "us",
+  ar: "us", cl: "us", co: "us", pe: "us", ec: "us", ve: "us", uy: "us", py: "us", bo: "us",
+  // International (EUR) - Western Europe
+  de: "eu", fr: "eu", it: "eu", es: "eu", nl: "eu", be: "eu", at: "eu", ch: "eu", lu: "eu", mc: "eu", li: "eu",
+  // Northern Europe
+  gb: "eu", ie: "eu", se: "eu", dk: "eu", fi: "eu", no: "eu", is: "eu",
+  // Southern Europe
+  pt: "eu", gr: "eu", mt: "eu", cy: "eu",
+  // Central & Eastern Europe
+  pl: "eu", cz: "eu", sk: "eu", hu: "eu", ro: "eu", bg: "eu", hr: "eu", si: "eu", ee: "eu", lv: "eu", lt: "eu",
+  // Balkans
+  rs: "eu", me: "eu", mk: "eu", al: "eu", ba: "eu", md: "eu", ua: "eu",
+  // Middle East
+  ae: "eu", sa: "eu", qa: "eu", kw: "eu", bh: "eu", om: "eu", jo: "eu", lb: "eu", il: "eu", tr: "eu", eg: "eu",
+  // Africa
+  za: "eu", ng: "eu", ke: "eu", ma: "eu", tn: "eu", gh: "eu",
+  // Asia-Pacific
+  jp: "eu", kr: "eu", au: "eu", nz: "eu", sg: "eu", hk: "eu", tw: "eu", my: "eu", th: "eu", vn: "eu", ph: "eu", id: "eu", cn: "eu",
 }
 
 class DynamicShippingProviderService extends AbstractFulfillmentProviderService {

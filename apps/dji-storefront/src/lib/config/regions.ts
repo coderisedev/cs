@@ -1,6 +1,7 @@
 /**
  * Multi-region configuration for the storefront
- * Supports Americas (USD) and Europe (EUR) regions
+ * Supports Americas (USD) and Europe/International (EUR) regions
+ * EXCLUDED: India (in), Brazil (br), Russia (ru)
  */
 
 export const REGIONS = {
@@ -8,15 +9,38 @@ export const REGIONS = {
     id: 'reg_01K9KE3SV4Q4J745N8T19YTCMH',
     name: 'Americas',
     currency: 'USD' as const,
-    countries: ['us', 'ca'],
+    countries: [
+      // North America
+      'us', 'ca', 'mx',
+      // Central America
+      'gt', 'hn', 'sv', 'ni', 'cr', 'pa',
+      // Caribbean
+      'do', 'jm', 'tt', 'bs', 'bb',
+      // South America (excluding Brazil)
+      'ar', 'cl', 'co', 'pe', 'ec', 've', 'uy', 'py', 'bo',
+    ],
   },
   eu: {
     id: 'reg_01K8J5TBMV1EKV404ZG3SZGXEQ',
-    name: 'Europe',
+    name: 'International',
     currency: 'EUR' as const,
     countries: [
-      'de', 'fr', 'it', 'es', 'nl', 'se', 'dk', 'fi', 'no',
-      'ch', 'pt', 'pl', 'gr', 'ie', 'hu', 'lu', 'is', 'lt', 'mc',
+      // Western Europe
+      'de', 'fr', 'it', 'es', 'nl', 'be', 'at', 'ch', 'lu', 'mc', 'li',
+      // Northern Europe
+      'gb', 'ie', 'se', 'dk', 'fi', 'no', 'is',
+      // Southern Europe
+      'pt', 'gr', 'mt', 'cy',
+      // Central & Eastern Europe
+      'pl', 'cz', 'sk', 'hu', 'ro', 'bg', 'hr', 'si', 'ee', 'lv', 'lt',
+      // Balkans
+      'rs', 'me', 'mk', 'al', 'ba', 'md', 'ua',
+      // Middle East
+      'ae', 'sa', 'qa', 'kw', 'bh', 'om', 'jo', 'lb', 'il', 'tr', 'eg',
+      // Africa
+      'za', 'ng', 'ke', 'ma', 'tn', 'gh',
+      // Asia-Pacific
+      'jp', 'kr', 'au', 'nz', 'sg', 'hk', 'tw', 'my', 'th', 'vn', 'ph', 'id', 'cn',
     ],
   },
 } as const
@@ -25,29 +49,111 @@ export type RegionCode = keyof typeof REGIONS
 export type CurrencyCode = typeof REGIONS[RegionCode]['currency']
 
 export const COUNTRY_NAMES: Record<string, string> = {
-  // Americas
+  // North America
   us: 'United States',
   ca: 'Canada',
-  // Europe
+  mx: 'Mexico',
+  // Central America
+  gt: 'Guatemala',
+  hn: 'Honduras',
+  sv: 'El Salvador',
+  ni: 'Nicaragua',
+  cr: 'Costa Rica',
+  pa: 'Panama',
+  // Caribbean
+  do: 'Dominican Republic',
+  jm: 'Jamaica',
+  tt: 'Trinidad and Tobago',
+  bs: 'Bahamas',
+  bb: 'Barbados',
+  // South America
+  ar: 'Argentina',
+  cl: 'Chile',
+  co: 'Colombia',
+  pe: 'Peru',
+  ec: 'Ecuador',
+  ve: 'Venezuela',
+  uy: 'Uruguay',
+  py: 'Paraguay',
+  bo: 'Bolivia',
+  // Western Europe
   de: 'Germany',
   fr: 'France',
   it: 'Italy',
   es: 'Spain',
   nl: 'Netherlands',
+  be: 'Belgium',
+  at: 'Austria',
+  ch: 'Switzerland',
+  lu: 'Luxembourg',
+  mc: 'Monaco',
+  li: 'Liechtenstein',
+  // Northern Europe
+  gb: 'United Kingdom',
+  ie: 'Ireland',
   se: 'Sweden',
   dk: 'Denmark',
   fi: 'Finland',
   no: 'Norway',
-  ch: 'Switzerland',
-  pt: 'Portugal',
-  pl: 'Poland',
-  gr: 'Greece',
-  ie: 'Ireland',
-  hu: 'Hungary',
-  lu: 'Luxembourg',
   is: 'Iceland',
+  // Southern Europe
+  pt: 'Portugal',
+  gr: 'Greece',
+  mt: 'Malta',
+  cy: 'Cyprus',
+  // Central & Eastern Europe
+  pl: 'Poland',
+  cz: 'Czech Republic',
+  sk: 'Slovakia',
+  hu: 'Hungary',
+  ro: 'Romania',
+  bg: 'Bulgaria',
+  hr: 'Croatia',
+  si: 'Slovenia',
+  ee: 'Estonia',
+  lv: 'Latvia',
   lt: 'Lithuania',
-  mc: 'Monaco',
+  // Balkans
+  rs: 'Serbia',
+  me: 'Montenegro',
+  mk: 'North Macedonia',
+  al: 'Albania',
+  ba: 'Bosnia and Herzegovina',
+  md: 'Moldova',
+  ua: 'Ukraine',
+  // Middle East
+  ae: 'United Arab Emirates',
+  sa: 'Saudi Arabia',
+  qa: 'Qatar',
+  kw: 'Kuwait',
+  bh: 'Bahrain',
+  om: 'Oman',
+  jo: 'Jordan',
+  lb: 'Lebanon',
+  il: 'Israel',
+  tr: 'Turkey',
+  eg: 'Egypt',
+  // Africa
+  za: 'South Africa',
+  ng: 'Nigeria',
+  ke: 'Kenya',
+  ma: 'Morocco',
+  tn: 'Tunisia',
+  gh: 'Ghana',
+  // Asia-Pacific
+  jp: 'Japan',
+  kr: 'South Korea',
+  au: 'Australia',
+  nz: 'New Zealand',
+  sg: 'Singapore',
+  hk: 'Hong Kong',
+  tw: 'Taiwan',
+  my: 'Malaysia',
+  th: 'Thailand',
+  vn: 'Vietnam',
+  ph: 'Philippines',
+  id: 'Indonesia',
+  cn: 'China',
 }
 
 // Build country to region mapping
