@@ -63,36 +63,42 @@ class DynamicShippingProviderService extends AbstractFulfillmentProviderService 
   }
 
   /**
-   * Get product-specific shipping rate from PRODUCT_SHIPPING_RATES config
+   * Calculate total shipping cost for all items
+   * Multiplies each product's shipping rate by its quantity
    */
-  private getProductShippingRate(
+  private calculateTotalShippingRate(
     items: any[],
     countryCode: string | undefined
-  ): number | null {
-    if (!countryCode) return null
+  ): number {
+    if (!countryCode) return 0
 
     const regionKey = COUNTRY_TO_REGION[countryCode.toLowerCase()] || "default"
 
     this.logger.info(`Shipping calculation - items: ${items.length}, country: ${countryCode}, region: ${regionKey}`)
 
+    let totalShipping = 0
+
     for (const item of items) {
       // Get product handle from various possible paths
       const handle = item.variant?.product?.handle || item.product?.handle || item.product_handle
+      const quantity = item.quantity || 1
 
-      this.logger.info(`Checking item - handle: ${handle || 'NOT FOUND'}`)
+      this.logger.info(`Checking item - handle: ${handle || 'NOT FOUND'}, quantity: ${quantity}`)
 
       if (handle && PRODUCT_SHIPPING_RATES[handle]) {
         const rates = PRODUCT_SHIPPING_RATES[handle]
-        const rate = rates[regionKey] ?? rates.default
+        const ratePerUnit = rates[regionKey] ?? rates.default
 
-        if (rate !== undefined) {
-          this.logger.info(`Found shipping rate for "${handle}": ${rate} cents (region: ${regionKey})`)
-          return rate
+        if (ratePerUnit !== undefined) {
+          const itemShipping = ratePerUnit * quantity
+          this.logger.info(`Shipping for "${handle}": ${ratePerUnit} cents x ${quantity} = ${itemShipping} cents`)
+          totalShipping += itemShipping
         }
       }
     }
 
-    return null
+    this.logger.info(`Total shipping cost: ${totalShipping} cents`)
+    return totalShipping
   }
 
   async getFulfillmentOptions(): Promise<any[]> {
@@ -135,17 +141,18 @@ class DynamicShippingProviderService extends AbstractFulfillmentProviderService 
     const address = context.shipping_address
     const countryCode = address?.country_code
 
-    // Check for product-specific shipping rate
-    const productRate = this.getProductShippingRate(items, countryCode)
-    if (productRate !== null) {
+    // Calculate total shipping based on all items and their quantities
+    const totalShipping = this.calculateTotalShippingRate(items, countryCode)
+
+    if (totalShipping > 0) {
       return {
-        calculated_amount: productRate,
+        calculated_amount: totalShipping,
         is_calculated_price_tax_inclusive: false
       }
     }
 
-    // Free shipping for all other products
-    this.logger.info("Free shipping applied (no product-specific rate configured)")
+    // Free shipping if no products have configured rates
+    this.logger.info("Free shipping applied (no product-specific rates configured)")
     return {
       calculated_amount: 0,
       is_calculated_price_tax_inclusive: false

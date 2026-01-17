@@ -14,9 +14,88 @@ const SUPPORTED_COUNTRIES = [...US_COUNTRIES, ...EU_COUNTRIES]
 
 const DEFAULT_COUNTRY = 'us'
 
+// Map of language/locale codes to country codes
+const LANGUAGE_TO_COUNTRY: Record<string, string> = {
+  'en-us': 'us',
+  'en-ca': 'ca',
+  'en-gb': 'gb', // Not supported, will fallback
+  'de': 'de',
+  'de-de': 'de',
+  'de-at': 'de',
+  'de-ch': 'ch',
+  'fr': 'fr',
+  'fr-fr': 'fr',
+  'fr-ca': 'ca',
+  'fr-ch': 'ch',
+  'it': 'it',
+  'it-it': 'it',
+  'it-ch': 'ch',
+  'es': 'es',
+  'es-es': 'es',
+  'nl': 'nl',
+  'nl-nl': 'nl',
+  'nl-be': 'nl',
+  'sv': 'se',
+  'sv-se': 'se',
+  'da': 'dk',
+  'da-dk': 'dk',
+  'fi': 'fi',
+  'fi-fi': 'fi',
+  'nb': 'no',
+  'no': 'no',
+  'nn': 'no',
+  'pt': 'pt',
+  'pt-pt': 'pt',
+  'pl': 'pl',
+  'pl-pl': 'pl',
+  'el': 'gr',
+  'el-gr': 'gr',
+  'hu': 'hu',
+  'hu-hu': 'hu',
+  'is': 'is',
+  'is-is': 'is',
+  'lt': 'lt',
+  'lt-lt': 'lt',
+}
+
+/**
+ * Parse Accept-Language header and return the best matching country
+ */
+function getCountryFromAcceptLanguage(acceptLanguage: string | null): string | null {
+  if (!acceptLanguage) return null
+
+  // Parse Accept-Language header (e.g., "en-US,en;q=0.9,de;q=0.8")
+  const languages = acceptLanguage
+    .split(',')
+    .map(lang => {
+      const [code, qValue] = lang.trim().split(';q=')
+      return {
+        code: code.toLowerCase(),
+        q: qValue ? parseFloat(qValue) : 1.0,
+      }
+    })
+    .sort((a, b) => b.q - a.q)
+
+  // Find the first matching country
+  for (const { code } of languages) {
+    const country = LANGUAGE_TO_COUNTRY[code]
+    if (country && SUPPORTED_COUNTRIES.includes(country)) {
+      return country
+    }
+    // Try just the language part (e.g., 'en' from 'en-US')
+    const langOnly = code.split('-')[0]
+    const countryFromLang = LANGUAGE_TO_COUNTRY[langOnly]
+    if (countryFromLang && SUPPORTED_COUNTRIES.includes(countryFromLang)) {
+      return countryFromLang
+    }
+  }
+
+  return null
+}
+
 /**
  * Detect country from request headers or cookies
- * Priority: 1. User preference cookie, 2. Vercel geolocation, 3. Cloudflare header, 4. Default
+ * Priority: 1. User preference cookie, 2. Vercel geolocation, 3. Cloudflare header, 4. Accept-Language, 5. Default
  */
 function getCountryFromRequest(request: NextRequest): string {
   // 1. Check user preference cookie (previous selection)
@@ -37,7 +116,14 @@ function getCountryFromRequest(request: NextRequest): string {
     return cfCountry
   }
 
-  // 4. Default to US
+  // 4. Accept-Language header fallback (useful for local dev and self-hosted)
+  const acceptLanguage = request.headers.get('accept-language')
+  const langCountry = getCountryFromAcceptLanguage(acceptLanguage)
+  if (langCountry) {
+    return langCountry
+  }
+
+  // 5. Default to US
   return DEFAULT_COUNTRY
 }
 
