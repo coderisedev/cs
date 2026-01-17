@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { currencyFormatter, formatPrice } from "@/lib/number"
 import type { AccountOrder, AccountUser, WishlistItem as AccountWishlistItem } from "@/lib/data/account"
-import { REGIONS, getCountryName } from "@/lib/config/regions"
+import { REGIONS, getCountryName, getCountryFlag } from "@/lib/config/regions"
 import {
   addCustomerAddress,
   deleteCustomerAddress,
@@ -785,14 +785,14 @@ function AddressForm({
             <optgroup label={`${REGIONS.us.name} (${REGIONS.us.currency})`}>
               {REGIONS.us.countries.map((code) => (
                 <option key={code} value={code}>
-                  {getCountryName(code)}
+                  {getCountryFlag(code)} {getCountryName(code)}
                 </option>
               ))}
             </optgroup>
             <optgroup label={`${REGIONS.eu.name} (${REGIONS.eu.currency})`}>
               {REGIONS.eu.countries.map((code) => (
                 <option key={code} value={code}>
-                  {getCountryName(code)}
+                  {getCountryFlag(code)} {getCountryName(code)}
                 </option>
               ))}
             </optgroup>
