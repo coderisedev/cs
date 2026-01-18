@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useActionState, useEffect } from "react"
+import { useState, useActionState, useEffect, useMemo, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -9,8 +9,8 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { formatPrice } from "@/lib/number"
 import { placeOrderAction, preparePayPalCheckoutAction, completePayPalOrderAction, calculateShippingAction } from "@/lib/actions/checkout"
-import { getRegionConfigById, COUNTRY_NAMES, isCountryInRegion, REGIONS, getCountryFlag, getSortedCountriesForRegion } from "@/lib/config/regions"
-import { ShoppingBag, ArrowLeft, Package, CreditCard, MapPin } from "lucide-react"
+import { getRegionConfigById, COUNTRY_NAMES, isCountryInRegion, REGIONS, getSortedCountriesForRegion } from "@/lib/config/regions"
+import { ShoppingBag, ArrowLeft, Package, CreditCard, MapPin, AlertCircle, CheckCircle2, Loader2 } from "lucide-react"
 import { HttpTypes } from "@medusajs/types"
 import type { AccountAddress } from "@/lib/data/account"
 import { cn } from "@/lib/utils"
@@ -21,6 +21,17 @@ type CheckoutClientProps = {
   customer: HttpTypes.StoreCustomer | null
   countryCode: string
   customerAddresses: AccountAddress[]
+}
+
+// Field validation types
+type FieldError = {
+  field: string
+  message: string
+}
+
+type ValidationState = {
+  errors: FieldError[]
+  touched: Set<string>
 }
 
 export function CheckoutClient({ cart: initialCart, customer, countryCode, customerAddresses }: CheckoutClientProps) {
@@ -46,8 +57,86 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
   const [paypalError, setPaypalError] = useState<string | null>(null)
   const [isPaypalProcessing, setIsPaypalProcessing] = useState(false)
   const [isCalculatingShipping, setIsCalculatingShipping] = useState(false)
+  const [shippingError, setShippingError] = useState<string | null>(null)
+  const [shippingCalculated, setShippingCalculated] = useState(false)
+
+  // Validation state
+  const [validation, setValidation] = useState<ValidationState>({
+    errors: [],
+    touched: new Set<string>(),
+  })
 
   const [orderMessage, orderFormAction, orderPending] = useActionState(placeOrderAction, null)
+
+  // Email validation helper
+  const isValidEmail = useCallback((emailValue: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(emailValue)
+  }, [])
+
+  // Validate all fields and return errors
+  const validateFields = useCallback((): FieldError[] => {
+    const errors: FieldError[] = []
+
+    if (!email.trim()) {
+      errors.push({ field: "email", message: "Email is required" })
+    } else if (!isValidEmail(email)) {
+      errors.push({ field: "email", message: "Please enter a valid email address" })
+    }
+
+    if (!shippingAddress.first_name.trim()) {
+      errors.push({ field: "first_name", message: "First name is required" })
+    }
+
+    if (!shippingAddress.last_name.trim()) {
+      errors.push({ field: "last_name", message: "Last name is required" })
+    }
+
+    if (!shippingAddress.address_1.trim()) {
+      errors.push({ field: "address_1", message: "Address is required" })
+    }
+
+    if (!shippingAddress.city.trim()) {
+      errors.push({ field: "city", message: "City is required" })
+    }
+
+    if (!shippingAddress.postal_code.trim()) {
+      errors.push({ field: "postal_code", message: "Postal code is required" })
+    }
+
+    if (!shippingAddress.country_code) {
+      errors.push({ field: "country_code", message: "Country is required" })
+    } else if (!isCountryInRegion(regionConfig, shippingAddress.country_code)) {
+      const countryName = COUNTRY_NAMES[shippingAddress.country_code.toLowerCase()] || shippingAddress.country_code.toUpperCase()
+      errors.push({ field: "country_code", message: `Shipping to ${countryName} is not available. Please select a supported country.` })
+    }
+
+    return errors
+  }, [email, isValidEmail, shippingAddress, regionConfig])
+
+  // Get error for a specific field
+  const getFieldError = useCallback((field: string): string | null => {
+    if (!validation.touched.has(field)) return null
+    const error = validation.errors.find(e => e.field === field)
+    return error?.message || null
+  }, [validation])
+
+  // Mark field as touched (on blur)
+  const markFieldTouched = useCallback((field: string) => {
+    setValidation(prev => ({
+      ...prev,
+      touched: new Set([...prev.touched, field]),
+      errors: validateFields(),
+    }))
+  }, [validateFields])
+
+  // Update validation when fields change
+  useEffect(() => {
+    setValidation(prev => ({
+      ...prev,
+      errors: validateFields(),
+    }))
+  }, [validateFields])
 
   const itemCount = cart.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0
   // Use item_subtotal for products only (subtotal includes shipping in Medusa)
@@ -103,33 +192,63 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
     applySavedAddress(address)
   }
 
-  // Check if address is complete for shipping calculation
+  // Check if address is complete for shipping calculation (basic fields filled)
   const isAddressComplete = Boolean(
-    shippingAddress.first_name &&
-    shippingAddress.last_name &&
-    shippingAddress.address_1 &&
-    shippingAddress.city &&
-    shippingAddress.postal_code &&
+    shippingAddress.first_name.trim() &&
+    shippingAddress.last_name.trim() &&
+    shippingAddress.address_1.trim() &&
+    shippingAddress.city.trim() &&
+    shippingAddress.postal_code.trim() &&
     shippingAddress.country_code
   )
 
+  // Check if form is fully valid (including email and country validation)
+  const isFormValid = useMemo(() => {
+    return validation.errors.length === 0 && isAddressComplete && email.trim() !== ""
+  }, [validation.errors, isAddressComplete, email])
+
+  // Check if ready for payment (form valid AND shipping calculated)
+  const isReadyForPayment = useMemo(() => {
+    return isFormValid && shippingCalculated && !shippingError
+  }, [isFormValid, shippingCalculated, shippingError])
+
   // Calculate shipping when address changes
   useEffect(() => {
-    // Only calculate if address is complete and country is supported in region
-    if (!isAddressComplete || !isCountryInRegion(regionConfig, shippingAddress.country_code)) {
+    // Reset shipping state when address changes
+    setShippingCalculated(false)
+    setShippingError(null)
+
+    // Only calculate if address is complete
+    if (!isAddressComplete) {
+      return
+    }
+
+    // Check if country is supported
+    if (!isCountryInRegion(regionConfig, shippingAddress.country_code)) {
+      const countryName = COUNTRY_NAMES[shippingAddress.country_code.toLowerCase()] || shippingAddress.country_code.toUpperCase()
+      setShippingError(`Shipping to ${countryName} is not available in your current region.`)
       return
     }
 
     const calculateShipping = async () => {
       setIsCalculatingShipping(true)
+      setShippingError(null)
       try {
         const result = await calculateShippingAction({
           email: email || undefined,
           shippingAddress,
         })
-        if (result.cart) {
+        if (result.error) {
+          setShippingError(result.error)
+          setShippingCalculated(false)
+        } else if (result.cart) {
           setCart(result.cart)
+          setShippingCalculated(true)
         }
+      } catch (error) {
+        console.error("Shipping calculation error:", error)
+        setShippingError("Unable to calculate shipping. Please check your address and try again.")
+        setShippingCalculated(false)
       } finally {
         setIsCalculatingShipping(false)
       }
@@ -147,23 +266,50 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
     shippingAddress.postal_code,
     shippingAddress.country_code,
     email,
+    regionConfig,
   ])
 
   // Validate shipping form before PayPal payment
   const validateShippingForm = (): boolean => {
-    if (!email || !shippingAddress.first_name || !shippingAddress.last_name ||
-        !shippingAddress.address_1 || !shippingAddress.city ||
-        !shippingAddress.postal_code || !shippingAddress.country_code) {
-      setPaypalError("Please fill in all required shipping fields before proceeding with payment.")
+    // Mark all fields as touched to show errors
+    const allFields = ["email", "first_name", "last_name", "address_1", "city", "postal_code", "country_code"]
+    setValidation(prev => ({
+      ...prev,
+      touched: new Set([...prev.touched, ...allFields]),
+      errors: validateFields(),
+    }))
+
+    const errors = validateFields()
+    if (errors.length > 0) {
+      // Show the first error as paypal error
+      setPaypalError(errors[0].message)
       return false
     }
-    if (!isCountryInRegion(regionConfig, shippingAddress.country_code)) {
-      const countryName = COUNTRY_NAMES[shippingAddress.country_code.toLowerCase()] || shippingAddress.country_code.toUpperCase()
-      setPaypalError(`Shipping to ${countryName} is not available for your region. Please select a different country.`)
+
+    if (!shippingCalculated) {
+      setPaypalError("Please wait for shipping to be calculated before proceeding.")
       return false
     }
+
+    if (shippingError) {
+      setPaypalError(shippingError)
+      return false
+    }
+
     return true
   }
+
+  // Get missing fields for display
+  const getMissingFields = useCallback((): string[] => {
+    const missing: string[] = []
+    if (!email.trim()) missing.push("Email")
+    if (!shippingAddress.first_name.trim()) missing.push("First Name")
+    if (!shippingAddress.last_name.trim()) missing.push("Last Name")
+    if (!shippingAddress.address_1.trim()) missing.push("Address")
+    if (!shippingAddress.city.trim()) missing.push("City")
+    if (!shippingAddress.postal_code.trim()) missing.push("Postal Code")
+    return missing
+  }, [email, shippingAddress])
 
   // Create PayPal order via Medusa backend when user clicks PayPal button
   const handleCreatePayPalOrder = async (): Promise<string | null> => {
@@ -299,19 +445,30 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                 </div>
               )}
               <div className="space-y-2">
-                <Label htmlFor="email">Email Address *</Label>
+                <Label htmlFor="email" className={cn(getFieldError("email") && "text-red-600")}>
+                  Email Address *
+                </Label>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  onBlur={() => markFieldTouched("email")}
                   placeholder="you@example.com"
                   required
                   disabled={orderPending}
+                  className={cn(getFieldError("email") && "border-red-500 focus-visible:ring-red-500")}
                 />
-                <p className="text-xs text-foreground-muted">
-                  Order confirmation will be sent to this email
-                </p>
+                {getFieldError("email") ? (
+                  <p className="text-xs text-red-600 flex items-center gap-1">
+                    <AlertCircle className="h-3 w-3" />
+                    {getFieldError("email")}
+                  </p>
+                ) : (
+                  <p className="text-xs text-foreground-muted">
+                    Order confirmation will be sent to this email
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -327,57 +484,103 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="first_name">First Name *</Label>
+                  <Label htmlFor="first_name" className={cn(getFieldError("first_name") && "text-red-600")}>
+                    First Name *
+                  </Label>
                   <Input
                     id="first_name"
                     value={shippingAddress.first_name}
                     onChange={(e) => setShippingAddress({ ...shippingAddress, first_name: e.target.value })}
+                    onBlur={() => markFieldTouched("first_name")}
                     required
                     disabled={orderPending}
+                    className={cn(getFieldError("first_name") && "border-red-500 focus-visible:ring-red-500")}
                   />
+                  {getFieldError("first_name") && (
+                    <p className="text-xs text-red-600 flex items-center gap-1">
+                      <AlertCircle className="h-3 w-3" />
+                      {getFieldError("first_name")}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="last_name">Last Name *</Label>
+                  <Label htmlFor="last_name" className={cn(getFieldError("last_name") && "text-red-600")}>
+                    Last Name *
+                  </Label>
                   <Input
                     id="last_name"
                     value={shippingAddress.last_name}
                     onChange={(e) => setShippingAddress({ ...shippingAddress, last_name: e.target.value })}
+                    onBlur={() => markFieldTouched("last_name")}
                     required
                     disabled={orderPending}
+                    className={cn(getFieldError("last_name") && "border-red-500 focus-visible:ring-red-500")}
                   />
+                  {getFieldError("last_name") && (
+                    <p className="text-xs text-red-600 flex items-center gap-1">
+                      <AlertCircle className="h-3 w-3" />
+                      {getFieldError("last_name")}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="address_1">Address *</Label>
+                <Label htmlFor="address_1" className={cn(getFieldError("address_1") && "text-red-600")}>
+                  Address *
+                </Label>
                 <Input
                   id="address_1"
                   value={shippingAddress.address_1}
                   onChange={(e) => setShippingAddress({ ...shippingAddress, address_1: e.target.value })}
+                  onBlur={() => markFieldTouched("address_1")}
                   placeholder="123 Main St"
                   required
                   disabled={orderPending}
+                  className={cn(getFieldError("address_1") && "border-red-500 focus-visible:ring-red-500")}
                 />
+                {getFieldError("address_1") && (
+                  <p className="text-xs text-red-600 flex items-center gap-1">
+                    <AlertCircle className="h-3 w-3" />
+                    {getFieldError("address_1")}
+                  </p>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="city">City *</Label>
+                  <Label htmlFor="city" className={cn(getFieldError("city") && "text-red-600")}>
+                    City *
+                  </Label>
                   <Input
                     id="city"
                     value={shippingAddress.city}
                     onChange={(e) => setShippingAddress({ ...shippingAddress, city: e.target.value })}
+                    onBlur={() => markFieldTouched("city")}
                     required
                     disabled={orderPending}
+                    className={cn(getFieldError("city") && "border-red-500 focus-visible:ring-red-500")}
                   />
+                  {getFieldError("city") && (
+                    <p className="text-xs text-red-600 flex items-center gap-1">
+                      <AlertCircle className="h-3 w-3" />
+                      {getFieldError("city")}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="country_code">Country *</Label>
+                  <Label htmlFor="country_code" className={cn(getFieldError("country_code") && "text-red-600")}>
+                    Country *
+                  </Label>
                   <select
                     id="country_code"
                     value={shippingAddress.country_code}
                     onChange={(e) => setShippingAddress({ ...shippingAddress, country_code: e.target.value })}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    onBlur={() => markFieldTouched("country_code")}
+                    className={cn(
+                      "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                      getFieldError("country_code") && "border-red-500 focus-visible:ring-red-500"
+                    )}
                     required
                     disabled={orderPending}
                   >
@@ -396,9 +599,16 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                       ))}
                     </optgroup>
                   </select>
-                  <p className="text-xs text-foreground-muted">
-                    Currency will be based on shipping destination
-                  </p>
+                  {getFieldError("country_code") ? (
+                    <p className="text-xs text-red-600 flex items-center gap-1">
+                      <AlertCircle className="h-3 w-3" />
+                      {getFieldError("country_code")}
+                    </p>
+                  ) : (
+                    <p className="text-xs text-foreground-muted">
+                      Currency will be based on shipping destination
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -414,15 +624,25 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="postal_code">Postal Code *</Label>
+                  <Label htmlFor="postal_code" className={cn(getFieldError("postal_code") && "text-red-600")}>
+                    Postal Code *
+                  </Label>
                   <Input
                     id="postal_code"
                     value={shippingAddress.postal_code}
                     onChange={(e) => setShippingAddress({ ...shippingAddress, postal_code: e.target.value })}
+                    onBlur={() => markFieldTouched("postal_code")}
                     placeholder="12345"
                     required
                     disabled={orderPending}
+                    className={cn(getFieldError("postal_code") && "border-red-500 focus-visible:ring-red-500")}
                   />
+                  {getFieldError("postal_code") && (
+                    <p className="text-xs text-red-600 flex items-center gap-1">
+                      <AlertCircle className="h-3 w-3" />
+                      {getFieldError("postal_code")}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -462,24 +682,89 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              {/* Status indicator */}
+              {!isReadyForPayment && (
+                <div className={cn(
+                  "p-3 rounded-lg border text-sm",
+                  shippingError
+                    ? "bg-red-50 border-red-200 text-red-700"
+                    : isCalculatingShipping
+                      ? "bg-blue-50 border-blue-200 text-blue-700"
+                      : "bg-amber-50 border-amber-200 text-amber-700"
+                )}>
+                  {shippingError ? (
+                    <div className="flex items-start gap-2">
+                      <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium">Shipping unavailable</p>
+                        <p className="text-xs mt-1">{shippingError}</p>
+                      </div>
+                    </div>
+                  ) : isCalculatingShipping ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <span>Calculating shipping costs...</span>
+                    </div>
+                  ) : !isAddressComplete ? (
+                    <div className="flex items-start gap-2">
+                      <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium">Complete your shipping address</p>
+                        <p className="text-xs mt-1">
+                          Missing: {getMissingFields().join(", ")}
+                        </p>
+                      </div>
+                    </div>
+                  ) : !isValidEmail(email) ? (
+                    <div className="flex items-center gap-2">
+                      <AlertCircle className="h-4 w-4" />
+                      <span>Please enter a valid email address</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <AlertCircle className="h-4 w-4" />
+                      <span>Please complete all required fields above</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Ready for payment indicator */}
+              {isReadyForPayment && (
+                <div className="p-3 rounded-lg border bg-green-50 border-green-200 text-green-700 text-sm">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4" />
+                    <span>Ready for payment - Click PayPal to continue</span>
+                  </div>
+                </div>
+              )}
+
               {/* PayPal Button */}
               <div className="paypal-payment-section">
                 <p className="text-sm text-foreground-secondary mb-3">
                   Pay securely with PayPal
                 </p>
-                <PayPalButton
-                  currency={regionConfig.currency}
-                  disabled={orderPending || isPaypalProcessing}
-                  onCreateOrder={handleCreatePayPalOrder}
-                  onApprove={handlePayPalApprove}
-                  onError={handlePayPalError}
-                />
+                <div className={cn(!isReadyForPayment && "opacity-60 pointer-events-none")}>
+                  <PayPalButton
+                    currency={regionConfig.currency}
+                    disabled={orderPending || isPaypalProcessing || !isReadyForPayment}
+                    onCreateOrder={handleCreatePayPalOrder}
+                    onApprove={handlePayPalApprove}
+                    onError={handlePayPalError}
+                  />
+                </div>
+                {!isReadyForPayment && (
+                  <p className="text-xs text-foreground-muted mt-2 text-center">
+                    Complete your shipping address to enable payment
+                  </p>
+                )}
               </div>
 
               {/* PayPal Error Message */}
               {paypalError && (
-                <div className="p-3 rounded-base bg-red-50 border border-red-200 text-sm text-red-600">
-                  {paypalError}
+                <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-600 flex items-start gap-2">
+                  <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                  <span>{paypalError}</span>
                 </div>
               )}
 
@@ -545,14 +830,25 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Shipping</span>
-                  <span className="font-medium">
-                    {isCalculatingShipping
-                      ? "Calculating..."
-                      : shipping > 0
-                        ? formatPrice(shipping, cart)
-                        : isAddressComplete && isCountryInRegion(regionConfig, shippingAddress.country_code)
-                          ? "Free"
-                          : "Calculated at next step"}
+                  <span className={cn(
+                    "font-medium",
+                    isCalculatingShipping && "text-blue-600",
+                    shippingError && "text-red-600"
+                  )}>
+                    {isCalculatingShipping ? (
+                      <span className="flex items-center gap-1">
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                        Calculating...
+                      </span>
+                    ) : shippingError ? (
+                      "Unavailable"
+                    ) : shippingCalculated ? (
+                      shipping > 0 ? formatPrice(shipping, cart) : "Free"
+                    ) : !isAddressComplete ? (
+                      <span className="text-foreground-muted">Enter address</span>
+                    ) : (
+                      <span className="text-foreground-muted">Pending</span>
+                    )}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
@@ -562,7 +858,9 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                       ? formatPrice(tax, cart)
                       : isTaxInclusive
                         ? "Included"
-                        : "Calculated at next step"}
+                        : shippingCalculated
+                          ? "Included"
+                          : <span className="text-foreground-muted">Pending</span>}
                   </span>
                 </div>
               </div>
