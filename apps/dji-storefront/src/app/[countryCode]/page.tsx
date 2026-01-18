@@ -34,7 +34,7 @@ export default async function Homepage({ params }: HomepageProps) {
                     <LatestNews countryCode={countryCode} />
                     <TestimonialsCarousel />
                     <ServicesCarousel />
-                    <ResellerRecruitment />
+                    <ResellerRecruitment countryCode={countryCode} />
                 </div>
             </>
         );
@@ -71,7 +71,7 @@ export default async function Homepage({ params }: HomepageProps) {
             <ServicesCarousel />
 
             {/* Reseller Recruitment */}
-            <ResellerRecruitment />
+            <ResellerRecruitment countryCode={countryCode} />
         </main>
     );
 }

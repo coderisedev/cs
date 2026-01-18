@@ -38,6 +38,7 @@ export default async function AccountPage({ params, searchParams }: AccountPageP
       wishlist={data.wishlist}
       onSignOut={boundSignout}
       defaultTab={defaultTab}
+      countryCode={countryCode}
     />
   )
 }

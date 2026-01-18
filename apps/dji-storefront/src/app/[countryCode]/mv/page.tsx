@@ -10,7 +10,12 @@ export const metadata: Metadata = {
 // YouTube video ID extracted from the URL
 const YOUTUBE_VIDEO_ID = "X-yIEMduRXk"
 
-export default function MVPage() {
+export default async function MVPage({
+  params,
+}: {
+  params: Promise<{ countryCode: string }>
+}) {
+  const { countryCode } = await params
   return (
     <div className="min-h-screen bg-neutral-950">
       {/* Hero Section */}
@@ -107,13 +112,13 @@ export default function MVPage() {
               <p className="text-gray-400 mb-6">Explore our professional flight simulation hardware</p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <Link
-                  href="/us/products"
+                  href={`/${countryCode}/products`}
                   className="inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-200 transition-colors"
                 >
                   Browse Products
                 </Link>
                 <Link
-                  href="/us/collections"
+                  href={`/${countryCode}/collections`}
                   className="inline-flex items-center gap-2 bg-white/10 text-white px-6 py-3 rounded-full font-medium hover:bg-white/20 transition-colors border border-white/20"
                 >
                   View Collections

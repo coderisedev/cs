@@ -12,14 +12,20 @@ export const metadata: Metadata = {
     description: "Real feel. Born for flight. All-metal construction, 9-motor system, 2-year warranty. Experience the most authentic 737 throttle control.",
 }
 
-export default function CS737ProPage() {
+export default async function CS737ProPage({
+    params,
+}: {
+    params: Promise<{ countryCode: string }>
+}) {
+    const { countryCode } = await params
+
     return (
         <div className="min-h-screen bg-black text-white selection:bg-blue-500/30">
             <StickyNav />
 
             <main>
                 {/* Hero Section */}
-                <Hero />
+                <Hero countryCode={countryCode} />
 
                 {/* Product Overview - darkest */}
                 <ProductOverview />
@@ -151,7 +157,7 @@ export default function CS737ProPage() {
 
                 {/* Warranty & CTA */}
                 <div id="buy">
-                    <WarrantyCTA />
+                    <WarrantyCTA countryCode={countryCode} />
                 </div>
             </main>
         </div>

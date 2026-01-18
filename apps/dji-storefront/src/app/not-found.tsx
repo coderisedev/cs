@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 export default function NotFound() {
   return (
@@ -26,7 +27,7 @@ export default function NotFound() {
           </Link>
 
           <Link
-            href="/us/store"
+            href={`/${DEFAULT_COUNTRY_CODE}/store`}
             className="inline-flex items-center justify-center px-6 py-3 border border-border-primary text-foreground-primary font-medium rounded-lg hover:bg-background-secondary transition-colors"
           >
             Browse products

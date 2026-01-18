@@ -5,7 +5,11 @@ import Image from "next/image"
 import { useRef } from "react"
 import Link from "next/link"
 
-export function Hero() {
+type HeroProps = {
+    countryCode: string
+}
+
+export function Hero({ countryCode }: HeroProps) {
     const ref = useRef(null)
     const { scrollYProgress } = useScroll({
         target: ref,
@@ -143,7 +147,7 @@ export function Hero() {
                             whileTap={{ scale: 0.98 }}
                         >
                             <Link
-                                href="https://prd.aidenlux.com/us/products/cs-737x-tq"
+                                href={`/${countryCode}/products/cs-737x-tq`}
                                 className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-full shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 font-semibold text-base md:text-lg"
                             >
                                 Order Now

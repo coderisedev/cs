@@ -4,7 +4,11 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Bell, Calendar } from "lucide-react";
 import Link from "next/link";
 
-export function LatestAnnouncements() {
+type LatestAnnouncementsProps = {
+    countryCode: string
+}
+
+export function LatestAnnouncements({ countryCode }: LatestAnnouncementsProps) {
     return (
         <section className="w-full bg-white border-b border-gray-100">
             <div className="container mx-auto px-4 py-8 sm:py-12 md:py-16">
@@ -36,7 +40,7 @@ export function LatestAnnouncements() {
 
                     {/* Right Action */}
                     <div className="flex-shrink-0 w-full md:w-auto">
-                        <Link href="/us/announcements/latest">
+                        <Link href={`/${countryCode}/announcements/latest`}>
                             <Button
                                 size="lg"
                                 className="w-full md:w-auto rounded-full px-6 sm:px-8 py-4 sm:py-6 text-sm sm:text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 bg-brand-blue-500 text-white hover:bg-brand-blue-600 border-none"

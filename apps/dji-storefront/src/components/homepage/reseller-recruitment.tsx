@@ -5,7 +5,11 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
-export function ResellerRecruitment() {
+type ResellerRecruitmentProps = {
+    countryCode: string
+}
+
+export function ResellerRecruitment({ countryCode }: ResellerRecruitmentProps) {
     return (
         <section className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] overflow-hidden group">
             {/* Background Image */}
@@ -35,7 +39,7 @@ export function ResellerRecruitment() {
                         </p>
                     </div>
 
-                    <Link href="/us/resellers">
+                    <Link href={`/${countryCode}/resellers`}>
                         <Button
                             size="lg"
                             className="bg-white text-black hover:bg-gray-200 rounded-full px-5 sm:px-8 py-4 sm:py-6 text-sm sm:text-lg font-medium transition-all hover:scale-105"

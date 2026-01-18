@@ -12,7 +12,11 @@ const highlights = [
     { value: "1:1", label: "Aircraft Scale" },
 ]
 
-export function WarrantyCTA() {
+type WarrantyCTAProps = {
+    countryCode: string
+}
+
+export function WarrantyCTA({ countryCode }: WarrantyCTAProps) {
     const ref = useRef(null)
     const isInView = useInView(ref, { once: true, margin: "-10% 0px" })
 
@@ -121,7 +125,7 @@ export function WarrantyCTA() {
 
                     <div className="flex flex-wrap gap-4 justify-center items-center">
                         <Link
-                            href="https://prd.aidenlux.com/us/products/cs-737x-tq"
+                            href={`/${countryCode}/products/cs-737x-tq`}
                             className="inline-flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-8 py-2.5 rounded-full shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-200 font-medium text-base"
                         >
                             Order

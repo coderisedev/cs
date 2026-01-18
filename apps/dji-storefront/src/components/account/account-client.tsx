@@ -23,7 +23,6 @@ import {
 } from "@/lib/actions/account"
 import { Loader2 } from "lucide-react"
 import { useWishlist, WishlistItem as LocalWishlistItem } from "@/lib/context/wishlist-context"
-import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
 type EditableProfileField = "firstName" | "lastName" | "phone"
 
@@ -33,6 +32,7 @@ type AccountClientProps = {
   wishlist: AccountWishlistItem[]
   onSignOut: (formData: FormData) => Promise<void>
   defaultTab?: string
+  countryCode: string
 }
 
 const formatDate = (date: string | Date) =>
@@ -59,7 +59,7 @@ const resolveImageUrl = (image: unknown): string | null => {
 
 const VALID_TABS = ["profile", "orders", "addresses", "wishlist", "settings"]
 
-export function AccountClient({ user, orders, wishlist, onSignOut, defaultTab }: AccountClientProps) {
+export function AccountClient({ user, orders, wishlist, onSignOut, defaultTab, countryCode }: AccountClientProps) {
   const router = useRouter()
   const initialTab = defaultTab && VALID_TABS.includes(defaultTab) ? defaultTab : "profile"
   const [activeTab, setActiveTab] = useState(initialTab)
@@ -123,7 +123,7 @@ export function AccountClient({ user, orders, wishlist, onSignOut, defaultTab }:
             <p className="text-sm text-foreground-secondary">
               You need to be signed in to access your account page.
             </p>
-            <Link href="/us/login">
+            <Link href={`/${countryCode}/login`}>
               <Button className="w-full">
                 Sign In
               </Button>
@@ -356,7 +356,7 @@ export function AccountClient({ user, orders, wishlist, onSignOut, defaultTab }:
                     </div>
 
                     <div className="mt-4 flex flex-wrap gap-2">
-                      <Link href={`/us/order/${order.id}/confirmed`}>
+                      <Link href={`/${countryCode}/order/${order.id}/confirmed`}>
                         <Button variant="outline" size="sm">
                           View Details
                         </Button>
@@ -546,7 +546,7 @@ export function AccountClient({ user, orders, wishlist, onSignOut, defaultTab }:
                         <span className="text-lg font-semibold text-foreground-primary">{currencyFormatter(item.price)}</span>
                         <div className="flex gap-2">
                           <Button size="sm" variant="outline" className="flex-1 justify-center" asChild>
-                            <Link href={`/${DEFAULT_COUNTRY_CODE}/products/${item.handle}`}>
+                            <Link href={`/${countryCode}/products/${item.handle}`}>
                               View Product
                             </Link>
                           </Button>
