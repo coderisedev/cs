@@ -5,9 +5,10 @@ import { CTAButton } from './cta-button';
 
 interface ProductTileProps {
     product: FeaturedProduct;
+    countryCode: string;
 }
 
-export function ProductTile({ product }: ProductTileProps) {
+export function ProductTile({ product, countryCode }: ProductTileProps) {
     const imageUrl = product.heroImage?.url
         ? resolveStrapiMedia(product.heroImage.url)
         : null;
@@ -66,6 +67,7 @@ export function ProductTile({ product }: ProductTileProps) {
                                 url={cta.url}
                                 style={index === 0 ? 'primary' : 'secondary'}
                                 openInNewTab={cta.openInNewTab}
+                                countryCode={countryCode}
                                 className="text-xs sm:text-sm md:text-base px-3 sm:px-4 py-1.5 sm:py-2"
                             />
                         ))}
@@ -80,12 +82,14 @@ interface ProductGridProps {
     products: FeaturedProduct[];
     columns?: 'cols_2' | 'cols_3' | 'cols_4';
     layout?: 'grid' | 'masonry' | 'carousel';
+    countryCode: string;
 }
 
 export function ProductGrid({
     products,
     columns = 'cols_2',
     layout = 'grid',
+    countryCode,
 }: ProductGridProps) {
     const gridColsClass = {
         'cols_2': 'md:grid-cols-2',
@@ -99,7 +103,7 @@ export function ProductGrid({
                 <div className="flex gap-4 px-4 container mx-auto">
                     {products.map((product) => (
                         <div key={product.id} className="flex-shrink-0 w-[90vw] md:w-[45vw] lg:w-[30vw]">
-                            <ProductTile product={product} />
+                            <ProductTile product={product} countryCode={countryCode} />
                         </div>
                     ))}
                 </div>
@@ -111,7 +115,7 @@ export function ProductGrid({
         <div className="w-full sm:px-4 py-0 sm:py-4">
             <div className={`grid grid-cols-1 sm:grid-cols-2 ${gridColsClass[columns]} gap-0 sm:gap-3 md:gap-4`}>
                 {products.map((product) => (
-                    <ProductTile key={product.id} product={product} />
+                    <ProductTile key={product.id} product={product} countryCode={countryCode} />
                 ))}
             </div>
         </div>

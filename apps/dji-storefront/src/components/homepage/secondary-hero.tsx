@@ -50,9 +50,10 @@ const SoundWave = ({ className }: { className?: string }) => (
 
 interface SecondaryHeroProps {
     product: FeaturedProduct;
+    countryCode: string;
 }
 
-export function SecondaryHero({ product }: SecondaryHeroProps) {
+export function SecondaryHero({ product, countryCode }: SecondaryHeroProps) {
     const imageUrl = product.heroImage?.url
         ? resolveStrapiMedia(product.heroImage.url)
         : null;
@@ -153,6 +154,7 @@ export function SecondaryHero({ product }: SecondaryHeroProps) {
                                 url={cta.url}
                                 style={cta.style}
                                 openInNewTab={cta.openInNewTab}
+                                countryCode={countryCode}
                             />
                         ))}
                     </div>

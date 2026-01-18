@@ -44,12 +44,12 @@ export default async function Homepage({ params }: HomepageProps) {
         <main className="min-h-screen">
             {/* Primary Hero Section */}
             {layout.primaryHero && (
-                <HeroSection product={layout.primaryHero} priority={true} />
+                <HeroSection product={layout.primaryHero} priority={true} countryCode={countryCode} />
             )}
 
             {/* Secondary Hero Section */}
             {layout.secondaryHero && (
-                <SecondaryHero product={layout.secondaryHero} />
+                <SecondaryHero product={layout.secondaryHero} countryCode={countryCode} />
             )}
 
             {/* Product Grid */}
@@ -58,6 +58,7 @@ export default async function Homepage({ params }: HomepageProps) {
                     products={layout.productGrid}
                     columns={layout.gridColumns}
                     layout={layout.gridLayout}
+                    countryCode={countryCode}
                 />
             )}
 

@@ -6,9 +6,10 @@ import { CTAButton } from './cta-button';
 interface HeroSectionProps {
     product: FeaturedProduct;
     priority?: boolean;
+    countryCode: string;
 }
 
-export function HeroSection({ product, priority = true }: HeroSectionProps) {
+export function HeroSection({ product, priority = true, countryCode }: HeroSectionProps) {
     const imageUrl = product.heroImage?.url
         ? resolveStrapiMedia(product.heroImage.url)
         : null;
@@ -66,6 +67,7 @@ export function HeroSection({ product, priority = true }: HeroSectionProps) {
                                 url={cta.url}
                                 style={cta.style}
                                 openInNewTab={cta.openInNewTab}
+                                countryCode={countryCode}
                             />
                         ))}
                     </div>

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
+import { buildInternalLink } from '@/lib/util/links';
 
 interface CTAButtonProps {
     label: string;
@@ -8,6 +9,7 @@ interface CTAButtonProps {
     openInNewTab?: boolean;
     icon?: string;
     className?: string;
+    countryCode?: string;
 }
 
 export function CTAButton({
@@ -16,7 +18,10 @@ export function CTAButton({
     style = 'primary',
     openInNewTab = false,
     className = '',
+    countryCode,
 }: CTAButtonProps) {
+    // Process URL with country code if provided
+    const processedUrl = countryCode ? buildInternalLink(url, countryCode) : url;
     const baseStyles =
         'inline-flex items-center gap-1 transition-all duration-200 font-medium';
 
@@ -32,7 +37,7 @@ export function CTAButton({
 
     return (
         <Link
-            href={url}
+            href={processedUrl}
             target={openInNewTab ? '_blank' : undefined}
             rel={openInNewTab ? 'noopener noreferrer' : undefined}
             className={combinedStyles}
