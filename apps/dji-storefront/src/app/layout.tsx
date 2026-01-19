@@ -75,7 +75,7 @@ export default async function RootLayout({
           <PostHogProvider>
             <SiteHeader cartItemCount={cart?.items?.length ?? 0} countryCode={countryCode} />
             <main>{children}</main>
-            <SiteFooter />
+            <SiteFooter countryCode={countryCode} />
           </PostHogProvider>
         </Suspense>
       </body>

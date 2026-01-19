@@ -133,22 +133,29 @@ const REVALIDATE_SECONDS = 60
 
 /**
  * Fetch product detail content from Strapi by handle
+ * Returns null if not found or on error
  */
 export async function getProductDetailContent(
-  handle: string,
-  lang: string = "en"
+  handle: string
 ): Promise<ProductDetailContent | null> {
+  const strapi = getStrapiClient()
+
   try {
-    const response = await fetch(
-      `${STRAPI_API_URL}/api/product-details?filters[handle][$eq]=${handle}&locale=${lang}&populate=*`,
+    const response = await strapi.fetch<{ data: StrapiProductDetail[] }>(
+      "/api/product-details",
       {
-        headers: {
-          Authorization: `Bearer ${STRAPI_API_TOKEN}`,
+        query: {
+          "filters[handle][$eq]": handle,
+          "populate[feature_bullets]": "*",
+          "populate[content_sections][populate]": "*",
+          "populate[spec_groups][populate][items]": "*",
+          "populate[package_contents]": "*",
+          "populate[seo][populate]": "*",
+          "pagination[page]": 1,
+          "pagination[pageSize]": 1,
         },
-        next: {
-          tags: [PRODUCT_DETAIL_CACHE_TAG, `product-detail-${handle}`],
-          revalidate: REVALIDATE_SECONDS,
-        },
+        tags: [PRODUCT_DETAIL_CACHE_TAG, `product-detail-${handle}`],
+        revalidate: REVALIDATE_SECONDS,
       }
     )
 
