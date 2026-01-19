@@ -66,10 +66,10 @@ export function SiteFooter({ countryCode = "us" }: SiteFooterProps) {
           <div>
             <h4 className="font-semibold mb-4 text-foreground-primary">Products</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href={link("/collections/a320-series")} className="text-foreground-secondary hover:text-primary-400">A320 Series</Link></li>
-              <li><Link href={link("/collections/737-series")} className="text-foreground-secondary hover:text-primary-400">737 Series</Link></li>
-              <li><Link href={link("/collections/accessories")} className="text-foreground-secondary hover:text-primary-400">Accessories</Link></li>
-              <li><Link href={link("/products")} className="text-foreground-secondary hover:text-primary-400">All Products</Link></li>
+              <li><Link href={link("/collections/airbus320")} className="text-foreground-secondary hover:text-primary-400">A320 Series</Link></li>
+              <li><Link href={link("/collections/boeing737")} className="text-foreground-secondary hover:text-primary-400">737 Series</Link></li>
+              <li><Link href={link("/collections/accessory")} className="text-foreground-secondary hover:text-primary-400">Accessories</Link></li>
+              <li><Link href={link("/collections/other-series")} className="text-foreground-secondary hover:text-primary-400">Others</Link></li>
             </ul>
           </div>
 
