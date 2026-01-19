@@ -36,6 +36,21 @@ import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import remarkBreaks from "remark-breaks"
 
+/**
+ * Extract YouTube video ID from various URL formats
+ * Supports: youtube.com/watch?v=ID, youtu.be/ID, youtube.com/embed/ID
+ */
+function getYouTubeVideoId(url: string): string | null {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+  ]
+  for (const pattern of patterns) {
+    const match = url.match(pattern)
+    if (match) return match[1]
+  }
+  return null
+}
+
 interface ProductDetailClientProps {
   product: StorefrontProduct
   strapiContent?: ProductDetailContent | null
@@ -404,6 +419,26 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
           </TabsContent>
 
           <TabsContent value="reviews" className="space-y-8">
+            {/* YouTube Video Review */}
+            {strapiContent?.youtubeReviewUrl && (() => {
+              const videoId = getYouTubeVideoId(strapiContent.youtubeReviewUrl)
+              if (!videoId) return null
+              return (
+                <div className="max-w-4xl">
+                  <h3 className="text-2xl font-semibold text-foreground-primary mb-4">Video Review</h3>
+                  <div className="relative aspect-video rounded-xl overflow-hidden bg-[#F5F5F7]">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${videoId}`}
+                      title="Product Video Review"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 w-full h-full"
+                    />
+                  </div>
+                </div>
+              )
+            })()}
+
             <div className="flex items-center justify-between max-w-4xl">
               <h3 className="text-2xl font-semibold text-foreground-primary">Customer Reviews</h3>
               <div className="flex items-center gap-2">

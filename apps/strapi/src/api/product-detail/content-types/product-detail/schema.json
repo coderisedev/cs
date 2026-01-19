@@ -62,6 +62,10 @@
       "type": "component",
       "repeatable": false,
       "component": "shared.seo"
+    },
+    "youtube_review_url": {
+      "type": "string",
+      "regex": "^(https?:\\/\\/)?(www\\.)?(youtube\\.com|youtu\\.be)\\/.+$"
     }
   }
 }
