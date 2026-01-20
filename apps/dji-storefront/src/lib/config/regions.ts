@@ -284,3 +284,92 @@ export function getCountriesByRegion() {
     countries: getSortedCountriesForRegion(code as RegionCode),
   }))
 }
+
+// =============================================================================
+// GEOGRAPHIC REGIONS (Apple-style 5 continental groups for UI display)
+// =============================================================================
+
+/**
+ * Geographic regions for UI display (Apple-style grouping)
+ * These are purely for presentation - currency mapping still uses REGIONS above
+ * Ordered: North America first, then moving east
+ */
+export const GEOGRAPHIC_REGIONS = [
+  {
+    code: "northAmerica",
+    name: "North America",
+    countries: ["us", "ca"],
+  },
+  {
+    code: "latinAmerica",
+    name: "Latin America and the Caribbean",
+    countries: [
+      // Mexico & Central America
+      "mx", "gt", "hn", "sv", "ni", "cr", "pa",
+      // Caribbean
+      "do", "jm", "tt", "bs", "bb",
+      // South America
+      "ar", "cl", "co", "pe", "ec", "ve", "uy", "py", "bo",
+    ],
+  },
+  {
+    code: "europe",
+    name: "Europe",
+    countries: [
+      // Western Europe
+      "de", "fr", "it", "es", "nl", "be", "at", "ch", "lu", "mc", "li",
+      // Northern Europe
+      "gb", "ie", "se", "dk", "fi", "no", "is",
+      // Southern Europe
+      "pt", "gr", "mt", "cy",
+      // Central & Eastern Europe
+      "pl", "cz", "sk", "hu", "ro", "bg", "hr", "si", "ee", "lv", "lt",
+      // Balkans
+      "rs", "me", "mk", "al", "ba", "md", "ua",
+    ],
+  },
+  {
+    code: "africaMiddleEast",
+    name: "Africa, Middle East, and India",
+    countries: [
+      // Middle East
+      "ae", "sa", "qa", "kw", "bh", "om", "jo", "lb", "il", "tr",
+      // Africa
+      "eg", "za", "ng", "ke", "ma", "tn", "gh",
+    ],
+  },
+  {
+    code: "asiaPacific",
+    name: "Asia Pacific",
+    countries: [
+      // East Asia
+      "jp", "kr", "cn", "hk", "tw",
+      // Southeast Asia
+      "sg", "my", "th", "vn", "ph", "id",
+      // Oceania
+      "au", "nz",
+    ],
+  },
+] as const
+
+export type GeographicRegionCode = (typeof GEOGRAPHIC_REGIONS)[number]["code"]
+
+/**
+ * Get all countries grouped by geographic region for display (Apple-style)
+ * Countries are sorted alphabetically by name within each region
+ * This is used for UI presentation only - currency mapping still uses REGIONS
+ */
+export function getCountriesByGeographicRegion() {
+  return GEOGRAPHIC_REGIONS.map((region) => ({
+    code: region.code,
+    name: region.name,
+    countries: region.countries
+      .filter(isCountrySupported)
+      .map((countryCode) => ({
+        code: countryCode,
+        name: getCountryName(countryCode),
+        flag: getCountryFlag(countryCode),
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name)),
+  }))
+}
