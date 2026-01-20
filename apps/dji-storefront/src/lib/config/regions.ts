@@ -40,7 +40,7 @@ export const REGIONS = {
       // Africa
       'za', 'ng', 'ke', 'ma', 'tn', 'gh',
       // Asia-Pacific
-      'jp', 'kr', 'au', 'nz', 'sg', 'hk', 'tw', 'my', 'th', 'vn', 'ph', 'id', 'cn',
+      'jp', 'kr', 'au', 'nz', 'sg', 'hk', 'tw', 'mo', 'my', 'th', 'vn', 'ph', 'id', 'cn',
     ],
   },
 } as const
@@ -146,14 +146,15 @@ export const COUNTRY_NAMES: Record<string, string> = {
   au: 'Australia',
   nz: 'New Zealand',
   sg: 'Singapore',
-  hk: 'Hong Kong',
-  tw: 'Taiwan',
+  hk: 'China - Hong Kong',
+  tw: 'China - Taiwan',
+  mo: 'China - Macau',
   my: 'Malaysia',
   th: 'Thailand',
   vn: 'Vietnam',
   ph: 'Philippines',
   id: 'Indonesia',
-  cn: 'China',
+  cn: 'China - Mainland',
 }
 
 // Build country to region mapping
@@ -343,7 +344,7 @@ export const GEOGRAPHIC_REGIONS = [
     name: "Asia Pacific",
     countries: [
       // East Asia
-      "jp", "kr", "cn", "hk", "tw",
+      "jp", "kr", "cn", "hk", "mo", "tw",
       // Southeast Asia
       "sg", "my", "th", "vn", "ph", "id",
       // Oceania
