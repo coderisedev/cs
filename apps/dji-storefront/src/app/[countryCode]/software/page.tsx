@@ -22,6 +22,7 @@ import {
   aircraftPlugins,
   versionHistory,
   systemRequirements,
+  aircraftAddonSupport,
 } from "@/lib/data/software"
 
 const featureIconMap: Record<string, ReactNode> = {
@@ -43,6 +44,7 @@ const tabs = [
 
 export default function SoftwarePage() {
   const [activeTab, setActiveTab] = useState<string>("features")
+  const [activeDevice, setActiveDevice] = useState<string>("mcdu")
 
   return (
     <div className="min-h-screen bg-background-primary">
@@ -206,22 +208,75 @@ export default function SoftwarePage() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {aircraftPlugins.map((group) => (
-                  <div key={group.category} className="card-apple p-8 bg-background-primary">
-                    <h3 className="text-lg font-semibold mb-6 text-foreground-primary border-b border-border-secondary pb-4">
-                      {group.category}
-                    </h3>
-                    <div className="space-y-3">
-                      {group.plugins.map((plugin) => (
-                        <div key={plugin.name} className="flex items-center justify-between text-sm">
-                          <span className="text-foreground-primary font-medium">{plugin.name}</span>
-                          <span className="text-foreground-muted">{plugin.version}</span>
+              {/* Aircraft Addon Support List - Left/Right Layout */}
+              <div className="card-apple p-8 bg-background-primary">
+                <h3 className="text-2xl font-semibold mb-8 text-foreground-primary text-center">
+                  Aircraft Addon Support List
+                </h3>
+
+                <div className="flex flex-col md:flex-row gap-6">
+                  {/* Left: Vertical Tabs */}
+                  <div className="md:w-64 shrink-0 space-y-2">
+                    {aircraftAddonSupport.map((device) => (
+                      <button
+                        key={device.id}
+                        onClick={() => setActiveDevice(device.id)}
+                        className={`w-full text-left px-4 py-4 rounded-xl transition-all ${
+                          activeDevice === device.id
+                            ? "bg-brand-blue-500 text-white shadow-lg"
+                            : "bg-background-secondary text-foreground-primary hover:bg-background-tertiary"
+                        }`}
+                      >
+                        <div className="font-semibold">{device.title}</div>
+                        {"subtitle" in device && device.subtitle && (
+                          <div className={`text-sm mt-1 ${activeDevice === device.id ? "text-white/80" : "text-foreground-muted"}`}>
+                            {device.subtitle}
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Right: Content Area */}
+                  <div className="flex-1 bg-background-secondary rounded-xl p-6">
+                    {aircraftAddonSupport
+                      .filter((device) => device.id === activeDevice)
+                      .map((device) => (
+                        <div key={device.id}>
+                          <div className="mb-6">
+                            <h4 className="text-lg font-semibold text-foreground-primary">{device.title}</h4>
+                            <p className="text-sm text-foreground-muted">{device.description}</p>
+                          </div>
+
+                          {/* Aircraft Table */}
+                          <div className="overflow-x-auto">
+                            <table className="w-full">
+                              <thead>
+                                <tr className="border-b border-border-secondary">
+                                  <th className="text-left py-3 px-2 text-sm font-semibold text-foreground-primary">Aircraft</th>
+                                  <th className="text-left py-3 px-2 text-sm font-semibold text-foreground-primary">Platform</th>
+                                  <th className="text-left py-3 px-2 text-sm font-semibold text-foreground-primary">Version</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {device.aircraft.map((aircraft, idx) => (
+                                  <tr key={idx} className="border-b border-border-secondary/50 last:border-b-0">
+                                    <td className="py-3 px-2 text-sm text-foreground-primary font-medium">{aircraft.name}</td>
+                                    <td className="py-3 px-2 text-sm text-foreground-secondary">{aircraft.platform}</td>
+                                    <td className="py-3 px-2">
+                                      <span className="text-xs font-medium text-brand-blue-500 bg-brand-blue-500/10 px-2 py-1 rounded-full">
+                                        {aircraft.version}
+                                      </span>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
                       ))}
-                    </div>
                   </div>
-                ))}
+                </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-8 mt-12">

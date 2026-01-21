@@ -9,7 +9,7 @@ const policies = [
   {
     title: "Processing & Lead Times",
     details: [
-      "Standard cockpit modules ship within 3–4 business days. Custom panels, laser etching, or bundled rigs may require 10–15 business days.",
+      "Standard cockpit modules ship within 10–15 business days.",
       "Orders placed after 2:00 PM Pacific or on weekends begin processing the next business day.",
       "You will receive automated tracking once the parcel leaves our fulfillment center.",
     ],
@@ -17,15 +17,14 @@ const policies = [
   {
     title: "Carriers & Methods",
     details: [
-      "Domestic U.S. shipments primarily use UPS Air or FedEx Express to protect sensitive avionics. PO boxes ship via USPS Priority.",
+      "Domestic U.S. shipments primarily use UPS Air or FedEx Express to protect sensitive avionics.",
       "International orders route through DHL Express or FedEx International Priority with insurance.",
-      "Freight shipments (multi-rack simulators) ship on custom pallets with liftgate service when requested.",
     ],
   },
   {
     title: "International Duties & Compliance",
     details: [
-      "Customers are responsible for import duties, VAT/GST, and brokerage fees. Estimates are displayed at checkout where available.",
+      "Customers are responsible for import duties, VAT/GST, and brokerage fees. The specific amount payable shall be subject to the notification (email/SMS) from the courier company.",
       "Certain regions require dual-use export paperwork for electronics. Our compliance team may request additional documentation before releasing the order.",
       "If customs clearance fails due to incomplete documentation, shipping charges are non-refundable.",
     ],
@@ -34,7 +33,7 @@ const policies = [
     title: "Delivery Issues & Insurance",
     details: [
       "All shipments include insurance covering the invoice value. Inspect packaging upon delivery and document any external damage.",
-      "Report lost or damaged shipments to support@dji-storefront.com within 5 days so we can open a carrier investigation.",
+      "Report lost or damaged shipments to info@cockpit-simulator.com within 5 days so we can open a carrier investigation.",
       "Signature is required for orders over $1,000 USD to protect against porch theft.",
     ],
   },
@@ -42,7 +41,7 @@ const policies = [
     title: "Returns & Exchanges",
     details: [
       "Contact support to obtain an RMA before shipping hardware back. Unauthorized returns may be refused.",
-      "Return shipping is free for DOA hardware or warranty replacements. Change-of-mind returns may incur a restocking fee to cover calibration.",
+      "Return shipping is free for DOA hardware or warranty replacements.",
       "Refunds are issued once the hardware passes inspection (typically within 5 business days of receipt).",
     ],
   },
@@ -76,10 +75,10 @@ export default function ShippingPage() {
         <h2 className="text-2xl font-semibold mb-4">Need Assistance?</h2>
         <p className="text-foreground-secondary">
           Email{" "}
-          <a href="mailto:support@dji-storefront.com" className="text-primary-500 hover:underline">
-            support@dji-storefront.com
+          <a href="mailto:info@cockpit-simulator.com" className="text-primary-500 hover:underline">
+            info@cockpit-simulator.com
           </a>{" "}
-          or call +1 (555) 123‑4567 for help with expedited shipping, freight quotes, or customs paperwork.
+          for help with expedited shipping or customs paperwork.
         </p>
       </section>
     </main>

@@ -110,6 +110,50 @@ export const versionHistory = [
   },
 ]
 
+export const aircraftAddonSupport = [
+  {
+    id: "mcdu",
+    title: "CS 320A MCDU",
+    description: "MCDU device support for Airbus aircraft",
+    aircraft: [
+      { name: "ProSimA320", platform: "ProSim", version: "v2024.7.2+", notes: "Requires version 1.40+" },
+      { name: "Fenix A319/A320/A321", platform: "MSFS 2024", version: "v2024.7.1+" },
+      { name: "FlyByWire A32NX", platform: "MSFS 2020", version: "v2025.1.1+" },
+      { name: "ToLiss A319/A320/A321/A340", platform: "X-Plane 11/12", version: "v2025.1.4+" },
+      { name: "Aerosoft A318-A321", platform: "Prepar3D v4/v5", version: "All versions" },
+    ],
+  },
+  {
+    id: "fcu",
+    title: "CS 320N FCU Series",
+    description: "FCU device support for Airbus aircraft",
+    aircraft: [
+      { name: "ProSimA320", platform: "ProSim", version: "v2024.7.2+", notes: "Requires version 1.40+" },
+      { name: "Fenix A319/A320/A321", platform: "MSFS 2024", version: "v2024.7.1+" },
+      { name: "FlyByWire A32NX", platform: "MSFS 2020", version: "v2025.1.1+" },
+      { name: "ToLiss A319/A320/A321/A340", platform: "X-Plane 11/12", version: "v2025.1.4+" },
+      { name: "Aerosoft A318-A321", platform: "Prepar3D v4/v5", version: "All versions" },
+    ],
+  },
+  {
+    id: "boeing",
+    title: "Boeing Devices",
+    subtitle: "CS 737X / CS 747X / CS 777X",
+    description: "Boeing device support",
+    aircraft: [
+      { name: "ProSim737", platform: "ProSim", version: "v3.0+" },
+      { name: "ProSimB38M", platform: "ProSim", version: "Latest" },
+      { name: "PMDG 737-700/800/900", platform: "MSFS 2024/2020", version: "All versions" },
+      { name: "PMDG 777-200ER/300ER", platform: "MSFS 2024/2020", version: "All versions" },
+      { name: "PMDG 747-8", platform: "MSFS 2024/2020", version: "All versions" },
+      { name: "iFly 737 MAX8", platform: "MSFS 2024", version: "Latest" },
+      { name: "Aerowinx B744 PSX", platform: "Precision Simulator 10", version: "v10.180+" },
+      { name: "Threshold LevelUp 737NG", platform: "MSFS 2024/2020", version: "Latest" },
+      { name: "ZIBO B737-800X", platform: "X-Plane 11/12", version: "Latest" },
+    ],
+  },
+]
+
 export const systemRequirements = {
   minimum: {
     os: "Windows 10 (64-bit) or newer",

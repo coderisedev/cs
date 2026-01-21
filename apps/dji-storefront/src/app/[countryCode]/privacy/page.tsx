@@ -44,7 +44,7 @@ const sections = [
     title: "5. Data Retention & Rights",
     items: [
       "We keep order records for as long as required by finance and warranty regulations.",
-      "You can request access, correction, deletion, or export of your personal data by emailing privacy@dji-storefront.com.",
+      "You can request access, correction, deletion, or export of your personal data by emailing info@cockpit-simulator.com.",
       "EU/UK residents have GDPR rights, including the right to lodge a complaint with a supervisory authority.",
     ],
   },
@@ -79,10 +79,10 @@ export default function PrivacyPage() {
         <h2 className="text-2xl font-semibold mb-4">6. Contact Us</h2>
         <p className="text-foreground-secondary">
           Questions about privacy? Email{" "}
-          <a href="mailto:privacy@dji-storefront.com" className="text-primary-500 hover:underline">
-            privacy@dji-storefront.com
-          </a>{" "}
-          or write to Cockpit Simulator Privacy Team, 123 Flight Deck Blvd, San Jose, CA 95134.
+          <a href="mailto:info@cockpit-simulator.com" className="text-primary-500 hover:underline">
+            info@cockpit-simulator.com
+          </a>
+          .
         </p>
       </section>
     </main>

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { revalidateStrapiBlog, BLOG_CACHE_TAG } from "@/lib/data/blog"
-import { revalidateTag } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
+
+const COLLECTIONS_CACHE_TAG = "collections"
 
 const handleRequest = async (request: Request) => {
   const url = new URL(request.url)
@@ -22,6 +24,14 @@ const handleRequest = async (request: Request) => {
   if (tag.startsWith("products-")) {
     await revalidateTag(tag)
     return NextResponse.json({ success: true, tag })
+  }
+
+  // Support collections revalidation - clears all collection pages
+  if (tag === COLLECTIONS_CACHE_TAG || tag === "collections") {
+    // Revalidate the collections listing page and all collection detail pages
+    revalidatePath("/[countryCode]/collections", "page")
+    revalidatePath("/[countryCode]/collections/[handle]", "page")
+    return NextResponse.json({ success: true, tag, message: "Collections pages revalidated" })
   }
 
   return NextResponse.json({ success: false, error: "Unsupported tag" }, { status: 400 })

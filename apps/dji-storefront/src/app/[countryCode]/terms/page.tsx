@@ -37,11 +37,51 @@ export default function TermsPage() {
 
       <section className="rounded-3xl border border-border-primary bg-background-secondary/60 p-6 md:p-8 shadow-card space-y-4">
         <h2 className="text-2xl font-semibold">3. Warranty & Returns</h2>
-        <ul className="list-disc pl-6 space-y-2 text-foreground-secondary">
-          <li>Hardware is covered by a limited 18‑month warranty against manufacturing defects.</li>
-          <li>Returns are accepted within 30 days of delivery for undamaged items; custom panels or laser-etched parts are non-refundable.</li>
-          <li>Contact support@dji-storefront.com to initiate an RMA and receive a prepaid label where applicable.</li>
-        </ul>
+        <div className="space-y-4 text-foreground-secondary">
+          <div>
+            <h3 className="font-semibold text-foreground-primary">3.1 Warranty Period</h3>
+            <p>All products are covered by a 2-year warranty from the date of delivery.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-foreground-primary">3.2 Warranty Coverage</h3>
+            <p>
+              If any quality issue is identified with the product within 30 days after delivery and signing, we will offer
+              a replacement or full refund upon verification. Returns due to non-quality-related issues are not accepted.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-foreground-primary">3.3 After-Sales Service Methods</h3>
+            <p>We provide remote technical support and repair/replacement services for products under warranty.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-foreground-primary">3.4 After-Sales Service Process</h3>
+            <p>
+              Submit a support request via email, describing the issue and attaching photos or videos if possible. Our
+              technical team will respond within 24 hours and provide a solution.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-foreground-primary">3.5 Shipping Policy</h3>
+            <p>
+              For warranty repairs or replacements, customers are responsible for shipping the product to us. We will
+              cover the return shipping cost.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-foreground-primary">3.6 Customs Duties Policy</h3>
+            <p>
+              Customs duties incurred during shipping are the responsibility of the customer. We are not liable for any
+              customs fees.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-foreground-primary">3.7 Warranty Methods</h3>
+            <p>
+              Depending on the issue, we will provide one of the following: repair, replacement parts, full product
+              replacement, or refund.
+            </p>
+          </div>
+        </div>
       </section>
 
       <section className="rounded-3xl border border-border-primary bg-background-secondary/60 p-6 md:p-8 shadow-card space-y-4">
@@ -53,21 +93,13 @@ export default function TermsPage() {
       </section>
 
       <section className="rounded-3xl border border-border-primary bg-background-secondary/60 p-6 md:p-8 shadow-card space-y-4">
-        <h2 className="text-2xl font-semibold">5. Governing Law</h2>
-        <p className="text-foreground-secondary">
-          These terms are governed by the laws of the State of California, USA. Disputes will be resolved in the courts located in Santa
-          Clara County, California.
-        </p>
-      </section>
-
-      <section className="rounded-3xl border border-border-primary bg-background-secondary/60 p-6 md:p-8 shadow-card space-y-4">
-        <h2 className="text-2xl font-semibold">Contact</h2>
+        <h2 className="text-2xl font-semibold">5. Contact</h2>
         <p className="text-foreground-secondary">
           For questions about these terms, email{" "}
-          <a href="mailto:legal@dji-storefront.com" className="text-primary-500 hover:underline">
-            legal@dji-storefront.com
-          </a>{" "}
-          or mail Cockpit Simulator Legal, 123 Flight Deck Blvd, San Jose, CA 95134.
+          <a href="mailto:info@cockpit-simulator.com" className="text-primary-500 hover:underline">
+            info@cockpit-simulator.com
+          </a>
+          .
         </p>
       </section>
     </main>

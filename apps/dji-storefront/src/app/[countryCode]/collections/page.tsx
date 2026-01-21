@@ -4,6 +4,9 @@ import { ArrowRight } from "lucide-react"
 import { getCollections } from "@/lib/data/collections"
 import { resolveCollectionHeroImage } from "@/lib/util/collections"
 
+// Force dynamic rendering to always fetch fresh data from Strapi/Medusa
+export const dynamic = "force-dynamic"
+
 export const metadata = {
   title: "Collections · Cockpit Simulator",
   description: "Explore our curated cockpit simulator collections for Airbus, Boeing, and accessories.",

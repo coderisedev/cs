@@ -12,7 +12,7 @@ export default function FAQPage() {
             questions: [
                 {
                     q: "How long does shipping take?",
-                    a: "We offer free standard shipping (3-5 business days) on all orders over $150. Expedited shipping options (1-2 business days) are available at checkout."
+                    a: "We offer free standard shipping (10-15 business days) on all orders over $150. Expedited shipping options are available at checkout."
                 },
                 {
                     q: "Can I track my order?",
@@ -46,11 +46,11 @@ export default function FAQPage() {
             questions: [
                 {
                     q: "What is your return policy?",
-                    a: "We have a 30-day satisfaction guarantee. If you're not completely happy with your purchase, you can return it within 30 days for a full refund, minus shipping costs."
+                    a: "If any quality issue is identified with the product within 30 days after delivery and signing, we will offer a replacement or full refund upon verification. Returns due to non-quality-related issues are not accepted."
                 },
                 {
                     q: "How do I initiate a return?",
-                    a: "To start a return, please log in to your account and visit the &apos;Orders&apos; section, or contact our support team with your order number."
+                    a: "To start a return, please email info@cockpit-simulator.com with your order number and issue description."
                 }
             ]
         }
