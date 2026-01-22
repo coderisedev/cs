@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { formatPrice } from "@/lib/number"
 import { placeOrderAction, preparePayPalCheckoutAction, completePayPalOrderAction, calculateShippingAction } from "@/lib/actions/checkout"
-import { getRegionConfigById, COUNTRY_NAMES, isCountryInRegion, REGIONS, getSortedCountriesForRegion } from "@/lib/config/regions"
+import { getRegionConfigById, COUNTRY_NAMES, isCountryInRegion, getCountriesByGeographicRegion } from "@/lib/config/regions"
 import { ShoppingBag, ArrowLeft, Package, CreditCard, MapPin, AlertCircle, CheckCircle2, Loader2 } from "lucide-react"
 import { HttpTypes } from "@medusajs/types"
 import type { AccountAddress } from "@/lib/data/account"
@@ -584,20 +584,15 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                     required
                     disabled={orderPending}
                   >
-                    <optgroup label={`${REGIONS.us.name} (${REGIONS.us.currency})`}>
-                      {getSortedCountriesForRegion('us').map((country) => (
-                        <option key={country.code} value={country.code}>
-                          {country.flag} {country.name}
-                        </option>
-                      ))}
-                    </optgroup>
-                    <optgroup label={`${REGIONS.eu.name} (${REGIONS.eu.currency})`}>
-                      {getSortedCountriesForRegion('eu').map((country) => (
-                        <option key={country.code} value={country.code}>
-                          {country.flag} {country.name}
-                        </option>
-                      ))}
-                    </optgroup>
+                    {getCountriesByGeographicRegion().map((region) => (
+                      <optgroup key={region.code} label={region.name}>
+                        {region.countries.map((country) => (
+                          <option key={country.code} value={country.code}>
+                            {country.flag} {country.name}
+                          </option>
+                        ))}
+                      </optgroup>
+                    ))}
                   </select>
                   {getFieldError("country_code") ? (
                     <p className="text-xs text-red-600 flex items-center gap-1">
