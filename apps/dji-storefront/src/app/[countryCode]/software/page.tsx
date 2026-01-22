@@ -232,72 +232,79 @@ export default function SoftwarePage() {
             AIRCRAFT ADDON SUPPORT LIST
           </h2>
 
-          {/* Horizontal Tabs */}
-          <div className="flex flex-wrap border-b border-border-secondary mb-8">
-            {aircraftAddonSupport.map((device) => (
-              <button
-                key={device.id}
-                onClick={() => setActiveDevice(device.id)}
-                className={`px-4 py-3 whitespace-pre-line text-left text-sm font-medium transition-colors border-b-2 -mb-px ${
-                  activeDevice === device.id
-                    ? "bg-gray-800 text-white border-gray-800"
-                    : "bg-gray-100 text-gray-800 hover:bg-gray-200 border-transparent"
-                }`}
-              >
-                {device.title}
-              </button>
-            ))}
-          </div>
-
-          {/* Content: Organized by Platform */}
-          {activeDeviceData && (
-            <div className="bg-background-primary rounded-xl border border-border-secondary p-8">
-              <div className="space-y-10">
-                {activeDeviceData.platforms.map((platform) => (
-                  <div key={platform.name}>
-                    <h3 className="text-xl font-bold text-foreground-primary border-b border-border-secondary pb-3 mb-4">
-                      {platform.name}
-                    </h3>
-                    <div className="space-y-4">
-                      {platform.aircraft.map((aircraft, index) => (
-                        <div key={index} className="pl-4">
-                          <p className="font-medium text-foreground-primary">
-                            {aircraft.name}
-                          </p>
-                          <p className="text-sm text-foreground-secondary">
-                            (with bridge software {aircraft.version})
-                          </p>
-                          {aircraft.notes && aircraft.notes.length > 0 && (
-                            <div className="mt-1 space-y-1">
-                              {aircraft.notes.map((note, noteIndex) => (
-                                <p
-                                  key={noteIndex}
-                                  className="text-sm text-foreground-muted italic"
-                                >
-                                  ({note})
-                                </p>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+          {/* Left-Right Layout: Vertical Tabs on Left, Content on Right */}
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Left: Vertical Tabs */}
+            <div className="md:w-72 shrink-0 space-y-2">
+              {aircraftAddonSupport.map((device) => (
+                <button
+                  key={device.id}
+                  onClick={() => setActiveDevice(device.id)}
+                  className={`w-full text-left px-4 py-4 rounded-xl transition-all whitespace-pre-line text-sm font-medium ${
+                    activeDevice === device.id
+                      ? "bg-gray-800 text-white shadow-lg"
+                      : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                  }`}
+                >
+                  {device.title}
+                </button>
+              ))}
             </div>
-          )}
+
+            {/* Right: Content Area */}
+            {activeDeviceData && (
+              <div className="flex-1 bg-background-secondary rounded-xl border border-border-secondary p-6 md:p-8">
+                <div className="space-y-8">
+                  {activeDeviceData.platforms.map((platform) => (
+                    <div key={platform.name}>
+                      <h3 className="text-xl font-bold text-foreground-primary border-b border-border-secondary pb-3 mb-4">
+                        {platform.name}
+                      </h3>
+                      <div className="space-y-4">
+                        {platform.aircraft.map((aircraft, index) => (
+                          <div key={index} className="pl-4">
+                            <p className="font-medium text-foreground-primary">
+                              {aircraft.name}
+                            </p>
+                            <p className="text-sm text-foreground-secondary">
+                              (with bridge software {aircraft.version})
+                            </p>
+                            {aircraft.notes && aircraft.notes.length > 0 && (
+                              <div className="mt-1 space-y-1">
+                                {aircraft.notes.map((note, noteIndex) => (
+                                  <p
+                                    key={noteIndex}
+                                    className="text-sm text-foreground-muted italic"
+                                  >
+                                    ({note})
+                                  </p>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
       {/* SPAD.neXt Special Offer Section */}
       <section className="py-16 lg:py-24 bg-background-secondary">
         <div className="container mx-auto px-6 max-w-4xl text-center">
-          {/* Logo Placeholder */}
+          {/* SPAD.neXt Logo */}
           <div className="flex justify-center mb-8">
-            <div className="w-48 h-16 bg-background-primary rounded-lg border border-border-secondary flex items-center justify-center">
-              <span className="text-lg font-bold text-foreground-primary">SPAD.neXt</span>
-            </div>
+            <Image
+              src={spadNextPromo.logoUrl}
+              alt="SPAD.neXt"
+              width={200}
+              height={80}
+              className="object-contain"
+            />
           </div>
 
           <h2 className="text-3xl md:text-4xl font-bold text-foreground-primary mb-6">

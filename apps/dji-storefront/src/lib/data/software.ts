@@ -764,22 +764,26 @@ export const spadNextPromo = {
   description: "The CockpitSimulator Bridge software only supports aircraft plugins that match the hardware. If you need support for aircraft that is not on the list, you can use SPAD.neXt software for more extensive customization options.",
   offer: "We have partnered with SPAD.neXt to offer a 25% discount coupon for our customers.",
   couponCode: "COCKPITSIM25",
-  logoUrl: "/images/spadnext-logo.png",
+  logoUrl: "https://img.aidenlux.com/software/spadnext.png",
 }
 
 // Screenshot images for carousel
 export const screenshots = [
   {
-    src: "/images/software/screenshot-1.png",
-    alt: "CockpitSimulator Bridge main interface",
+    src: "https://img.aidenlux.com/software/CockpitSimulatorBridge-2024-1.jpg",
+    alt: "CockpitSimulator Bridge interface 1",
   },
   {
-    src: "/images/software/screenshot-2.png",
-    alt: "Device connection screen",
+    src: "https://img.aidenlux.com/software/CockpitSimulatorBridge-2024-2.jpg",
+    alt: "CockpitSimulator Bridge interface 2",
   },
   {
-    src: "/images/software/screenshot-3.png",
-    alt: "Hardware testing interface",
+    src: "https://img.aidenlux.com/software/CockpitSimulatorBridge-2024-3.jpg",
+    alt: "CockpitSimulator Bridge interface 3",
+  },
+  {
+    src: "https://img.aidenlux.com/software/CockpitSimulatorBridge-2024-4.jpg",
+    alt: "CockpitSimulator Bridge interface 4",
   },
 ]
 
