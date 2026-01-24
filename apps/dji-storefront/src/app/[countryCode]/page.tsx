@@ -52,6 +52,9 @@ export default async function Homepage({ params }: HomepageProps) {
                 <SecondaryHero product={layout.secondaryHero} countryCode={countryCode} />
             )}
 
+            {/* Latest Announcements */}
+            <LatestNews countryCode={countryCode} />
+
             {/* Product Grid */}
             {layout.productGrid && layout.productGrid.length > 0 && (
                 <ProductGrid
@@ -61,9 +64,6 @@ export default async function Homepage({ params }: HomepageProps) {
                     countryCode={countryCode}
                 />
             )}
-
-            {/* Latest Announcements */}
-            <LatestNews countryCode={countryCode} />
 
             {/* Testimonials Carousel */}
             <TestimonialsCarousel />

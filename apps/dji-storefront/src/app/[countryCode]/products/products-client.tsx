@@ -31,7 +31,7 @@ interface ProductsPageClientProps {
 export function ProductsPageClient({ products, categories, countryCode }: ProductsPageClientProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
-  const [sortBy, setSortBy] = useState<SortOption>("name")
+  const [sortBy, setSortBy] = useState<SortOption>("price-high")
   const [viewMode, setViewMode] = useState<ViewMode>("grid")
   const [showFilters, setShowFilters] = useState(false)
   const [displayCount, setDisplayCount] = useState(PRODUCTS_PER_PAGE)
@@ -85,7 +85,7 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
   const clearFilters = () => {
     setSearchQuery("")
     setSelectedCategory("all")
-    setSortBy("name")
+    setSortBy("price-high")
     resetDisplayCount()
   }
 
@@ -206,7 +206,7 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
                   </button>
                 </div>
                 {/* Clear Filters (Only show if filters are active) */}
-                {(searchQuery || selectedCategory !== "all" || sortBy !== "name") && (
+                {(searchQuery || selectedCategory !== "all" || sortBy !== "price-high") && (
                   <Button variant="ghost" size="sm" onClick={clearFilters} className="text-foreground-muted hover:text-semantic-error">
                     Clear
                   </Button>
