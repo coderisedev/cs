@@ -33,3 +33,22 @@ export const MAX_OTP_ATTEMPTS = 3
 
 // Minimum seconds between resend requests
 export const RESEND_COOLDOWN_SECONDS = 60
+
+/**
+ * Get Redis key for storing auth OTP verification data (login/unified flow)
+ */
+export function getAuthOTPKey(email: string): string {
+  return `otp:auth:${email.toLowerCase().trim()}`
+}
+
+/**
+ * Pending auth verification data stored in Redis (unified login/register flow)
+ */
+export interface PendingAuthVerification {
+  email: string
+  otp: string
+  verified: boolean
+  attempts: number
+  createdAt: number
+  isNewUser: boolean
+}
