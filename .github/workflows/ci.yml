@@ -20,6 +20,9 @@ concurrency:
 env:
   NODE_VERSION: "20"
   PNPM_VERSION: "9"
+  # Required for Next.js build/lint validation
+  NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: "pk_dummy_key_for_ci"
+  NEXT_PUBLIC_STRAPI_URL: "http://localhost:1337"
 
 jobs:
   # Lint and typecheck job

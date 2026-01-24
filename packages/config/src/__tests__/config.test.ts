@@ -391,7 +391,7 @@ describe('Configuration Validation', () => {
 
       try {
         loadStorefrontConfig(env);
-        fail('Expected ConfigurationError');
+        throw new Error('Expected ConfigurationError');
       } catch (error) {
         expect(error).toBeInstanceOf(ConfigurationError);
         expect(error.message).toContain('Storefront configuration validation failed');
@@ -411,7 +411,7 @@ describe('Configuration Validation', () => {
 
       try {
         loadMedusaConfig(env);
-        fail('Expected ConfigurationError');
+        throw new Error('Expected ConfigurationError');
       } catch (error) {
         expect(error).toBeInstanceOf(ConfigurationError);
         expect(error.message).toContain('Medusa configuration validation failed');
@@ -430,7 +430,7 @@ describe('Configuration Validation', () => {
 
       try {
         loadStrapiConfig(env);
-        fail('Expected ConfigurationError');
+        throw new Error('Expected ConfigurationError');
       } catch (error) {
         expect(error).toBeInstanceOf(ConfigurationError);
         expect(error.message).toContain('Strapi configuration validation failed');

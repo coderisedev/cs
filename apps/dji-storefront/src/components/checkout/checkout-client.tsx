@@ -164,7 +164,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
     await orderFormAction(formData)
   }
 
-  const applySavedAddress = (address: AccountAddress) => {
+  const applySavedAddress = useCallback((address: AccountAddress) => {
     setShippingAddress({
       first_name: address.firstName,
       last_name: address.lastName,
@@ -175,7 +175,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
       country_code: address.countryCode || "us",
       phone: address.phone || "",
     })
-  }
+  }, [])
 
   const defaultSavedAddress = customerAddresses.find((addr) => addr.isDefaultShipping) || customerAddresses[0]
 
@@ -185,7 +185,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
     }
     setSelectedAddressId(defaultSavedAddress.id)
     applySavedAddress(defaultSavedAddress)
-  }, [defaultSavedAddress, selectedAddressId])
+  }, [defaultSavedAddress, selectedAddressId, applySavedAddress])
 
   const handleSelectAddress = (address: AccountAddress) => {
     setSelectedAddressId(address.id)
