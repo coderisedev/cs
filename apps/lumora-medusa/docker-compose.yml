@@ -1,0 +1,34 @@
+services:
+  lumora-postgres:
+    image: postgres:16-alpine
+    container_name: lumora-postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: lumora
+      POSTGRES_PASSWORD: lumora
+      POSTGRES_DB: lumora_medusa
+    volumes:
+      - lumora_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lumora -d lumora_medusa"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  lumora-redis:
+    image: redis:7-alpine
+    container_name: lumora-redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - lumora_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  lumora_pg_data:
+  lumora_redis_data:

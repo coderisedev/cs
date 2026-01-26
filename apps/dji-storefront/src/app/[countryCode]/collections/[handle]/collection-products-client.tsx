@@ -33,7 +33,7 @@ export function CollectionProductsClient({
   countryCode,
 }: CollectionProductsClientProps) {
   const [searchQuery, setSearchQuery] = useState("")
-  const [sortBy, setSortBy] = useState<SortOption>("name")
+  const [sortBy, setSortBy] = useState<SortOption>("price-high")
   const [viewMode, setViewMode] = useState<ViewMode>("grid")
   const [displayCount, setDisplayCount] = useState(PRODUCTS_PER_PAGE)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
@@ -74,7 +74,7 @@ export function CollectionProductsClient({
 
   const clearFilters = () => {
     setSearchQuery("")
-    setSortBy("name")
+    setSortBy("price-high")
     resetDisplayCount()
   }
 
@@ -157,7 +157,7 @@ export function CollectionProductsClient({
           </div>
 
           {/* Clear Filters */}
-          {(searchQuery || sortBy !== "name") && (
+          {(searchQuery || sortBy !== "price-high") && (
             <Button
               variant="ghost"
               size="sm"

@@ -4,7 +4,11 @@ import { createClient } from "@/lib/supabase/server";
 import { signUpSchema, signInSchema } from "@/lib/validators/auth";
 import { redirect } from "next/navigation";
 
-export async function signUp(formData: FormData) {
+export type AuthState = {
+  error?: Record<string, string[]>;
+} | null;
+
+export async function signUp(_prevState: AuthState, formData: FormData): Promise<AuthState> {
   const parsed = signUpSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -31,7 +35,7 @@ export async function signUp(formData: FormData) {
   redirect("/onboarding");
 }
 
-export async function signIn(formData: FormData) {
+export async function signIn(_prevState: AuthState, formData: FormData): Promise<AuthState> {
   const parsed = signInSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),

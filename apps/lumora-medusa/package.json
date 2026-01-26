@@ -1,0 +1,53 @@
+{
+  "name": "lumora-medusa",
+  "version": "0.0.1",
+  "description": "Lumora multi-tenant commerce backend powered by Medusa 2.x",
+  "author": "Lumora",
+  "license": "MIT",
+  "keywords": [
+    "medusa",
+    "multi-tenant",
+    "commerce",
+    "headless"
+  ],
+  "scripts": {
+    "build": "medusa build",
+    "dev": "medusa develop",
+    "start": "medusa start",
+    "seed": "medusa exec ./src/scripts/seed.ts",
+    "db:generate": "medusa db:generate",
+    "db:migrate": "medusa db:migrate"
+  },
+  "dependencies": {
+    "@medusajs/admin-bundler": "2.10.3",
+    "@medusajs/admin-sdk": "2.10.3",
+    "@medusajs/auth": "2.10.3",
+    "@medusajs/cli": "2.10.3",
+    "@medusajs/framework": "2.10.3",
+    "@medusajs/medusa": "2.10.3",
+    "@medusajs/types": "2.10.3",
+    "@medusajs/utils": "2.10.3",
+    "@mikro-orm/core": "6.4.3",
+    "@mikro-orm/knex": "6.4.3",
+    "@mikro-orm/migrations": "6.4.3",
+    "@mikro-orm/postgresql": "6.4.3",
+    "awilix": "^8.0.1",
+    "@medusajs/dashboard": "2.10.3",
+    "@medusajs/draft-order": "2.10.3",
+    "jose": "^5.9.6",
+    "pg": "^8.13.0",
+    "ioredis": "^5.8.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@swc/core": "1.5.7",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.2.25",
+    "typescript": "^5.6.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { RegisterForm } from "@/components/auth/register-form";
 
 export default function RegisterPage() {
   return (
@@ -8,8 +9,7 @@ export default function RegisterPage() {
         <CardDescription>Start building your AI commerce empire</CardDescription>
       </CardHeader>
       <CardContent>
-        {/* TODO: RegisterForm component */}
-        <p className="text-sm text-muted-foreground text-center">Register form placeholder</p>
+        <RegisterForm />
       </CardContent>
     </Card>
   );

@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { LoginForm } from "@/components/auth/login-form";
 
 export default function LoginPage() {
   return (
@@ -8,8 +10,9 @@ export default function LoginPage() {
         <CardDescription>Sign in to your Lumora account</CardDescription>
       </CardHeader>
       <CardContent>
-        {/* TODO: LoginForm component */}
-        <p className="text-sm text-muted-foreground text-center">Login form placeholder</p>
+        <Suspense fallback={null}>
+          <LoginForm />
+        </Suspense>
       </CardContent>
     </Card>
   );
