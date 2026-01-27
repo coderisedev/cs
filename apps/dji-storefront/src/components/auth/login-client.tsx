@@ -172,7 +172,7 @@ export function LoginClient({
   }
 
   return (
-    <div className="px-4 py-16 sm:py-20 bg-gradient-to-b from-background via-background-secondary/30 to-background">
+    <div className="px-3 xs:px-4 py-12 xs:py-16 sm:py-20 bg-gradient-to-b from-background via-background-secondary/30 to-background safe-bottom">
       <div className="relative mx-auto max-w-md">
         <div className="absolute inset-0 -z-10 rounded-[36px] bg-primary-500/10 blur-3xl" aria-hidden />
         <div className="absolute inset-x-6 top-6 -z-10 h-32 rounded-full bg-primary-500/5 blur-2xl" aria-hidden />
@@ -343,7 +343,7 @@ export function LoginClient({
               <form action={completeFormAction} className="space-y-4">
                 <input type="hidden" name="email" value={pendingEmail} />
                 <input type="hidden" name="returnTo" value={redirectTarget} />
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 xs:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="firstName">First Name</Label>
                     <Input

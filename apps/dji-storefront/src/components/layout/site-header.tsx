@@ -49,11 +49,11 @@ export function SiteHeader({ cartItemCount = 0, countryCode = 'us' }: SiteHeader
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full border-b border-border-primary bg-background-primary/95 backdrop-blur-md transition-all duration-300",
+        "sticky top-0 z-50 w-full border-b border-border-primary bg-background-primary/95 backdrop-blur-md transition-all duration-300 safe-top",
         condensed ? "shadow-lg" : "shadow-sm"
       )}
     >
-      <div className="mx-auto w-full max-w-[1440px] px-3 sm:px-4 lg:px-12">
+      <div className="mx-auto w-full max-w-[1440px] px-3 xs:px-4 sm:px-4 lg:px-12">
         <div className={cn("flex items-center justify-between transition-all duration-300", condensed ? "h-14" : "h-16")}>
           <Link href="/" className="inline-flex items-center" aria-label={BRAND_NAME}>
             <div className="relative w-[144px]" style={{ height: condensed ? 48 : 56 }}>
@@ -151,14 +151,14 @@ export function SiteHeader({ cartItemCount = 0, countryCode = 'us' }: SiteHeader
         </div>
       )}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-border-primary bg-background-primary animate-slide-up">
-          <nav className="container mx-auto px-4 py-4 space-y-2">
+        <div className="md:hidden border-t border-border-primary bg-background-primary animate-slide-up safe-bottom">
+          <nav className="container mx-auto px-3 xs:px-4 py-4 space-y-1">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block rounded-base px-4 py-3 text-sm font-medium transition-colors duration-300 hover:bg-background-secondary ${isActive(item.href) ? "text-primary-500 bg-background-secondary" : "text-foreground-primary"
+                className={`block rounded-base px-4 py-3 min-h-[48px] flex items-center text-sm font-medium transition-colors duration-300 touch-manipulation [-webkit-tap-highlight-color:transparent] active:bg-background-secondary ${isActive(item.href) ? "text-primary-500 bg-background-secondary" : "text-foreground-primary"
                   }`}
               >
                 {item.name}

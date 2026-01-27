@@ -1,10 +1,23 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Suspense } from "react"
 import { headers } from "next/headers"
 
 // Force dynamic rendering - disable all caching for testing
 export const dynamic = "force-dynamic"
 export const fetchCache = "force-no-store"
+
+// Mobile viewport configuration for H5 optimization
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+}
 
 // Temporarily disabled due to Turbopack font loading issues
 // import { JetBrains_Mono, Open_Sans } from "next/font/google"

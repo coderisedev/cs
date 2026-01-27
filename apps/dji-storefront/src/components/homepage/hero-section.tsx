@@ -16,7 +16,7 @@ export function HeroSection({ product, priority = true, countryCode }: HeroSecti
 
     return (
         <section
-            className="relative w-full aspect-[9/16] sm:aspect-video min-h-[85vh] sm:min-h-[500px] max-h-[90vh] flex items-center justify-center overflow-hidden"
+            className="relative w-full aspect-[3/4] xs:aspect-[9/16] sm:aspect-video min-h-[70vh] xs:min-h-[85vh] sm:min-h-[500px] max-h-[90vh] flex items-center justify-center overflow-hidden"
             style={{
                 backgroundColor: product.backgroundColor,
                 color: product.textColor,
@@ -37,22 +37,22 @@ export function HeroSection({ product, priority = true, countryCode }: HeroSecti
             )}
 
             {/* Content Overlay */}
-            <div className="relative z-10 container mx-auto px-4 py-8 sm:py-16 text-center">
+            <div className="relative z-10 container mx-auto px-3 xs:px-4 py-6 xs:py-8 sm:py-16 text-center">
                 {/* Product Name (Small Text) */}
                 {product.productName && (
-                    <p className="text-sm sm:text-lg md:text-xl font-semibold mb-1 sm:mb-2 hero-content-animate">
+                    <p className="text-xs xs:text-sm sm:text-lg md:text-xl font-semibold mb-1 sm:mb-2 hero-content-animate">
                         {product.productName}
                     </p>
                 )}
 
                 {/* Main Title */}
-                <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-2 sm:mb-4 leading-tight hero-title-animate">
+                <h1 className="text-xl xs:text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-2 sm:mb-4 leading-tight hero-title-animate">
                     {product.title}
                 </h1>
 
                 {/* Subtitle */}
                 {product.subtitle && (
-                    <p className="text-base sm:text-xl md:text-3xl lg:text-4xl font-medium mb-3 sm:mb-6 hero-subtitle-animate">
+                    <p className="text-sm xs:text-base sm:text-xl md:text-3xl lg:text-4xl font-medium mb-3 sm:mb-6 hero-subtitle-animate">
                         {product.subtitle}
                     </p>
                 )}

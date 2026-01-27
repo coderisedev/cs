@@ -30,8 +30,8 @@ export function SiteFooter({ countryCode = "us" }: SiteFooterProps) {
   const link = (path: string) => buildInternalLink(path, countryCode)
 
   return (
-    <footer className="bg-background-primary border-t border-border-primary mt-16">
-      <div className="container mx-auto px-4 lg:px-12 py-12 md:py-16">
+    <footer className="bg-background-primary border-t border-border-primary mt-16 safe-bottom">
+      <div className="container mx-auto px-3 xs:px-4 lg:px-12 py-12 md:py-16 pb-safe">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
             <Link href={link("/")} className="inline-flex items-center mb-4" aria-label={BRAND_NAME}>

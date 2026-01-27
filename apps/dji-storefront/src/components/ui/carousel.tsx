@@ -72,25 +72,25 @@ export function Carousel({
 
     return (
         <div className={cn("relative group", className)}>
-            {/* Scroll Container */}
+            {/* Scroll Container with touch optimizations */}
             <div
                 ref={scrollContainerRef}
                 onScroll={handleScroll}
-                className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-4 pb-8"
+                className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-4 pb-8 touch-pan-x overscroll-x-contain [-webkit-overflow-scrolling:touch]"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
                 {React.Children.map(children, (child) => (
-                    <div className="snap-center shrink-0 w-[85vw] sm:w-[60vw] md:w-[40vw] lg:w-[30vw] xl:w-[22vw] first:pl-4 last:pr-4">
+                    <div className="snap-center shrink-0 w-[90vw] xs:w-[85vw] sm:w-[60vw] md:w-[40vw] lg:w-[30vw] xl:w-[22vw] first:pl-3 xs:first:pl-4 last:pr-3 xs:last:pr-4">
                         {child}
                     </div>
                 ))}
             </div>
 
-            {/* Controls */}
-            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center gap-4">
+            {/* Controls with touch-friendly sizing */}
+            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center gap-3 xs:gap-4 pb-safe">
                 <button
                     onClick={togglePlay}
-                    className="p-2 rounded-full bg-gray-200/50 hover:bg-gray-300/50 transition-colors backdrop-blur-sm"
+                    className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-gray-200/50 active:bg-gray-300/50 transition-colors backdrop-blur-sm touch-manipulation [-webkit-tap-highlight-color:transparent]"
                     aria-label={isPlaying ? "Pause" : "Play"}
                 >
                     {isPlaying ? (
@@ -100,19 +100,24 @@ export function Carousel({
                     )}
                 </button>
 
-                <div className="flex gap-2">
+                <div className="flex gap-2 xs:gap-3">
                     {Array.from({ length: itemCount }).map((_, i) => (
                         <button
                             key={i}
                             onClick={() => scrollToIndex(i)}
                             className={cn(
-                                "w-2 h-2 rounded-full transition-all duration-300",
+                                "min-w-[24px] min-h-[24px] flex items-center justify-center rounded-full transition-all duration-300 touch-manipulation [-webkit-tap-highlight-color:transparent]",
                                 i === activeIndex
-                                    ? "bg-gray-800 w-2"
-                                    : "bg-gray-400 hover:bg-gray-600"
+                                    ? "bg-gray-800"
+                                    : "bg-gray-400 active:bg-gray-600"
                             )}
                             aria-label={`Go to slide ${i + 1}`}
-                        />
+                        >
+                            <span className={cn(
+                                "w-2 h-2 rounded-full",
+                                i === activeIndex ? "bg-white" : "bg-transparent"
+                            )} />
+                        </button>
                     ))}
                 </div>
             </div>

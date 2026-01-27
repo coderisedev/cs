@@ -30,9 +30,19 @@
     transition: color 0.3s ease, opacity 0.3s ease;
   }
 
-  .nav-link:hover {
-    color: var(--foreground-primary);
-    opacity: 1;
+  /* Hover effects only for devices with fine pointer (mouse/trackpad) */
+  @media (hover: hover) and (pointer: fine) {
+    .nav-link:hover {
+      color: var(--foreground-primary);
+      opacity: 1;
+    }
+  }
+
+  /* Touch feedback for touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    .nav-link:active {
+      opacity: 0.7;
+    }
   }
 
   /* Apple Typography */
@@ -68,14 +78,27 @@
     padding: 8px 16px;
     font-size: 14px;
     font-weight: 400;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.15s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .btn-apple:hover {
-    background-color: hsl(var(--brand-blue-600));
+  /* Hover effects only for devices with fine pointer */
+  @media (hover: hover) and (pointer: fine) {
+    .btn-apple:hover {
+      background-color: hsl(var(--brand-blue-600));
+    }
+  }
+
+  /* Touch feedback for touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    .btn-apple:active {
+      transform: scale(0.98);
+      background-color: hsl(var(--brand-blue-600));
+    }
   }
 
   .btn-apple-large {
@@ -107,11 +130,24 @@
     border-radius: 18px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .card-apple:hover {
-    transform: scale(1.01);
-    box-shadow: var(--shadow-card-hover);
+  /* Hover effects only for devices with fine pointer */
+  @media (hover: hover) and (pointer: fine) {
+    .card-apple:hover {
+      transform: scale(1.01);
+      box-shadow: var(--shadow-card-hover);
+    }
+  }
+
+  /* Touch feedback for touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    .card-apple:active {
+      transform: scale(0.99);
+      opacity: 0.9;
+    }
   }
 
   /* Animations */
@@ -132,17 +168,29 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .apple-hover-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  }
+  /* Hover effects only for devices with fine pointer */
+  @media (hover: hover) and (pointer: fine) {
+    .apple-hover-lift:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
 
-  .apple-hover-scale:hover {
-    transform: scale(1.02);
+    .apple-hover-scale:hover {
+      transform: scale(1.02);
+    }
   }
 
   .apple-active-scale:active {
     transform: scale(0.98);
+  }
+
+  /* Touch feedback for touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    .apple-hover-lift:active,
+    .apple-hover-scale:active {
+      transform: scale(0.98);
+      opacity: 0.9;
+    }
   }
 
   /* Hide scrollbar but allow scroll */
@@ -157,6 +205,47 @@
 }
 
 @layer utilities {
+  /* Safe Area Utilities for notched/rounded devices (iPhone X+, etc.) */
+  .safe-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .safe-left {
+    padding-left: env(safe-area-inset-left, 0px);
+  }
+
+  .safe-right {
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  .safe-x {
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  .safe-y {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Minimum safe padding for bottom navigation areas */
+  .pb-safe {
+    padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
+  }
+
+  .pt-safe {
+    padding-top: max(16px, env(safe-area-inset-top, 16px));
+  }
+
+  /* Touch manipulation for faster tap response */
+  .touch-action-manipulation {
+    touch-action: manipulation;
+  }
+
   @media (prefers-reduced-motion: reduce) {
 
     .animate-fade-in,
@@ -567,10 +656,44 @@
   animation-delay: 0.4s;
 }
 
+/* Mobile Animation Optimization - reduce complexity on small screens */
+@media (max-width: 734px) {
+  .hero-image-animate {
+    animation-duration: 0.8s;
+  }
+
+  /* Disable floating animations on mobile for better performance */
+  .music-float-1,
+  .music-float-2,
+  .music-float-3 {
+    animation: none;
+  }
+
+  /* Reduce hero animation complexity */
+  .hero-content-animate,
+  .hero-title-animate,
+  .hero-subtitle-animate,
+  .hero-description-animate,
+  .hero-cta-animate,
+  .hero-highlights-animate {
+    animation-duration: 0.6s;
+  }
+}
+
 @layer base {
+  /* Safe Area CSS Variables for notched/rounded devices */
+  :root {
+    --safe-area-inset-top: env(safe-area-inset-top, 0px);
+    --safe-area-inset-right: env(safe-area-inset-right, 0px);
+    --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-area-inset-left: env(safe-area-inset-left, 0px);
+  }
+
   html {
     font-family: 'Open Sans', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Arial, sans-serif;
     scroll-behavior: smooth;
+    /* Prevent iOS bounce scroll on html */
+    overscroll-behavior: none;
   }
 
   @media (max-width: 640px) {
@@ -587,6 +710,10 @@
     font-size: 16px;
     line-height: normal;
     transition: background-color 300ms ease, color 300ms ease;
+    /* Mobile text rendering optimization */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   * {

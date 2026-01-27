@@ -379,7 +379,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-3 xs:px-4 py-6 xs:py-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
         <div>
@@ -482,7 +482,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="first_name" className={cn(getFieldError("first_name") && "text-red-600")}>
                     First Name *
@@ -547,7 +547,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                 )}
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="city" className={cn(getFieldError("city") && "text-red-600")}>
                     City *
@@ -578,7 +578,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                     onChange={(e) => setShippingAddress({ ...shippingAddress, country_code: e.target.value })}
                     onBlur={() => markFieldTouched("country_code")}
                     className={cn(
-                      "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                      "flex min-h-[44px] w-full rounded-md border border-input bg-background px-3 py-2 text-[16px] sm:text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
                       getFieldError("country_code") && "border-red-500 focus-visible:ring-red-500"
                     )}
                     required
@@ -607,7 +607,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="province">State / Province</Label>
                   <Input

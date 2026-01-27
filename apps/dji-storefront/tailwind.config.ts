@@ -11,12 +11,14 @@ const config: Config = {
     container: {
       center: true,
       padding: {
-        DEFAULT: "20px",
+        DEFAULT: "16px",
+        xs: "20px",
         sm: "24px",
         lg: "32px",
         xl: "40px",
       },
       screens: {
+        xs: "430px",    // Large phones (iPhone 14 Pro Max)
         sm: "734px",    // Apple Mobile Breakpoint
         md: "1068px",   // Apple Tablet Breakpoint
         lg: "1440px",   // Apple Desktop Breakpoint
@@ -24,10 +26,11 @@ const config: Config = {
       },
     },
     screens: {
-      sm: "734px",
-      md: "1068px",
-      lg: "1440px",
-      xl: "1680px",
+      xs: "430px",      // Large phones (iPhone 14 Pro Max)
+      sm: "734px",      // Apple Mobile Breakpoint
+      md: "1068px",     // Apple Tablet Breakpoint
+      lg: "1440px",     // Apple Desktop Breakpoint
+      xl: "1680px",     // Extra large screens
     },
     extend: {
       spacing: {

@@ -106,7 +106,7 @@ export function ProductCard({ product, viewMode = "grid", countryCode }: { produ
   }
 
   return (
-    <Card tone="elevated" className="group overflow-hidden">
+    <Card tone="elevated" className="group overflow-hidden touch-manipulation [-webkit-tap-highlight-color:transparent]">
       <Link href={`/products/${product.handle}`} className="block relative overflow-hidden aspect-square bg-background-elevated">
         {image && (
           <Image
