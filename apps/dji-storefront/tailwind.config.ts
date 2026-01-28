@@ -27,6 +27,7 @@ const config: Config = {
     },
     screens: {
       xs: "430px",      // Large phones (iPhone 14 Pro Max)
+      mobile: "600px",  // H5 optimization breakpoint
       sm: "734px",      // Apple Mobile Breakpoint
       md: "1068px",     // Apple Tablet Breakpoint
       lg: "1440px",     // Apple Desktop Breakpoint

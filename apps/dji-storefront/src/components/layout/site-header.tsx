@@ -53,7 +53,7 @@ export function SiteHeader({ cartItemCount = 0, countryCode = 'us' }: SiteHeader
         condensed ? "shadow-lg" : "shadow-sm"
       )}
     >
-      <div className="mx-auto w-full max-w-[1440px] px-3 xs:px-4 sm:px-4 lg:px-12">
+      <div className="mx-auto w-full max-w-[1440px] px-3 xs:px-4 mobile:px-5 sm:px-6 md:px-8 lg:px-12">
         <div className={cn("flex items-center justify-between transition-all duration-300", condensed ? "h-14" : "h-16")}>
           <Link href="/" className="inline-flex items-center" aria-label={BRAND_NAME}>
             <div className="relative w-[144px]" style={{ height: condensed ? 48 : 56 }}>
@@ -112,7 +112,9 @@ export function SiteHeader({ cartItemCount = 0, countryCode = 'us' }: SiteHeader
             >
               <Search className="h-4 w-4" />
             </Button> */}
-            <CountrySelector currentCountry={countryCode} />
+            <div className="hidden mobile:block">
+              <CountrySelector currentCountry={countryCode} />
+            </div>
             <Link href="/account" aria-label="Account">
               <Button variant="ghost" size="icon" className="touch-target h-12 w-12 flex items-center justify-center p-0">
                 <User className="h-4 w-4" />
@@ -133,7 +135,7 @@ export function SiteHeader({ cartItemCount = 0, countryCode = 'us' }: SiteHeader
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label="Toggle navigation"
             >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {mobileMenuOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
             </Button>
           </div>
         </div>
@@ -152,7 +154,7 @@ export function SiteHeader({ cartItemCount = 0, countryCode = 'us' }: SiteHeader
       )}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-border-primary bg-background-primary animate-slide-up safe-bottom">
-          <nav className="container mx-auto px-3 xs:px-4 py-4 space-y-1">
+          <nav className="container mx-auto px-3 xs:px-4 mobile:px-5 sm:px-6 py-4 space-y-1">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.name}
