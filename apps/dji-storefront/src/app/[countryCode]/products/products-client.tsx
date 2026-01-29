@@ -107,7 +107,7 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
     <div className="min-h-screen bg-background-secondary">
       {/* Hero Section */}
       <section className="bg-neutral-900 text-white py-24 sm:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://img.aidenlux.com/medusa-uploads/hero.jpg')] bg-cover bg-center opacity-20" />
+        <div className="absolute inset-0 bg-[url('https://img.aidenlux.com/bg/hero2.jpg')] bg-cover bg-center opacity-20" />
         <div className="container mx-auto px-4 relative z-10 text-center space-y-6">
           <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight">
             All Products
