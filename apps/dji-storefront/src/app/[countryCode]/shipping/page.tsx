@@ -10,38 +10,35 @@ const policies = [
     title: "Processing & Lead Times",
     details: [
       "Standard cockpit modules ship within 10–15 business days.",
-      "Orders placed after 2:00 PM Pacific or on weekends begin processing the next business day.",
-      "You will receive automated tracking once the parcel leaves our fulfillment center.",
+      "Orders placed after 5:39 PM China Standard Time (CST, UTC+8) or on weekends will be shipped on the second business day.",
+      "Tracking information will be provided to you as soon as our carrier supplies the tracking number.",
     ],
   },
   {
     title: "Carriers & Methods",
     details: [
-      "Domestic U.S. shipments primarily use UPS Air or FedEx Express to protect sensitive avionics.",
-      "International orders route through DHL Express or FedEx International Priority with insurance.",
+      "Domestic U.S. shipments: Use UPS Air to protect sensitive avionics.",
+      "International orders: Route through DHL Express or FedEx International Priority with insurance.",
     ],
   },
   {
     title: "International Duties & Compliance",
     details: [
       "Customers are responsible for import duties, VAT/GST, and brokerage fees. The specific amount payable shall be subject to the notification (email/SMS) from the courier company.",
-      "Certain regions require dual-use export paperwork for electronics. Our compliance team may request additional documentation before releasing the order.",
-      "If customs clearance fails due to incomplete documentation, shipping charges are non-refundable.",
     ],
   },
   {
     title: "Delivery Issues & Insurance",
     details: [
-      "All shipments include insurance covering the invoice value. Inspect packaging upon delivery and document any external damage.",
+      "Inspect packaging upon delivery and document any external damage.",
       "Report lost or damaged shipments to info@cockpit-simulator.com within 5 days so we can open a carrier investigation.",
-      "Signature is required for orders over $1,000 USD to protect against porch theft.",
     ],
   },
   {
     title: "Returns & Exchanges",
     details: [
-      "Contact support to obtain an RMA before shipping hardware back. Unauthorized returns may be refused.",
-      "Return shipping is free for DOA hardware or warranty replacements.",
+      "For after-sales support (including returns/exchanges), please contact us directly via email at info@cockpit-simulator.com. Unauthorized returns may be refused.",
+      "Customers are responsible for return shipping costs, except for DOA (Dead On Arrival) hardware—return shipping is free in such cases.",
       "Refunds are issued once the hardware passes inspection (typically within 5 business days of receipt).",
     ],
   },

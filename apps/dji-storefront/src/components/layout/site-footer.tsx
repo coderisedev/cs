@@ -96,7 +96,6 @@ export function SiteFooter({ countryCode = "us" }: SiteFooterProps) {
         <div className="border-t border-border-primary pt-6 flex flex-col md:flex-row justify-between text-sm text-foreground-muted gap-4">
           <p>&copy; {currentYear} Cockpit Simulator. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link href={link("/privacy")} className="hover:text-primary-400">Privacy</Link>
             <Link href={link("/terms")} className="hover:text-primary-400">Terms</Link>
             <Link href={link("/shipping")} className="hover:text-primary-400">Shipping</Link>
           </div>

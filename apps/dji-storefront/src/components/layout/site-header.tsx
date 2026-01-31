@@ -16,7 +16,6 @@ const NAV_ITEMS = [
   { name: "All Products", href: "/products" },
   { name: "News", href: "/news" },
   { name: "Software", href: "/software" },
-  { name: "Blog", href: "/blog" },
   { name: "Community", href: "https://community.cockpit-simulator.com/" },
   { name: "Old Site", href: "https://old.cockpit-simulator.com" },
   { name: "FAQ", href: "/faq" },

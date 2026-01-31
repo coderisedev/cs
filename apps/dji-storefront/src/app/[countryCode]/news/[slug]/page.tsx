@@ -224,13 +224,9 @@ export default async function NewsPostPage({ params }: NewsPostPageProps) {
           </div>
         </div>
 
-        {post.coverImageUrl ? (
+        {post.coverImageUrl && (
           <div className="relative h-80 w-full rounded-3xl overflow-hidden">
             <Image src={post.coverImageUrl} alt={post.coverImageAlt ?? post.title} fill className="object-cover" />
-          </div>
-        ) : (
-          <div className="h-80 w-full rounded-3xl bg-neutral-900 flex items-center justify-center text-neutral-300">
-            Cover image coming soon
           </div>
         )}
 
