@@ -271,3 +271,51 @@ export const listCartOptions = async () => {
     cache: "no-store", // Don't cache shipping options as they depend on cart address
   })
 }
+
+/**
+ * Apply a promo code to the cart
+ * @param promoCode - The promotion code to apply
+ */
+export const applyPromoCode = async (promoCode: string) => {
+  const cartId = await getCartId()
+  if (!cartId) throw new Error("No cart found")
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  const { cart } = await sdk.client.fetch<{ cart: HttpTypes.StoreCart }>(
+    `/store/carts/${cartId}/promotions`,
+    {
+      method: "POST",
+      body: { promo_codes: [promoCode] },
+      headers,
+    }
+  )
+  await revalidateCart()
+  return cart
+}
+
+/**
+ * Remove a promo code from the cart
+ * @param promoCode - The promotion code to remove
+ */
+export const removePromoCode = async (promoCode: string) => {
+  const cartId = await getCartId()
+  if (!cartId) throw new Error("No cart found")
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  const { cart } = await sdk.client.fetch<{ cart: HttpTypes.StoreCart }>(
+    `/store/carts/${cartId}/promotions`,
+    {
+      method: "DELETE",
+      body: { promo_codes: [promoCode] },
+      headers,
+    }
+  )
+  await revalidateCart()
+  return cart
+}

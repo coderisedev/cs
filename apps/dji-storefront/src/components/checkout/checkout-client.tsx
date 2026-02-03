@@ -104,6 +104,10 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
       errors.push({ field: "postal_code", message: "Postal code is required" })
     }
 
+    if (!shippingAddress.province.trim()) {
+      errors.push({ field: "province", message: "State / Province is required" })
+    }
+
     if (!shippingAddress.country_code) {
       errors.push({ field: "country_code", message: "Country is required" })
     } else if (!isCountryInRegion(regionConfig, shippingAddress.country_code)) {
@@ -199,6 +203,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
     shippingAddress.address_1.trim() &&
     shippingAddress.city.trim() &&
     shippingAddress.postal_code.trim() &&
+    shippingAddress.province.trim() &&
     shippingAddress.country_code
   )
 
@@ -609,14 +614,29 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
 
               <div className="grid grid-cols-1 xs:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="province">State / Province</Label>
+                  <Label htmlFor="province" className={cn(getFieldError("province") && "text-red-600")}>
+                    State / Province *
+                  </Label>
                   <Input
                     id="province"
                     value={shippingAddress.province}
                     onChange={(e) => setShippingAddress({ ...shippingAddress, province: e.target.value })}
+                    onBlur={() => markFieldTouched("province")}
                     placeholder="CA"
+                    required
                     disabled={orderPending}
+                    className={cn(getFieldError("province") && "border-red-500 focus-visible:ring-red-500")}
                   />
+                  {getFieldError("province") ? (
+                    <p className="text-xs text-red-600 flex items-center gap-1">
+                      <AlertCircle className="h-3 w-3" />
+                      {getFieldError("province")}
+                    </p>
+                  ) : (
+                    <p className="text-xs text-foreground-muted">
+                      If no State/Province is applicable, fill in N/A.
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="postal_code" className={cn(getFieldError("postal_code") && "text-red-600")}>

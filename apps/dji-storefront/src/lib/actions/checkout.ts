@@ -32,7 +32,8 @@ export async function calculateShippingAction(
   // Validate required address fields
   if (!shippingAddress.first_name || !shippingAddress.last_name ||
       !shippingAddress.address_1 || !shippingAddress.city ||
-      !shippingAddress.postal_code || !shippingAddress.country_code) {
+      !shippingAddress.postal_code || !shippingAddress.province ||
+      !shippingAddress.country_code) {
     return { error: "Incomplete address" }
   }
 
@@ -101,7 +102,8 @@ export async function preparePayPalCheckoutAction(
   // Validate required fields
   if (!email || !shippingAddress.first_name || !shippingAddress.last_name ||
       !shippingAddress.address_1 || !shippingAddress.city ||
-      !shippingAddress.postal_code || !shippingAddress.country_code) {
+      !shippingAddress.postal_code || !shippingAddress.province ||
+      !shippingAddress.country_code) {
     return { error: "Please fill in all required fields" }
   }
 
@@ -248,9 +250,10 @@ export async function placeOrderAction(_currentState: unknown, formData: FormDat
   const sameAsBilling = formData.get("same_as_billing") === "on"
 
   // Validate required fields
-  if (!email || !shippingAddress.first_name || !shippingAddress.last_name || 
-      !shippingAddress.address_1 || !shippingAddress.city || 
-      !shippingAddress.postal_code || !shippingAddress.country_code) {
+  if (!email || !shippingAddress.first_name || !shippingAddress.last_name ||
+      !shippingAddress.address_1 || !shippingAddress.city ||
+      !shippingAddress.postal_code || !shippingAddress.province ||
+      !shippingAddress.country_code) {
     return "Please fill in all required fields"
   }
 
@@ -355,7 +358,8 @@ export async function placeOrderWithPayPalAction(
   // Validate required fields
   if (!email || !shippingAddress.first_name || !shippingAddress.last_name ||
       !shippingAddress.address_1 || !shippingAddress.city ||
-      !shippingAddress.postal_code || !shippingAddress.country_code) {
+      !shippingAddress.postal_code || !shippingAddress.province ||
+      !shippingAddress.country_code) {
     return { error: "Please fill in all required fields" }
   }
 

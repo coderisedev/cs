@@ -4,9 +4,10 @@ import { useState, useTransition } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 import { formatPrice } from "@/lib/number"
-import { updateLineItemAction, deleteLineItemAction } from "@/lib/actions/cart"
-import { Trash2, Minus, Plus, Loader2, ShoppingBag } from "lucide-react"
+import { updateLineItemAction, deleteLineItemAction, applyPromoCodeAction, removePromoCodeAction } from "@/lib/actions/cart"
+import { Trash2, Minus, Plus, Loader2, ShoppingBag, ChevronDown, ChevronUp, X, Tag } from "lucide-react"
 import { HttpTypes } from "@medusajs/types"
 
 type CartClientProps = {
@@ -17,6 +18,11 @@ type CartClientProps = {
 export function CartClient({ cart, countryCode }: CartClientProps) {
   const [isPending, startTransition] = useTransition()
   const [updatingLineId, setUpdatingLineId] = useState<string | null>(null)
+  const [promoExpanded, setPromoExpanded] = useState(false)
+  const [promoCode, setPromoCode] = useState("")
+  const [promoError, setPromoError] = useState<string | null>(null)
+  const [isApplyingPromo, setIsApplyingPromo] = useState(false)
+  const [removingPromoCode, setRemovingPromoCode] = useState<string | null>(null)
 
   const handleUpdateQuantity = (lineId: string, quantity: number) => {
     if (quantity < 1) return
@@ -45,6 +51,38 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
     })
   }
 
+  const handleApplyPromoCode = async () => {
+    const trimmedCode = promoCode.trim()
+    if (!trimmedCode) return
+
+    setPromoError(null)
+    setIsApplyingPromo(true)
+    try {
+      const result = await applyPromoCodeAction(trimmedCode)
+      if (result.success) {
+        setPromoCode("")
+        setPromoExpanded(false)
+      } else {
+        setPromoError(result.error || "Invalid promo code")
+      }
+    } catch {
+      setPromoError("Failed to apply promo code")
+    } finally {
+      setIsApplyingPromo(false)
+    }
+  }
+
+  const handleRemovePromoCode = async (code: string) => {
+    setRemovingPromoCode(code)
+    try {
+      await removePromoCodeAction(code)
+    } catch {
+      console.error("Failed to remove promo code")
+    } finally {
+      setRemovingPromoCode(null)
+    }
+  }
+
   if (!cart || !cart.items || cart.items.length === 0) {
     return (
       <div className="container mx-auto px-4 py-16">
@@ -68,10 +106,13 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
   const itemSubtotal = cart.item_subtotal || 0
   const shippingTotal = cart.shipping_total || 0
   const taxTotal = cart.tax_total || 0
-  const total = itemSubtotal + shippingTotal + taxTotal
+  const discountTotal = cart.discount_total || 0
+  const total = itemSubtotal + shippingTotal + taxTotal - discountTotal
   const itemCount = cart.items.reduce((sum, item) => sum + (item.quantity || 0), 0)
   // Check if prices are tax inclusive
   const isTaxInclusive = cart.items?.some(item => item.is_tax_inclusive) ?? false
+  // Get applied promotions (codes)
+  const appliedPromotions = (cart as { promotions?: Array<{ code?: string; id: string }> }).promotions || []
 
   return (
     <div className="container mx-auto px-4 py-16 space-y-8">
@@ -197,6 +238,14 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
                   <span className="text-foreground-secondary">Subtotal</span>
                   <span className="font-medium">{formatPrice(itemSubtotal, cart)}</span>
                 </div>
+                {discountTotal > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-green-600">Discount</span>
+                    <span className="font-medium text-green-600">
+                      -{formatPrice(discountTotal, cart)}
+                    </span>
+                  </div>
+                )}
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Shipping</span>
                   <span className="font-medium">
@@ -215,7 +264,92 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center pt-2">
+              {/* Promo Code Section */}
+              <div className="py-2">
+                {/* Applied Promotions */}
+                {appliedPromotions.length > 0 && (
+                  <div className="mb-3 space-y-2">
+                    {appliedPromotions.map((promo) => (
+                      <div
+                        key={promo.id}
+                        className="flex items-center justify-between bg-green-50 dark:bg-green-900/20 px-3 py-2 rounded-base"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Tag className="h-4 w-4 text-green-600" />
+                          <span className="text-sm font-medium text-green-700 dark:text-green-400">
+                            {promo.code || "Promotion applied"}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => promo.code && handleRemovePromoCode(promo.code)}
+                          disabled={removingPromoCode === promo.code || !promo.code}
+                          className="text-green-600 hover:text-green-800 disabled:opacity-50"
+                          aria-label="Remove promo code"
+                        >
+                          {removingPromoCode === promo.code ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <X className="h-4 w-4" />
+                          )}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Collapsible Promo Code Input */}
+                <button
+                  onClick={() => setPromoExpanded(!promoExpanded)}
+                  className="flex items-center gap-1 text-sm text-primary-500 hover:text-primary-600 transition-colors"
+                >
+                  {promoExpanded ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                  Have a promo code?
+                </button>
+
+                {promoExpanded && (
+                  <div className="mt-3 space-y-2">
+                    <div className="flex gap-2">
+                      <Input
+                        type="text"
+                        placeholder="Enter promo code"
+                        value={promoCode}
+                        onChange={(e) => {
+                          setPromoCode(e.target.value)
+                          setPromoError(null)
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault()
+                            handleApplyPromoCode()
+                          }
+                        }}
+                        disabled={isApplyingPromo}
+                        className="flex-1"
+                      />
+                      <Button
+                        onClick={handleApplyPromoCode}
+                        disabled={isApplyingPromo || !promoCode.trim()}
+                        className="rounded-base"
+                      >
+                        {isApplyingPromo ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          "Apply"
+                        )}
+                      </Button>
+                    </div>
+                    {promoError && (
+                      <p className="text-sm text-red-600">{promoError}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-between items-center pt-2 border-t border-border-primary">
                 <span className="text-lg font-semibold text-foreground-primary">Total</span>
                 <span className="text-2xl font-bold text-foreground-primary">
                   {formatPrice(total, cart)}
