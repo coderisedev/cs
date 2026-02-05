@@ -222,6 +222,16 @@ export function getCountryName(countryCode: string): string {
 }
 
 /**
+ * Flag overrides for countries where the standard Unicode flag doesn't render properly
+ * on all platforms (e.g., Taiwan flag shows as white on Windows/some browsers)
+ */
+const FLAG_OVERRIDES: Record<string, string> = {
+  // Taiwan flag doesn't render on Windows/some platforms - use China flag for consistency
+  // since it's listed as "China - Taiwan"
+  tw: '🇨🇳',
+}
+
+/**
  * Get flag emoji for a country code
  * Uses Unicode Regional Indicator Symbols to generate flag emojis
  * @param countryCode - ISO 3166-1 alpha-2 country code (e.g., 'us', 'de')
@@ -229,6 +239,13 @@ export function getCountryName(countryCode: string): string {
  */
 export function getCountryFlag(countryCode: string): string {
   const code = countryCode.toUpperCase()
+  const codeLower = countryCode.toLowerCase()
+
+  // Check for flag overrides first
+  if (FLAG_OVERRIDES[codeLower]) {
+    return FLAG_OVERRIDES[codeLower]
+  }
+
   if (code.length !== 2) return '🏳️'
 
   // Regional Indicator Symbol offset: 'A' (65) maps to U+1F1E6 (127462)

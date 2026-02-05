@@ -15,7 +15,7 @@ const sortOptions = [
   { value: "price-high", label: "Price: High to Low" },
 ] as const
 
-const PRODUCTS_PER_PAGE = 12
+const PRODUCTS_PER_PAGE = 20
 
 type SortOption = (typeof sortOptions)[number]["value"]
 

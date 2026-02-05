@@ -38,8 +38,7 @@ export default function SoftwarePage() {
                   PLUG AND PLAY
                 </h1>
                 <p className="text-lg text-foreground-secondary leading-relaxed">
-                  The CockpitSimulator Bridge software connects your hardware devices to flight simulators automatically.
-                  Simply open the software, connect your devices, and start flying. No complex configuration required.
+                  CockpitSimulator Bridge (CS Bridge) is an easy-to-use software, all you need to do is open the software, plug in your devices, and it will automatically connect to your flight simulation game and aircraft addon. CS Bridge also features hardware testing and over-the-air device firmware updates.
                 </p>
               </div>
 
@@ -68,7 +67,7 @@ export default function SoftwarePage() {
 
                 <div className="pt-4 border-t border-border-secondary">
                   <p className="text-sm text-foreground-muted">
-                    If you are experiencing problems with the latest version, you can try an older version:
+                    If you are experiencing problems with the latest software, you may want to try the older version:
                   </p>
                   <p className="text-sm mt-2">
                     <a
@@ -316,15 +315,15 @@ export default function SoftwarePage() {
           </p>
 
           <p className="text-lg text-foreground-secondary mb-8 leading-relaxed">
-            {spadNextPromo.offer}
+            {spadNextPromo.offer}{" "}
+            <a
+              href={`mailto:${spadNextPromo.contactEmail}`}
+              className="text-brand-blue-500 hover:text-brand-blue-600 underline"
+            >
+              {spadNextPromo.contactEmail}
+            </a>
+            .
           </p>
-
-          <div className="inline-block bg-background-primary rounded-xl border border-border-secondary p-6">
-            <p className="text-sm text-foreground-muted mb-2">Coupon Code:</p>
-            <p className="text-2xl font-bold text-brand-blue-500 font-mono">
-              {spadNextPromo.couponCode}
-            </p>
-          </div>
 
           <p className="mt-8">
             <a

@@ -16,7 +16,7 @@ const sortOptions = [
   { value: "newest", label: "Newest First" },
 ] as const
 
-const PRODUCTS_PER_PAGE = 12
+const PRODUCTS_PER_PAGE = 20
 
 type SortOption = (typeof sortOptions)[number]["value"]
 

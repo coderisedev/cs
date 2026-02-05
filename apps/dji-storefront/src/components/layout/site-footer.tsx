@@ -78,7 +78,6 @@ export function SiteFooter({ countryCode = "us" }: SiteFooterProps) {
             <ul className="space-y-2 text-sm">
               <li><Link href={link("/software")} className="text-foreground-secondary hover:text-primary-400">Software</Link></li>
               <li><Link href={link("/faq")} className="text-foreground-secondary hover:text-primary-400">FAQ</Link></li>
-              <li><Link href={link("/blog")} className="text-foreground-secondary hover:text-primary-400">Blog</Link></li>
             </ul>
           </div>
 

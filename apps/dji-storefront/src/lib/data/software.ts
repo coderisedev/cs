@@ -761,9 +761,9 @@ export const versionHistory = [
 // SPAD.neXt promotional data
 export const spadNextPromo = {
   title: "SPAD.neXt SPECIAL OFFER",
-  description: "The CockpitSimulator Bridge software only supports aircraft plugins that match the hardware. If you need support for aircraft that is not on the list, you can use SPAD.neXt software for more extensive customization options.",
-  offer: "We have partnered with SPAD.neXt to offer a 25% discount coupon for our customers.",
-  couponCode: "COCKPITSIM25",
+  description: "The CockpitSimulator Bridge software only supports aircraft plugins that match the hardware. If you want to use our hardware with more aircraft plugins, you can try the SPAD.neXt software, which offers a very wide range of aircraft plugin support.",
+  offer: "We have partnered with SPAD.neXt to offer a 25% discount coupon for those who have purchased hardware from our official shop. If you are interested in purchasing SPAD.neXt software and would like to receive a coupon, please contact",
+  contactEmail: "info@cockpit-simulator.com",
   logoUrl: "https://img.aidenlux.com/software/spadnext.png",
 }
 
