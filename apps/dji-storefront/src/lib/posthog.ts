@@ -3,6 +3,11 @@
  *
  * Provides product analytics, session replay, feature flags, and A/B testing.
  * https://posthog.com/docs/libraries/next-js
+ *
+ * GDPR/CCPA Compliance:
+ * - PostHog is only initialized when user has given analytics consent
+ * - For GDPR regions, tracking is blocked until explicit opt-in
+ * - For CCPA/other regions, tracking is allowed by default (opt-out model)
  */
 
 import posthog from "posthog-js"
@@ -10,11 +15,15 @@ import posthog from "posthog-js"
 export const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY
 export const POSTHOG_HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com"
 
+/** Track whether PostHog has been initialized in this session */
+let isPostHogInitialized = false
+
 /**
  * Initialize PostHog client-side
  * Should only be called once in the app lifecycle
+ * @param optOutByDefault - If true, PostHog starts opted out (for GDPR regions)
  */
-export function initPostHog(): void {
+export function initPostHog(optOutByDefault = false): void {
   if (typeof window === "undefined") return
   if (!POSTHOG_KEY) {
     if (process.env.NODE_ENV === "development") {
@@ -48,6 +57,9 @@ export function initPostHog(): void {
     // Respect Do Not Track browser setting
     respect_dnt: true,
 
+    // GDPR compliance: opt out by default for GDPR regions
+    opt_out_capturing_by_default: optOutByDefault,
+
     // Disable in development unless explicitly enabled
     loaded: () => {
       if (process.env.NODE_ENV === "development") {
@@ -67,6 +79,35 @@ export function initPostHog(): void {
     // Cross-subdomain tracking
     cross_subdomain_cookie: true,
   })
+
+  isPostHogInitialized = true
+}
+
+/**
+ * Check if PostHog has been initialized
+ */
+export function isPostHogLoaded(): boolean {
+  return isPostHogInitialized && posthog.__loaded === true
+}
+
+/**
+ * Opt in to PostHog tracking (called when user accepts analytics cookies)
+ */
+export function optInToTracking(): void {
+  if (!POSTHOG_KEY || typeof window === "undefined") return
+  if (!posthog.__loaded) return
+
+  posthog.opt_in_capturing()
+}
+
+/**
+ * Opt out of PostHog tracking (called when user rejects analytics cookies)
+ */
+export function optOutOfTracking(): void {
+  if (!POSTHOG_KEY || typeof window === "undefined") return
+  if (!posthog.__loaded) return
+
+  posthog.opt_out_capturing()
 }
 
 /**

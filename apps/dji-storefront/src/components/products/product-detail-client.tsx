@@ -30,7 +30,6 @@ import {
   FeatureBullets,
   ContentSection,
   SpecGroups,
-  PackageContents,
 } from "@/components/product-detail"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -501,10 +500,6 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
         </div>
       )}
 
-      {/* Package Contents */}
-      {strapiContent?.packageContents && strapiContent.packageContents.length > 0 && (
-        <PackageContents items={strapiContent.packageContents} />
-      )}
 
       {/* Warranty & OS Requirements */}
       {(strapiContent?.warrantyInfo || strapiContent?.osRequirements) && (

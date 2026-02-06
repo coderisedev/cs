@@ -1,6 +1,6 @@
-# DJI Storefront (Next.js)
+# CS Storefront (Next.js)
 
-Design-first storefront that mirrors every Cockpit Simulator mobile screen using the DJI design system. Until a real Medusa backend is reachable, the app uses the deterministic mock client in `packages/medusa-client` for regions, products, collections, orders, and addresses. As we migrate to the real backend, the app now ships with the Medusa SDK + cookie helpers so you can point it at a live server when ready.
+Design-first storefront that mirrors every Cockpit Simulator mobile screen using the CS design system. Until a real Medusa backend is reachable, the app uses the deterministic mock client in `packages/medusa-client` for regions, products, collections, orders, and addresses. As we migrate to the real backend, the app now ships with the Medusa SDK + cookie helpers so you can point it at a live server when ready.
 
 ## Environment variables
 
@@ -50,7 +50,7 @@ pnpm lint:dji-storefront
 # production build & start
 yarn --filter dji-storefront build && pnpm --filter dji-storefront start
 
-# Storybook (visual review of the DJI UI kit)
+# Storybook (visual review of the CS UI kit)
 pnpm --filter dji-storefront storybook    # dev
 pnpm storybook:dji-storefront             # static build
 

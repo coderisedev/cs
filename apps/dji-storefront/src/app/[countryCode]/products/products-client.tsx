@@ -1,11 +1,12 @@
 "use client"
 
-import { useMemo, useState } from "react"
-import { Search, Filter, Grid, List, ChevronDown, Loader2 } from "lucide-react"
+import { useMemo, useState, useRef, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { Search, Filter, Grid, List, ChevronDown, ChevronRight, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import type { StorefrontProduct, ProductCategory } from "@/lib/data/products"
+import type { StorefrontProduct, CollectionWithProducts } from "@/lib/data/products"
 import { ProductCard } from "@/components/products/product-card"
 
 const sortOptions = [
@@ -24,11 +25,143 @@ type ViewMode = "grid" | "list"
 
 interface ProductsPageClientProps {
   products: StorefrontProduct[]
-  categories: ProductCategory[]
+  collectionsWithProducts: CollectionWithProducts[]
   countryCode: string
 }
 
-export function ProductsPageClient({ products, categories, countryCode }: ProductsPageClientProps) {
+// Hierarchical Series Dropdown Component
+function SeriesDropdown({
+  collections,
+  selectedCategory,
+  onSelectCategory,
+  countryCode,
+}: {
+  collections: CollectionWithProducts[]
+  selectedCategory: string
+  onSelectCategory: (category: string) => void
+  countryCode: string
+}) {
+  const [isOpen, setIsOpen] = useState(false)
+  const [expandedSeries, setExpandedSeries] = useState<string | null>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false)
+        setExpandedSeries(null)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
+  const selectedLabel = selectedCategory === "all"
+    ? "All Products"
+    : collections.find((c) => c.handle === selectedCategory)?.title ?? selectedCategory
+
+  const handleSeriesClick = (handle: string) => {
+    if (expandedSeries === handle) {
+      // If already expanded, select this series as filter
+      onSelectCategory(handle)
+      setIsOpen(false)
+      setExpandedSeries(null)
+    } else {
+      setExpandedSeries(handle)
+    }
+  }
+
+  const handleProductClick = (productHandle: string) => {
+    router.push(`/${countryCode}/products/${productHandle}`)
+    setIsOpen(false)
+    setExpandedSeries(null)
+  }
+
+  return (
+    <div className="relative w-full lg:w-[280px]" ref={dropdownRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between px-4 py-2.5 bg-background-elevated border border-transparent rounded-md text-sm text-foreground-primary hover:border-brand-blue-500 transition-all"
+      >
+        <span className="truncate">{selectedLabel}</span>
+        <ChevronDown className={`h-4 w-4 text-foreground-muted transition-transform ${isOpen ? "rotate-180" : ""}`} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-full left-0 right-0 mt-1 bg-background-elevated border border-border-secondary rounded-lg shadow-xl z-50 max-h-[70vh] overflow-y-auto">
+          {/* All Products Option */}
+          <button
+            onClick={() => {
+              onSelectCategory("all")
+              setIsOpen(false)
+              setExpandedSeries(null)
+            }}
+            className={`w-full px-4 py-3 text-left text-sm hover:bg-background-secondary transition-colors ${
+              selectedCategory === "all" ? "text-brand-blue-500 font-medium bg-brand-blue-500/5" : "text-foreground-primary"
+            }`}
+          >
+            All Products
+          </button>
+
+          <div className="border-t border-border-secondary" />
+
+          {/* Series with Products */}
+          {collections.map((collection) => (
+            <div key={collection.id} className="border-b border-border-secondary last:border-b-0">
+              {/* Series Header */}
+              <button
+                onClick={() => handleSeriesClick(collection.handle)}
+                className={`w-full px-4 py-3 flex items-center justify-between text-sm hover:bg-background-secondary transition-colors ${
+                  selectedCategory === collection.handle ? "text-brand-blue-500 font-medium bg-brand-blue-500/5" : "text-foreground-primary"
+                }`}
+              >
+                <span className="font-medium">{collection.title}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-foreground-muted">({collection.products.length})</span>
+                  <ChevronRight
+                    className={`h-4 w-4 text-foreground-muted transition-transform ${
+                      expandedSeries === collection.handle ? "rotate-90" : ""
+                    }`}
+                  />
+                </div>
+              </button>
+
+              {/* Products in Series */}
+              {expandedSeries === collection.handle && (
+                <div className="bg-background-secondary/50">
+                  {/* Click to filter by series */}
+                  <button
+                    onClick={() => {
+                      onSelectCategory(collection.handle)
+                      setIsOpen(false)
+                      setExpandedSeries(null)
+                    }}
+                    className="w-full px-4 py-2 pl-8 text-left text-xs text-brand-blue-500 hover:bg-background-secondary transition-colors"
+                  >
+                    Show all {collection.title} →
+                  </button>
+                  {collection.products.map((product) => (
+                    <button
+                      key={product.id}
+                      onClick={() => handleProductClick(product.handle)}
+                      className="w-full px-4 py-2.5 pl-8 text-left text-sm text-foreground-secondary hover:text-foreground-primary hover:bg-background-secondary transition-colors"
+                    >
+                      {product.title}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export function ProductsPageClient({ products, collectionsWithProducts, countryCode }: ProductsPageClientProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [sortBy, setSortBy] = useState<SortOption>("price-high")
@@ -151,24 +284,16 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
                 />
               </div>
 
-              {/* Category Select */}
-              <div className="w-full lg:w-[200px]">
-                <Select value={selectedCategory} onValueChange={(value) => {
+              {/* Series Dropdown */}
+              <SeriesDropdown
+                collections={collectionsWithProducts}
+                selectedCategory={selectedCategory}
+                onSelectCategory={(value) => {
                   setSelectedCategory(value)
                   resetDisplayCount()
-                }}>
-                  <SelectTrigger className="bg-background-elevated border-transparent">
-                    <SelectValue placeholder="Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id}>
-                        {category.title}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                }}
+                countryCode={countryCode}
+              />
 
               {/* Sort Select */}
               <div className="w-full lg:w-[200px]">
@@ -224,7 +349,7 @@ export function ProductsPageClient({ products, categories, countryCode }: Produc
             Showing <span className="font-medium text-foreground-primary">{displayedProducts.length}</span> of{" "}
             <span className="font-medium text-foreground-primary">{filteredProducts.length}</span> products
             {selectedCategory !== "all" && (
-              <span> in <span className="font-medium text-foreground-primary">{categories.find((c) => c.id === selectedCategory)?.title}</span></span>
+              <span> in <span className="font-medium text-foreground-primary">{collectionsWithProducts.find((c) => c.handle === selectedCategory)?.title}</span></span>
             )}
           </p>
         </div>

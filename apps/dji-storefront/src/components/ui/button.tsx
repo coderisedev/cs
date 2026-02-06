@@ -8,11 +8,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // DJI Primary Button - Capsule Design
+        // CS Primary Button - Capsule Design
         default: "bg-primary-500 text-neutral-50 hover:bg-primary-600 shadow-sm hover:shadow-md active:bg-primary-700 rounded-pill-xxl px-4 py-2 text-sm hover:transform hover:-translate-y-0.5",
-        // DJI Secondary Button - Dark Gray
+        // CS Secondary Button - Dark Gray
         secondary: "bg-neutral-800 text-neutral-50 hover:bg-neutral-700 active:bg-neutral-900 rounded-sm px-8 py-3 text-base shadow-sm hover:shadow-md hover:transform hover:-translate-y-0.5",
-        // DJI Outlined Button - Transparent with Border
+        // CS Outlined Button - Transparent with Border
         outline: "border border-neutral-500 bg-transparent text-foreground-primary hover:bg-background-elevated hover:border-primary-500 active:bg-background-elevated rounded-pill-md px-4 py-2 text-base hover:transform hover:-translate-y-0.5",
         // Destructive
         destructive: "bg-semantic-error text-neutral-50 hover:bg-semantic-error/90 active:bg-semantic-error/80 rounded-sm px-6 py-3 text-base shadow-sm hover:shadow-md hover:transform hover:-translate-y-0.5",
@@ -22,7 +22,7 @@ const buttonVariants = cva(
         link: "text-primary-400 underline-offset-4 hover:underline p-0 h-auto hover:text-primary-300 text-sm",
       },
       size: {
-        // DJI Button Sizes
+        // CS Button Sizes
         sm: "h-8 px-4 py-2 text-sm", // Small button
         default: "h-10 px-6 py-3 text-base", // Standard button
         lg: "h-12 px-8 py-4 text-lg", // Large button

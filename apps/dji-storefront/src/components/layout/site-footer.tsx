@@ -1,8 +1,11 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
-import { Facebook, Twitter, Instagram, Youtube, Mail } from "lucide-react"
+import { Facebook, Twitter, Instagram, Youtube, Mail, Cookie } from "lucide-react"
 import { BRAND_LOGO_URL, BRAND_NAME } from "@/lib/constants"
 import { buildInternalLink } from "@/lib/util/links"
+import { useConsent } from "@/lib/context/consent-context"
 
 // Discord icon (not available in lucide-react)
 const DiscordIcon = ({ className }: { className?: string }) => (
@@ -25,6 +28,7 @@ interface SiteFooterProps {
 
 export function SiteFooter({ countryCode = "us" }: SiteFooterProps) {
   const currentYear = new Date().getFullYear()
+  const { openPreferences } = useConsent()
 
   // Helper to build internal links with country code
   const link = (path: string) => buildInternalLink(path, countryCode)
@@ -78,6 +82,16 @@ export function SiteFooter({ countryCode = "us" }: SiteFooterProps) {
             <ul className="space-y-2 text-sm">
               <li><Link href={link("/software")} className="text-foreground-secondary hover:text-primary-400">Software</Link></li>
               <li><Link href={link("/faq")} className="text-foreground-secondary hover:text-primary-400">FAQ</Link></li>
+              <li>
+                <button
+                  onClick={openPreferences}
+                  className="text-foreground-secondary hover:text-primary-400 inline-flex items-center gap-1.5"
+                  aria-label="Open cookie settings"
+                >
+                  <Cookie className="h-4 w-4" />
+                  Cookie Settings
+                </button>
+              </li>
             </ul>
           </div>
 

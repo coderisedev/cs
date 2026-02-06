@@ -54,11 +54,11 @@ export default [{
         paths: [
           {
             name: "@medusajs/ui",
-            message: "Use the DJI storefront UI kit instead of medusa/ui components.",
+            message: "Use the CS storefront UI kit instead of medusa/ui components.",
           },
           {
             name: "@medusajs/icons",
-            message: "Use lucide-react or DJI icons instead of medusa/icons.",
+            message: "Use lucide-react or CS icons instead of medusa/icons.",
           },
         ],
       },

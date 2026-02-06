@@ -10,10 +10,10 @@ import { AccessoriesSection } from "./components/accessories-section"
 
 // Mock data - in real scenario, this would come from your CMS/API
 const showcaseData = {
-  "dji-air-3s": {
-    name: "DJI Air 3S",
+  "cs-air-3s": {
+    name: "CS Air 3S",
     tagline: "Omnidirectional Obstacle Sensing.\nNext-Level Night Imaging.",
-    description: "The DJI Air 3S is a powerful, intelligent drone featuring dual-camera setup with 1-inch CMOS sensor and a 70mm medium tele camera. Capture stunning 14-bit RAW photos and shoot in 4K/60fps HDR or 4K/120fps slow motion.",
+    description: "The CS Air 3S is a powerful, intelligent drone featuring dual-camera setup with 1-inch CMOS sensor and a 70mm medium tele camera. Capture stunning 14-bit RAW photos and shoot in 4K/60fps HDR or 4K/120fps slow motion.",
     price: "$1,099",
     priceMonthly: "$45.79/mo. for 24 mo.",
     heroImage: "/images/showcase/air-3s/hero.jpg",
@@ -116,7 +116,7 @@ const showcaseData = {
     ],
     accessories: [
       {
-        name: "DJI RC 2",
+        name: "CS RC 2",
         description: "Compact remote controller with built-in screen for enhanced control.",
         image: "/images/accessories/rc2.jpg",
         price: "$299"

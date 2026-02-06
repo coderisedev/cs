@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { getProducts, getProductCategories } from "@/lib/data/products"
+import { getProducts, getCollectionsWithProducts } from "@/lib/data/products"
 import { ProductsPageClient } from "./products-client"
 
 export const metadata: Metadata = {
@@ -12,9 +12,15 @@ type ProductsPageProps = {
 
 export default async function ProductsPage({ params }: ProductsPageProps) {
   const { countryCode } = await params
-  const [products, categories] = await Promise.all([
+  const [products, collectionsWithProducts] = await Promise.all([
     getProducts({ countryCode, limit: 100 }),
-    getProductCategories(),
+    getCollectionsWithProducts(countryCode),
   ])
-  return <ProductsPageClient products={products} categories={categories} countryCode={countryCode} />
+  return (
+    <ProductsPageClient
+      products={products}
+      collectionsWithProducts={collectionsWithProducts}
+      countryCode={countryCode}
+    />
+  )
 }

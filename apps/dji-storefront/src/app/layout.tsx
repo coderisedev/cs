@@ -24,7 +24,10 @@ export const viewport: Viewport = {
 import "./globals.css"
 import { SiteHeader } from "@/components/layout/site-header"
 import { SiteFooter } from "@/components/layout/site-footer"
+import { ConsentProvider } from "@/lib/context/consent-context"
 import { PostHogProvider } from "@/components/providers/posthog-provider"
+import { CookieBanner } from "@/components/consent/cookie-banner"
+import { CookiePreferences } from "@/components/consent/cookie-preferences"
 import { retrieveCart } from "@/lib/data/cart"
 import { isCountrySupported } from "@/lib/config/regions"
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
@@ -45,7 +48,7 @@ import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 export const metadata: Metadata = {
   title: "Cockpit Simulator",
   description:
-    "DJI design-system storefront scaffold derived from the cockpit simulator reference.",
+    "CS design-system storefront scaffold derived from the cockpit simulator reference.",
   icons: {
     icon: "/favicon.ico",
   },
@@ -85,11 +88,15 @@ export default async function RootLayout({
     <html lang="en" className="bg-background-primary" suppressHydrationWarning>
       <body className="antialiased bg-background-primary text-foreground-primary" suppressHydrationWarning>
         <Suspense fallback={null}>
-          <PostHogProvider>
-            <SiteHeader cartItemCount={cart?.items?.length ?? 0} countryCode={countryCode} />
-            <main>{children}</main>
-            <SiteFooter countryCode={countryCode} />
-          </PostHogProvider>
+          <ConsentProvider countryCode={countryCode}>
+            <PostHogProvider>
+              <SiteHeader cartItemCount={cart?.items?.length ?? 0} countryCode={countryCode} />
+              <main>{children}</main>
+              <SiteFooter countryCode={countryCode} />
+              <CookieBanner />
+              <CookiePreferences />
+            </PostHogProvider>
+          </ConsentProvider>
         </Suspense>
       </body>
     </html>

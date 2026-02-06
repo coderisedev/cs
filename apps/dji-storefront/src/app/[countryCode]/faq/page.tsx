@@ -1,11 +1,14 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Mail } from "lucide-react";
 
 export default function FAQPage() {
+    const [searchQuery, setSearchQuery] = useState("");
+
     const faqCategories = [
         {
             title: "Orders & Shipping",
@@ -56,6 +59,28 @@ export default function FAQPage() {
         }
     ];
 
+    // Filter FAQ based on search query
+    const filteredCategories = useMemo(() => {
+        if (!searchQuery.trim()) {
+            return faqCategories;
+        }
+
+        const query = searchQuery.toLowerCase();
+        return faqCategories
+            .map(category => ({
+                ...category,
+                questions: category.questions.filter(
+                    item =>
+                        item.q.toLowerCase().includes(query) ||
+                        item.a.toLowerCase().includes(query)
+                )
+            }))
+            .filter(category => category.questions.length > 0);
+    }, [searchQuery]);
+
+    const hasResults = filteredCategories.length > 0;
+    const totalResults = filteredCategories.reduce((acc, cat) => acc + cat.questions.length, 0);
+
     return (
         <div className="min-h-screen bg-gray-50 pb-20">
             {/* Hero Section */}
@@ -71,33 +96,56 @@ export default function FAQPage() {
                         <Input
                             type="text"
                             placeholder="Search for answers..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             className="w-full h-14 pl-12 pr-4 rounded-full bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:bg-white/20 backdrop-blur-sm transition-all"
                         />
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                     </div>
+                    {searchQuery && (
+                        <p className="text-gray-400 mt-4">
+                            {hasResults ? `Found ${totalResults} result${totalResults !== 1 ? 's' : ''}` : 'No results found'}
+                        </p>
+                    )}
                 </div>
             </section>
 
             {/* FAQ Content */}
             <div className="container mx-auto px-4 -mt-10 relative z-20">
                 <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 max-w-4xl mx-auto">
-                    {faqCategories.map((category, idx) => (
-                        <div key={idx} className="mb-12 last:mb-0">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-6">{category.title}</h2>
-                            <Accordion type="single" collapsible className="w-full">
-                                {category.questions.map((item, qIdx) => (
-                                    <AccordionItem key={qIdx} value={`${idx}-${qIdx}`}>
-                                        <AccordionTrigger className="text-left text-lg font-medium text-gray-800 hover:text-blue-600">
-                                            {item.q}
-                                        </AccordionTrigger>
-                                        <AccordionContent className="text-gray-600 leading-relaxed text-base">
-                                            {item.a}
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                ))}
-                            </Accordion>
+                    {hasResults ? (
+                        filteredCategories.map((category, idx) => (
+                            <div key={idx} className="mb-12 last:mb-0">
+                                <h2 className="text-2xl font-bold text-gray-900 mb-6">{category.title}</h2>
+                                <Accordion type="single" collapsible className="w-full">
+                                    {category.questions.map((item, qIdx) => (
+                                        <AccordionItem key={qIdx} value={`${idx}-${qIdx}`}>
+                                            <AccordionTrigger className="text-left text-lg font-medium text-gray-800 hover:text-blue-600">
+                                                {item.q}
+                                            </AccordionTrigger>
+                                            <AccordionContent className="text-gray-600 leading-relaxed text-base">
+                                                {item.a}
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    ))}
+                                </Accordion>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-center py-12">
+                            <Search className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                            <h3 className="text-xl font-semibold text-gray-900 mb-2">No results found</h3>
+                            <p className="text-gray-500">
+                                Try different keywords or{" "}
+                                <button
+                                    onClick={() => setSearchQuery("")}
+                                    className="text-blue-600 hover:underline"
+                                >
+                                    clear your search
+                                </button>
+                            </p>
                         </div>
-                    ))}
+                    )}
                 </div>
             </div>
 

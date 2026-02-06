@@ -12,10 +12,10 @@ import { AccessoriesSection } from "./components/accessories-section"
 // Mock data - MacBook Air-style product showcase
 const productsData = {
   "mavic-3-pro": {
-    name: "DJI Mavic 3 Pro",
+    name: "CS Mavic 3 Pro",
     tagline: "Professional aerial capture.",
     subtitle: "Built for creators.",
-    description: "The DJI Mavic 3 Pro is the ultimate professional drone for creators. With a tri-camera system featuring Hasselblad quality, 43-minute flight time, and omnidirectional obstacle sensing, capture breathtaking aerial footage like never before.",
+    description: "The CS Mavic 3 Pro is the ultimate professional drone for creators. With a tri-camera system featuring Hasselblad quality, 43-minute flight time, and omnidirectional obstacle sensing, capture breathtaking aerial footage like never before.",
     price: "$2,199",
     priceMonthly: "$183.25/mo. for 12 mo.",
     heroAnimation: "/videos/products/mavic-3-pro-hero.mp4",
@@ -173,7 +173,7 @@ const productsData = {
       sectionTitle: "REMOTE CONTROLLER",
       title: "Professional control at your fingertips.",
       controller: {
-        name: "DJI RC Pro",
+        name: "CS RC Pro",
         screen: "5.5-inch 1000-nit touchscreen",
         brightness: "Clearly visible even in bright sunlight",
         description: "The built-in high-brightness screen eliminates the need for a smartphone. Intuitive controls and customizable buttons give you precise control.",
@@ -216,8 +216,8 @@ const productsData = {
         ]
       },
       ecosystem: {
-        title: "Seamless DJI ecosystem.",
-        description: "Works perfectly with DJI Fly app, DJI Assistant, and third-party apps like Litchi and DroneDeploy.",
+        title: "Seamless CS ecosystem.",
+        description: "Works perfectly with CS Fly app, CS Assistant, and third-party apps like Litchi and DroneDeploy.",
         image: "/images/products/ecosystem.jpg"
       }
     },
@@ -225,7 +225,7 @@ const productsData = {
       title: "Ready to upgrade?",
       models: [
         {
-          name: "DJI Mini 3 Pro",
+          name: "CS Mini 3 Pro",
           improvements: [
             "3x longer flight time",
             "Tri-camera system vs single",
@@ -234,7 +234,7 @@ const productsData = {
           ]
         },
         {
-          name: "DJI Air 3",
+          name: "CS Air 3",
           improvements: [
             "Hasselblad color science",
             "Third telephoto camera",
@@ -252,7 +252,7 @@ const productsData = {
     },
     accessories: [
       {
-        name: "DJI RC Pro",
+        name: "CS RC Pro",
         description: "Professional remote controller with built-in high-brightness screen.",
         image: "/images/accessories/rc-pro.jpg",
         price: "$1,199"

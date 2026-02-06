@@ -60,6 +60,33 @@ export const getProductCategories = async (): Promise<ProductCategory[]> => {
   ]
 }
 
+export type CollectionWithProducts = {
+  id: string
+  handle: string
+  title: string
+  products: Array<{ id: string; handle: string; title: string }>
+}
+
+export const getCollectionsWithProducts = async (
+  countryCode: string
+): Promise<CollectionWithProducts[]> => {
+  const [{ collections }, products] = await Promise.all([
+    listCollections(),
+    getProducts({ countryCode, limit: 100 }),
+  ])
+
+  return collections
+    .map((collection) => ({
+      id: collection.id,
+      handle: collection.handle ?? collection.id,
+      title: collection.title ?? "Untitled",
+      products: products
+        .filter((p) => p.collection === collection.handle)
+        .map((p) => ({ id: p.id, handle: p.handle, title: p.title })),
+    }))
+    .filter((c) => c.products.length > 0)
+}
+
 const toCurrencyAmount = (value?: number | null) => {
   if (value === null || value === undefined) {
     return undefined

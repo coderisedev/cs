@@ -22,7 +22,7 @@ export function LandingHero() {
             <span className="block text-gradient">Dream Cockpit</span>
           </h1>
           <p className="text-base sm:text-lg text-white/85">
-            Authentic aviation control panels designed with DJI’s design system. Plug-and-play hardware compatible with MSFS 2024, X-Plane, and Prepar3D.
+            Authentic aviation control panels designed with CS's design system. Plug-and-play hardware compatible with MSFS 2024, X-Plane, and Prepar3D.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button size="lg" className="btn-primary text-white">

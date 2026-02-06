@@ -204,7 +204,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       />
       <article className="container py-16 space-y-8 max-w-3xl">
       <div className="space-y-3">
-        <p className="text-xs uppercase tracking-widest text-primary-500">DJI Blog</p>
+        <p className="text-xs uppercase tracking-widest text-primary-500">CS Blog</p>
         <h1 className="text-4xl font-semibold text-foreground-primary">{post.title}</h1>
         <div className="flex flex-wrap gap-4 text-xs text-foreground-muted">
           {formattedDate && (

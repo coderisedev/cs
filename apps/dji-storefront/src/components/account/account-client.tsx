@@ -42,7 +42,7 @@ const formatDate = (date: string | Date) =>
     day: "numeric",
   })
 
-const getSeriesLabel = (handle: string) => handle.split("-")[0]?.toUpperCase() ?? "DJI"
+const getSeriesLabel = (handle: string) => handle.split("-")[0]?.toUpperCase() ?? "CS"
 
 const resolveImageUrl = (image: unknown): string | null => {
   if (typeof image === "string") {

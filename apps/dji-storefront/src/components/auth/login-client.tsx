@@ -48,6 +48,7 @@ export function LoginClient({
   const [resendCooldown, setResendCooldown] = useState(0)
   const [resendLoading, setResendLoading] = useState(false)
   const [resendMessage, setResendMessage] = useState<string | null>(null)
+  const [sessionExpired, setSessionExpired] = useState(false)
 
   // Form actions
   const [initiateResult, initiateFormAction, initiatePending] = useActionState<InitiateOTPLoginResult | null, FormData>(
@@ -104,6 +105,14 @@ export function LoginClient({
     }
   }, [initiateResult])
 
+  // Get error message from verify result
+  const getVerifyError = useCallback((): string | null => {
+    if (!verifyResult) return null
+    if (typeof verifyResult === "string") return verifyResult
+    if ("error" in verifyResult) return verifyResult.error || null
+    return null
+  }, [verifyResult])
+
   // Handle OTP verification result
   useEffect(() => {
     if (verifyResult && typeof verifyResult !== "string") {
@@ -112,6 +121,18 @@ export function LoginClient({
       }
     }
   }, [verifyResult])
+
+  // Clear OTP input when verification error occurs, detect terminal errors
+  useEffect(() => {
+    const error = getVerifyError()
+    if (error) {
+      setOtpValue("")  // Clear input so user can retry with fresh input
+      // Check if this is a terminal error (max attempts reached, session expired)
+      if (error.includes("Too many failed attempts") || error.includes("expired") || error.includes("start again")) {
+        setSessionExpired(true)
+      }
+    }
+  }, [getVerifyError])
 
   // Resend cooldown timer
   useEffect(() => {
@@ -138,7 +159,14 @@ export function LoginClient({
         setResendCooldown(result.retry_after)
         setResendMessage(result.error || null)
       } else {
-        setResendMessage(result.error || "Failed to resend code")
+        // Check if this is a terminal error (session expired/deleted after max attempts)
+        const errorMsg = result.error || "Failed to resend code"
+        if (errorMsg.includes("start again") || errorMsg.includes("not found") || errorMsg.includes("No pending")) {
+          setSessionExpired(true)
+          setResendMessage("Session expired. Please start over.")
+        } else {
+          setResendMessage(errorMsg)
+        }
       }
     } catch {
       setResendMessage("Failed to resend code")
@@ -153,14 +181,7 @@ export function LoginClient({
     setOtpValue("")
     setResendCooldown(0)
     setResendMessage(null)
-  }
-
-  // Get error message from verify result
-  const getVerifyError = (): string | null => {
-    if (!verifyResult) return null
-    if (typeof verifyResult === "string") return verifyResult
-    if ("error" in verifyResult) return verifyResult.error || null
-    return null
+    setSessionExpired(false)
   }
 
   // Get error message from complete result
@@ -302,26 +323,45 @@ export function LoginClient({
                   )}
                 </Button>
               </form>
-              <div className="mt-6 text-center text-sm text-foreground-secondary">
-                Didn&apos;t receive the code?{" "}
-                {resendCooldown > 0 ? (
-                  <span className="text-foreground-muted">
-                    Resend in {resendCooldown}s
-                  </span>
-                ) : (
-                  <button
+              {sessionExpired ? (
+                <div className="mt-6 text-center">
+                  <p className="text-sm text-foreground-secondary mb-3">
+                    Your session has expired. Please start over to get a new code.
+                  </p>
+                  <Button
                     type="button"
-                    onClick={handleResendOTP}
-                    className="text-primary-500 hover:underline font-medium"
-                    disabled={resendLoading}
+                    variant="outline"
+                    onClick={handleBackToEmail}
+                    className="w-full"
                   >
-                    {resendLoading ? "Sending..." : "Resend code"}
-                  </button>
-                )}
-              </div>
-              <p className="mt-4 text-center text-xs text-foreground-muted">
-                Code expires in 10 minutes
-              </p>
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Start Over
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <div className="mt-6 text-center text-sm text-foreground-secondary">
+                    Didn&apos;t receive the code?{" "}
+                    {resendCooldown > 0 ? (
+                      <span className="text-foreground-muted">
+                        Resend in {resendCooldown}s
+                      </span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleResendOTP}
+                        className="text-primary-500 hover:underline font-medium"
+                        disabled={resendLoading}
+                      >
+                        {resendLoading ? "Sending..." : "Resend code"}
+                      </button>
+                    )}
+                  </div>
+                  <p className="mt-4 text-center text-xs text-foreground-muted">
+                    Code expires in 10 minutes
+                  </p>
+                </>
+              )}
             </CardContent>
           </Card>
         )}

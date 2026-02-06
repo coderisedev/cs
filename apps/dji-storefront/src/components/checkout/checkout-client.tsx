@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { formatPrice } from "@/lib/number"
 import { placeOrderAction, preparePayPalCheckoutAction, completePayPalOrderAction, calculateShippingAction } from "@/lib/actions/checkout"
 import { getRegionConfigById, COUNTRY_NAMES, isCountryInRegion, getCountriesByGeographicRegion } from "@/lib/config/regions"
-import { ShoppingBag, ArrowLeft, Package, CreditCard, MapPin, AlertCircle, CheckCircle2, Loader2 } from "lucide-react"
+import { ShoppingBag, ArrowLeft, Package, CreditCard, MapPin, AlertCircle, CheckCircle2, Loader2, Tag } from "lucide-react"
 import { HttpTypes } from "@medusajs/types"
 import type { AccountAddress } from "@/lib/data/account"
 import { cn } from "@/lib/utils"
@@ -150,6 +150,9 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
   const total = cart.total || 0
   // Check if prices are tax inclusive
   const isTaxInclusive = cart.items?.some(item => item.is_tax_inclusive) ?? false
+  // Discount and promotions
+  const discountTotal = cart.discount_total || 0
+  const appliedPromotions = (cart as { promotions?: Array<{ code?: string; id: string }> }).promotions || []
 
   const handleSubmit = async (formData: FormData) => {
     // Add shipping address to form data
@@ -843,6 +846,14 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                   <span className="text-foreground-secondary">Subtotal</span>
                   <span className="font-medium">{formatPrice(subtotal, cart)}</span>
                 </div>
+                {discountTotal > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-green-600">Discount</span>
+                    <span className="font-medium text-green-600">
+                      -{formatPrice(discountTotal, cart)}
+                    </span>
+                  </div>
+                )}
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Shipping</span>
                   <span className={cn(
@@ -879,6 +890,17 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                   </span>
                 </div>
               </div>
+
+              {appliedPromotions.length > 0 && (
+                <div className="space-y-1">
+                  {appliedPromotions.map((promo) => (
+                    <div key={promo.id} className="flex items-center gap-2 text-xs text-green-600">
+                      <Tag className="h-3 w-3" />
+                      <span>{promo.code || "Promotion applied"}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               <div className="flex justify-between items-center pt-4 border-t border-border-primary">
                 <span className="text-lg font-semibold">Total</span>

@@ -22,7 +22,7 @@ const testimonials = [
   },
   {
     quote:
-      "Setup was plug-and-play. We were airborne in minutes and the DJI styling brings a premium polish to every panel.",
+      "Setup was plug-and-play. We were airborne in minutes and the CS styling brings a premium polish to every panel.",
     author: "Michael Chen",
     role: "Home Simulator Builder",
     avatar: "https://img.aidenlux.com/avatar2.jpg",
@@ -238,7 +238,7 @@ export default async function HomePage() {
               <p className="text-sm uppercase tracking-widest text-primary-500 mb-2">Newsletter</p>
               <h2 className="text-3xl font-bold text-foreground-primary mb-4">Stay Updated with New Releases</h2>
               <p className="text-foreground-secondary">
-                Subscribe for exclusive previews, installation guides, and simulator best practices tailored to DJI&apos;s design system.
+                Subscribe for exclusive previews, installation guides, and simulator best practices tailored to CS&apos;s design system.
               </p>
             </div>
             <form className="flex flex-col gap-4">

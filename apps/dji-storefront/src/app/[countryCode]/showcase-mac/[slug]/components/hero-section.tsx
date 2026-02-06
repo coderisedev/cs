@@ -24,7 +24,7 @@ export function HeroSection({
       <div className="bg-gray-100 py-3">
         <div className="mx-auto max-w-7xl px-4 text-center">
           <p className="text-sm text-gray-700">
-            Now through 12/1, get a DJI Gift Card up to $200 when you buy Mavic 3 Pro.{" "}
+            Now through 12/1, get a CS Gift Card up to $200 when you buy Mavic 3 Pro.{" "}
             <a href="#" className="text-blue-600 hover:underline">
               Shop
             </a>

@@ -1,6 +1,6 @@
-# DJI Storefront Post-Launch Playbook
+# CS Storefront Post-Launch Playbook
 
-This document tracks the monitoring dashboards, follow-up sprints, and governance rules required after the DJI storefront replaces the legacy Medusa theme.
+This document tracks the monitoring dashboards, follow-up sprints, and governance rules required after the CS storefront replaces the legacy Medusa theme.
 
 ## Monitoring & Alerts
 
@@ -17,7 +17,7 @@ This document tracks the monitoring dashboards, follow-up sprints, and governanc
 | Sprint | Focus | Owners |
 | --- | --- | --- |
 | +1 week | Resolve design deviations logged in Phase 4 screenshots; triage high-priority bugs | FE/Design |
-| +2 weeks | Replace remaining `/products` pods (cart drawer, modals) with DJI UI kit components | FE |
+| +2 weeks | Replace remaining `/products` pods (cart drawer, modals) with CS UI kit components | FE |
 | +3 weeks | Migrate account/checkout flows + remove `legacy-medusa.css` | FE/BE |
 
 ## Legacy Cleanup

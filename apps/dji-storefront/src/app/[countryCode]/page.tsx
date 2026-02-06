@@ -9,8 +9,8 @@ import { ResellerRecruitment } from "@/components/homepage/reseller-recruitment"
 import { LatestNews } from "@/components/homepage/latest-news";
 
 export const metadata: Metadata = {
-    title: 'Featured Products - DJI Storefront',
-    description: 'Discover our featured DJI products',
+    title: 'Featured Products - CS Storefront',
+    description: 'Discover our featured CS products',
 };
 
 export const revalidate = 0; // Disable ISR during debugging - set back to 60 for production
