@@ -27,6 +27,7 @@ interface ProductsPageClientProps {
   products: StorefrontProduct[]
   collectionsWithProducts: CollectionWithProducts[]
   countryCode: string
+  initialCategory?: string
 }
 
 // Hierarchical Series Dropdown Component
@@ -161,9 +162,9 @@ function SeriesDropdown({
   )
 }
 
-export function ProductsPageClient({ products, collectionsWithProducts, countryCode }: ProductsPageClientProps) {
+export function ProductsPageClient({ products, collectionsWithProducts, countryCode, initialCategory }: ProductsPageClientProps) {
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("all")
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory || "all")
   const [sortBy, setSortBy] = useState<SortOption>("price-high")
   const [viewMode, setViewMode] = useState<ViewMode>("grid")
   const [showFilters, setShowFilters] = useState(false)

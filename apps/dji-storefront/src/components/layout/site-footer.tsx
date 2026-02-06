@@ -6,6 +6,7 @@ import { Facebook, Twitter, Instagram, Youtube, Mail, Cookie } from "lucide-reac
 import { BRAND_LOGO_URL, BRAND_NAME } from "@/lib/constants"
 import { buildInternalLink } from "@/lib/util/links"
 import { useConsent } from "@/lib/context/consent-context"
+import type { HttpTypes } from "@medusajs/types"
 
 // Discord icon (not available in lucide-react)
 const DiscordIcon = ({ className }: { className?: string }) => (
@@ -24,9 +25,10 @@ const socialLinks = [
 
 interface SiteFooterProps {
   countryCode?: string
+  collections?: HttpTypes.StoreCollection[]
 }
 
-export function SiteFooter({ countryCode = "us" }: SiteFooterProps) {
+export function SiteFooter({ countryCode = "us", collections = [] }: SiteFooterProps) {
   const currentYear = new Date().getFullYear()
   const { openPreferences } = useConsent()
 
@@ -70,10 +72,21 @@ export function SiteFooter({ countryCode = "us" }: SiteFooterProps) {
           <div>
             <h4 className="font-semibold mb-4 text-foreground-primary">Products</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href={link("/collections/airbus320")} className="text-foreground-secondary hover:text-primary-400">A320 Series</Link></li>
-              <li><Link href={link("/collections/boeing737")} className="text-foreground-secondary hover:text-primary-400">737 Series</Link></li>
-              <li><Link href={link("/collections/accessory")} className="text-foreground-secondary hover:text-primary-400">Accessories</Link></li>
-              <li><Link href={link("/collections/other-series")} className="text-foreground-secondary hover:text-primary-400">Others</Link></li>
+              <li>
+                <Link href={link("/products")} className="text-foreground-secondary hover:text-primary-400">
+                  All Products
+                </Link>
+              </li>
+              {collections.slice(0, 5).map((collection) => (
+                <li key={collection.id}>
+                  <Link
+                    href={link(`/products?category=${collection.handle}`)}
+                    className="text-foreground-secondary hover:text-primary-400"
+                  >
+                    {collection.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

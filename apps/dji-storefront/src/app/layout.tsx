@@ -29,6 +29,7 @@ import { PostHogProvider } from "@/components/providers/posthog-provider"
 import { CookieBanner } from "@/components/consent/cookie-banner"
 import { CookiePreferences } from "@/components/consent/cookie-preferences"
 import { retrieveCart } from "@/lib/data/cart"
+import { listCollections } from "@/lib/data/collections"
 import { isCountrySupported } from "@/lib/config/regions"
 import { DEFAULT_COUNTRY_CODE } from "@/lib/constants"
 
@@ -80,9 +81,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const [cart, countryCode] = await Promise.all([
+  const [cart, countryCode, { collections }] = await Promise.all([
     retrieveCart(),
     getCountryCodeFromPath(),
+    listCollections(),
   ])
   return (
     <html lang="en" className="bg-background-primary" suppressHydrationWarning>
@@ -92,7 +94,7 @@ export default async function RootLayout({
             <PostHogProvider>
               <SiteHeader cartItemCount={cart?.items?.length ?? 0} countryCode={countryCode} />
               <main>{children}</main>
-              <SiteFooter countryCode={countryCode} />
+              <SiteFooter countryCode={countryCode} collections={collections} />
               <CookieBanner />
               <CookiePreferences />
             </PostHogProvider>

@@ -8,10 +8,11 @@ export const metadata: Metadata = {
 
 type ProductsPageProps = {
   params: Promise<{ countryCode: string }>
+  searchParams: Promise<{ category?: string }>
 }
 
-export default async function ProductsPage({ params }: ProductsPageProps) {
-  const { countryCode } = await params
+export default async function ProductsPage({ params, searchParams }: ProductsPageProps) {
+  const [{ countryCode }, { category }] = await Promise.all([params, searchParams])
   const [products, collectionsWithProducts] = await Promise.all([
     getProducts({ countryCode, limit: 100 }),
     getCollectionsWithProducts(countryCode),
@@ -21,6 +22,7 @@ export default async function ProductsPage({ params }: ProductsPageProps) {
       products={products}
       collectionsWithProducts={collectionsWithProducts}
       countryCode={countryCode}
+      initialCategory={category}
     />
   )
 }

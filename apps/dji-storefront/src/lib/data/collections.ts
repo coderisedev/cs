@@ -3,6 +3,19 @@
 import { sdk } from "@/lib/medusa"
 import { HttpTypes } from "@medusajs/types"
 
+/**
+ * Get sort value from collection metadata
+ * Collections without sort metadata are placed at the end (Infinity)
+ */
+const getCollectionSortOrder = (collection: HttpTypes.StoreCollection): number => {
+  const sortValue = collection.metadata?.sort
+  if (sortValue === undefined || sortValue === null) {
+    return Infinity
+  }
+  const numValue = typeof sortValue === "number" ? sortValue : Number(sortValue)
+  return Number.isNaN(numValue) ? Infinity : numValue
+}
+
 export const listCollections = async (queryParams: Record<string, string> = {}) => {
   const query = {
     limit: queryParams.limit ?? "100",
@@ -12,14 +25,20 @@ export const listCollections = async (queryParams: Record<string, string> = {}) 
   }
 
   try {
-    return await sdk.client
+    const { collections, count } = await sdk.client
       .fetch<{ collections: HttpTypes.StoreCollection[]; count: number }>("/store/collections", {
         method: "GET",
         query,
         next: { revalidate: 0 },
         cache: "no-store",
       })
-      .then(({ collections, count }) => ({ collections, count }))
+
+    // Sort collections by metadata.sort field (1 at top, higher numbers below)
+    const sortedCollections = [...collections].sort(
+      (a, b) => getCollectionSortOrder(a) - getCollectionSortOrder(b)
+    )
+
+    return { collections: sortedCollections, count }
   } catch (error) {
     console.error("Failed to fetch collections:", error)
     return { collections: [], count: 0 }
