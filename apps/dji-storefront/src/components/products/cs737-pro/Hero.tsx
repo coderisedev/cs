@@ -29,7 +29,7 @@ export function Hero({ countryCode }: HeroProps) {
                 className="absolute inset-0 h-[120%] w-full z-0"
             >
                 <Image
-                    src="https://img.aidenlux.com/Gemini_Generated_Image_ebemcqebemcqebem_2cf6bac547.png"
+                    src="https://img.aidenlux.com/737_TQ_3_f9a3f91e29.jpg"
                     alt="CS737 Throttle Quadrant"
                     fill
                     className="object-cover"

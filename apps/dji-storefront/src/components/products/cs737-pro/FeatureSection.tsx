@@ -5,6 +5,8 @@ import Image from "next/image"
 import { useRef } from "react"
 import { cn } from "@/lib/utils"
 
+type Feature = string | { title: string; description: string }
+
 interface FeatureSectionProps {
     id?: string
     eyebrow: string
@@ -15,7 +17,7 @@ interface FeatureSectionProps {
     imageAlt: string
     align?: "left" | "right" | "center"
     theme?: "dark" | "darker" | "light"
-    features?: string[]
+    features?: Feature[]
 }
 
 export function FeatureSection({
@@ -143,28 +145,33 @@ export function FeatureSection({
                                     transition={{ duration: 0.5, delay: 0.5 }}
                                     className="mt-10 flex flex-wrap justify-center gap-3"
                                 >
-                                    {features.map((feature, index) => (
-                                        <motion.span
-                                            key={feature}
-                                            initial={{ opacity: 0, scale: 0.8, y: 10 }}
-                                            animate={isInView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 10 }}
-                                            transition={{
-                                                type: "spring",
-                                                stiffness: 300,
-                                                damping: 20,
-                                                delay: 0.55 + index * 0.08
-                                            }}
-                                            whileHover={{ scale: 1.05, y: -2 }}
-                                            className={cn(
-                                                "px-5 py-2.5 rounded-full text-sm font-medium cursor-default transition-shadow duration-300",
-                                                isDarkTheme
-                                                    ? "bg-gray-800 text-white hover:shadow-lg hover:shadow-blue-500/20"
-                                                    : "bg-white text-gray-900 hover:shadow-lg hover:shadow-blue-500/30"
-                                            )}
-                                        >
-                                            {feature}
-                                        </motion.span>
-                                    ))}
+                                    {features.map((feature, index) => {
+                                        const isRich = typeof feature === "object"
+                                        const label = isRich ? feature.title : feature
+                                        return (
+                                            <motion.div
+                                                key={label}
+                                                initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                                                animate={isInView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 10 }}
+                                                transition={{
+                                                    type: "spring",
+                                                    stiffness: 300,
+                                                    damping: 20,
+                                                    delay: 0.55 + index * 0.08
+                                                }}
+                                                whileHover={{ scale: 1.05, y: -2 }}
+                                                className={cn(
+                                                    "px-5 py-2.5 rounded-full text-sm font-medium cursor-default transition-shadow duration-300",
+                                                    isDarkTheme
+                                                        ? "bg-gray-800 text-white hover:shadow-lg hover:shadow-blue-500/20"
+                                                        : "bg-white text-gray-900 hover:shadow-lg hover:shadow-blue-500/30"
+                                                )}
+                                                title={isRich ? feature.description : undefined}
+                                            >
+                                                {label}
+                                            </motion.div>
+                                        )
+                                    })}
                                 </motion.div>
                             )}
 
@@ -281,51 +288,65 @@ export function FeatureSection({
                             </motion.p>
                             {features && features.length > 0 && (
                                 <ul className="space-y-5 mb-8">
-                                    {features.map((feature, index) => (
-                                        <motion.li
-                                            key={feature}
-                                            initial={{ opacity: 0, x: -20 }}
-                                            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-                                            transition={{
-                                                duration: 0.5,
-                                                delay: 0.5 + index * 0.1,
-                                                ease: [0.25, 0.1, 0.25, 1]
-                                            }}
-                                            whileHover={{ x: 8 }}
-                                            className="flex items-start gap-4 group/item cursor-default"
-                                        >
-                                            {/* Animated checkmark with pulse */}
-                                            <motion.div
-                                                initial={{ scale: 0 }}
-                                                animate={isInView ? { scale: 1 } : { scale: 0 }}
+                                    {features.map((feature, index) => {
+                                        const isRich = typeof feature === "object"
+                                        const label = isRich ? feature.title : feature
+                                        return (
+                                            <motion.li
+                                                key={label}
+                                                initial={{ opacity: 0, x: -20 }}
+                                                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
                                                 transition={{
-                                                    type: "spring",
-                                                    stiffness: 300,
-                                                    damping: 15,
-                                                    delay: 0.6 + index * 0.1
+                                                    duration: 0.5,
+                                                    delay: 0.5 + index * 0.1,
+                                                    ease: [0.25, 0.1, 0.25, 1]
                                                 }}
-                                                className="relative flex-shrink-0 mt-1"
+                                                whileHover={{ x: 8 }}
+                                                className="flex items-start gap-4 group/item cursor-default"
                                             >
-                                                <div className={cn(
-                                                    "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300",
-                                                    isDarkTheme
-                                                        ? "bg-blue-500/20 group-hover/item:bg-blue-500/40"
-                                                        : "bg-blue-100 group-hover/item:bg-blue-200"
-                                                )}>
-                                                    <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                                    </svg>
+                                                {/* Animated checkmark with pulse */}
+                                                <motion.div
+                                                    initial={{ scale: 0 }}
+                                                    animate={isInView ? { scale: 1 } : { scale: 0 }}
+                                                    transition={{
+                                                        type: "spring",
+                                                        stiffness: 300,
+                                                        damping: 15,
+                                                        delay: 0.6 + index * 0.1
+                                                    }}
+                                                    className="relative flex-shrink-0 mt-1"
+                                                >
+                                                    <div className={cn(
+                                                        "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300",
+                                                        isDarkTheme
+                                                            ? "bg-blue-500/20 group-hover/item:bg-blue-500/40"
+                                                            : "bg-blue-100 group-hover/item:bg-blue-200"
+                                                    )}>
+                                                        <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                        </svg>
+                                                    </div>
+                                                </motion.div>
+                                                <div className="flex flex-col">
+                                                    <span className={cn(
+                                                        "text-xl md:text-2xl lg:text-3xl font-medium transition-colors duration-300",
+                                                        textColor,
+                                                        isDarkTheme ? "group-hover/item:text-blue-300" : "group-hover/item:text-blue-600"
+                                                    )}>
+                                                        {label}
+                                                    </span>
+                                                    {isRich && (
+                                                        <span className={cn(
+                                                            "mt-1 text-sm md:text-base leading-relaxed",
+                                                            textSecondary
+                                                        )}>
+                                                            {feature.description}
+                                                        </span>
+                                                    )}
                                                 </div>
-                                            </motion.div>
-                                            <span className={cn(
-                                                "text-xl md:text-2xl lg:text-3xl font-medium transition-colors duration-300",
-                                                textColor,
-                                                isDarkTheme ? "group-hover/item:text-blue-300" : "group-hover/item:text-blue-600"
-                                            )}>
-                                                {feature}
-                                            </span>
-                                        </motion.li>
-                                    ))}
+                                            </motion.li>
+                                        )
+                                    })}
                                 </ul>
                             )}
                             {quote && (

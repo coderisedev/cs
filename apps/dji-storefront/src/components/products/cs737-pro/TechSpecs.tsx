@@ -8,9 +8,9 @@ const specs = [
     {
         category: "Dimensions & Weight",
         items: [
-            { label: "Standard Size", value: "240 x 240 x 400 mm" },
-            { label: "With Pedestal", value: "300 x 400 x 500 mm" },
-            { label: "Weight", value: "8.5 kg (18.7 lbs)" },
+            { label: "Standard Size", value: "311 × 321 × 480.4 mm" },
+            { label: "With Pedestal", value: "494 × 542.8 × 680.4 mm" },
+            { label: "Weight", value: "27.3 kg (60.19 lbs)" },
         ],
     },
     {
@@ -44,13 +44,13 @@ const configurations = [
         id: "ng",
         name: "737NG Configuration",
         description: "Classic 737NG-style fuel cutoff levers and control layout",
-        price: "$2,999",
+        price: "$3,599",
     },
     {
         id: "max",
         name: "737MAX Configuration",
         description: "Next-generation 737MAX-style design",
-        price: "$2,999",
+        price: "$3,599",
     },
 ]
 

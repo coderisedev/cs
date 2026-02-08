@@ -52,103 +52,129 @@ export default async function CS737ProPage({
                 {/* Motor System - dark with grid */}
                 <MotorShowcase />
 
-                {/* Throttle Levers - darkest */}
+                {/* Throttle Control Levers - darkest */}
                 <FeatureSection
                     id="throttle"
-                    eyebrow="Throttle Levers"
-                    title="Autothrottle moves it. You take over when you want."
-                    description="Independent left and right engines. Real-time sync with your sim. Mechanical clutch for instant manual override."
-                    quote="Train like you fly. Fly like you trained."
+                    eyebrow="Throttle Control Levers"
+                    title="Throttle Control Levers"
+                    description=""
                     imageSrc="https://img.aidenlux.com/cs737-pro/part4.png"
-                    imageAlt="CS737 Throttle Levers"
+                    imageAlt="CS737 Throttle Control Levers"
                     align="right"
                     theme="dark"
                     features={[
-                        "Independent L/R engines",
-                        "Real-time autothrottle sync",
-                        "Mechanical clutch override",
-                        "Reverse thrust interlock",
-                        "A/T DISENGAGE buttons",
-                        "TO/GA buttons",
+                        {
+                            title: "Forward Thrust Levers",
+                            description: "Independent signals for left and right engines, allowing separate control of each engine. The levers move in real-time synchronization with the auto-throttle system in compatible flight simulation software. Equipped with a mechanical clutch, the levers support manual override even when auto-throttle is engaged."
+                        },
+                        {
+                            title: "Reverse Thrust Levers",
+                            description: "Independent signals for left and right engines. Built-in mechanical interlock prevents reverse thrust levers from being raised unless the forward levers are fully retarded. Likewise, forward thrust levers cannot be advanced if the reverse levers are not fully stowed."
+                        },
+                        {
+                            title: "Auto-Throttle Buttons",
+                            description: "Includes two independent A/T DISENGAGE buttons and two TO/GA (Takeoff/Go-Around) buttons, each with its own signal channel."
+                        },
                     ]}
                 />
 
-                {/* Speed Brake System - slightly lighter */}
+                {/* Speed Brake Lever - slightly lighter */}
                 <FeatureSection
                     id="speedbrake"
-                    eyebrow="Speed Brake System"
-                    title="Touchdown. Speed brake deploys."
-                    description="Auto-deploy on arm. Auto-stow when you advance thrust. Just like the real 737."
-                    quote="You fly. The throttle handles the rest."
+                    eyebrow="Speed Brake Lever"
+                    title="Speed Brake Lever"
+                    description=""
                     imageSrc="https://img.aidenlux.com/cs737-pro/part5.png"
-                    imageAlt="CS737 Speed Brake System"
+                    imageAlt="CS737 Speed Brake Lever"
                     align="left"
                     theme="darker"
                     features={[
-                        "Auto-deploy on arm",
-                        "Reverse thrust sync",
-                        "Auto-stow function",
-                        "FLIGHT detent lock",
+                        {
+                            title: "Auto Deployment",
+                            description: "When armed and the simulated aircraft is detected to have landed, the speed brake lever will automatically deploy. It also interacts with the reverse thrust levers—when the reversers are pulled up, the speed brake lever is automatically lifted out of the DOWN detent."
+                        },
+                        {
+                            title: "Auto Retraction",
+                            description: "After deployment, the speed brake lever automatically retracts when the forward thrust levers are advanced beyond a certain threshold."
+                        },
+                        {
+                            title: "Flight Detent Lock",
+                            description: "A locking mechanism is implemented at the FLIGHT detent to prevent movement to the UP position while airborne, based on simulated aircraft status. Comes with dual configuration panel markings."
+                        },
                     ]}
                 />
 
-                {/* Trim & Flaps - light section for contrast */}
+                {/* Trim and Flap System - light section for contrast */}
                 <FeatureSection
                     id="trim"
-                    eyebrow="Trim & Flaps"
-                    title="Feel every click. From 0 to 40."
-                    description="Motor-driven trim wheel. 9-position flaps with restriction gates. Every detent you feel is one more step closer to the real thing."
-                    quote="40 degrees. You felt every one."
+                    eyebrow="Trim and Flap System"
+                    title="Trim and Flap System"
+                    description=""
                     imageSrc="https://img.aidenlux.com/cs737-pro/part6.png"
-                    imageAlt="CS737 Trim and Flaps"
+                    imageAlt="CS737 Trim and Flap System"
                     align="center"
                     theme="light"
                     features={[
-                        "Motor-driven trim wheel",
-                        "Foldable manual handle",
-                        "Backlit trim indicators",
-                        "9-position flap lever",
-                        "1/15 restriction gates",
+                        {
+                            title: "Trim Wheel",
+                            description: "Electrically driven rotation synchronized with in-flight trim status. Rotation speed is adjustable and can be customized. Includes detent locking mechanism for defined stop positions."
+                        },
+                        {
+                            title: "Foldable Handles",
+                            description: "Equipped with foldable handles that allow for manual trim adjustment."
+                        },
+                        {
+                            title: "Dual Trim Indicators",
+                            description: "Dual trim position indicators on both sides move in real-time based on the simulated aircraft state."
+                        },
+                        {
+                            title: "Trim Cutout Switches",
+                            description: "Feature protective safety covers to prevent accidental activation."
+                        },
+                        {
+                            title: "Flap Lever",
+                            description: "Includes 9 detent slots, with mechanical resistance at positions 1 and 15, fully replicating real aircraft operation."
+                        },
                     ]}
                 />
 
-                {/* Start & Parking Brake - darkest */}
+                {/* Selectable Configuration - darkest */}
                 <FeatureSection
                     id="start"
-                    eyebrow="Start & Parking Brake"
-                    title="From ignition to parking. Real procedures."
-                    description="NG or MAX configurations. Mechanical parking brake with real locking logic. Every step builds the right habits."
-                    quote="Think like a pilot. Because you're training like one."
+                    eyebrow="Selectable Configuration"
+                    title="Selectable Configuration"
+                    description="Two different styles of fuel control levers and parking brake mechanisms are available. The differences are purely cosmetic, with identical functionality across both variants."
                     imageSrc="https://img.aidenlux.com/cs737-pro/part7.png"
-                    imageAlt="CS737 Start and Parking Brake"
+                    imageAlt="CS737 Selectable Configuration"
                     align="right"
                     theme="dark"
                     features={[
-                        "737NG / 737MAX configs",
-                        "Mechanical parking brake lock",
-                        "Engine start levers",
-                        "Pull-then-move operation",
+                        {
+                            title: "Parking Brake",
+                            description: "Features an internal locking mechanism — the lever can only be lifted after brake input is detected. Once locked, the brake input will automatically release the lever for disengagement."
+                        },
+                        {
+                            title: "Engine Start Levers",
+                            description: "Regardless of style, all variants require the lever to be pulled outward before moving it up or down."
+                        },
                     ]}
                 />
 
-                {/* Sim Pedestal (Optional) - slightly lighter */}
+                {/* Simulated Pedestal Base - slightly lighter */}
                 <FeatureSection
                     id="base"
-                    eyebrow="Sim Pedestal (Optional)"
-                    title="The complete center console. Home."
-                    description="Storage. Cup holders. Full overheat and fire panel. From a throttle to a cockpit."
-                    quote="The entire 737 center console. Now yours."
+                    eyebrow="Simulated Pedestal Base"
+                    title="Simulated Pedestal Base"
+                    description="An optional simulated pedestal base is available to help users build a more complete and immersive cockpit setup. It includes additional components such as: Document holder, Cup holder, Overheat and fire panel."
                     imageSrc="https://img.aidenlux.com/cs737-pro/part8.png"
-                    imageAlt="CS737 Sim Pedestal"
-                    align="center"
+                    imageAlt="CS737 Simulated Pedestal Base"
+                    align="left"
                     theme="darker"
                     features={[
-                        "Storage compartments",
-                        "Cup holders",
-                        "Overheat & fire panel",
-                        "Fire handle system",
-                        "8 self-test indicator lights",
-                        "Full controllable backlight",
+                        {
+                            title: "Overheat and Fire Warning Panel",
+                            description: "Fully replicates aircraft operations, including: Overheat detector switch (with guard), Fire warning bell cutout switch (pushbutton), Fire extinguisher bottle test switch (momentary, spring-loaded), Fault/Inop and Overheat/Fire warning test switch (momentary, spring-loaded), 3 fire extinguisher handles (with solenoid lock and manual lock; must be unlocked before pulling and rotating), 8 rectangular indicator lights (with push-to-test function), 3 fire extinguisher bottle test lights, and Panel with controllable backlight."
+                        },
                     ]}
                 />
 

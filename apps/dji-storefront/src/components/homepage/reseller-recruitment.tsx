@@ -15,7 +15,7 @@ export function ResellerRecruitment({ countryCode }: ResellerRecruitmentProps) {
             {/* Background Image */}
             <div className="absolute inset-0">
                 <Image
-                    src="https://img.aidenlux.com/collections/accessory.jpg"
+                    src="https://img.aidenlux.com/collections/reseller.jpg"
                     alt="Global Network"
                     fill
                     className="object-cover transition-transform duration-1000 group-hover:scale-105"
