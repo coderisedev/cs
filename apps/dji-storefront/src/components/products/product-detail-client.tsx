@@ -249,7 +249,11 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
                   </>
                 )}
               </div>
-              <p className="text-[length:var(--fluid-body-md)] leading-relaxed text-foreground-secondary">{product.description}</p>
+              <div className="text-[length:var(--fluid-body-md)] leading-relaxed text-foreground-secondary [&_p]:mb-0 [&_strong]:font-semibold [&_strong]:text-foreground-primary">
+                <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                  {product.description}
+                </ReactMarkdown>
+              </div>
             </div>
 
             {/* Variant Selection */}
@@ -361,7 +365,11 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
               {strapiContent?.tagline && (
                 <p className="text-[length:var(--fluid-body-lg)] text-foreground-secondary mb-3">{strapiContent.tagline}</p>
               )}
-              <p className="text-[length:var(--fluid-body-md)] leading-relaxed text-foreground-secondary">{product.description}</p>
+              <div className="text-[length:var(--fluid-body-md)] leading-relaxed text-foreground-secondary [&_p]:mb-3 [&_p:last-child]:mb-0 [&_strong]:font-semibold [&_strong]:text-foreground-primary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1">
+                <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                  {product.description}
+                </ReactMarkdown>
+              </div>
               {strapiContent?.overview && (
                 <div
                   className="mt-[var(--fluid-gap-md)] prose prose-sm sm:prose-base max-w-none text-foreground-secondary"
