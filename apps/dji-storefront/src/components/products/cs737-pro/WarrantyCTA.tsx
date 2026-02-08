@@ -120,7 +120,7 @@ export function WarrantyCTA({ countryCode }: WarrantyCTAProps) {
                     className="text-center mb-16"
                 >
                     <p className="text-white text-5xl md:text-7xl font-bold mb-8">
-                        <span className="bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">From $2,999</span>
+                        <span className="bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">From $3,599</span>
                     </p>
 
                     <div className="flex flex-wrap gap-4 justify-center items-center">
