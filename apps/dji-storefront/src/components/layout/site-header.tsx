@@ -130,11 +130,11 @@ export function SiteHeader({ cartItemCount = 0, countryCode = 'us' }: SiteHeader
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden touch-target"
+              className="md:hidden touch-target h-12 w-12 flex items-center justify-center p-0"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label="Toggle navigation"
             >
-              {mobileMenuOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           </div>
         </div>

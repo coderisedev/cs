@@ -338,17 +338,13 @@ export async function completeRegistrationAction(
 
       await transferCart(data.token)
     }
-
-    redirect(requestedRedirect)
   } catch (error: unknown) {
-    // Check if it's a redirect (which throws)
-    if (error instanceof Error && error.message === "NEXT_REDIRECT") {
-      throw error
-    }
     const message = error instanceof Error ? error.message : "Registration failed"
     console.error("Complete registration error:", error)
     return { error: message }
   }
+
+  redirect(requestedRedirect)
 }
 
 export async function resendOTPAction(email: string): Promise<ResendOTPResult> {
@@ -484,23 +480,20 @@ export async function verifyOTPLoginAction(
       revalidateTag(customerCacheTag)
 
       await transferCart(data.token)
-
-      redirect(requestedRedirect)
-    }
-
-    // New user: requiresProfile true, stay on page
-    return {
-      success: true,
-      requiresProfile: data.requiresProfile,
+    } else {
+      // New user: requiresProfile true, stay on page
+      return {
+        success: true,
+        requiresProfile: data.requiresProfile,
+      }
     }
   } catch (error: unknown) {
-    if (error instanceof Error && error.message === "NEXT_REDIRECT") {
-      throw error
-    }
     const message = error instanceof Error ? error.message : "Verification failed"
     console.error("Verify OTP login error:", error)
     return { error: message }
   }
+
+  redirect(requestedRedirect)
 }
 
 export async function completeOTPProfileAction(
@@ -546,16 +539,13 @@ export async function completeOTPProfileAction(
 
       await transferCart(data.token)
     }
-
-    redirect(requestedRedirect)
   } catch (error: unknown) {
-    if (error instanceof Error && error.message === "NEXT_REDIRECT") {
-      throw error
-    }
     const message = error instanceof Error ? error.message : "Failed to create account"
     console.error("Complete OTP profile error:", error)
     return { error: message }
   }
+
+  redirect(requestedRedirect)
 }
 
 export async function resendOTPLoginAction(email: string): Promise<ResendOTPResult> {

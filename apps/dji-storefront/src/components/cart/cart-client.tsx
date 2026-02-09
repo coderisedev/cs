@@ -105,12 +105,9 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
   // Use item_subtotal for products only (subtotal includes shipping in Medusa)
   const itemSubtotal = cart.item_subtotal || 0
   const shippingTotal = cart.shipping_total || 0
-  const taxTotal = cart.tax_total || 0
   const discountTotal = cart.discount_total || 0
-  const total = itemSubtotal + shippingTotal + taxTotal - discountTotal
+  const total = itemSubtotal + shippingTotal - discountTotal
   const itemCount = cart.items.reduce((sum, item) => sum + (item.quantity || 0), 0)
-  // Check if prices are tax inclusive
-  const isTaxInclusive = cart.items?.some(item => item.is_tax_inclusive) ?? false
   // Get applied promotions (codes)
   const appliedPromotions = (cart as { promotions?: Array<{ code?: string; id: string }> }).promotions || []
 
@@ -254,13 +251,7 @@ export function CartClient({ cart, countryCode }: CartClientProps) {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Tax</span>
-                  <span className="font-medium">
-                    {taxTotal > 0
-                      ? formatPrice(taxTotal, cart)
-                      : isTaxInclusive
-                        ? "Included"
-                        : "Calculated at checkout"}
-                  </span>
+                  <span className="font-medium">Not included</span>
                 </div>
               </div>
 

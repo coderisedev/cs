@@ -23,6 +23,7 @@ export const viewport: Viewport = {
 // import { JetBrains_Mono, Open_Sans } from "next/font/google"
 import "./globals.css"
 import { SiteHeader } from "@/components/layout/site-header"
+import { AnnouncementBar } from "@/components/layout/announcement-bar"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { ConsentProvider } from "@/lib/context/consent-context"
 import { PostHogProvider } from "@/components/providers/posthog-provider"
@@ -92,6 +93,9 @@ export default async function RootLayout({
         <Suspense fallback={null}>
           <ConsentProvider countryCode={countryCode}>
             <PostHogProvider>
+              <Suspense fallback={null}>
+                <AnnouncementBar countryCode={countryCode} />
+              </Suspense>
               <SiteHeader cartItemCount={cart?.items?.length ?? 0} countryCode={countryCode} />
               <main>{children}</main>
               <SiteFooter countryCode={countryCode} collections={collections} />

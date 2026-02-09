@@ -49,6 +49,7 @@ export function LoginClient({
   const [resendLoading, setResendLoading] = useState(false)
   const [resendMessage, setResendMessage] = useState<string | null>(null)
   const [sessionExpired, setSessionExpired] = useState(false)
+  const [errorDismissed, setErrorDismissed] = useState(false)
 
   // Form actions
   const [initiateResult, initiateFormAction, initiatePending] = useActionState<InitiateOTPLoginResult | null, FormData>(
@@ -95,6 +96,17 @@ export function LoginClient({
 
   const activePopupButtons = popupButtons.filter((button) => button.enabled)
   const showSocialLogin = isGoogleOneTapEnabled || activePopupButtons.length > 0
+
+  // Clear stale error when user starts typing a new OTP
+  const handleOtpChange = (value: string) => {
+    setOtpValue(value)
+    if (value) setErrorDismissed(true)
+  }
+
+  // Reset error dismissal when a new verify result arrives
+  useEffect(() => {
+    setErrorDismissed(false)
+  }, [verifyResult])
 
   // Handle initiate result
   useEffect(() => {
@@ -294,11 +306,11 @@ export function LoginClient({
                   <Label className="sr-only">Verification Code</Label>
                   <OTPInput
                     value={otpValue}
-                    onChange={setOtpValue}
+                    onChange={handleOtpChange}
                     disabled={verifyPending}
                   />
                 </div>
-                {getVerifyError() && (
+                {!errorDismissed && getVerifyError() && (
                   <div className="p-3 rounded-base bg-red-50 border border-red-200 text-sm text-red-600">
                     {getVerifyError()}
                   </div>

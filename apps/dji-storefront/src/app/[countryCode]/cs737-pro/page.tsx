@@ -104,8 +104,8 @@ export default async function CS737ProPage({
                     ]}
                 />
 
-                {/* Trim and Flap System - light section for contrast */}
-                <FeatureSection
+                {/* Trim and Flap System - temporarily hidden, may re-enable later */}
+                {/* <FeatureSection
                     id="trim"
                     eyebrow="Trim and Flap System"
                     title="Trim and Flap System"
@@ -136,7 +136,7 @@ export default async function CS737ProPage({
                             description: "Includes 9 detent slots, with mechanical resistance at positions 1 and 15, fully replicating real aircraft operation."
                         },
                     ]}
-                />
+                /> */}
 
                 {/* Selectable Configuration - darkest */}
                 <FeatureSection

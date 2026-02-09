@@ -10,7 +10,7 @@ const policies = [
     title: "Processing & Lead Times",
     details: [
       "Standard cockpit modules ship within 10–15 business days.",
-      "Orders placed after 5:39 PM China Standard Time (CST, UTC+8) or on weekends will be shipped on the second business day.",
+      "Orders placed after 0900Z or on weekends will be shipped on the second business day.",
       "Tracking information will be provided to you as soon as our carrier supplies the tracking number.",
     ],
   },
