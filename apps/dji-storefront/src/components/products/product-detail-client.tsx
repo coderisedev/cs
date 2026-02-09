@@ -362,9 +362,7 @@ export function ProductDetailClient({ product, strapiContent, reviews, countryCo
           <TabsContent value="description" className="space-y-[var(--fluid-gap-lg)]">
             <section className="max-w-3xl">
               <h3 className="text-[length:var(--fluid-heading-md)] font-semibold text-foreground-primary mb-[var(--fluid-gap-sm)]">Product Description</h3>
-              {strapiContent?.tagline && (
-                <p className="text-[length:var(--fluid-body-lg)] text-foreground-secondary mb-3">{strapiContent.tagline}</p>
-              )}
+
               <div className="text-[length:var(--fluid-body-md)] leading-relaxed text-foreground-secondary [&_p]:mb-3 [&_p:last-child]:mb-0 [&_strong]:font-semibold [&_strong]:text-foreground-primary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:mb-1">
                 <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
                   {product.description}
