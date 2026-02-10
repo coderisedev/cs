@@ -133,37 +133,22 @@ export default function SoftwarePage() {
             CHANGELOG
           </h2>
 
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* Recent Versions */}
-            {recentVersions.map((version, index) => (
-              <div
-                key={version.version}
-                className="bg-background-primary rounded-xl p-6 border border-border-secondary"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-                  <h3 className="text-xl font-bold text-foreground-primary flex items-center gap-2">
-                    {version.version}
-                    {index === 0 && (
-                      <span className="text-xs font-semibold bg-brand-blue-500 text-white px-2 py-0.5 rounded">
-                        LATEST
-                      </span>
-                    )}
-                  </h3>
-                  <span className="text-sm text-foreground-muted">
-                    {version.date}
-                  </span>
-                </div>
-                <ul className="space-y-2">
-                  {version.changes.map((change, changeIndex) => (
-                    <li
-                      key={changeIndex}
-                      className="flex items-start gap-2 text-foreground-secondary"
-                    >
-                      <span className="text-brand-blue-500 mt-1">•</span>
-                      <span>{change}</span>
-                    </li>
-                  ))}
-                </ul>
+            {recentVersions.map((version) => (
+              <div key={version.version}>
+                <h3 className="text-lg font-bold text-foreground-primary mb-2">
+                  CockpitSimulator Bridge {version.version} ({version.date})
+                </h3>
+                {version.changes.length > 0 && (
+                  <div className="space-y-1 pl-1">
+                    {version.changes.map((change, changeIndex) => (
+                      <p key={changeIndex} className="text-foreground-secondary">
+                        {change}
+                      </p>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
 
@@ -189,31 +174,21 @@ export default function SoftwarePage() {
 
                 {/* Older Versions List */}
                 {showOlderVersions && (
-                  <div className="mt-6 space-y-6">
+                  <div className="mt-8 space-y-8">
                     {olderVersions.map((version) => (
-                      <div
-                        key={version.version}
-                        className="bg-background-primary rounded-xl p-6 border border-border-secondary"
-                      >
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-                          <h3 className="text-xl font-bold text-foreground-primary">
-                            {version.version}
-                          </h3>
-                          <span className="text-sm text-foreground-muted">
-                            {version.date}
-                          </span>
-                        </div>
-                        <ul className="space-y-2">
-                          {version.changes.map((change, changeIndex) => (
-                            <li
-                              key={changeIndex}
-                              className="flex items-start gap-2 text-foreground-secondary"
-                            >
-                              <span className="text-brand-blue-500 mt-1">•</span>
-                              <span>{change}</span>
-                            </li>
-                          ))}
-                        </ul>
+                      <div key={version.version}>
+                        <h3 className="text-lg font-bold text-foreground-primary mb-2">
+                          CockpitSimulator Bridge {version.version} ({version.date})
+                        </h3>
+                        {version.changes.length > 0 && (
+                          <div className="space-y-1 pl-1">
+                            {version.changes.map((change, changeIndex) => (
+                              <p key={changeIndex} className="text-foreground-secondary">
+                                {change}
+                              </p>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>

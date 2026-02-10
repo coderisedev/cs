@@ -80,16 +80,16 @@ export const aircraftPlugins = [
 // Download links for the software
 export const downloadLinks = {
   latest: {
-    version: "v2025.2.7",
-    url: "/firmwares/CockpitSimulator%20v2025.2.7.exe",
+    version: "v2026.1.0",
+    url: "https://img.aidenlux.com/software/CockpitSimulator%20v2026.1.0.exe",
   },
   alternative: {
     version: "v2025.1.2",
-    url: "/firmwares/CockpitSimulator%20v2025.1.2.zip",
+    url: "https://img.aidenlux.com/software/CockpitSimulator%20v2025.1.2.zip",
   },
   older: {
     version: "v2024.6.1",
-    url: "/firmwares/CockpitSimulator%20v2024.6.1.exe",
+    url: "https://img.aidenlux.com/software/CockpitSimulator%20v2024.6.1.exe",
   },
 }
 
