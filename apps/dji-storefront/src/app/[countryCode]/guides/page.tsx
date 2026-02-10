@@ -1,6 +1,5 @@
 import { listPosts } from "@/lib/data/blog"
 import Link from "next/link"
-import { Calendar } from "lucide-react"
 
 export const metadata = {
   title: "Guides · Cockpit Simulator",
@@ -46,23 +45,6 @@ export default async function GuidesPage(props: GuidesPageProps) {
                     {post.title}
                   </h2>
                 </Link>
-                <div className="flex items-center gap-2 text-sm text-foreground-muted mb-2">
-                  <Calendar className="w-4 h-4" />
-                  <time dateTime={post.publishedAt ?? undefined}>
-                    {post.publishedAt
-                      ? new Date(post.publishedAt).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })
-                      : "No date"}
-                  </time>
-                </div>
-                {post.excerpt && (
-                  <p className="text-foreground-secondary text-base leading-relaxed">
-                    {post.excerpt}
-                  </p>
-                )}
               </article>
             ))}
           </div>

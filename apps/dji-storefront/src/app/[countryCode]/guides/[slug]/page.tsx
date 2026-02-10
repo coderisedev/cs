@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown"
 import type { Components } from "react-markdown"
 import remarkGfm from "remark-gfm"
 import remarkBreaks from "remark-breaks"
+import rehypeRaw from "rehype-raw"
 import { notFound } from "next/navigation"
 import { Calendar, Clock, User } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -263,7 +264,7 @@ export default async function GuidePostPage({ params }: GuidePostPageProps) {
         )}
 
         <div className="space-y-4 text-lg text-foreground-primary leading-relaxed">
-          <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} components={markdownComponents}>
+          <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} rehypePlugins={[rehypeRaw]} components={markdownComponents}>
             {post.content}
           </ReactMarkdown>
         </div>
