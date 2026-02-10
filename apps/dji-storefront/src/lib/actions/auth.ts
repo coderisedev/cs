@@ -211,6 +211,17 @@ export interface ResendOTPResult {
   retry_after?: number
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function safeJsonParse(response: Response): Promise<any> {
+  const text = await response.text()
+  try {
+    return JSON.parse(text)
+  } catch {
+    console.error("Non-JSON response from backend:", text.slice(0, 200))
+    return { error: `Server error (${response.status})` }
+  }
+}
+
 function getOTPHeaders(): Record<string, string> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
@@ -239,7 +250,7 @@ export async function initiateRegistrationAction(
       body: JSON.stringify({ email }),
     })
 
-    const data = await response.json()
+    const data = await safeJsonParse(response)
 
     if (!response.ok) {
       return { error: data.error || "Failed to send verification code" }
@@ -275,7 +286,7 @@ export async function verifyOTPAction(
       body: JSON.stringify({ email, otp }),
     })
 
-    const data = await response.json()
+    const data = await safeJsonParse(response)
 
     if (!response.ok) {
       return { error: data.error || "Verification failed" }
@@ -324,7 +335,7 @@ export async function completeRegistrationAction(
       }),
     })
 
-    const data = await response.json()
+    const data = await safeJsonParse(response)
 
     if (!response.ok) {
       return { error: data.error || "Registration failed" }
@@ -359,7 +370,7 @@ export async function resendOTPAction(email: string): Promise<ResendOTPResult> {
       body: JSON.stringify({ email }),
     })
 
-    const data = await response.json()
+    const data = await safeJsonParse(response)
 
     if (!response.ok) {
       return { error: data.error || "Failed to resend code", retry_after: data.retry_after }
@@ -426,7 +437,7 @@ export async function initiateOTPLoginAction(
       body: JSON.stringify({ email }),
     })
 
-    const data = await response.json()
+    const data = await safeJsonParse(response)
 
     if (!response.ok) {
       return { error: data.error || "Failed to send verification code" }
@@ -466,7 +477,7 @@ export async function verifyOTPLoginAction(
       body: JSON.stringify({ email, otp }),
     })
 
-    const data = await response.json()
+    const data = await safeJsonParse(response)
 
     if (!response.ok) {
       return { error: data.error || "Verification failed" }
@@ -525,7 +536,7 @@ export async function completeOTPProfileAction(
       }),
     })
 
-    const data = await response.json()
+    const data = await safeJsonParse(response)
 
     if (!response.ok) {
       return { error: data.error || "Failed to create account" }
@@ -560,7 +571,7 @@ export async function resendOTPLoginAction(email: string): Promise<ResendOTPResu
       body: JSON.stringify({ email }),
     })
 
-    const data = await response.json()
+    const data = await safeJsonParse(response)
 
     if (!response.ok) {
       return { error: data.error || "Failed to resend code", retry_after: data.retry_after }

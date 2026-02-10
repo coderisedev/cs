@@ -1,7 +1,7 @@
 export const softwareStats = [
   { label: "Aircraft Plugins", value: "25+" },
   { label: "Platforms Supported", value: "6" },
-  { label: "Version Releases", value: "40+" },
+  { label: "Version Releases", value: "55+" },
   { label: "Years Development", value: "5+" },
 ]
 
@@ -487,273 +487,425 @@ export const aircraftAddonSupport = [
   },
 ]
 
-// Complete version history (40+ versions)
+// Complete version history (55+ versions)
 export const versionHistory = [
   {
-    version: "v2025.2.7",
-    date: "Jan. 16, 2025",
-    changes: [
-      "Fix: iFly 737 MAX 8 upper DU switch 'INBD' -> 'OUTBD' on startup",
-      "Fix: iFly 737 MAX 8 lower DU switch 'ENG PRI' -> 'ND' on startup",
-    ],
-  },
-  {
-    version: "v2025.2.6",
-    date: "Jan. 14, 2025",
-    changes: [
-      "New: Added support for iFly 737 MAX 8 for MSFS 2024",
-      "Fix: Minor bugs",
-    ],
-  },
-  {
-    version: "v2025.2.5",
-    date: "Jan. 12, 2025",
-    changes: [
-      "Fix: Remove bad hotfix for CS 737X v2 CDU",
-    ],
-  },
-  {
-    version: "v2025.2.4",
-    date: "Jan. 10, 2025",
-    changes: [
-      "Fix: CS 737X v2 CDU brightness control (this is a hotfix but should fix the issue for now, I will add a proper fix in future release)",
-    ],
-  },
-  {
     version: "v2025.2.3",
-    date: "Jan. 8, 2025",
+    date: "Jun. 12, 2025",
     changes: [
-      "New: Added support for iFly 737 MAX 8 MSFS 2024",
+      "Added 'iFly 737 MAX8 for MSFS 2024' support for CS 737/747/777 series devices",
     ],
   },
   {
     version: "v2025.2.2",
-    date: "Jan. 6, 2025",
+    date: "May. 3, 2025",
     changes: [
-      "New: ProSimB38M CDU support",
-      "New: PMDG 777 for MSFS 2024 (MCP/EFIS and CDU)",
+      "Added 'PMDG 777-200ER for MSFS 2020 & 2024' support for CS 737/747/777 series devices",
+      "Enhanced user experience for PMDG 777 series aircraft when using CS 737X EFIS",
+      "Added ProSimB38M CDU support for CS 737/747/777 series CDUs",
     ],
   },
   {
     version: "v2025.2.1",
-    date: "Jan. 3, 2025",
+    date: "Feb. 5, 2025",
     changes: [
-      "Fix: Fenix A32X MCDU stuck at CDU ID 0 due to missing CDU selection popup",
+      "Fixed incorrect position handling in CDU v1",
     ],
   },
   {
     version: "v2025.2.0",
-    date: "Jan. 1, 2025",
+    date: "Feb. 3, 2025",
     changes: [
-      "New: Added support for Aerowinx Precision Simulator 10 (B744) CDU",
-      "Fix: Various minor bug fixes",
+      "Added 'Aerowinx Precision Simulator 10 (Aerowinx B744)' support for CS 737/747/777 series CDUs",
+      "Added 747 and 777 aircraft center CDU support for CS 737/747/777 v2 series CDUs",
+      "Improved position selection experience for CS 737/747/777 v2 series CDUs",
+      "Fixed inversed text style for CS 737/747/777 v2 series CDUs",
+      "Fixed incorrect CDU CLR key response in iFly MAX8 MSFS",
+      "Fixed incorrect status display in UI when platform is ProSim",
+      "Improved FBW DataStorage handling",
+      "Improved stability",
+    ],
+  },
+  {
+    version: "v2025.1.5",
+    date: "Jan. 29, 2025",
+    changes: [
+      "Fixed incorrect content in MSFS module 'layout.json'",
+      "Fixed incorrect button mapping in CS 737/747/777 v2 series CDU",
     ],
   },
   {
     version: "v2025.1.4",
-    date: "Dec. 18, 2024",
+    date: "Jan. 22, 2025",
     changes: [
-      "New: ToLiss A319 / A320 / A321 / A340 MCDU support for X-Plane 11 / 12",
+      "Added 'ToLiss A330-900' support for CS 320 series devices",
     ],
   },
   {
     version: "v2025.1.3",
-    date: "Dec. 15, 2024",
+    date: "Jan. 21, 2025",
     changes: [
-      "Fix: FBW A32NX communication delay issues",
-      "Fix: Improved USB device detection on Windows 11",
+      "Detect if iFly MAX8 Plugin is running elevated",
+      "Optimize startup process",
+      "Serial port occupation detection and handling",
     ],
   },
   {
     version: "v2025.1.2",
-    date: "Dec. 10, 2024",
+    date: "Jan. 15, 2025",
     changes: [
-      "Fix: Memory leak in SimConnect handler",
-      "Fix: Improved stability for long sessions",
+      "Preserves manually adjusted CDU / MCDU screen brightness even when CS Bridge is restarted",
     ],
   },
   {
     version: "v2025.1.1",
-    date: "Dec. 5, 2024",
+    date: "Jan. 13, 2025",
     changes: [
-      "New: FlyByWire A32NX MCDU/FCU support",
-      "New: Threshold LevelUp 737NG MCP/EFIS/CDU support",
+      "Fixed FlyBywire A32NX compatibility issues",
+      "Fixed autostart / autostop issues",
     ],
   },
   {
     version: "v2025.1.0",
-    date: "Dec. 1, 2024",
+    date: "Jan. 12, 2025",
     changes: [
-      "New: Major version update with improved architecture",
-      "New: Better multi-monitor support",
-      "Fix: Various stability improvements",
+      "Added FlyByWire A32NX stable version support for CS 320A MCDU",
+      "Added LevelUp 737NG Series U1 support for CS 737/747/777 series devices",
+      "Supports annunciator dimming for v2 series CDU / MCDU",
+    ],
+  },
+  {
+    version: "v2024.7.5",
+    date: "Dec. 29, 2024",
+    changes: [
+      "Added ToLiss A320 family support for CS 320A MCDU",
     ],
   },
   {
     version: "v2024.7.4",
-    date: "Nov. 15, 2024",
+    date: "Dec. 27, 2024",
     changes: [
-      "New: iFly 737 MAX8 MCP/EFIS/CDU support for MSFS 2020",
+      "Added 'iFly 737 MAX8 for MSFS' support for CS 737/747/777 series devices",
+      "Updated bridge software autostart / autostop feature for MSFS / P3D / X-Plane platforms",
+      "Adjust the code structure to reduce false positives from antivirus software (separation of SimConnect 32bit parts, code signing, etc.)",
     ],
   },
   {
     version: "v2024.7.3",
-    date: "Nov. 10, 2024",
+    date: "Dec. 17, 2024",
     changes: [
-      "Fix: Fenix display brightness sync issues",
-      "Fix: Improved error messages",
+      "Fixed FCU SPEED MANAGED/DASH display issue in Fenix",
+      "Improved Fenix WebSocket client stability",
+      "Added 'PMDG 777F for Microsoft Flight Simulator' support for CS 737/747/777 series devices",
+      "Improved MCP A/T switch experience on 777 aircraft (hint: try rotating CRS knobs)",
     ],
   },
   {
     version: "v2024.7.2",
-    date: "Nov. 5, 2024",
+    date: "Dec. 17, 2024",
     changes: [
-      "New: ProSimA320 MCDU support improvements",
-      "Fix: Connection stability for multiple devices",
+      "Added ProSimA320 MCDU support for CS 320A MCDU",
     ],
   },
   {
     version: "v2024.7.1",
-    date: "Oct. 28, 2024",
+    date: "Dec. 16, 2024",
     changes: [
-      "New: Fenix A319/A320/A321 FCU support for MSFS 2024",
-      "Fix: SimConnect reconnection issues",
+      "Fixed MCDU screen 'Δ' display on Fenix",
+      "Fixed FCU rotary on Fenix for MSFS 2024",
+      "Fixed several issues for iFly737NG / Aerosoft A320 / PMDG for P3D",
     ],
   },
   {
     version: "v2024.7.0",
-    date: "Oct. 20, 2024",
+    date: "Dec. 13, 2024",
     changes: [
-      "New: Fenix A319/A320/A321 MCDU support for MSFS 2024",
-      "New: Initial MSFS 2024 compatibility",
+      "Added support for the CS 320A MCDU and v2 version CS 737/747/777 CDUs",
     ],
   },
   {
     version: "v2024.6.1",
-    date: "Oct. 10, 2024",
+    date: "Sep. 2, 2024",
     changes: [
-      "Fix: Critical bug in firmware update process",
-      "Fix: Improved device enumeration",
+      "Adjusted 737NG series aircraft electrical condition checks",
+    ],
+  },
+  {
+    version: "v2024.6.0",
+    date: "Sep. 2, 2024",
+    changes: [
+      "Added 'CM MCP Lite' device support",
     ],
   },
   {
     version: "v2024.5.3",
-    date: "Sep. 25, 2024",
+    date: "Aug. 21, 2024",
     changes: [
-      "New: Fenix A319/A320/A321 FCU support for MSFS 2020",
+      "Added 'Fenix A319 & A321 Expansion' support for CS 320N series devices",
+    ],
+  },
+  {
+    version: "v2024.5.2",
+    date: "Jul. 23, 2024",
+    changes: [
+      "Added 'iFly Jets Advanced Series – The 737NG' support for CS 737X / 747X / 777X series devices",
+    ],
+  },
+  {
+    version: "v2024.5.1",
+    date: "Jul. 1, 2024",
+    changes: [
+      "Fixed CDU brightness control in PMDG 777 for MSFS",
     ],
   },
   {
     version: "v2024.5.0",
-    date: "Sep. 15, 2024",
+    date: "Jun. 27, 2024",
     changes: [
-      "New: PMDG 777 CDU support for MSFS 2020",
-      "Fix: Performance improvements",
+      "Added 'PMDG 777-300ER for Microsoft Flight Simulator' support for CS 737X / 747X / 777X series devices",
+    ],
+  },
+  {
+    version: "v2024.4.4",
+    date: "May. 12, 2024",
+    changes: [
+      "Improved MSFS installation directory detection",
+    ],
+  },
+  {
+    version: "v2024.4.3",
+    date: "May. 11, 2024",
+    changes: [
+      "Improved 'detected simulator' content in about window",
+      "Displays CS addon status and version on the main page",
+    ],
+  },
+  {
+    version: "v2024.4.2",
+    date: "May. 7, 2024",
+    changes: [
+      "Refactored bridge software launcher (installer)",
+      "Displays CS addon status and version on the main page",
+      "Added an option to automatically launch the bridge software when P3D/X-Plane starts",
+    ],
+  },
+  {
+    version: "v2024.4.1",
+    date: "Apr. 30, 2024",
+    changes: [
+      "ProSim737 minimum supported version lowered to V3.0",
+      "ProSimA320 minimum supported version lowered to V1.40",
     ],
   },
   {
     version: "v2024.4.0",
-    date: "Aug. 20, 2024",
+    date: "Apr. 28, 2024",
     changes: [
-      "New: ProSim737 MCP/EFIS/CDU support",
+      "Added ProSim737 support for CS 737X / 747X / 777X series devices",
+      "Improved CS 737X series ELECTRICAL POWER and LIGHTS systems simulation",
+      "View firmware update details in the status tab",
+    ],
+  },
+  {
+    version: "v2024.3.1",
+    date: "Apr. 18, 2024",
+    changes: [
+      "Added 'skip device' feature when using CS Bridge and other software simultaneously",
     ],
   },
   {
     version: "v2024.3.0",
-    date: "Jul. 15, 2024",
+    date: "Apr. 14, 2024",
     changes: [
-      "New: ProSimA320 FCU support",
-      "Fix: Various bug fixes",
+      "Added ProSimA320 support for CS 320N series devices",
+      "Improved MSFS module installer to handle multiple MSFS installations",
     ],
   },
   {
     version: "v2024.2.0",
-    date: "Jun. 10, 2024",
+    date: "Apr. 7, 2024",
     changes: [
-      "New: Improved hardware detection",
-      "Fix: Memory optimization",
+      "Added Fenix A320 support for CS 320N series devices",
+      "Status page now shows a hint if the device has up-to-date firmware",
     ],
   },
   {
     version: "v2024.1.0",
-    date: "May 1, 2024",
+    date: "Feb. 22, 2024",
     changes: [
-      "New: FlightFactor A320 Ultimate FCU support",
-      "New: Headwind A339X FCU support",
-      "New: Aerosoft A318-A321 Professional FCU support for P3D",
+      "Initial support for CS 320N series devices",
+      "Added a P3Dv4/v5 addon for L-Vars based interaction",
+      "Added a MSFS module for L-Vars based interaction",
+      "Improved robustness for Auto Configurator",
+      "Shows which configuration file was modified after the Auto Configurator run",
+      "Shows where the MSFS / P3D / X-Plane plugins were installed after the Auto Configurator run",
+      "Added a new 'About' window for detected platform / aircraft list",
+      "Updated color schemes for dark mode",
+      "Added an 'Update Rate' option in the X-Plane plugin",
+      "Improved X-Plane plugin stability",
     ],
   },
   {
-    version: "v2022.2.0",
-    date: "Mar. 15, 2022",
+    version: "v2023.1.8",
+    date: "Jan. 11, 2024",
     changes: [
-      "New: PMDG 737 MCP/EFIS/CDU support for MSFS 2020",
-      "New: ZIBO B737-800X MCP/EFIS support",
+      "Improved B737-800X knob handling",
     ],
+  },
+  {
+    version: "v2023.1.7",
+    date: "Dec. 13, 2023",
+    changes: [
+      "Improved IXEG detection",
+    ],
+  },
+  {
+    version: "v2023.1.6",
+    date: "Sep. 07, 2023",
+    changes: [
+      "Improved installer for read-only file situation",
+      "Added a 'start minimized' config entry",
+    ],
+  },
+  {
+    version: "v2023.1.5",
+    date: "Jun. 06, 2023",
+    changes: [
+      "Fixed X-Plane plugin crash problem when aircraft DataRef type has changed",
+    ],
+  },
+  {
+    version: "v2023.1.4",
+    date: "Mar. 15, 2023",
+    changes: [
+      "Standalone (no installer) version",
+      "Fixed Auto Configurator settings could not be saved problem",
+      "Updated device names",
+      "Improved CS 737X CDU test page",
+    ],
+  },
+  {
+    version: "v2023.1.3",
+    date: "Jan. 18, 2023",
+    changes: [
+      "Fixed a problem that caused PMDG 737 NGX not recognized in P3D v4/v5",
+    ],
+  },
+  {
+    version: "v2023.1.2",
+    date: "Jan. 17, 2023",
+    changes: [
+      "Improved stability and experience with MSFS / Prepar3D",
+      "Fixed a problem that may prevent CS 737X CDU leaving test mode",
+    ],
+  },
+  {
+    version: "v2023.1.1",
+    date: "Jan. 16, 2023",
+    changes: [
+      "Added iFly 737NG support for CS 737X CDU",
+      "Added 'power off' feature for connected devices when bridge software closing",
+      "Improved SimConnect client stability",
+      "Updated CS 737X CDU test page on the device screen",
+    ],
+  },
+  {
+    version: "v2023.1.0",
+    date: "Jan. 04, 2023",
+    changes: [
+      "Initial support for CS 737X MCP / EFIS",
+      "Nearly complete rewrite of bridge software base architecture",
+    ],
+  },
+  {
+    version: "v2022.3.0",
+    date: "Dec. 27, 2022",
+    changes: [],
   },
   {
     version: "v2022.1.0",
-    date: "Feb. 1, 2022",
+    date: "Nov. 20, 2022",
+    changes: [],
+  },
+  {
+    version: "v0.10.6",
+    date: "Aug. 25, 2022",
+    changes: [],
+  },
+  {
+    version: "v0.10.5",
+    date: "Aug. 15, 2022",
+    changes: [],
+  },
+  {
+    version: "v0.10.3",
+    date: "Jun. 21, 2022",
+    changes: [],
+  },
+  {
+    version: "v0.10.0",
+    date: "May. 24, 2022",
     changes: [
-      "New: ZIBO B737-800X CDU support",
-      "New: IXEG 737 Classic CDU support",
+      "Supports MSFS PMDG 737NG",
     ],
   },
   {
-    version: "v2021.3.0",
-    date: "Nov. 20, 2021",
+    version: "v0.9.98",
+    date: "Mar. 8, 2021",
     changes: [
-      "New: P3D v5 compatibility improvements",
-      "Fix: Various stability fixes",
+      "Added device support (CDU right side)",
+      "Fixed configurator may failed without administrative privileges",
     ],
   },
   {
-    version: "v2021.2.0",
-    date: "Aug. 15, 2021",
+    version: "v0.9.97",
+    date: "Dec. 22, 2020",
     changes: [
-      "New: Wireless firmware update support",
-      "Fix: UI improvements",
+      "Supports PMDG 737NGXu BBJ",
+      "Added update notification",
+      "Remapped 747 & 777 function keys",
     ],
   },
   {
-    version: "v2021.1.0",
-    date: "Apr. 1, 2021",
-    changes: [
-      "New: Hardware testing functionality",
-      "Fix: Connection reliability improvements",
-    ],
+    version: "v0.9.96",
+    date: "Oct. 29, 2020",
+    changes: [],
   },
   {
-    version: "v2020.4.0",
-    date: "Dec. 15, 2020",
-    changes: [
-      "New: Multi-device support",
-      "Fix: Performance optimizations",
-    ],
+    version: "v0.9.94",
+    date: "Oct. 19, 2020",
+    changes: [],
   },
   {
-    version: "v2020.3.0",
-    date: "Nov. 10, 2020",
-    changes: [
-      "New: Auto-reconnect feature",
-      "Fix: Bug fixes",
-    ],
+    version: "v0.9.93",
+    date: "Oct. 10, 2020",
+    changes: [],
   },
   {
-    version: "v2020.2.0",
-    date: "Oct. 20, 2020",
-    changes: [
-      "New: Initial MSFS 2020 support",
-      "New: Improved UI",
-    ],
+    version: "v0.9.92",
+    date: "Sep. 25, 2020",
+    changes: [],
+  },
+  {
+    version: "v0.9.91",
+    date: "Sep. 25, 2020",
+    changes: [],
+  },
+  {
+    version: "v0.999.99",
+    date: "Sep. 24, 2020",
+    changes: [],
+  },
+  {
+    version: "v0.99.9999",
+    date: "Sep. 24, 2020",
+    changes: [],
   },
   {
     version: "v0.9.999",
     date: "Sep. 21, 2020",
     changes: [
-      "Initial release",
-      "Basic device connectivity",
-      "FSX/P3D support",
+      "First version where Cockpit Simulator and CS 737X CDU starts here",
     ],
   },
 ]
