@@ -130,7 +130,8 @@ export const listPosts = async (options: BlogListOptions = {}): Promise<BlogList
     const response = await strapi.fetch<StrapiPostResponse>("/api/posts", {
       query: {
         populate: POPULATE_FIELDS,
-        sort: "publishedAt:desc",
+        "sort[0]": "publish_date:desc",
+        "sort[1]": "publishedAt:desc",
         "pagination[page]": page,
         "pagination[pageSize]": pageSize,
         ...(options.locale ? { locale: options.locale } : {}),
