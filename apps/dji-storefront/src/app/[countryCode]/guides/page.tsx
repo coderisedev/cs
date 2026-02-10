@@ -1,11 +1,6 @@
 import { listPosts } from "@/lib/data/blog"
 import Link from "next/link"
 import { Calendar } from "lucide-react"
-import ReactMarkdown from "react-markdown"
-import type { Components } from "react-markdown"
-import remarkGfm from "remark-gfm"
-import remarkBreaks from "remark-breaks"
-import { cn } from "@/lib/utils"
 
 export const metadata = {
   title: "Guides · Cockpit Simulator",
@@ -13,45 +8,6 @@ export const metadata = {
 }
 
 export const revalidate = 300
-
-const markdownComponents: Components = {
-  h2: ({ className, children, ...props }) => (
-    <h2 {...props} className={cn("text-xl font-semibold text-foreground-primary mt-6 mb-3", className)}>
-      {children}
-    </h2>
-  ),
-  h3: ({ className, children, ...props }) => (
-    <h3 {...props} className={cn("text-lg font-semibold text-foreground-primary mt-4 mb-2", className)}>
-      {children}
-    </h3>
-  ),
-  p: ({ className, children, ...props }) => (
-    <p {...props} className={cn("text-base leading-relaxed text-foreground-secondary", className)}>
-      {children}
-    </p>
-  ),
-  ul: ({ className, children, ...props }) => (
-    <ul {...props} className={cn("list-disc pl-6 space-y-1 text-foreground-secondary", className)}>
-      {children}
-    </ul>
-  ),
-  ol: ({ className, children, ...props }) => (
-    <ol {...props} className={cn("list-decimal pl-6 space-y-1 text-foreground-secondary", className)}>
-      {children}
-    </ol>
-  ),
-  a: ({ className, children, href, ...props }) => (
-    <a
-      {...props}
-      href={href ?? "#"}
-      className={cn("text-primary-500 underline", className)}
-      target="_blank"
-      rel="noreferrer"
-    >
-      {children}
-    </a>
-  ),
-}
 
 type GuidesPageProps = {
   params: Promise<{ countryCode: string }>
@@ -90,7 +46,7 @@ export default async function GuidesPage(props: GuidesPageProps) {
                     {post.title}
                   </h2>
                 </Link>
-                <div className="flex items-center gap-2 text-sm text-foreground-muted mb-4">
+                <div className="flex items-center gap-2 text-sm text-foreground-muted mb-2">
                   <Calendar className="w-4 h-4" />
                   <time dateTime={post.publishedAt ?? undefined}>
                     {post.publishedAt
@@ -102,11 +58,11 @@ export default async function GuidesPage(props: GuidesPageProps) {
                       : "No date"}
                   </time>
                 </div>
-                <div className="space-y-3 text-foreground-primary">
-                  <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} components={markdownComponents}>
-                    {post.content}
-                  </ReactMarkdown>
-                </div>
+                {post.excerpt && (
+                  <p className="text-foreground-secondary text-base leading-relaxed">
+                    {post.excerpt}
+                  </p>
+                )}
               </article>
             ))}
           </div>

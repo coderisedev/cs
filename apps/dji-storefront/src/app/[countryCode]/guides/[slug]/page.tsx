@@ -165,6 +165,38 @@ const markdownComponents: Components = {
       {children}
     </a>
   ),
+  table: ({ className, children, ...props }) => (
+    <div className="overflow-x-auto my-6 rounded-lg border border-border-primary">
+      <table {...props} className={cn("w-full border-collapse text-base", className)}>
+        {children}
+      </table>
+    </div>
+  ),
+  thead: ({ className, children, ...props }) => (
+    <thead {...props} className={cn("bg-background-secondary", className)}>
+      {children}
+    </thead>
+  ),
+  tbody: ({ className, children, ...props }) => (
+    <tbody {...props} className={cn("[&>tr:nth-child(even)]:bg-background-secondary/50", className)}>
+      {children}
+    </tbody>
+  ),
+  tr: ({ className, children, ...props }) => (
+    <tr {...props} className={cn("border-b border-border-primary last:border-b-0", className)}>
+      {children}
+    </tr>
+  ),
+  th: ({ className, children, ...props }) => (
+    <th {...props} className={cn("px-4 py-3 text-left font-semibold text-foreground-primary text-sm", className)}>
+      {children}
+    </th>
+  ),
+  td: ({ className, children, ...props }) => (
+    <td {...props} className={cn("px-4 py-3 text-foreground-secondary text-sm", className)}>
+      {children}
+    </td>
+  ),
 }
 
 type GuidePostPageProps = {
