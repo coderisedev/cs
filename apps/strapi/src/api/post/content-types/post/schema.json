@@ -44,6 +44,9 @@
     "category": {
       "type": "string"
     },
+    "publish_date": {
+      "type": "datetime"
+    },
     "seo": {
       "type": "component",
       "repeatable": false,

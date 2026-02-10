@@ -79,10 +79,16 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
 
       // Verify OTP
       if (pendingData.otp !== otp) {
-        // Increment attempts
         pendingData.attempts += 1
 
-        // Calculate remaining TTL
+        if (pendingData.attempts >= MAX_OTP_ATTEMPTS) {
+          await redis.del(redisKey)
+          return {
+            status: 400,
+            body: { error: "Too many failed attempts. Please request a new code." }
+          }
+        }
+
         const ttl = await redis.ttl(redisKey)
         await redis.setex(redisKey, ttl > 0 ? ttl : OTP_EXPIRY_SECONDS, JSON.stringify(pendingData))
 

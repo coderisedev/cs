@@ -76,6 +76,15 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
       // Verify OTP
       if (pendingData.otp !== otp) {
         pendingData.attempts += 1
+
+        if (pendingData.attempts >= MAX_OTP_ATTEMPTS) {
+          await redis.del(redisKey)
+          return {
+            status: 400,
+            body: { error: "Too many failed attempts. Please request a new code." },
+          }
+        }
+
         const ttl = await redis.ttl(redisKey)
         await redis.setex(redisKey, ttl > 0 ? ttl : OTP_EXPIRY_SECONDS, JSON.stringify(pendingData))
 
@@ -107,22 +116,13 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
         const authService = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
         let authIdentityId: string
 
-        const existingIdentities = await authService.listAuthIdentities(
-          {},
-          { take: 100 }
+        const providerIdentities = await authService.listProviderIdentities(
+          { provider: "email-otp", entity_id: normalizedEmail },
+          { take: 1 }
         )
 
-        // Look for an auth_identity with email-otp provider and matching entity_id
-        const matchingIdentity = existingIdentities?.find((identity: any) => {
-          const providerIdentities = identity.provider_identities
-          if (!providerIdentities) return false
-          return providerIdentities.some(
-            (pi: any) => pi.provider === "email-otp" && pi.entity_id === normalizedEmail
-          )
-        })
-
-        if (matchingIdentity) {
-          authIdentityId = matchingIdentity.id
+        if (providerIdentities.length > 0) {
+          authIdentityId = providerIdentities[0].auth_identity_id
         } else {
           // Create auth_identity for migrated customer (no existing email-otp identity)
           const newAuthIdentity = await authService.createAuthIdentities({

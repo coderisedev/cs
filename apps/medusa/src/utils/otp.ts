@@ -29,7 +29,7 @@ export interface PendingVerification {
 export const OTP_EXPIRY_SECONDS = 600
 
 // Maximum verification attempts before requiring new OTP
-export const MAX_OTP_ATTEMPTS = 3
+export const MAX_OTP_ATTEMPTS = 5
 
 // Minimum seconds between resend requests
 export const RESEND_COOLDOWN_SECONDS = 60

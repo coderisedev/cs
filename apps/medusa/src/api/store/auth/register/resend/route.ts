@@ -4,6 +4,7 @@ import type { INotificationModuleService } from "@medusajs/framework/types"
 import {
   generateOTP,
   getOTPKey,
+  MAX_OTP_ATTEMPTS,
   OTP_EXPIRY_SECONDS,
   RESEND_COOLDOWN_SECONDS,
   type PendingVerification,
@@ -48,6 +49,15 @@ export const POST = async (req: MedusaRequest, res: MedusaResponse) => {
         return {
           status: 400,
           body: { error: "Registration data corrupted. Please start registration again." }
+        }
+      }
+
+      // Check if locked out due to too many failed attempts
+      if (pendingData.attempts >= MAX_OTP_ATTEMPTS) {
+        await redis.del(redisKey)
+        return {
+          status: 400,
+          body: { error: "Too many failed attempts. Please start registration again." }
         }
       }
 

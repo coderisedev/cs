@@ -50,6 +50,7 @@ export type StrapiPostAttributes = {
   excerpt?: string | null
   content?: string | null
   category?: string | null
+  publish_date?: string | null
   cover_image?: StrapiMediaData[] | StrapiRelation<StrapiMediaAttributes>
   coverImage?: StrapiMediaData[] | StrapiRelation<StrapiMediaAttributes>
   author?: StrapiRelation<{
@@ -252,7 +253,7 @@ const mapStrapiPost = (entity: StrapiEntity<StrapiPostAttributes>): BlogPost => 
     category: entity.category ?? null,
     coverImageUrl,
     coverImageAlt,
-    publishedAt: entity.publishedAt ?? entity.published_at ?? null,
+    publishedAt: entity.publish_date ?? entity.publishedAt ?? entity.published_at ?? null,
     authorName: entity.author?.data?.name ?? null,
     authorTitle: entity.author?.data?.title ?? null,
     estimatedReadingMinutes: estimateReadingTime(entity.content),

@@ -879,15 +879,7 @@ export function CheckoutClient({ cart: initialCart, customer, countryCode, custo
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground-secondary">Tax</span>
-                  <span className="font-medium">
-                    {tax > 0
-                      ? formatPrice(tax, cart)
-                      : isTaxInclusive
-                        ? "Included"
-                        : shippingCalculated
-                          ? "Included"
-                          : <span className="text-foreground-muted">Pending</span>}
-                  </span>
+                  <span className="font-medium text-foreground-muted">Not included</span>
                 </div>
               </div>
 
