@@ -104,7 +104,7 @@ export const aircraftAddonSupport = [
         aircraft: [
           {
             name: "ProSimA320",
-            version: "v2024.7.2+",
+            version: "v2024.7.2 and later",
             notes: [
               "requires ProSimA320 version 1.40 and above",
               "requires 'ProSimA322 MCDU' running with role 'Captain CDU' for the left side",
@@ -114,37 +114,45 @@ export const aircraftAddonSupport = [
         ],
       },
       {
-        name: "MSFS 2024",
+        name: "Microsoft Flight Simulator 2024",
         aircraft: [
           {
-            name: "Fenix Simulations A319 / A320 / A321",
-            version: "v2024.7.0+",
-            notes: [],
+            name: "Fenix A319 / A320 / A321",
+            version: "v2024.7.0 and later",
+            notes: [
+              "requires Fenix version V2.3.0.541 and above",
+            ],
           },
         ],
       },
       {
-        name: "MSFS 2020",
+        name: "Microsoft Flight Simulator (2020)",
         aircraft: [
           {
-            name: "Fenix Simulations A319 / A320 / A321",
-            version: "v2024.7.0+",
-            notes: [],
+            name: "Fenix A319 / A320 / A321",
+            version: "v2024.7.0 and later",
+            notes: [
+              "requires Fenix version V2.3.0.541 and above",
+            ],
           },
           {
             name: "FlyByWire A32NX",
-            version: "v2025.1.1+",
-            notes: [],
+            version: "v2025.1.1 and later",
+            notes: [
+              "requires stable v0.12.x version",
+            ],
           },
         ],
       },
       {
-        name: "X-Plane 11 / X-Plane 12",
+        name: "X-Plane (11 / 12)",
         aircraft: [
           {
-            name: "ToLiss A319 / A320 / A321 / A340",
-            version: "v2025.1.4+",
-            notes: [],
+            name: "ToLiss models",
+            version: "v2025.1.4 and later",
+            notes: [
+              "A319 / A320neo / A321 / A321neo / A330-900 / A340-600",
+            ],
           },
         ],
       },
@@ -159,7 +167,7 @@ export const aircraftAddonSupport = [
         aircraft: [
           {
             name: "ProSimA320",
-            version: "v2024.3.0+",
+            version: "v2024.3.0 and later",
             notes: [
               "requires ProSimA320 version 1.40 and above",
             ],
@@ -167,56 +175,64 @@ export const aircraftAddonSupport = [
         ],
       },
       {
-        name: "MSFS 2024",
+        name: "Microsoft Flight Simulator 2024",
         aircraft: [
           {
-            name: "Fenix Simulations A319 / A320 / A321",
-            version: "v2024.7.1+",
-            notes: [],
+            name: "Fenix A319 / A320 / A321",
+            version: "v2024.7.1 and later",
+            notes: [
+              "requires Fenix version V2.3.0.541 and above",
+            ],
           },
         ],
       },
       {
-        name: "MSFS 2020",
+        name: "Microsoft Flight Simulator (2020)",
         aircraft: [
           {
-            name: "Fenix Simulations A319 / A320 / A321",
-            version: "v2024.5.3+",
-            notes: [],
+            name: "Fenix A319 / A320 / A321",
+            version: "v2024.5.3 and later",
+            notes: [
+              "requires Fenix version V2.2.0.313 and above",
+            ],
           },
           {
             name: "FlyByWire A32NX",
-            version: "v2025.1.1+",
-            notes: [],
+            version: "v2025.1.1 and later",
+            notes: [
+              "requires stable v0.12.x version",
+            ],
           },
           {
-            name: "Headwind Simulations A339X",
-            version: "v2024.1.0+",
+            name: "Headwind A339X",
+            version: "v2024.1.0 and later",
             notes: [],
           },
         ],
       },
       {
-        name: "X-Plane 11 / X-Plane 12",
+        name: "X-Plane (11 / 12)",
         aircraft: [
           {
-            name: "ToLiss A319 / A320 / A321 / A340",
-            version: "v2025.1.4+",
-            notes: [],
+            name: "ToLiss models",
+            version: "v2025.1.4 and later",
+            notes: [
+              "A319 / A320neo / A321 / A321neo / A330-900 / A340-600",
+            ],
           },
           {
             name: "FlightFactor A320 Ultimate",
-            version: "v2024.1.0+",
+            version: "v2024.1.0 and later",
             notes: [],
           },
         ],
       },
       {
-        name: "Prepar3D v4 / Prepar3D v5",
+        name: "Prepar3D (v4 / v5)",
         aircraft: [
           {
-            name: "Aerosoft A318 / A319 / A320 / A321 Professional",
-            version: "v2024.1.0+",
+            name: "Aerosoft A318 / A319 / A320 / A321",
+            version: "v2024.1.0 and later",
             notes: [],
           },
         ],
@@ -232,62 +248,72 @@ export const aircraftAddonSupport = [
         aircraft: [
           {
             name: "ProSim737",
-            version: "v2024.4.0+",
-            notes: [],
+            version: "v2024.4.0 and later",
+            notes: [
+              "requires ProSim737 version 3.00 and above",
+            ],
           },
           {
             name: "ProSimB38M",
             version: "coming soon",
+            notes: [
+              "requires ProSimB38M version 1.27 and above",
+            ],
+          },
+        ],
+      },
+      {
+        name: "Microsoft Flight Simulator 2024",
+        aircraft: [
+          {
+            name: "PMDG 777 for MSFS 2024",
+            version: "v2025.2.2 and later",
+            notes: [
+              "including but not limited to: 777-200ER, …",
+            ],
+          },
+          {
+            name: "iFly 737 MAX8 for MSFS 2024",
+            version: "v2025.2.3 and later",
             notes: [],
           },
         ],
       },
       {
-        name: "MSFS 2024",
+        name: "Microsoft Flight Simulator (2020)",
         aircraft: [
           {
-            name: "PMDG 777-200ER / 777-200LR / 777-300ER / 777F",
-            version: "v2025.2.2+",
-            notes: [],
+            name: "PMDG 737 for MSFS",
+            version: "v2022.2.0 and later",
+            notes: [
+              "including but not limited to: -600, -700, -800, -900, …",
+            ],
           },
           {
-            name: "iFly 737 MAX8",
-            version: "v2025.2.3+",
+            name: "PMDG 777 for MSFS",
+            version: "v2025.2.2 and later",
+            notes: [
+              "including but not limited to: 777-200ER, 777-300ER, 777F, …",
+            ],
+          },
+          {
+            name: "iFly 737 MAX8 for MSFS",
+            version: "v2024.7.4 and later",
             notes: [],
           },
         ],
       },
       {
-        name: "MSFS 2020",
+        name: "X-Plane (11 / 12)",
         aircraft: [
           {
-            name: "PMDG 737-600 / 737-700 / 737-800 / 737-900",
-            version: "v2022.2.0+",
-            notes: [],
-          },
-          {
-            name: "PMDG 777-200ER / 777-200LR / 777-300ER / 777F",
-            version: "v2025.2.2+",
-            notes: [],
-          },
-          {
-            name: "iFly 737 MAX8",
-            version: "v2024.7.4+",
-            notes: [],
-          },
-        ],
-      },
-      {
-        name: "X-Plane 11 / X-Plane 12",
-        aircraft: [
-          {
-            name: "ZIBO B737-800X",
-            version: "v2022.2.0+",
+            name: "B737-800X ZIBO mod",
+            version: "v2022.2.0 and later",
             notes: [],
           },
           {
             name: "Threshold LevelUp 737NG",
-            version: "v2025.1.1+",
+            version: "v2025.1.1 and later",
             notes: [],
           },
           {
@@ -298,51 +324,36 @@ export const aircraftAddonSupport = [
         ],
       },
       {
-        name: "Prepar3D v4 / Prepar3D v5",
-        aircraft: [
-          {
-            name: "PMDG 737NGX / 737NGXu",
-            version: "v2022.2.0+",
-            notes: [],
-          },
-          {
-            name: "PMDG 747-400 / 747-8",
-            version: "v2022.2.0+",
-            notes: [],
-          },
-          {
-            name: "PMDG 777-200LR / 777F",
-            version: "v2022.2.0+",
-            notes: [],
-          },
-          {
-            name: "iFly 737NG",
-            version: "v2022.2.0+",
-            notes: [],
-          },
-        ],
-      },
-      {
-        name: "FSX / FSX Steam Edition",
+        name: "Prepar3D (v1 to v5) / Flight Simulator X",
         aircraft: [
           {
             name: "PMDG 737NGX",
-            version: "v2022.2.0+",
+            version: "v2022.2.0 and later",
             notes: [],
           },
           {
-            name: "PMDG 747-400 / 747-8",
-            version: "v2022.2.0+",
+            name: "PMDG 737NGXu",
+            version: "v2022.2.0 and later",
             notes: [],
           },
           {
-            name: "PMDG 777-200LR / 777F",
-            version: "v2022.2.0+",
+            name: "PMDG 747-400",
+            version: "v2022.2.0 and later",
             notes: [],
           },
           {
-            name: "iFly 737NG",
-            version: "v2022.2.0+",
+            name: "PMDG 747-8",
+            version: "v2022.2.0 and later",
+            notes: [],
+          },
+          {
+            name: "PMDG 777",
+            version: "v2022.2.0 and later",
+            notes: [],
+          },
+          {
+            name: "iFly Jets – The 737NG",
+            version: "v2024.5.2 and later",
             notes: [],
           },
         ],
@@ -354,12 +365,14 @@ export const aircraftAddonSupport = [
     title: "CS 737X CDU\nCS 737M CDU\nCS 747X CDU\nCS 777X CDU\nCS 737X CDU (v2)\nCS 737M CDU (v2)\nCS 747X CDU (v2)\nCS 777X CDU (v2)",
     platforms: [
       {
-        name: "Aerowinx PSX",
+        name: "Aerowinx Precision Simulator 10 (PSX)",
         aircraft: [
           {
-            name: "Aerowinx Precision Simulator 10 (B744)",
-            version: "v2025.2.0+",
-            notes: [],
+            name: "Aerowinx B744",
+            version: "v2025.2.0 and later",
+            notes: [
+              "requires Precision Simulator version 10.180 and above",
+            ],
           },
         ],
       },
@@ -368,117 +381,116 @@ export const aircraftAddonSupport = [
         aircraft: [
           {
             name: "ProSim737",
-            version: "v2024.4.0+",
-            notes: [],
+            version: "v2024.4.0 and later",
+            notes: [
+              "requires ProSim737 version 3.27 and above",
+              'requires ProSimCDU running with role "Captain CDU" for the left side',
+              'requires ProSimCDU running with role "F/O CDU" for the right side',
+            ],
           },
           {
             name: "ProSimB38M",
-            version: "v2025.2.2+",
+            version: "v2025.2.2 and later",
+            notes: [
+              "requires ProSimB38M version 1.33 and above",
+              'requires ProSimCDU running with role "Captain CDU" for the left side',
+              'requires ProSimCDU running with role "F/O CDU" for the right side',
+            ],
+          },
+        ],
+      },
+      {
+        name: "Microsoft Flight Simulator 2024",
+        aircraft: [
+          {
+            name: "PMDG 777 for MSFS 2024",
+            version: "v2025.2.2 and later",
+            notes: [
+              "including but not limited to: 777-200ER, …",
+            ],
+          },
+          {
+            name: "iFly 737 MAX8 for MSFS 2024",
+            version: "v2025.2.3 and later",
             notes: [],
           },
         ],
       },
       {
-        name: "MSFS 2024",
+        name: "Microsoft Flight Simulator (2020)",
         aircraft: [
           {
-            name: "PMDG 777-200ER / 777-200LR / 777-300ER / 777F",
-            version: "v2025.2.2+",
-            notes: [],
+            name: "PMDG 737 for MSFS",
+            version: "v2022.2.0 and later",
+            notes: [
+              "including but not limited to: -600, -700, -800, -900, …",
+            ],
           },
           {
-            name: "iFly 737 MAX8",
-            version: "v2025.2.3+",
+            name: "PMDG 777 for MSFS",
+            version: "v2024.5.0 and later",
+            notes: [
+              "including but not limited to: 777-200ER, 777-300ER, 777F, …",
+            ],
+          },
+          {
+            name: "iFly 737 MAX8 for MSFS",
+            version: "v2024.7.4 and later",
             notes: [],
           },
         ],
       },
       {
-        name: "MSFS 2020",
+        name: "X-Plane (11 / 12)",
         aircraft: [
           {
-            name: "PMDG 737-600 / 737-700 / 737-800 / 737-900",
-            version: "v2022.2.0+",
-            notes: [],
-          },
-          {
-            name: "PMDG 777-200ER / 777-200LR / 777-300ER / 777F",
-            version: "v2024.5.0+",
-            notes: [],
-          },
-          {
-            name: "iFly 737 MAX8",
-            version: "v2024.7.4+",
-            notes: [],
-          },
-        ],
-      },
-      {
-        name: "X-Plane 11 / X-Plane 12",
-        aircraft: [
-          {
-            name: "ZIBO B737-800X",
-            version: "v2022.1.0+",
+            name: "B737-800X ZIBO mod",
+            version: "v2022.1.0 and later",
             notes: [],
           },
           {
             name: "Threshold LevelUp 737NG",
-            version: "v2025.1.1+",
+            version: "v2025.1.1 and later",
             notes: [],
           },
           {
             name: "IXEG 737 Classic",
-            version: "v2022.1.0+",
+            version: "v2022.1.0 and later",
             notes: [],
           },
         ],
       },
       {
-        name: "Prepar3D v4 / Prepar3D v5",
-        aircraft: [
-          {
-            name: "PMDG 737NGX / 737NGXu",
-            version: "v2022.2.0+",
-            notes: [],
-          },
-          {
-            name: "PMDG 747-400 / 747-8",
-            version: "v2022.2.0+",
-            notes: [],
-          },
-          {
-            name: "PMDG 777-200LR / 777F",
-            version: "v2022.2.0+",
-            notes: [],
-          },
-          {
-            name: "iFly 737NG",
-            version: "v2022.2.0+",
-            notes: [],
-          },
-        ],
-      },
-      {
-        name: "FSX / FSX Steam Edition",
+        name: "Prepar3D (v1 to v5) / Flight Simulator X",
         aircraft: [
           {
             name: "PMDG 737NGX",
-            version: "v2022.2.0+",
+            version: "v2022.1.0 and later",
             notes: [],
           },
           {
-            name: "PMDG 747-400 / 747-8",
-            version: "v2022.2.0+",
+            name: "PMDG 737NGXu",
+            version: "v2022.1.0 and later",
             notes: [],
           },
           {
-            name: "PMDG 777-200LR / 777F",
-            version: "v2022.2.0+",
+            name: "PMDG 747-400",
+            version: "v2022.1.0 and later",
             notes: [],
           },
           {
-            name: "iFly 737NG",
-            version: "v2022.2.0+",
+            name: "PMDG 747-8",
+            version: "v2022.1.0 and later",
+            notes: [],
+          },
+          {
+            name: "PMDG 777",
+            version: "v2022.1.0 and later",
+            notes: [],
+          },
+          {
+            name: "iFly Jets – The 737NG",
+            version: "v2023.1.1 and later",
             notes: [],
           },
         ],
