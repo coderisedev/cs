@@ -6,6 +6,8 @@ import { setAuthToken, removeAuthToken, getCacheTag, getCartId, getAuthHeaders }
 import { revalidateTag } from "next/cache"
 import { redirect } from "next/navigation"
 import { buildDefaultAccountPath, sanitizeRedirectPath } from "@/lib/util/redirect"
+import { logoutDiscourseUser } from "@/lib/util/discourse-sso"
+import { HttpTypes } from "@medusajs/types"
 
 export async function loginAction(_currentState: unknown, formData: FormData) {
   const email = formData.get("email") as string
@@ -106,6 +108,24 @@ export async function registerAction(_currentState: unknown, formData: FormData)
 }
 
 export async function signoutAction(countryCode: string = "us") {
+  // Retrieve customer ID before logout so we can sync Discourse
+  let customerId: string | null = null
+  try {
+    const headers = await getAuthHeaders()
+    if (headers.authorization) {
+      const { customer } = await sdk.client.fetch<{
+        customer: HttpTypes.StoreCustomer
+      }>("/store/customers/me", {
+        method: "GET",
+        headers,
+        cache: "no-store",
+      })
+      customerId = customer?.id ?? null
+    }
+  } catch {
+    // Non-critical — proceed with logout even if we can't get customer ID
+  }
+
   try {
     await sdk.auth.logout()
   } catch (error) {
@@ -113,6 +133,13 @@ export async function signoutAction(countryCode: string = "us") {
   }
 
   await removeAuthToken()
+
+  // Sync logout to Discourse (fire-and-forget, must not block storefront logout)
+  if (customerId) {
+    logoutDiscourseUser(customerId).catch((err) => {
+      console.error("[discourse] logout sync error:", err)
+    })
+  }
 
   const customerCacheTag = await getCacheTag("customers")
   revalidateTag(customerCacheTag)
